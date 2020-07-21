@@ -35,7 +35,7 @@
     "install": "^0.13.0",
     "jquery": "^3.5.0",
     "jquery-ui-dist": "^1.12.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "ng-pick-datetime": "^7.0.0",
     "ngx-toastr": "^12.1.0",
