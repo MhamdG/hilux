@@ -21,6 +21,8 @@
             <div class="card-header">
                 <h3 class="card-title">إضافة وحدة عقارية جديدة</h3>
             </div>
+            <router-outlet></router-outlet>
+            
             <section class="content" *ngIf="formData && !formData.id">
               <div class="container-fluid">
                 <app-alerts [errors]="formErrors"></app-alerts>

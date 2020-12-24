@@ -1,93 +1,271 @@
 <!-- Main Sidebar Container -->
 <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-12 text-center">
-          <h1 class="m-0 text-dark">لوحة التحكم</h1>
-        </div><!-- /.col -->
-        <!-- <div class="col-sm-6">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12 text-center">
+                    <h1 class="m-0 text-dark">لوحة التحكم</h1>
+                </div>
+                <!-- /.col -->
+                <!-- <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item active">Dashboard v1</li>
           </ol>
         </div> -->
-        <!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </div>
-  <!-- /.content-header -->
-
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      <!-- Small boxes (Stat box) -->
-      <div class="row">
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-info">
-            <div class="inner">
-              <h3>150</h3>
-
-              <p>عدد الطلبات</p>
+                <!-- /.col -->
             </div>
-            <div class="icon">
-              <i class="ion ion-podium"></i>
-              <!-- <span class="iconify" data-icon="ion:podium-sharp" data-inline="false"></span> -->
-            </div>
-            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-          </div>
+            <!-- /.row -->
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-success">
-            <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
 
-              <p>نسبة المعاملات المنجزة</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-warning">
-            <div class="inner">
-              <h3>44</h3>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">تصفية العرض</h5>
 
-              <p>العملاء الجدد</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-danger">
-            <div class="inner">
-              <h3>65</h3>
+                            <div class="card-tools">
+                                <button
+                                    type="button"
+                                    class="btn btn-tool"
+                                    data-card-widget="collapse"
+                                >
+                                    <i class="fas fa-minus"></i>
+                                </button>
 
-              <p>عدد المعملات الغير منجزة</p>
+                            </div>
+                        </div>
+                        <app-alerts [errors]="formErrors"></app-alerts>
+
+                        <!-- <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm" enctype='multipart/form-data' novalidate> -->
+
+                        <!-- /.card-header -->
+                        <div
+                            class="card-body"
+                            style="display: block;"
+                        >
+                            <div
+                                class="row"
+                                data-select2-id="30"
+                            >
+                                <div
+                                    class="col-md-6"
+                                    data-select2-id="29"
+                                >
+                                    <div class="form-group">
+                                        <label>المستخدمون</label>
+                                        <ng-select
+                                            [items]="users$ | async"
+                                            [multiple]="true"
+                                            [closeOnSelect]="true"
+                                            [hideSelected]="true"
+                                            bindLabel="firstname"
+                                            bindValue="user_id"
+                                            placeholder="المستخدمون"
+                                            notFoundText="لا يوجد بيانات"
+                                            [clearSearchOnAdd]="true"
+                                            [(ngModel)]="selectedUsers"
+                                        >
+                                        </ng-select>
+                                    </div>
+                                    <!-- /.form-group -->
+
+                                </div>
+                                <div
+                                    class="col-md-6"
+                                    data-select2-id="29"
+                                >
+                                    <div class="form-group">
+                                        <label>الأقسام</label>
+                                        <ng-select
+                                            [items]="listOfDepartments$ | async"
+                                            [multiple]="true"
+                                            [closeOnSelect]="true"
+                                            [hideSelected]="true"
+                                            bindLabel="DepartmentName"
+                                            bindValue="id"
+                                            placeholder="الأقسام"
+                                            notFoundText="لا يوجد نتائج للبحث"
+                                            [clearSearchOnAdd]="true"
+                                            [(ngModel)]="selectedListOfDepartments"
+                                        >
+                                        </ng-select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div
+                                class="row"
+                                data-select2-id="30"
+                            >
+                                <div
+                                    class="col-md-6"
+                                    data-select2-id="29"
+                                >
+                                    <div class="form-group">
+                                        <label>الخدمات الرئيسية</label>
+                                        <ng-select
+                                            [items]="listOfServiceCategories$ | async"
+                                            [multiple]="true"
+                                            [closeOnSelect]="true"
+                                            [hideSelected]="true"
+                                            [clearSearchOnAdd]="true"
+                                            bindLabel="serviceCategoryName"
+                                            bindValue="serviceCategoryID"
+                                            placeholder="الخدمات الرئيسية"
+                                            notFoundText="لا يوجد بيانات"
+                                            [(ngModel)]="selectedListOfServiceCategories"
+                                        >
+                                        </ng-select>
+                                    </div>
+                                    <!-- /.form-group -->
+
+                                </div>
+                                <div
+                                    class="col-md-6"
+                                    data-select2-id="29"
+                                >
+                                    <div class="form-group">
+                                        <label>الخدمات</label>
+                                        <ng-select
+                                            [items]="listOfServices$ | async"
+                                            [multiple]="true"
+                                            [closeOnSelect]="true"
+                                            [hideSelected]="true"
+                                            [clearSearchOnAdd]="true"
+                                            bindLabel="serviceName"
+                                            bindValue="serviceID"
+                                            placeholder="الخدمات"
+                                            notFoundText="لا يوجد بيانات"
+                                            [(ngModel)]="selectedlistOfServices"
+                                        >
+                                        </ng-select>
+                                    </div>
+                                    <!-- /.form-group -->
+
+                                </div>
+
+                            </div>
+                            <div
+                                class="row"
+                                data-select2-id="30"
+                            >
+                                <div
+                                    class="col-md-6"
+                                    data-select2-id="29"
+                                >
+                                    <div class="form-group">
+                                        <label>الفترة</label>
+
+                                        <div class="d-flex">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                [placeholder]="'من تاريخ - إلى تاريخ'"
+                                                [required]="false"
+                                                [name]="'dateFrom'"
+                                                [id]="'dateFrom'"
+                                                [owlDateTime]="dt3"
+                                                [owlDateTimeTrigger]="dt3"
+                                                [selectMode]="'range'"
+                                                [(ngModel)]="dateRange"
+                                            >
+                                            <owl-date-time
+                                                [pickerType]="'calendar'"
+                                                #dt3
+                                            ></owl-date-time>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.form-group -->
+
+                                </div>
+                                <div
+                                    class="col-md-6"
+                                    data-select2-id="29"
+                                >
+                                    <div class="form-group">
+                                        <label>المصدر</label>
+                                        <ng-select
+                                            [items]="applicationSource"
+                                            [multiple]="true"
+                                            [closeOnSelect]="true"
+                                            [hideSelected]="true"
+                                            [clearSearchOnAdd]="true"
+                                            bindLabel="name"
+                                            bindValue="id"
+                                            placeholder="المصدر"
+                                            notFoundText="لا يوجد بيانات"
+                                            [(ngModel)]="selectedApplicationSource"
+                                        >
+                                        </ng-select>
+                                    </div>
+                                    <!-- /.form-group -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- ./card-body -->
+                        <div
+                            class="card-footer"
+                            style="display: block;"
+                        >
+                            <div class="col-sm-12">
+                                <div class="row ">
+                                    <div class="col-sm-12 text-center">
+                                        <button
+                                            (click)="onSubmit()"
+                                            type="submit"
+                                            class="btn btn-primary col-5"
+                                        >
+                                            عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+              <!-- </form> -->
+
+                        <!-- /.card-footer -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
             </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+            <div class="row">
+                <div
+                    class="col-lg-3 col-6"
+                    *ngFor="let item of response; let i = index"
+                >
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{item.value}}</h3>
+
+                            <p>{{item.ar}}</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-podium"></i>
+                            <!-- <span class="iconify" data-icon="ion:podium-sharp" data-inline="false"></span> -->
+                        </div>
+                        <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                    </div>
+                </div>
+
+                <!-- ./col -->
             </div>
-            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-          </div>
+            <!-- /.row -->
         </div>
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
 </div>

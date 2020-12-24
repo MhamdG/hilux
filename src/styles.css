@@ -12,6 +12,10 @@
 /* @import '~datatables.net-dt/css/jquery.dataTables.min.css'; */
 @import "~assets/css/dataTables.bootstrap4.min.css";
 
+.main-sidebar, .left-side {
+  min-height: 0%;
+}
+
 :root {
   --azure-700:#007fff;
   --azure-600:#279ffe;
@@ -62,12 +66,12 @@
 }           
 
 @font-face {
-  font-family: "GE SS Two Light";
-  src: local("GE SS Two Light"), url(/assets/fonts/GE\ SS\ Two\ Light.ttf) format("truetype");
+  font-family: "GESSTwoLight-Light2";
+  src: local("GESSTwoLight-Light2"), url(/assets/fonts/GESSTwoLight-Light2.ttf) format("truetype");
 }
 
 body {
-  font-family: "GE SS Two Light", sans-serif;
+  font-family: "GESSTwoLight-Light2", sans-serif;
   overflow-x: hidden;
 }
 
@@ -216,6 +220,7 @@ body {
 }
 
 
+
 label > span {
     color: red;
 }
@@ -223,3 +228,43 @@ label > span {
 .red {
     color: red;
 }
+
+.expand { 
+  background: #adb5bd;
+  border-radius: 50%;
+  font-size: 15px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  top: 0;
+  width: 30px;
+ }
+
+ .exp{
+  border-left: 1px solid #000;
+  width: 1%;
+ }
+ 
+ .timeline > div > .timeline-item {
+   margin-left: 60px;
+   margin-right: 30px;
+ }
+
+
+.gallery-wrapper {
+    min-height: 150px;
+    max-width: 150px;
+}
+
+.img-circle {
+    border-radius: 5%;
+}
+
+.profile-user-img {
+    border: 3px solid #adb5bd;
+    margin: 0 auto;
+    padding: 3px;
+    width: 150px;
+    min-height: 150px;
+}
+
