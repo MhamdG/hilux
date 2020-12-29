@@ -36,7 +36,11 @@
               "node_modules/overlayscrollbars/js/jquery.overlayScrollbars.min.js",
               "node_modules/select2/dist/js/select2.full.min.js",
               "src/assets/js/adminlte.js",
-              "src/assets/js/dashboard.js"
+              "src/assets/js/dashboard.js",
+              "node_modules/datatables.net/js/jquery.dataTables.min.js",
+              "src/assets/js/dataTables.bootstrap4.min.js",
+              "node_modules/jquery-knob/dist/jquery.knob.min.js"
+
             ],
             "i18nFile": "src/locale/messages.ar.xlf",
             "i18nFormat": "xlf",
