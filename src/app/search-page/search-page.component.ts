@@ -79,6 +79,7 @@ export class SearchPageComponent implements OnInit {
     this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
     .subscribe((res) => {
       this.userRole = res;
+     
     });
 
 

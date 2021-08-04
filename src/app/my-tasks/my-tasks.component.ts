@@ -20,7 +20,8 @@ export class MyTasksComponent implements OnDestroy, OnInit {
 
   dtOptions = {};
   dtTrigger: Subject<any> = new Subject();
-
+  roles$: object;
+  userRole:any;
   expand=[]
 
   constructor(
@@ -35,6 +36,10 @@ export class MyTasksComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.displayData();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+    });
     // this.response = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/myTasks`);
   }
 

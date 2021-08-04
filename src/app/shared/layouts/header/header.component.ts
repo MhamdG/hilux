@@ -33,11 +33,12 @@ export class HeaderComponent implements OnInit {
     ngOnInit(): void {
         this.authenticationService.isLoggedIn().subscribe((data) => {
             this.userloggedIn = data;
+            this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+            .subscribe((res) => {
+              this.userRole = res;
+            });
         });
-        this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
-        .subscribe((res) => {
-          this.userRole = res;
-        });
+      
 
 
         // this.router.events.subscribe((url: any) => {
