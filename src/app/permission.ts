@@ -6,7 +6,7 @@ export default {
         "admin"
     ],
     "customer.edit": [
-        "admin"
+        "admin" 
     ],
     "project.view": [
         "admin"
