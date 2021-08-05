@@ -8,6 +8,7 @@ import { catchError, distinctUntilChanged, pluck, switchMap, tap } from 'rxjs/op
 import { environment } from '../../../environments/environment';
 import * as _ from 'lodash';
 import { LookupsService } from '../../shared/lookups.service';
+import permissionList from '../../permission';
 
 @Component({
   selector: 'app-customer-details',
@@ -28,8 +29,8 @@ export class CustomerViewComponent implements OnInit {
   disabilityTypesOptions: any;
   booleanOptions: any;
   genderOptions: any;
-  minDate:any;
-  formErrors:any = {};
+  minDate: any;
+  formErrors: any = {};
   searchby: any;
   searchOwnerNameInput$ = new Subject<string>();
   searchOwnerUniqueIdInput$ = new Subject<string>();
@@ -37,6 +38,8 @@ export class CustomerViewComponent implements OnInit {
   ownerNameOptions: Observable<any>;
   ownerNameOptionsLoading = false;
   ownerUniqueIdOptionsLoading = false;
+  userRole: any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,6 +51,10 @@ export class CustomerViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+      });
     this.minDate = new Date();
     this.loadContactPerferencesOptions();
     this.loadTimeToContactOptions();
@@ -87,6 +94,13 @@ export class CustomerViewComponent implements OnInit {
       }
     });
   }
+  checkRole(permission: string) {
+    var pList = permissionList[permission];
+    var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    if (!pList) return false;
+    else if (pList.includes(d)) return true;
+    else return false;
+  }
 
   updateData(formData: any) {
     let fd = new FormData();
@@ -100,66 +114,66 @@ export class CustomerViewComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   loadContactPerferencesOptions() {
     this.lookupsService.loadContactPerferencesOptions()
-    .subscribe((data) => {
-      this.contactPerferencesOptions = data;
-    })
+      .subscribe((data) => {
+        this.contactPerferencesOptions = data;
+      })
   }
 
   loadTimeToContactOptions() {
     this.lookupsService.loadTimeToContactOptions()
-    .subscribe((data) => {
-      this.timeToContactOptions = data;
-    })
+      .subscribe((data) => {
+        this.timeToContactOptions = data;
+      })
   }
 
   loadNationalitiesOptions() {
     this.lookupsService.loadNationalitiesOptions()
-    .subscribe((data) => {
-      this.nationalitiesOptions = data;
-    })
+      .subscribe((data) => {
+        this.nationalitiesOptions = data;
+      })
   }
 
   loadCustomerCategoryOptions() {
     this.lookupsService.loadCustomerCategoryOptions()
-    .subscribe((data) => {
-      this.customerCategoryOptions = data;
-    })
+      .subscribe((data) => {
+        this.customerCategoryOptions = data;
+      })
   }
 
   loadCustomerTypesOptions() {
     this.lookupsService.loadCustomerTypesOptions()
-    .subscribe((data) => {
-      this.customerTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.customerTypesOptions = data;
+      })
   }
 
   loadEmiratesOptions() {
     this.lookupsService.loadEmiratesOptions()
-    .subscribe((data) => {
-      this.emiratesOptions = data;
-    })
+      .subscribe((data) => {
+        this.emiratesOptions = data;
+      })
   }
 
   loadOtherIdTypesOptions() {
     this.lookupsService.loadOtherIdTypesOptions()
-    .subscribe((data) => {
-      this.otherIdTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.otherIdTypesOptions = data;
+      })
   }
 
   loadDisablilityTypesOptions() {
     this.lookupsService.loadDisablilityTypesOptions()
-    .subscribe((data) => {
-      this.disabilityTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.disabilityTypesOptions = data;
+      })
   }
   getAttachments() {
     return this.formData.profileImage ? [this.formData.profileImage] : [];
@@ -260,13 +274,14 @@ export class CustomerViewComponent implements OnInit {
     this.ownerNameOptions = concat(
       of([]), // default items
       this.searchOwnerNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.ownerNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadCustomers({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.ownerNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.ownerNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadCustomers({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.ownerNameOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -275,13 +290,14 @@ export class CustomerViewComponent implements OnInit {
     this.ownerUniqueIdOptions = concat(
       of([]), // default items
       this.searchOwnerUniqueIdInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.ownerUniqueIdOptionsLoading = true),
-          switchMap(uniqueId => {
-            return this.lookupsService.loadCustomers({ uniqueId }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.ownerUniqueIdOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.ownerUniqueIdOptionsLoading = true),
+        switchMap(uniqueId => {
+          return this.lookupsService.loadCustomers({ uniqueId }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.ownerUniqueIdOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -289,7 +305,7 @@ export class CustomerViewComponent implements OnInit {
   isSearchFormValid() {
     return !this.searchData.term && !this.searchData.uniqueId
   }
-  editFun(){
+  editFun() {
     this.router.navigate(['customer/profile/', this.formData.id, 'edit']);
 
   }

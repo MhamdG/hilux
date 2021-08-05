@@ -5,6 +5,9 @@
     "customer.new": [
         "admin", "customerservices"
     ],
+    "customer.edit": [
+        "admin", "customerservices"
+    ],
     "project.view": [
         "admin", "customerservices"
     ],
