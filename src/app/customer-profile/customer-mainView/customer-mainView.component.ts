@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, distinctUntilChanged, pluck, switchMap, tap } from 'rxjs/operators';
 import { FieldsService } from '../../shared/fields.service';
 import { LookupsService } from '../../shared/lookups.service';
+import permissionList from '../../permission'; 
 
 @Component({
   selector: 'app-customer-profile',
@@ -36,6 +37,8 @@ export class CustomerMainViewComponent implements OnInit {
   ownerNameOptions: Observable<any>;
   ownerNameOptionsLoading = false;
   ownerUniqueIdOptionsLoading = false;
+  userRole:any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +50,10 @@ export class CustomerMainViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+    });
     this.minDate = new Date();
     this.loadContactPerferencesOptions();
     this.loadTimeToContactOptions();
@@ -86,6 +93,13 @@ export class CustomerMainViewComponent implements OnInit {
       }
     });
   }
+  checkRole( permission: string) {
+    var pList = permissionList[permission];
+    var d =Object.values(this.userRole)[0].toString().toLowerCase()
+    if ( ! pList) return false;
+    else if(pList.includes(d)) return true;
+     else return false;
+}
 
   saveData(formData: any) {
     let fd = new FormData();

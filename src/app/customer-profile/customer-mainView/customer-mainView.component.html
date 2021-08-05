@@ -26,7 +26,7 @@
                             <h3 class="card-title"> حساب عميل </h3>
                         </div>
                         <router-outlet></router-outlet>
-                        <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
+                        <div *ngIf="checkRole('customer.new')" style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
                       
                         <button type="button"  (click)="addNewFun()"  style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;"  class="btn btn-primary"   i18n="@@addNew">+ Add New</button>
                         </div>

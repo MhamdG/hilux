@@ -76,10 +76,7 @@ export class HeaderComponent implements OnInit {
     }
 
     getRole(data: any, permission: string) {
-        // console.log('user role');
-        // console.log(data);
-        // console.log('permission');
-        // console.log(permission);
+       
       return Object.keys(data).includes(permission);
     }
     checkRole( permission: string) {

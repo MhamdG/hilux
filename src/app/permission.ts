@@ -2,6 +2,9 @@
     "customer.view": [
         "admin", "customerservices"
     ],
+    "customer.new": [
+        "admin", "customerservices"
+    ],
     "project.view": [
         "admin", "customerservices"
     ],
