@@ -1,44 +1,44 @@
- export default {
+export default {
     "customer.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "customer.new": [
-        "admin", "customerservices"
+        "admin"
     ],
     "customer.edit": [
-        "admin", "customerservices"
+        "admin"
     ],
     "project.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "unit.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "company.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "land.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "developer.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "LegalReservations.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "EngineeringReservations.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "ValuationRealEstate.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "SearchByTransactions.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "RealEstateUnitsScreen.view": [
-        "admin", "customerservices"
+        "admin"
     ],
     "searchMenu.view": [
-        "admin", "customerservices"
+        "admin"
     ],
 };

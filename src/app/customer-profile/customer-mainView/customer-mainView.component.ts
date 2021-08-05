@@ -53,45 +53,51 @@ export class CustomerMainViewComponent implements OnInit {
     this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
     .subscribe((res) => {
       this.userRole = res;
-    });
-    this.minDate = new Date();
-    this.loadContactPerferencesOptions();
-    this.loadTimeToContactOptions();
-    this.loadNationalitiesOptions();
-    this.loadCustomerCategoryOptions();
-    this.loadCustomerTypesOptions();
-    this.loadEmiratesOptions();
-    this.loadOtherIdTypesOptions();
-    this.loadDisablilityTypesOptions();
-    this.loadOwnerNameOptions();
-    this.loadOwnerUniqueIdOptions();
-
-    this.booleanOptions = [{
-      key: 1,
-      value: { en: 'Yes', ar: 'نعم' }
-    },
-    {
-      key: 0,
-      value: { en: 'No', ar: 'لا' }
-    }]
-
-    this.genderOptions = [{
-      key: 'M',
-      value: { en: 'Male', ar: 'ذكر' }
-    },
-    {
-      key: 'F',
-      value: { en: 'Female', ar: 'أنثى' }
-    }]
-
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-      } else {
-        this.formData = { hasTrx: 0 };
+      var checkFlag =this.checkRole( 'customer.view');
+      if (! checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
       }
-    });
+      else {
+        this.minDate = new Date();
+        this.loadContactPerferencesOptions();
+        this.loadTimeToContactOptions();
+        this.loadNationalitiesOptions();
+        this.loadCustomerCategoryOptions();
+        this.loadCustomerTypesOptions();
+        this.loadEmiratesOptions();
+        this.loadOtherIdTypesOptions();
+        this.loadDisablilityTypesOptions();
+        this.loadOwnerNameOptions();
+        this.loadOwnerUniqueIdOptions();
+        this.booleanOptions = [{
+          key: 1,
+          value: { en: 'Yes', ar: 'نعم' }
+        },
+        {
+          key: 0,
+          value: { en: 'No', ar: 'لا' }
+        }]
+    
+        this.genderOptions = [{
+          key: 'M',
+          value: { en: 'Male', ar: 'ذكر' }
+        },
+        {
+          key: 'F',
+          value: { en: 'Female', ar: 'أنثى' }
+        }]
+        this.profile$ = this.route.data.pipe(pluck('profile'));
+        this.profile$.subscribe((profile: any) => {
+          if (profile && profile.id) {
+            this.formData = profile as any;
+          } else {
+            this.formData = { hasTrx: 0 };
+          }
+        });
+      }
+    
+    });   
   }
   checkRole( permission: string) {
     var pList = permissionList[permission];

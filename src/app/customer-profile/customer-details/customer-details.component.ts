@@ -8,7 +8,7 @@ import { catchError, distinctUntilChanged, pluck, switchMap, tap } from 'rxjs/op
 import { environment } from '../../../environments/environment';
 import * as _ from 'lodash';
 import { LookupsService } from '../../shared/lookups.service';
-
+import permissionList from '../../permission'; 
 @Component({
   selector: 'app-customer-details',
   templateUrl: './customer-details.component.html',
@@ -37,6 +37,8 @@ export class CustomerDetailsComponent implements OnInit {
   ownerNameOptions: Observable<any>;
   ownerNameOptionsLoading = false;
   ownerUniqueIdOptionsLoading = false;
+  userRole:any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,45 +50,65 @@ export class CustomerDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadContactPerferencesOptions();
-    this.loadTimeToContactOptions();
-    this.loadNationalitiesOptions();
-    this.loadCustomerCategoryOptions();
-    this.loadCustomerTypesOptions();
-    this.loadEmiratesOptions();
-    this.loadOtherIdTypesOptions();
-    this.loadDisablilityTypesOptions();
-    this.loadOwnerNameOptions();
-    this.loadOwnerUniqueIdOptions();
-
-    this.booleanOptions = [{
-      key: 1,
-      value: { en: 'Yes', ar: 'نعم' }
-    },
-    {
-      key: 0,
-      value: { en: 'No', ar: 'لا' }
-    }]
-
-    this.genderOptions = [{
-      key: 'M',
-      value: { en: 'Male', ar: 'ذكر' }
-    },
-    {
-      key: 'F',
-      value: { en: 'Female', ar: 'أنثى' }
-    }]
-
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = this.prepareProfile(profile) as any;
-      } else {
-        this.formData = { hasTrx: 0 };
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      var checkFlag =this.checkRole( 'customer.edit');
+      if (! checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
+      }
+      else{
+        this.minDate = new Date();
+        this.loadContactPerferencesOptions();
+        this.loadTimeToContactOptions();
+        this.loadNationalitiesOptions();
+        this.loadCustomerCategoryOptions();
+        this.loadCustomerTypesOptions();
+        this.loadEmiratesOptions();
+        this.loadOtherIdTypesOptions();
+        this.loadDisablilityTypesOptions();
+        this.loadOwnerNameOptions();
+        this.loadOwnerUniqueIdOptions();
+        this.booleanOptions = [{
+          key: 1,
+          value: { en: 'Yes', ar: 'نعم' }
+        },
+        {
+          key: 0,
+          value: { en: 'No', ar: 'لا' }
+        }]
+    
+        this.genderOptions = [{
+          key: 'M',
+          value: { en: 'Male', ar: 'ذكر' }
+        },
+        {
+          key: 'F',
+          value: { en: 'Female', ar: 'أنثى' }
+        }]
+        this.profile$ = this.route.data.pipe(pluck('profile'));
+        this.profile$.subscribe((profile: any) => {
+          if (profile && profile.id) {
+            this.formData = this.prepareProfile(profile) as any;
+          } else {
+            this.formData = { hasTrx: 0 };
+          }
+        });
       }
     });
+
+  
+
+   
   }
+  checkRole( permission: string) {
+    var pList = permissionList[permission];
+    var d =Object.values(this.userRole)[0].toString().toLowerCase()
+    if ( ! pList) return false;
+    else if(pList.includes(d)) return true;
+     else return false;
+}
   prepareEstablishmentContractFileField() {
     return {
       fieldID: "profileImage",

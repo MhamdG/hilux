@@ -76,7 +76,6 @@ export class HeaderComponent implements OnInit {
     }
 
     getRole(data: any, permission: string) {
-       
       return Object.keys(data).includes(permission);
     }
     checkRole( permission: string) {
