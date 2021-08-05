@@ -5,7 +5,7 @@ import {ToastrService} from 'ngx-toastr';
 import {environment} from '../../../../environments/environment';
 import {find, tap} from 'rxjs/operators';
 import {FieldsService} from '../../fields.service';
-
+ import permissionList from '../../../permission';
 
 @Component({
     selector: 'app-header',
@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
     query: string = '';
     roles$: object;
     userRole:any;
-
+    
 
     constructor(
         private authenticationService: AuthenticationService,
@@ -76,7 +76,18 @@ export class HeaderComponent implements OnInit {
     }
 
     getRole(data: any, permission: string) {
+        // console.log('user role');
+        // console.log(data);
+        // console.log('permission');
+        // console.log(permission);
       return Object.keys(data).includes(permission);
+    }
+    checkRole( permission: string) {
+        var pList = permissionList[permission];
+        var d =Object.values(this.userRole)[0].toString().toLowerCase()
+        if ( ! pList) return false;
+        else if(pList.includes(d)) return true;
+         else return false;
     }
 
     onSearchSubmit(searchData: any) {

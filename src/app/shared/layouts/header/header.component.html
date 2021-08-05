@@ -83,7 +83,9 @@
                     class="dropdown-menu"
                     aria-labelledby="navbarDropdown"
             >
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')">
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')"> -->
+                    <ng-container *ngIf="checkRole('customer.view')">
+
                     <a
                             class="dropdown-item"
                             href="/customer/view"
@@ -93,8 +95,8 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
-
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')"> -->
+                    <ng-container *ngIf="checkRole('project.view')">
                 <a
                         class="dropdown-item"
                         href="/project/view"
@@ -105,8 +107,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')"> -->
+                    <ng-container *ngIf="checkRole('unit.view')">
+                    <a
                         class="dropdown-item"
                         href="/unit/view"
                         i18n="@@headerUnit"
@@ -116,8 +119,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')"> -->
+                    <ng-container *ngIf="checkRole('company.view')">
+                    <a
                         class="dropdown-item"
                         href="/company/view"
                         i18n="@@headerCompany"
@@ -127,8 +131,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')"> -->
+                    <ng-container *ngIf="checkRole('land.view')">
+                    <a
                         class="dropdown-item"
                         href="/land/view"
                         i18n="@@headerLand"
@@ -138,8 +143,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')"> -->
+                    <ng-container *ngIf="checkRole('developer.view')">
+                    <a
                         class="dropdown-item"
                         href="/developer/new"
                         i18n="@@headerDeveloper"
@@ -149,8 +155,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')"> -->
+                    <ng-container *ngIf="checkRole('LegalReservations.view')">
+                    <a
                         class="dropdown-item"
                         href="/legal_blocks"
                 >
@@ -160,7 +167,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')"> -->
+                    <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')"> -->
+                        <ng-container *ngIf="checkRole('EngineeringReservations.view')">
 
                 
                 <a
@@ -174,8 +183,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'ADMIN')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'ADMIN')"> -->
+                    <ng-container *ngIf="checkRole('ValuationRealEstate.view')">
+                    <a
                         class="dropdown-item"
                         href="/units_valuation"
 
@@ -186,8 +196,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')"> -->
+                    <ng-container *ngIf="checkRole('SearchByTransactions.view')">
+                    <a
                         class="dropdown-item"
                         href="/application_search"
 
@@ -198,8 +209,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')"> -->
+                    <ng-container *ngIf="checkRole('RealEstateUnitsScreen.view')">
+                    <a
                         class="dropdown-item"
                         href="/units_excel_upload"
 
@@ -210,8 +222,9 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')">
-                <a
+                <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')"> -->
+                    <ng-container *ngIf="checkRole('searchMenu.view')">
+                    <a
                         class="dropdown-item"
                         href="/search"
                         i18n="@@headerSearch"
