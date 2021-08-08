@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import * as _ from 'lodash';
 import { LookupsService } from '../shared/lookups.service';
+import permissionList from '../permission';
 
 interface SearchParams {
   query?: string;
@@ -20,7 +21,7 @@ interface SearchParams {
   templateUrl: './search-page.component.html',
   styleUrls: ['./search-page.component.css']
 })
-export class SearchPageComponent implements OnInit {
+export class SearchPageComponent implements OnInit { 
   formData: any = {};
   addBlockData: any = {};
   formErrors: any = {};
@@ -54,6 +55,7 @@ export class SearchPageComponent implements OnInit {
   userRole:any;
 
 
+
   searchby: any;
 
   constructor(
@@ -67,33 +69,51 @@ export class SearchPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.toggleControl(false);
-    this.loadUnitsOptions();
-    this.loadOwnersOptions();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadLandsoptions();
-    this.loadOldLandsoptions();
-    this.loadBlockageEntities();
-
     this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
     .subscribe((res) => {
       this.userRole = res;
-     
-    });
-
-
-    this.route.queryParams.subscribe(async (params) => {
-      if (!_.isEqual(params, {})) {
-        _.keys(params).forEach(key => {
-          this.formData[key] = params[key]
-          if (key != 'type')
-            this.searchby = key
+      var checkFlag = this.checkRole('searchMenu.view');
+      if (!checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
+      }
+      else {
+        this.toggleControl(false);
+        this.loadUnitsOptions();
+        this.loadOwnersOptions();
+        this.loadDeveloperOptions();
+        this.loadProjectsOptions();
+        this.loadLandsoptions();
+        this.loadOldLandsoptions();
+        this.loadBlockageEntities();
+    
+        this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+        .subscribe((res) => {
+          this.userRole = res;
+         
         });
-
-        await this.searchData(this.formData);
+    
+    
+        this.route.queryParams.subscribe(async (params) => {
+          if (!_.isEqual(params, {})) {
+            _.keys(params).forEach(key => {
+              this.formData[key] = params[key]
+              if (key != 'type')
+                this.searchby = key
+            });
+    
+            await this.searchData(this.formData);
+          }
+        });
       }
     });
+  };
+  checkRole(permission: string) {
+    var pList = permissionList[permission];
+    var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    if (!pList) return false;
+    else if (pList.includes(d)) return true;
+    else return false;
   }
 
   getRole(data: any, permission: string) {

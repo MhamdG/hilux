@@ -66,6 +66,6 @@ export default {
         "admin"
     ],
     "searchMenu.view": [
-        "admin"
+        "admin" 
     ],
 };
