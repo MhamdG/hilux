@@ -7,7 +7,7 @@ import { concat, Observable, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, pluck, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LookupsService } from '../../shared/lookups.service';
-
+import permissionList from '../../permission';
 @Component({
   selector: 'app-land-details',
   templateUrl: './land-details.component.html',
@@ -35,6 +35,8 @@ export class LandDetailsComponent implements OnInit {
   searchOldLandOptions: Observable<any>;
   searchOldLandIdInput$ = new Subject<string>();
   searchOldLandOptionsLoading = false;
+  userRole: any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,31 +48,49 @@ export class LandDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadSectorsOptions();
-    this.loadSectionsOptions();
-    this.loadStreetNamesOptions();
-    this.loadStreetTypesOptions();
-    this.loadMainUsageTypesOptions();
-    this.loadSubUsageTypesOptions();
-    this.loadCitiesOptions();
-    this.loadPropertyTypesOptions();
-    this.loadLandNameOptions();
-    this.loadSearchOldLandIdOptions();
-
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-        if (!this.formData.buildingDetails) {
-          this.formData.buildingDetails = {}
-        }
-        if (!this.formData.buildingFinishes) {
-          this.formData.buildingFinishes = {}
-        }
-       } else {
-        this.formData = { buildingDetails: {}, buildingFinishes: {} };
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      var checkFlag = this.checkRole('land.edit');
+      if (!checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
+      }
+      else {
+        this.loadSectorsOptions();
+        this.loadSectionsOptions();
+        this.loadStreetNamesOptions();
+        this.loadStreetTypesOptions();
+        this.loadMainUsageTypesOptions();
+        this.loadSubUsageTypesOptions();
+        this.loadCitiesOptions();
+        this.loadPropertyTypesOptions();
+        this.loadLandNameOptions();
+        this.loadSearchOldLandIdOptions();
+    
+        this.profile$ = this.route.data.pipe(pluck('profile'));
+        this.profile$.subscribe((profile: any) => {
+          if (profile && profile.id) {
+            this.formData = profile as any;
+            if (!this.formData.buildingDetails) {
+              this.formData.buildingDetails = {}
+            }
+            if (!this.formData.buildingFinishes) {
+              this.formData.buildingFinishes = {}
+            }
+           } else {
+            this.formData = { buildingDetails: {}, buildingFinishes: {} };
+          }
+        });
       }
     });
+  }
+  checkRole(permission: string) {
+    var pList = permissionList[permission];
+    var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    if (!pList) return false;
+    else if (pList.includes(d)) return true;
+    else return false;
   }
  prepareEstablishmentContractFileField() {
     return {

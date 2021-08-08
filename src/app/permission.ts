@@ -38,6 +38,12 @@ export default {
     "land.view": [
         "admin"
     ],
+    "land.new": [
+        "admin"
+    ],
+    "land.edit": [
+        "admin"
+    ],
     "developer.view": [
         "admin"
     ],
