@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 import { FieldsService } from '../shared/fields.service';
 import * as _ from 'lodash';
 import { LookupsService } from '../shared/lookups.service';
+import permissionList from '../permission';
 
 interface SearchParams {
   query?: string;
@@ -48,6 +49,8 @@ export class UnitsValuationComponent implements OnInit {
   modalProjectsSearchInput$ = new Subject<string>();
   modalProjectDataOptionsLoading = false;
   modalDeveloperDataOptionsLoading = false;
+  userRole: any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,13 +63,24 @@ export class UnitsValuationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadUnitsOptions(this.formData);
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadUnitTypesOptions();
-    this.loadModalDeveloperOptions();
-    this.loadModalProjectsOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      var checkFlag = this.checkRole('ValuationRealEstate.view');
+      if (!checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
+      }
+      else {
+        this.minDate = new Date();
+        this.loadUnitsOptions(this.formData);
+        this.loadDeveloperOptions();
+        this.loadProjectsOptions();
+        this.loadUnitTypesOptions();
+        this.loadModalDeveloperOptions();
+        this.loadModalProjectsOptions();
+      }
+    });
 
     // this.route.queryParams.subscribe(async (params) => {
     //   if (!_.isEqual(params, {})) {
@@ -75,7 +89,13 @@ export class UnitsValuationComponent implements OnInit {
     //   }
     // });
   }
-
+  checkRole(permission: string) {
+    var pList = permissionList[permission];
+    var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    if (!pList) return false;
+    else if (pList.includes(d)) return true;
+    else return false;
+  }
   searchData(formData: any) {
     let fd = new FormData();
     let preparedData = this.prepareformData(formData)

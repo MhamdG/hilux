@@ -8,6 +8,7 @@ import { FieldsService } from '../shared/fields.service';
 import { LookupsService } from '../shared/lookups.service';
 import * as _ from 'lodash';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import permissionList from '../permission';
 
 interface SearchParams {
   query?: string;
@@ -46,6 +47,8 @@ export class UnitsExcelUploadComponent implements OnInit {
   unitNumberOptions: any;
   meterTotalSoldAreaOptions: any;
   unitTypesOptions: any;
+  userRole: any;
+  roles$: object;
 
   @ViewChild('controlLabel') controlLabel: ElementRef;
   constructor(
@@ -58,11 +61,29 @@ export class UnitsExcelUploadComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadUnitsOptions();
-    this.loadRegistrationTypes();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadUnitTypesOptions()
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      var checkFlag = this.checkRole('RealEstateUnitsScreen.view');
+      if (!checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
+      }
+      else { 
+        this.loadUnitsOptions();
+        this.loadRegistrationTypes();
+        this.loadDeveloperOptions();
+        this.loadProjectsOptions();
+        this.loadUnitTypesOptions()
+      }
+    });
+  }
+  checkRole(permission: string) {
+    var pList = permissionList[permission];
+    var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    if (!pList) return false;
+    else if (pList.includes(d)) return true;
+    else return false;
   }
 
   searchData(formData: any) {
