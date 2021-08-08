@@ -8,6 +8,7 @@ import { pluck, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/op
 import * as _ from 'lodash';
 import { environment } from '../../../environments/environment';
 import { LookupsService } from '../../shared/lookups.service';
+import permissionList from '../../permission';
 
 @Component({
   selector: 'app-company-profile',
@@ -34,6 +35,8 @@ export class CompanyEditComponent implements OnInit {
   searchCompanyNameInput$ = new Subject<string>();
   searchCompanyLicenseNumberInput$ = new Subject<string>();
   searchby: any;
+  userRole: any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,23 +48,41 @@ export class CompanyEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadEmiratesOptions();
-    this.loadLicenseTypeOptions();
-    this.loadOwnerOptions();
-    this.loadCompanyTypeOptions();
-    this.loadLicenseIssuerOptions();
-    this.loadCompanyNameOptions();
-    this.loadCompanyLicenseNumberOptions();
-
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-      } else {
-        this.formData = { owners: [{}] };
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      var checkFlag = this.checkRole('company.edit');
+      if (!checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
+      }
+      else {
+        this.minDate = new Date();
+        this.loadEmiratesOptions();
+        this.loadLicenseTypeOptions();
+        this.loadOwnerOptions();
+        this.loadCompanyTypeOptions();
+        this.loadLicenseIssuerOptions();
+        this.loadCompanyNameOptions();
+        this.loadCompanyLicenseNumberOptions();
+    
+        this.profile$ = this.route.data.pipe(pluck('profile'));
+        this.profile$.subscribe((profile: any) => {
+          if (profile && profile.id) {
+            this.formData = profile as any;
+          } else {
+            this.formData = { owners: [{}] };
+          }
+        });
       }
     });
+  }
+  checkRole(permission: string) {
+    var pList = permissionList[permission];
+    var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    if (!pList) return false;
+    else if (pList.includes(d)) return true;
+    else return false;
   }
 
   saveData(formData: any) {

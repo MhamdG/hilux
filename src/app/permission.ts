@@ -29,6 +29,12 @@ export default {
     "company.view": [
         "admin"
     ],
+    "company.new": [
+        "admin"
+    ],
+    "company.edit": [
+        "admin" 
+    ],
     "land.view": [
         "admin"
     ],
