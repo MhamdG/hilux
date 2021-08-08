@@ -543,5 +543,5 @@
   </div>
 </section>
 <div class="card-footer">
-  <button type="button" (click)="editFun()" class="btn btn-primary float-left"  i18n="@@edit" >Edit</button>
+  <button *ngIf="checkRole('unit.edit')" type="button" (click)="editFun()" class="btn btn-primary float-left"  i18n="@@edit" >Edit</button>
 </div>

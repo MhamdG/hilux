@@ -8,6 +8,7 @@ import { pluck, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/op
 import * as _ from 'lodash';
 import { environment } from '../../../environments/environment';
 import { LookupsService } from '../../shared/lookups.service';
+import permissionList from '../../permission'; 
 
 @Component({
   selector: 'app-project-details',
@@ -43,6 +44,8 @@ export class ProjectDetailsComponent implements OnInit {
   searchProjectNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
   projectNameOptionsLoading =  false;
+  userRole:any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,42 +57,60 @@ export class ProjectDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadDeveloperOptions();
-    this.loadLandsoptions();
-    this.loadProjectsOptions();
-    this.loadProjectsTypesOptions();
-    this.loadProjectsRegistrationTypesOptions();
-    this.loadProjectUsageTypesOptions();
-    this.loadContractorsOptions();
-    this.loadConsultantsOptions();
-    this.loadAccountTrusteesOptions();
-    this.loadProjectStatusOptions();
-    this.loadDeveloperNameOptions();
-    this.loadProjectNameOptions();
-
-    this.isMainOptions = [{
-      key: 1,
-      value: { en: 'Master Project', ar: 'مشروع رئيسي' }
-    },
-    {
-      key: 0,
-      value: { en: 'Sub Project', ar: 'مشروع فرعي' }
-    }];
-
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe(async (profile: any) => {
-      if (profile && profile.id) {
-        await this.prepareProjectValueOptions(profile);
-        await this.prepareDeveloperValueOptions(profile);
-        await this.prepareLandValueOptions(profile);
-        this.formData = profile as any;
-      } else {
-        this.formData = { };
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      var checkFlag =this.checkRole( 'project.edit');
+      if (! checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
+      }
+      else{
+        this.minDate = new Date();
+        this.loadDeveloperOptions();
+        this.loadLandsoptions();
+        this.loadProjectsOptions();
+        this.loadProjectsTypesOptions();
+        this.loadProjectsRegistrationTypesOptions();
+        this.loadProjectUsageTypesOptions();
+        this.loadContractorsOptions();
+        this.loadConsultantsOptions();
+        this.loadAccountTrusteesOptions();
+        this.loadProjectStatusOptions();
+        this.loadDeveloperNameOptions();
+        this.loadProjectNameOptions();
+        this.isMainOptions = [{
+          key: 1,
+          value: { en: 'Master Project', ar: 'مشروع رئيسي' }
+        },
+        {
+          key: 0,
+          value: { en: 'Sub Project', ar: 'مشروع فرعي' }
+        }];
+    
+        this.profile$ = this.route.data.pipe(pluck('profile'));
+        this.profile$.subscribe(async (profile: any) => {
+          if (profile && profile.id) {
+            await this.prepareProjectValueOptions(profile);
+            await this.prepareDeveloperValueOptions(profile);
+            await this.prepareLandValueOptions(profile);
+            this.formData = profile as any;
+          } else {
+            this.formData = { };
+          }
+        });
       }
     });
+  
+   
   }
-
+  checkRole( permission: string) {
+    var pList = permissionList[permission];
+    var d =Object.values(this.userRole)[0].toString().toLowerCase()
+    if ( ! pList) return false;
+    else if(pList.includes(d)) return true;
+     else return false;
+}
   updateData(formData: any) {
     let fd = new FormData();
     fd.append('project', JSON.stringify(formData));

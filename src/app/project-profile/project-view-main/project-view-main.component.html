@@ -4,7 +4,7 @@
   <div class="container-fluid"style="width: 75%; margin-right: 20%; justify-content:center;">
     <app-alerts [errors]="formErrors"></app-alerts>
     <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
-      <button type="button"  (click)="addNewFun()"  style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;"  class="btn btn-primary"   i18n="@@addNew">+ Add New</button>
+      <button *ngIf="checkRole('project.new')" type="button"  (click)="addNewFun()"  style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;"  class="btn btn-primary"   i18n="@@addNew">+ Add New</button>
       </div> 
       <br/> <br /><br />
     <form class="form-horizontal" (ngSubmit)="searchResourceData(searchData)" #sf="ngForm" enctype='multipart/form-data' novalidate>

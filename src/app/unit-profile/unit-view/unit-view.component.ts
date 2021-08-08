@@ -8,6 +8,7 @@ import { pluck, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/op
 import * as _ from 'lodash';
 import { environment } from '../../../environments/environment';
 import { LookupsService } from '../../shared/lookups.service';
+import permissionList from '../../permission';
 
 @Component({
   selector: 'app-unit-details',
@@ -24,7 +25,7 @@ export class UnitViewComponent implements OnInit {
   landsoptions: any;
   unitsTypesOptions: any;
   unitsUsageTypesOptions: any;
-  minDate:any;
+  minDate: any;
   developerDataOptionsLoading = false;
   developerSearchInput$ = new Subject<string>();
   projectsSearchInput$ = new Subject<string>();
@@ -37,7 +38,9 @@ export class UnitViewComponent implements OnInit {
   searchDeveloperNameInput$ = new Subject<string>();
   searchProjectNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
-  projectNameOptionsLoading =  false;
+  projectNameOptionsLoading = false;
+  userRole: any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,30 +52,48 @@ export class UnitViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadLandsoptions();
-    this.loadUnitsTypesOptions();
-    this.loadunitsUsageTypesOptions();
-    this.loadDeveloperNameOptions();
-    this.loadProjectNameOptions();
-    this.loadUnitNumberOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        var checkFlag = this.checkRole('unit.view');
+        if (!checkFlag) {
+          alert('sorry you don not have permission to see this page');
+          this.router.navigate(['/']);
+        }
+        else {
+          this.minDate = new Date();
+          this.loadDeveloperOptions();
+          this.loadProjectsOptions();
+          this.loadLandsoptions();
+          this.loadUnitsTypesOptions();
+          this.loadunitsUsageTypesOptions();
+          this.loadDeveloperNameOptions();
+          this.loadProjectNameOptions();
+          this.loadUnitNumberOptions();
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe(async (profile: any) => {
-      if (profile && profile.id) {
-        await this.prepareProjectValueOptions(profile);
-        await this.prepareDeveloperValueOptions(profile);
-        await this.prepareLandValueOptions(profile);
-        this.formData = profile as any;
-      } else {
-        this.formData = { };
-      }
-    });
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe(async (profile: any) => {
+            if (profile && profile.id) {
+              await this.prepareProjectValueOptions(profile);
+              await this.prepareDeveloperValueOptions(profile);
+              await this.prepareLandValueOptions(profile);
+              this.formData = profile as any;
+            } else {
+              this.formData = {};
+            }
+          });
+        }
+      });
   }
-  editFun(){
-     this.router.navigate(['unit/profile/', this.formData.id, 'edit']);
+  checkRole(permission: string) {
+    var pList = permissionList[permission];
+    var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    if (!pList) return false;
+    else if (pList.includes(d)) return true;
+    else return false;
+  }
+  editFun() {
+    this.router.navigate(['unit/profile/', this.formData.id, 'edit']);
   }
   updateData(formData: any) {
     let fd = new FormData();
@@ -85,23 +106,24 @@ export class UnitViewComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   loadDeveloperOptions() {
     this.developerOptions = concat(
       of([]), // default items
       this.developerSearchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.developerDataOptionsLoading = true),
-          switchMap(term => {
-            return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/developers`, { term } ).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.developerDataOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.developerDataOptionsLoading = true),
+        switchMap(term => {
+          return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/developers`, { term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.developerDataOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -110,13 +132,14 @@ export class UnitViewComponent implements OnInit {
     this.projectsOptions = concat(
       of([]), // default items
       this.projectsSearchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.projectDataOptionsLoading = true),
-          switchMap(term => {
-            return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/projects`, { term, developerId: this.formData.developerId } ).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.projectDataOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.projectDataOptionsLoading = true),
+        switchMap(term => {
+          return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/projects`, { term, developerId: this.formData.developerId }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.projectDataOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -125,29 +148,30 @@ export class UnitViewComponent implements OnInit {
     this.landsoptions = concat(
       of([]), // default items
       this.landSearchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.landDataOptionsLoading = true),
-          switchMap(term => {
-            return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/lands`, { term } ).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.landDataOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.landDataOptionsLoading = true),
+        switchMap(term => {
+          return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/lands`, { term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.landDataOptionsLoading = false)
+          )
+        })
       )
     );
   }
 
   loadUnitsTypesOptions() {
     this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/unitsTypes`)
-    .subscribe((data) => {
-      this.unitsTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.unitsTypesOptions = data;
+      })
   }
 
   loadunitsUsageTypesOptions() {
     this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/unitsUsageTypes`)
-    .subscribe((data) => {
-      this.unitsUsageTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.unitsUsageTypesOptions = data;
+      })
   }
 
   getAttachments() {
@@ -223,29 +247,29 @@ export class UnitViewComponent implements OnInit {
   }
 
   prepareProjectValueOptions(profile: any) {
-    if(!!profile.projectId) {
+    if (!!profile.projectId) {
       this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/projects`, { id: profile.projectId })
-      .subscribe((option)=> {
-        this.projectsSearchInput$.next(option.value && option.value.ar);
-      })
+        .subscribe((option) => {
+          this.projectsSearchInput$.next(option.value && option.value.ar);
+        })
     }
   }
 
   prepareDeveloperValueOptions(profile: any) {
-    if(!!profile.developerId) {
+    if (!!profile.developerId) {
       this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/developers`, { id: profile.developerId })
-      .subscribe((option)=> {
-        this.developerSearchInput$.next(option.value && option.value.ar);
-      })
+        .subscribe((option) => {
+          this.developerSearchInput$.next(option.value && option.value.ar);
+        })
     }
   }
 
   prepareLandValueOptions(profile: any) {
-    if(!!profile.landId) {
+    if (!!profile.landId) {
       this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/lands`, { id: profile.landId })
-      .subscribe((option)=> {
-        this.landSearchInput$.next(option.value && option.value.ar);
-      })
+        .subscribe((option) => {
+          this.landSearchInput$.next(option.value && option.value.ar);
+        })
     }
   }
 
@@ -259,13 +283,14 @@ export class UnitViewComponent implements OnInit {
     this.developerNameOptions = concat(
       of([]), // default items
       this.searchDeveloperNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.developerNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadDevelopers({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.developerNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.developerNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadDevelopers({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.developerNameOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -274,13 +299,14 @@ export class UnitViewComponent implements OnInit {
     this.projectNameOptions = concat(
       of([]), // default items
       this.searchProjectNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.projectNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadProjects({ term, developerId: this.searchData.searchDeveloperId }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.projectNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.projectNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadProjects({ term, developerId: this.searchData.searchDeveloperId }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.projectNameOptionsLoading = false)
+          )
+        })
       )
     );
   }

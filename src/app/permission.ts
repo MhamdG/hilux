@@ -11,7 +11,19 @@ export default {
     "project.view": [
         "admin"
     ],
+    "project.new": [
+        "admin"
+    ],
+    "project.edit": [
+        "admin"
+    ],
     "unit.view": [
+        "admin"
+    ],
+    "unit.new": [
+        "admin"
+    ],
+    "unit.edit": [
         "admin"
     ],
     "company.view": [
