@@ -47,6 +47,9 @@ export default {
     "developer.view": [
         "admin"
     ],
+    "developer.edit": [
+        "admin"
+    ],
     "LegalReservations.view": [
         "admin"
     ],

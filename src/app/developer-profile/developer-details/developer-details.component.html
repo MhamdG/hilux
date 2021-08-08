@@ -511,7 +511,7 @@
 
         </div>
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid" i18n="@@formSubmitLabel">Submit</button>
+          <button *ngIf="checkRole('developer.edit')" type="submit" class="btn btn-primary float-left" [disabled]="f.invalid" i18n="@@formSubmitLabel">Submit</button>
         </div>
       </form>
     </div>

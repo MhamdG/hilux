@@ -7,6 +7,7 @@ import { FieldsService } from '../../shared/fields.service';
 import { pluck, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LookupsService } from 'src/app/shared/lookups.service';
+import permissionList from '../../permission';
 
 @Component({
   selector: 'app-developer-details',
@@ -38,6 +39,8 @@ export class DeveloperDetailsComponent implements OnInit {
   searchDeveloperNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
   searchCompanyBy: any;
+  userRole: any;
+  roles$: object;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,34 +52,52 @@ export class DeveloperDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadEmiratesOptions();
-    this.loadLicenseTypeOptions();
-    this.loadOwnerOptions();
-    this.loadCompanyTypeOptions();
-    this.loadLicenseIssuerOptions();
-    this.loadCompanyOptions();
-    this.loadCompanyOptionsByLicenseNumber();
-    this.loadDeveloperNameOptions();
-
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-        this.getCompanyProfile(profile.companyId)
-      } else {
-        this.formData = { owners: [{}] };
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      var checkFlag = this.checkRole('developer.view');
+      if (!checkFlag) {
+        alert('sorry you don not have permission to see this page');
+        this.router.navigate(['/']);
+      }
+      else {
+        this.minDate = new Date();
+        this.loadEmiratesOptions();
+        this.loadLicenseTypeOptions();
+        this.loadOwnerOptions();
+        this.loadCompanyTypeOptions();
+        this.loadLicenseIssuerOptions();
+        this.loadCompanyOptions();
+        this.loadCompanyOptionsByLicenseNumber();
+        this.loadDeveloperNameOptions();
+    
+        this.profile$ = this.route.data.pipe(pluck('profile'));
+        this.profile$.subscribe((profile: any) => {
+          if (profile && profile.id) {
+            this.formData = profile as any;
+            this.getCompanyProfile(profile.companyId)
+          } else {
+            this.formData = { owners: [{}] };
+          }
+        });
+    
+        this.developerTypeOptions = [{
+          key: "1",
+          value: { en: 'Master Project', ar: 'مشروع رئيسي' }
+        },
+        {
+          key: "0",
+          value: { en: 'Sub Project', ar: 'مشروع فرعي' }
+        }];
       }
     });
-
-    this.developerTypeOptions = [{
-      key: "1",
-      value: { en: 'Master Project', ar: 'مشروع رئيسي' }
-    },
-    {
-      key: "0",
-      value: { en: 'Sub Project', ar: 'مشروع فرعي' }
-    }];
+  }
+  checkRole(permission: string) {
+    var pList = permissionList[permission];
+    var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    if (!pList) return false;
+    else if (pList.includes(d)) return true;
+    else return false;
   }
 
   updateData(formData: any) {
