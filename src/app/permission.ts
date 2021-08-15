@@ -1,71 +1,71 @@
 export default {
     "customer.view": [
-        "Admin","customerservices","Archives"
+        "admin","customerservices","archives"
     ],
     "customer.new": [
-        "Admin","customerservices","Archives"
+        "admin","customerservices","archives"
     ],
     "customer.edit": [
-        "Admin","customerservices","Archives"
+        "admin","customerservices","archives"
     ],
     "project.view": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "project.new": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "project.edit": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "unit.view": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "unit.new": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "unit.edit": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "company.view": [
-        "Admin","customerservices","Archives"
+        "admin","customerservices","archives"
     ],
     "company.new": [
-        "Admin","customerservices","Archives"
+        "admin","customerservices","archives"
     ],
     "company.edit": [
-        "Admin","customerservices","Archives"
+        "admin","customerservices","archives"
     ],
     "land.view": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "land.new": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "land.edit": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "developer.view": [
-        "Admin","Legal"
+        "admin","legal"
     ],
     "developer.edit": [
-        "Admin","Legal"
+        "admin","legal"
     ],
     "LegalReservations.view": [
-        "Admin","Legal"
+        "admin","legal"
     ],
     "EngineeringReservations.view": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "ValuationRealEstate.view": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "SearchByTransactions.view": [
-        "Admin","customerservices","Archives"
+        "admin","customerservices","archives"
     ],
     "RealEstateUnitsScreen.view": [
-        "Admin","Engineering"
+        "admin","engineering"
     ],
     "searchMenu.view": [
-        "Admin","customerservices","Archives"
+        "admin","customerservices","archives","engineering","legal"
     ],
 };
