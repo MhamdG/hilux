@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../authentication.service';
-import {Router, ActivatedRoute} from '@angular/router';
-import {ToastrService} from 'ngx-toastr';
-import {environment} from '../../../../environments/environment';
-import {find, tap} from 'rxjs/operators';
-import {FieldsService} from '../../fields.service';
- import permissionList from '../../../permission';
+import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../authentication.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../../environments/environment';
+import { find, tap } from 'rxjs/operators';
+import { FieldsService } from '../../fields.service';
+import permissionList from '../../../permission';
 
 @Component({
     selector: 'app-header',
@@ -15,11 +15,11 @@ import {FieldsService} from '../../fields.service';
 export class HeaderComponent implements OnInit {
 
     userloggedIn: boolean = false;
-    searchData: any = {query: ''};
+    searchData: any = { query: '' };
     query: string = '';
     roles$: object;
-    userRole:any;
-    
+    userRole: any;
+
 
     constructor(
         private authenticationService: AuthenticationService,
@@ -30,15 +30,16 @@ export class HeaderComponent implements OnInit {
     ) {
     }
 
+
     ngOnInit(): void {
         this.authenticationService.isLoggedIn().subscribe((data) => {
             this.userloggedIn = data;
             this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
-            .subscribe((res) => {
-              this.userRole = res;
-            });
+                .subscribe((res) => {
+                    this.userRole = res;
+                });
         });
-      
+
 
 
         // this.router.events.subscribe((url: any) => {
@@ -76,15 +77,38 @@ export class HeaderComponent implements OnInit {
     }
 
     getRole(data: any, permission: string) {
-      return Object.keys(data).includes(permission);
+        return Object.keys(data).includes(permission);
     }
-    checkRole( permission: string) {
+
+    checkRole(permission: string) {
         var pList = permissionList[permission];
-        var d =Object.values(this.userRole)[0].toString().toLowerCase()
-        if ( ! pList) return false;
-        else if(pList.includes(d)) return true;
-         else return false;
+        if (!pList) return false;
+        else {
+            var objSize = 0;
+            console.log(this.userRole);
+            for (const [key, value] of Object.entries(this.userRole)) {
+                console.log(`${key}: ${value}`);
+                // if (this.userRole.hasOwnProperty(key)) {
+                objSize++;
+                if (pList.includes(value.toString().toLowerCase())) {
+                    return true;
+                }
+                //}
+                // else return false;
+                if ((objSize) == Object.keys(this.userRole).length) return false;
+
+            }
+        }
+
+
+
+        // var pList = permissionList[permission];
+        // var d = Object.values(this.userRole)[0].toString().toLowerCase()
+        // if (!pList) return false;
+        // else if (pList.includes(d)) return true;
+        // else return false;
     }
+
 
     onSearchSubmit(searchData: any) {
         this.query = searchData.query || '';

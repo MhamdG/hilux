@@ -102,13 +102,34 @@ export class ProjectProfileComponent implements OnInit {
 
   
   }
-  checkRole( permission: string) {
+  checkRole (permission: string) {
     var pList = permissionList[permission];
-    var d =Object.values(this.userRole)[0].toString().toLowerCase()
-    if ( ! pList) return false;
-    else if(pList.includes(d)) return true;
-     else return false;
-}
+    if (!pList) return false;
+    else{
+      var objSize = 0;
+      console.log(this.userRole);
+      for (const [key, value] of Object.entries(this.userRole)) {
+        console.log(`${key}: ${value}`);
+        // if (this.userRole.hasOwnProperty(key)) {
+          objSize++;
+          if (pList.includes(value.toString().toLowerCase())) {
+            return true;
+          }
+        //}
+       // else return false;
+        if ((objSize) == Object.keys(this.userRole).length) return false;
+        
+      } 
+    }
+
+
+
+    // var pList = permissionList[permission];
+    // var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    // if (!pList) return false;
+    // else if (pList.includes(d)) return true;
+    // else return false;
+  }
 
   saveData(formData: any) {
     let fd = new FormData();

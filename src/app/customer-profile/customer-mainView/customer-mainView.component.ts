@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, distinctUntilChanged, pluck, switchMap, tap } from 'rxjs/operators';
 import { FieldsService } from '../../shared/fields.service';
 import { LookupsService } from '../../shared/lookups.service';
-import permissionList from '../../permission'; 
+import permissionList from '../../permission';
 
 @Component({
   selector: 'app-customer-profile',
@@ -29,7 +29,7 @@ export class CustomerMainViewComponent implements OnInit {
   disabilityTypesOptions: any;
   booleanOptions: any;
   genderOptions: any;
-  minDate:any;
+  minDate: any;
   searchby: any;
   searchOwnerNameInput$ = new Subject<string>();
   searchOwnerUniqueIdInput$ = new Subject<string>();
@@ -37,7 +37,7 @@ export class CustomerMainViewComponent implements OnInit {
   ownerNameOptions: Observable<any>;
   ownerNameOptionsLoading = false;
   ownerUniqueIdOptionsLoading = false;
-  userRole:any;
+  userRole: any;
   roles$: object;
 
   constructor(
@@ -51,136 +51,158 @@ export class CustomerMainViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
-    .subscribe((res) => {
-      this.userRole = res;
-      var checkFlag =this.checkRole( 'customer.view');
-      if (! checkFlag) {
-        alert('sorry you don not have permission to see this page');
-        this.router.navigate(['/']);
-      }
-      else {
-        this.minDate = new Date();
-        this.loadContactPerferencesOptions();
-        this.loadTimeToContactOptions();
-        this.loadNationalitiesOptions();
-        this.loadCustomerCategoryOptions();
-        this.loadCustomerTypesOptions();
-        this.loadEmiratesOptions();
-        this.loadOtherIdTypesOptions();
-        this.loadDisablilityTypesOptions();
-        this.loadOwnerNameOptions();
-        this.loadOwnerUniqueIdOptions();
-        this.booleanOptions = [{
-          key: 1,
-          value: { en: 'Yes', ar: 'نعم' }
-        },
-        {
-          key: 0,
-          value: { en: 'No', ar: 'لا' }
-        }]
-    
-        this.genderOptions = [{
-          key: 'M',
-          value: { en: 'Male', ar: 'ذكر' }
-        },
-        {
-          key: 'F',
-          value: { en: 'Female', ar: 'أنثى' }
-        }]
-        this.profile$ = this.route.data.pipe(pluck('profile'));
-        this.profile$.subscribe((profile: any) => {
-          if (profile && profile.id) {
-            this.formData = profile as any;
-          } else {
-            this.formData = { hasTrx: 0 };
-          }
-        });
-      }
-    
-    });   
+      .subscribe((res) => {
+        this.userRole =res;
+        var checkFlag = this.checkRole('customer.view');
+        if (!checkFlag) {
+          alert('sorry you don not have permission to see this page');
+         // this.router.navigate(['/']);
+        }
+        else {
+          this.minDate = new Date();
+          this.loadContactPerferencesOptions();
+          this.loadTimeToContactOptions();
+          this.loadNationalitiesOptions();
+          this.loadCustomerCategoryOptions();
+          this.loadCustomerTypesOptions();
+          this.loadEmiratesOptions();
+          this.loadOtherIdTypesOptions();
+          this.loadDisablilityTypesOptions();
+          this.loadOwnerNameOptions();
+          this.loadOwnerUniqueIdOptions();
+          this.booleanOptions = [{
+            key: 1,
+            value: { en: 'Yes', ar: 'نعم' }
+          },
+          {
+            key: 0,
+            value: { en: 'No', ar: 'لا' }
+          }]
+
+          this.genderOptions = [{
+            key: 'M',
+            value: { en: 'Male', ar: 'ذكر' }
+          },
+          {
+            key: 'F',
+            value: { en: 'Female', ar: 'أنثى' }
+          }]
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = profile as any;
+            } else {
+              this.formData = { hasTrx: 0 };
+            }
+          });
+        }
+
+      });
   }
-  checkRole( permission: string) {
+  
+  checkRole (permission: string) {
     var pList = permissionList[permission];
-    var d =Object.values(this.userRole)[0].toString().toLowerCase()
-    if ( ! pList) return false;
-    else if(pList.includes(d)) return true;
-     else return false;
-}
+    if (!pList) return false;
+    else{
+      var objSize = 0;
+      console.log(this.userRole);
+      for (const [key, value] of Object.entries(this.userRole)) {
+        console.log(`${key}: ${value}`);
+        // if (this.userRole.hasOwnProperty(key)) {
+          objSize++;
+          if (pList.includes(value.toString().toLowerCase())) {
+            return true;
+          }
+        //}
+       // else return false;
+        if ((objSize) == Object.keys(this.userRole).length) return false;
+        
+      } 
+    }
+
+
+
+    // var pList = permissionList[permission];
+    // var d = Object.values(this.userRole)[0].toString().toLowerCase()
+    // if (!pList) return false;
+    // else if (pList.includes(d)) return true;
+    // else return false;
+  }
 
   saveData(formData: any) {
     let fd = new FormData();
     fd.append('customer', JSON.stringify(formData));
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/customers/create`, fd)
       .subscribe((data: any) => {
-       if (data.status == 'success') {
-        this.toastr.success(data.message, 'Success');
-        this.toastr.success('Customer Created Successfully!.', 'Success');
-        if (data.data.id)
-          this.router.navigate(['customer/profile', data.data.id, 'edit']);
-      } else {
-        this.formErrors = data.data;
-        this.toastr.error(JSON.stringify(data.message), 'Error')
-      }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+        if (data.status == 'success') {
+          this.toastr.success(data.message, 'Success');
+          this.toastr.success('Customer Created Successfully!.', 'Success');
+          if (data.data.id)
+            this.router.navigate(['customer/profile', data.data.id, 'edit']);
+        } else {
+          this.formErrors = data.data;
+          this.toastr.error(JSON.stringify(data.message), 'Error')
+        }
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   loadContactPerferencesOptions() {
     this.lookupsService.loadContactPerferencesOptions()
-    .subscribe((data) => {
-      this.contactPerferencesOptions = data;
-    })
+      .subscribe((data) => {
+        this.contactPerferencesOptions = data;
+      })
   }
 
   loadTimeToContactOptions() {
     this.lookupsService.loadTimeToContactOptions()
-    .subscribe((data) => {
-      this.timeToContactOptions = data;
-    })
+      .subscribe((data) => {
+        this.timeToContactOptions = data;
+      })
   }
 
   loadNationalitiesOptions() {
     this.lookupsService.loadNationalitiesOptions()
-    .subscribe((data) => {
-      this.nationalitiesOptions = data;
-    })
+      .subscribe((data) => {
+        this.nationalitiesOptions = data;
+      })
   }
 
   loadCustomerCategoryOptions() {
     this.lookupsService.loadCustomerCategoryOptions()
-    .subscribe((data) => {
-      this.customerCategoryOptions = data;
-    })
+      .subscribe((data) => {
+        this.customerCategoryOptions = data;
+      })
   }
 
   loadCustomerTypesOptions() {
     this.lookupsService.loadCustomerTypesOptions()
-    .subscribe((data) => {
-      this.customerTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.customerTypesOptions = data;
+      })
   }
 
   loadEmiratesOptions() {
     this.lookupsService.loadEmiratesOptions()
-    .subscribe((data) => {
-      this.emiratesOptions = data;
-    })
+      .subscribe((data) => {
+        this.emiratesOptions = data;
+      })
   }
 
   loadOtherIdTypesOptions() {
     this.lookupsService.loadOtherIdTypesOptions()
-    .subscribe((data) => {
-      this.otherIdTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.otherIdTypesOptions = data;
+      })
   }
 
   loadDisablilityTypesOptions() {
     this.lookupsService.loadDisablilityTypesOptions()
-    .subscribe((data) => {
-      this.disabilityTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.disabilityTypesOptions = data;
+      })
   }
 
   getAttachments() {
@@ -307,17 +329,18 @@ export class CustomerMainViewComponent implements OnInit {
     this.ownerNameOptions = concat(
       of([]), // default items
       this.searchOwnerNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.ownerNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadCustomers({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.ownerNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.ownerNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadCustomers({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.ownerNameOptionsLoading = false)
+          )
+        })
       )
     );
   }
-  addNewFun(){
+  addNewFun() {
     this.router.navigate(['customer/new']);
   }
 
@@ -325,13 +348,14 @@ export class CustomerMainViewComponent implements OnInit {
     this.ownerUniqueIdOptions = concat(
       of([]), // default items
       this.searchOwnerUniqueIdInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.ownerUniqueIdOptionsLoading = true),
-          switchMap(uniqueId => {
-            return this.lookupsService.loadCustomers({ uniqueId }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.ownerUniqueIdOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.ownerUniqueIdOptionsLoading = true),
+        switchMap(uniqueId => {
+          return this.lookupsService.loadCustomers({ uniqueId }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.ownerUniqueIdOptionsLoading = false)
+          )
+        })
       )
     );
   }
