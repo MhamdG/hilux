@@ -72,7 +72,8 @@ export class SearchPageComponent implements OnInit {
     this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
     .subscribe((res) => {
       this.userRole = res;
-      var checkFlag = this.checkRole('searchMenu.view');
+      //var checkFlag = this.checkRole('searchMenu.view');
+      var checkFlag = true;
       if (!checkFlag) {
         alert('sorry you don not have permission to see this page');
         this.router.navigate(['/']);
