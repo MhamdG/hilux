@@ -260,7 +260,7 @@
                   bindLabel="value.ar"
                   bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث"
-                  #propertyTypeId="ngModel" [disabled]="true"
+                  #propertyTypeId="ngModel" [disabled]="false"
                 >
                 </ng-select>
                 <div *ngIf="propertyTypeId.invalid && (propertyTypeId.dirty || propertyTypeId.touched)" class="alert alert-danger">
@@ -390,7 +390,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@landProfileNorth">North
               </label>
               <div class="col-sm-9">
-                <input type="text" name="north" class="form-control" [(ngModel)]="formData.north" #north="ngModel" [disabled]="true">
+                <input type="text" name="north" class="form-control" [(ngModel)]="formData.north" #north="ngModel" [disabled]="false">
               </div>
             </div>
           </div>
@@ -400,7 +400,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@landProfileSouth">South
               </label>
               <div class="col-sm-9">
-                <input type="text" name="south" class="form-control" [(ngModel)]="formData.south" #south="ngModel" [disabled]="true">
+                <input type="text" name="south" class="form-control" [(ngModel)]="formData.south" #south="ngModel" [disabled]="false">
               </div>
             </div>
           </div>
@@ -412,7 +412,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@landProfileEast">East
               </label>
               <div class="col-sm-9">
-                <input type="text" name="east" class="form-control" [(ngModel)]="formData.east" #east="ngModel" [disabled]="true">
+                <input type="text" name="east" class="form-control" [(ngModel)]="formData.east" #east="ngModel" [disabled]="false">
               </div>
             </div>
           </div>
@@ -422,7 +422,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@landProfileWest">West
               </label>
               <div class="col-sm-9">
-                <input type="text" name="west" class="form-control" [(ngModel)]="formData.west" #west="ngModel" [disabled]="true">
+                <input type="text" name="west" class="form-control" [(ngModel)]="formData.west" #west="ngModel" [disabled]="false">
               </div>
             </div>
           </div>
