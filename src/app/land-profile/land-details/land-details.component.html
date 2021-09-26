@@ -93,7 +93,7 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="landId" required="true" class="form-control" [(ngModel)]="formData.landId" #landId="ngModel" numbersOnly precision="0" [disabled]="true">
+                <input type="text" name="landId" required="false" class="form-control" [(ngModel)]="formData.landId" #landId="ngModel" numbersOnly precision="0" [disabled]="true">
                 <div *ngIf="landId.invalid && (landId.dirty || landId.touched)" class="alert alert-danger">
                   <div *ngIf="landId.errors?.required">
                     Land ID can not be blank
@@ -125,7 +125,7 @@
                   class="rtl"
                   [items]="citiesOptions"
                   name="city"
-                  required="true"
+                  required="false"
                   [(ngModel)]="formData.cityId"
                   bindLabel="value.ar"
                   bindValue="key"
@@ -150,7 +150,7 @@
               <div class="col-sm-9">
                 <ng-select
                   class="rtl"
-                  required="true"
+                  required="false"
                   [items]="sectorsOptions"
                   name="sector"
                   [(ngModel)]="formData.sectorId"
@@ -177,7 +177,7 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="district" required="true" class="form-control" [(ngModel)]="formData.sectionId" #district="ngModel" [disabled]="true">
+                <input type="text" name="district" required="false" class="form-control" [(ngModel)]="formData.sectionId" #district="ngModel" [disabled]="true">
                 <div *ngIf="district.invalid && (district.dirty || district.touched)" class="alert alert-danger">
                   <div *ngIf="district.errors?.required">
                     District can not be blank
