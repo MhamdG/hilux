@@ -23,6 +23,9 @@
   </div>
 
   <div *ngIf="showErrors(field.fieldID)">
-    {{getErrors(field.fieldID)}}
+    <!-- {{getErrors(field.fieldID)}} -->
+    <label i18n="@@errorMsg1" style="color:'#fff'"> Incorrect</label> 
+    {{getErrors(field.fieldID)}} 
+      <label i18n="@@errorMsg2" style="color:'#fff'">  Check error details below</label>
   </div>    
 </div>

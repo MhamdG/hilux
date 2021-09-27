@@ -1561,6 +1561,19 @@
           <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
+       <trans-unit id="errorMsg1" datatype="html">
+        <source>
+                                                        Incorrect
+                                                    </source>
+                                                    
+        
+      </trans-unit>
+      <trans-unit id="errorMsg2" datatype="html">
+        <source>
+                                                        Check error details below
+                                                    </source>
+        
+      </trans-unit>
       <trans-unit id="customerProfileDeceased" datatype="html">
         <source>
                                                             Deceased
