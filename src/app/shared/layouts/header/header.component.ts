@@ -85,9 +85,7 @@ export class HeaderComponent implements OnInit {
         if (!pList) return false;
         else {
             var objSize = 0;
-            console.log(this.userRole);
             for (const [key, value] of Object.entries(this.userRole)) {
-                console.log(`${key}: ${value}`);
                 // if (this.userRole.hasOwnProperty(key)) {
                 objSize++;
                 if (pList.includes(value.toString().toLowerCase())) {

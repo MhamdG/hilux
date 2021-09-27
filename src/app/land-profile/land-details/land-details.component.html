@@ -70,7 +70,7 @@
     <hr/>
 
     <form class="form-horizontal" (ngSubmit)="updateData(formData)" #f="ngForm" enctype='multipart/form-data' novalidate>
-      <div class="card-body">
+      <div class="card-body"> 
 
         <div class="form-group row">
           <div class="col-sm-6">
@@ -904,7 +904,8 @@
 
       </div>
       <div class="card-footer">
-        <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid" i18n="@@formSubmitLabel">Submit</button>
+        <!-- [disabled]="f.invalid"  -->
+        <button type="submit" class="btn btn-primary float-left" i18n="@@formSubmitLabel">Submit</button>
       </div>
     </form>
   </div>
