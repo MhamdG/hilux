@@ -256,7 +256,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@unitProfileLand">Land
               </label>
               <div class="col-sm-9">
-                <ng-select
+                <!-- <ng-select
                   class="rtl"
                   required="true"
                   [items]="landsoptions | async"
@@ -267,9 +267,11 @@
                   notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
                   #land="ngModel"
                 >
-                </ng-select>
-                <div *ngIf="land.invalid && (land.dirty || land.touched)" class="alert alert-danger">
-                  <div *ngIf="land.errors?.required">
+                </ng-select> -->
+                <input type="text" maxlength="9" name="landId" required="true" class="form-control" [(ngModel)]="formData.landId" #landId="ngModel" numbersOnly precision="0"/>
+                
+                <div *ngIf="landId.invalid && (landId.dirty || landId.touched)" class="alert alert-danger">
+                  <div *ngIf="landId.errors?.required">
                     Land can not be blank
                   </div>
                 </div>
