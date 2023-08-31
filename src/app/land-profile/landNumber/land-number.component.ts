@@ -35,6 +35,8 @@ export class LandnumberComponent implements OnInit {
   searchOldLandOptions: Observable<any>;
   searchOldLandIdInput$ = new Subject<string>();
   searchOldLandOptionsLoading = false;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,31 +48,40 @@ export class LandnumberComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadSectorsOptions();
-    this.loadSectionsOptions();
-    this.loadStreetNamesOptions();
-    this.loadStreetTypesOptions();
-    this.loadMainUsageTypesOptions();
-    this.loadSubUsageTypesOptions();
-    this.loadCitiesOptions();
-    this.loadPropertyTypesOptions();
-    this.loadLandNameOptions();
-    this.loadSearchOldLandIdOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Engineering")) {
+          this.router.navigate(['/']);
+        } else {
+          this.loadSectorsOptions();
+          this.loadSectionsOptions();
+          this.loadStreetNamesOptions();
+          this.loadStreetTypesOptions();
+          this.loadMainUsageTypesOptions();
+          this.loadSubUsageTypesOptions();
+          this.loadCitiesOptions();
+          this.loadPropertyTypesOptions();
+          this.loadLandNameOptions();
+          this.loadSearchOldLandIdOptions();
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-        if (!this.formData.buildingDetails) {
-          this.formData.buildingDetails = {}
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = profile as any;
+              if (!this.formData.buildingDetails) {
+                this.formData.buildingDetails = {}
+              }
+              if (!this.formData.buildingFinishes) {
+                this.formData.buildingFinishes = {}
+              }
+            } else {
+              this.formData = { buildingDetails: {}, buildingFinishes: {} };
+            }
+          });
         }
-        if (!this.formData.buildingFinishes) {
-          this.formData.buildingFinishes = {}
-        }
-      } else {
-        this.formData = { buildingDetails: {}, buildingFinishes: {} };
-      }
-    });
+      });
   }
   prepareEstablishmentContractFileField() {
     return {
@@ -131,10 +142,10 @@ export class LandnumberComponent implements OnInit {
           if (data.status == 'success') {
             this.toastr.success(data.message, 'Success');
             this.router.navigate(['land/profile/', formData.id, 'view'])
-            .then(() => {
-              window.location.reload();
-            });
-          
+              .then(() => {
+                window.location.reload();
+              });
+
           } else {
             console.log("error data");
             this.formErrors = data.data;

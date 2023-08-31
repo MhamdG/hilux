@@ -35,6 +35,8 @@ export class LandProfileComponent implements OnInit {
   searchOldLandOptions: Observable<any>;
   searchOldLandIdInput$ = new Subject<string>();
   searchOldLandOptionsLoading = false;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,23 +48,32 @@ export class LandProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadSectorsOptions();
-    this.loadSectionsOptions();
-    this.loadStreetNamesOptions();
-    this.loadStreetTypesOptions();
-    this.loadMainUsageTypesOptions();
-    this.loadSubUsageTypesOptions();
-    this.loadCitiesOptions();
-    this.loadPropertyTypesOptions();
-    this.loadLandNameOptions();
-    this.loadSearchOldLandIdOptions();
-    
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      console.log(this.userRole);
+      if ( ! Object.keys(this.userRole).includes("Admin") && ! Object.keys(this.userRole).includes("Engineering")) {
+        this.router.navigate(['/']);
       } else {
-        this.formData = { buildingDetails: {}, buildingFinishes: {} };
+        this.loadSectorsOptions();
+        this.loadSectionsOptions();
+        this.loadStreetNamesOptions();
+        this.loadStreetTypesOptions();
+        this.loadMainUsageTypesOptions();
+        this.loadSubUsageTypesOptions();
+        this.loadCitiesOptions();
+        this.loadPropertyTypesOptions();
+        this.loadLandNameOptions();
+        this.loadSearchOldLandIdOptions();
+        
+        this.profile$ = this.route.data.pipe(pluck('profile'));
+        this.profile$.subscribe((profile: any) => {
+          if (profile && profile.id) {
+            this.formData = profile as any;
+          } else {
+            this.formData = { buildingDetails: {}, buildingFinishes: {} };
+          }
+        });
       }
     });
   }

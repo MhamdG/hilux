@@ -46,6 +46,9 @@ export class UnitsExcelUploadComponent implements OnInit {
   unitNumberOptions: any;
   meterTotalSoldAreaOptions: any;
   unitTypesOptions: any;
+  roles$: object;
+  userRole: any;
+
 
   @ViewChild('controlLabel') controlLabel: ElementRef;
   constructor(
@@ -58,11 +61,20 @@ export class UnitsExcelUploadComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadUnitsOptions();
-    this.loadRegistrationTypes();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadUnitTypesOptions()
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      console.log(this.userRole);
+      if ( ! Object.keys(this.userRole).includes("Admin") && ! Object.keys(this.userRole).includes("Engineering")) {
+        this.router.navigate(['/']);
+      } else {
+        this.loadUnitsOptions();
+        this.loadRegistrationTypes();
+        this.loadDeveloperOptions();
+        this.loadProjectsOptions();
+        this.loadUnitTypesOptions()
+      }
+    });
   }
 
   searchData(formData: any) {

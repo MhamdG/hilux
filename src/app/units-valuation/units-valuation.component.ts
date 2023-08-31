@@ -48,6 +48,8 @@ export class UnitsValuationComponent implements OnInit {
   modalProjectsSearchInput$ = new Subject<string>();
   modalProjectDataOptionsLoading = false;
   modalDeveloperDataOptionsLoading = false;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,13 +62,22 @@ export class UnitsValuationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadUnitsOptions(this.formData);
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadUnitTypesOptions();
-    this.loadModalDeveloperOptions();
-    this.loadModalProjectsOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      console.log(this.userRole);
+      if ( ! Object.keys(this.userRole).includes("Admin") && ! Object.keys(this.userRole).includes("ADMIN")) {
+        this.router.navigate(['/']);
+      } else {
+        this.minDate = new Date();
+        this.loadUnitsOptions(this.formData);
+        this.loadDeveloperOptions();
+        this.loadProjectsOptions();
+        this.loadUnitTypesOptions();
+        this.loadModalDeveloperOptions();
+        this.loadModalProjectsOptions();
+      }
+    });
 
     // this.route.queryParams.subscribe(async (params) => {
     //   if (!_.isEqual(params, {})) {

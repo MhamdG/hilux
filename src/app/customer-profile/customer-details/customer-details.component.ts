@@ -28,8 +28,8 @@ export class CustomerDetailsComponent implements OnInit {
   disabilityTypesOptions: any;
   booleanOptions: any;
   genderOptions: any;
-  minDate:any;
-  formErrors:any = {};
+  minDate: any;
+  formErrors: any = {};
   searchby: any;
   searchOwnerNameInput$ = new Subject<string>();
   searchOwnerUniqueIdInput$ = new Subject<string>();
@@ -37,6 +37,8 @@ export class CustomerDetailsComponent implements OnInit {
   ownerNameOptions: Observable<any>;
   ownerNameOptionsLoading = false;
   ownerUniqueIdOptionsLoading = false;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,44 +50,54 @@ export class CustomerDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadContactPerferencesOptions();
-    this.loadTimeToContactOptions();
-    this.loadNationalitiesOptions();
-    this.loadCustomerCategoryOptions();
-    this.loadCustomerTypesOptions();
-    this.loadEmiratesOptions();
-    this.loadOtherIdTypesOptions();
-    this.loadDisablilityTypesOptions();
-    this.loadOwnerNameOptions();
-    this.loadOwnerUniqueIdOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("customerservices")
+          && !Object.keys(this.userRole).includes("Archives")) {
+          this.router.navigate(['/']);
+        } else {
+          this.minDate = new Date();
+          this.loadContactPerferencesOptions();
+          this.loadTimeToContactOptions();
+          this.loadNationalitiesOptions();
+          this.loadCustomerCategoryOptions();
+          this.loadCustomerTypesOptions();
+          this.loadEmiratesOptions();
+          this.loadOtherIdTypesOptions();
+          this.loadDisablilityTypesOptions();
+          this.loadOwnerNameOptions();
+          this.loadOwnerUniqueIdOptions();
 
-    this.booleanOptions = [{
-      key: 1,
-      value: { en: 'Yes', ar: 'نعم' }
-    },
-    {
-      key: 0,
-      value: { en: 'No', ar: 'لا' }
-    }]
+          this.booleanOptions = [{
+            key: 1,
+            value: { en: 'Yes', ar: 'نعم' }
+          },
+          {
+            key: 0,
+            value: { en: 'No', ar: 'لا' }
+          }]
 
-    this.genderOptions = [{
-      key: 'M',
-      value: { en: 'Male', ar: 'ذكر' }
-    },
-    {
-      key: 'F',
-      value: { en: 'Female', ar: 'أنثى' }
-    }]
+          this.genderOptions = [{
+            key: 'M',
+            value: { en: 'Male', ar: 'ذكر' }
+          },
+          {
+            key: 'F',
+            value: { en: 'Female', ar: 'أنثى' }
+          }]
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = this.prepareProfile(profile) as any;
-      } else {
-        this.formData = { hasTrx: 0 };
-      }
-    });
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = this.prepareProfile(profile) as any;
+            } else {
+              this.formData = { hasTrx: 0 };
+            }
+          });
+        }
+      });
   }
   prepareEstablishmentContractFileField() {
     return {
@@ -113,66 +125,66 @@ export class CustomerDetailsComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   loadContactPerferencesOptions() {
     this.lookupsService.loadContactPerferencesOptions()
-    .subscribe((data) => {
-      this.contactPerferencesOptions = data;
-    })
+      .subscribe((data) => {
+        this.contactPerferencesOptions = data;
+      })
   }
 
   loadTimeToContactOptions() {
     this.lookupsService.loadTimeToContactOptions()
-    .subscribe((data) => {
-      this.timeToContactOptions = data;
-    })
+      .subscribe((data) => {
+        this.timeToContactOptions = data;
+      })
   }
 
   loadNationalitiesOptions() {
     this.lookupsService.loadNationalitiesOptions()
-    .subscribe((data) => {
-      this.nationalitiesOptions = data;
-    })
+      .subscribe((data) => {
+        this.nationalitiesOptions = data;
+      })
   }
 
   loadCustomerCategoryOptions() {
     this.lookupsService.loadCustomerCategoryOptions()
-    .subscribe((data) => {
-      this.customerCategoryOptions = data;
-    })
+      .subscribe((data) => {
+        this.customerCategoryOptions = data;
+      })
   }
 
   loadCustomerTypesOptions() {
     this.lookupsService.loadCustomerTypesOptions()
-    .subscribe((data) => {
-      this.customerTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.customerTypesOptions = data;
+      })
   }
 
   loadEmiratesOptions() {
     this.lookupsService.loadEmiratesOptions()
-    .subscribe((data) => {
-      this.emiratesOptions = data;
-    })
+      .subscribe((data) => {
+        this.emiratesOptions = data;
+      })
   }
 
   loadOtherIdTypesOptions() {
     this.lookupsService.loadOtherIdTypesOptions()
-    .subscribe((data) => {
-      this.otherIdTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.otherIdTypesOptions = data;
+      })
   }
 
   loadDisablilityTypesOptions() {
     this.lookupsService.loadDisablilityTypesOptions()
-    .subscribe((data) => {
-      this.disabilityTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.disabilityTypesOptions = data;
+      })
   }
   getAttachments() {
     return this.formData.profileImage ? [this.formData.profileImage] : [];
@@ -273,13 +285,14 @@ export class CustomerDetailsComponent implements OnInit {
     this.ownerNameOptions = concat(
       of([]), // default items
       this.searchOwnerNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.ownerNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadOwners({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.ownerNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.ownerNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadOwners({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.ownerNameOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -288,13 +301,14 @@ export class CustomerDetailsComponent implements OnInit {
     this.ownerUniqueIdOptions = concat(
       of([]), // default items
       this.searchOwnerUniqueIdInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.ownerUniqueIdOptionsLoading = true),
-          switchMap(uniqueId => {
-            return this.lookupsService.loadOwners({ uniqueId }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.ownerUniqueIdOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.ownerUniqueIdOptionsLoading = true),
+        switchMap(uniqueId => {
+          return this.lookupsService.loadOwners({ uniqueId }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.ownerUniqueIdOptionsLoading = false)
+          )
+        })
       )
     );
   }

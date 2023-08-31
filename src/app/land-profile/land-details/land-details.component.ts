@@ -36,6 +36,9 @@ export class LandDetailsComponent implements OnInit {
   searchOldLandIdInput$ = new Subject<string>();
   searchOldLandOptionsLoading = false;
   distructsTypesOptions: any;
+  roles$: object;
+  userRole: any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -47,40 +50,49 @@ export class LandDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadSectorsOptions();
-    this.loadSectionsOptions();
-    this.loadStreetNamesOptions();
-    this.loadStreetTypesOptions();
-    this.loadMainUsageTypesOptions();
-    this.loadSubUsageTypesOptions();
-    this.loadCitiesOptions();
-    this.loadPropertyTypesOptions();
-    this.loadLandNameOptions();
-    this.loadSearchOldLandIdOptions();
-    this.loadDistructsTypesOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Engineering")) {
+          this.router.navigate(['/']);
+        } else {
+          this.loadSectorsOptions();
+          this.loadSectionsOptions();
+          this.loadStreetNamesOptions();
+          this.loadStreetTypesOptions();
+          this.loadMainUsageTypesOptions();
+          this.loadSubUsageTypesOptions();
+          this.loadCitiesOptions();
+          this.loadPropertyTypesOptions();
+          this.loadLandNameOptions();
+          this.loadSearchOldLandIdOptions();
+          this.loadDistructsTypesOptions();
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-        if (!this.formData.buildingDetails) {
-          this.formData.buildingDetails = {}
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = profile as any;
+              if (!this.formData.buildingDetails) {
+                this.formData.buildingDetails = {}
+              }
+              if (!this.formData.buildingFinishes) {
+                this.formData.buildingFinishes = {}
+              }
+            } else {
+              this.formData = { buildingDetails: {}, buildingFinishes: {} };
+            }
+          });
         }
-        if (!this.formData.buildingFinishes) {
-          this.formData.buildingFinishes = {}
-        }
-       } else {
-        this.formData = { buildingDetails: {}, buildingFinishes: {} };
-      }
-    });
+      });
   }
   loadDistructsTypesOptions() {
     this.lookupsService.loadSectionsOptions()
-    .subscribe((data) => {
-      this.distructsTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.distructsTypesOptions = data;
+      })
   }
- prepareEstablishmentContractFileField() {
+  prepareEstablishmentContractFileField() {
     return {
       fieldID: "districtImage",
       fieldType: "fileupload",
@@ -130,73 +142,73 @@ export class LandDetailsComponent implements OnInit {
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
           this.router.navigate(['land/profile/' + formData.id + '/view'])
-          .then(() => {
-            window.location.reload();
-          });
+            .then(() => {
+              window.location.reload();
+            });
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   loadSectorsOptions() {
     this.lookupsService.loadSectorsOptions()
-    .subscribe((data) => {
-      this.sectorsOptions = data;
-    })
+      .subscribe((data) => {
+        this.sectorsOptions = data;
+      })
   }
 
   loadSectionsOptions() {
     this.lookupsService.loadSectionsOptions()
-    .subscribe((data) => {
-      this.sectionsOptions = data;
-    })
+      .subscribe((data) => {
+        this.sectionsOptions = data;
+      })
   }
 
   loadStreetNamesOptions() {
     this.lookupsService.loadStreetNamesOptions()
-    .subscribe((data) => {
-      this.streetsNamesOptions = data;
-    })
+      .subscribe((data) => {
+        this.streetsNamesOptions = data;
+      })
   }
 
   loadStreetTypesOptions() {
     this.lookupsService.loadStreetTypesOptions()
-    .subscribe((data) => {
-      this.streetsTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.streetsTypesOptions = data;
+      })
   }
 
   loadMainUsageTypesOptions() {
     this.lookupsService.loadMainUsageTypesOptions()
-    .subscribe((data) => {
-      this.mainUsageTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.mainUsageTypesOptions = data;
+      })
   }
 
   loadSubUsageTypesOptions() {
     this.lookupsService.loadSubUsageTypesOptions()
-    .subscribe((data) => {
-      this.subUsageTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.subUsageTypesOptions = data;
+      })
   }
 
   loadCitiesOptions() {
     this.lookupsService.loadCitiesOptions()
-    .subscribe((data) => {
-      this.citiesOptions = data;
-    })
+      .subscribe((data) => {
+        this.citiesOptions = data;
+      })
   }
 
   loadPropertyTypesOptions() {
     this.lookupsService.loadPropertyTypesOptions()
-    .subscribe((data) => {
-      this.propertyTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.propertyTypesOptions = data;
+      })
   }
 
   isShoporShoppingMall() {
@@ -271,7 +283,7 @@ export class LandDetailsComponent implements OnInit {
   getImageAttachments(data: any, filed_name: any) {
     return data[filed_name] ? [data[filed_name]] : [];
   }
-  
+
   setSearchType(field_name: any, event: any) {
     var val = event.target.value.trim();
     this.setSearchByandTypeValues(val, field_name)
@@ -326,13 +338,14 @@ export class LandDetailsComponent implements OnInit {
     this.landNameOptions = concat(
       of([]), // default items
       this.searchLandNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.landNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadLands({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.landNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.landNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadLands({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.landNameOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -341,13 +354,14 @@ export class LandDetailsComponent implements OnInit {
     this.searchOldLandOptions = concat(
       of([]), // default items
       this.searchOldLandIdInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.searchOldLandOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadOldLands({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.searchOldLandOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.searchOldLandOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadOldLands({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.searchOldLandOptionsLoading = false)
+          )
+        })
       )
     );
   }

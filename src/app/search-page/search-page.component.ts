@@ -51,7 +51,7 @@ export class SearchPageComponent implements OnInit {
   currentlyOwnedPropertiesByOwner: any = [];
   hideAttachmentsControl;
   roles$: object;
-  userRole:any;
+  userRole: any;
 
 
   searchby: any;
@@ -67,32 +67,35 @@ export class SearchPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.toggleControl(false);
-    this.loadUnitsOptions();
-    this.loadOwnersOptions();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadLandsoptions();
-    this.loadOldLandsoptions();
-    this.loadBlockageEntities();
-
     this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
-    .subscribe((res) => {
-      this.userRole = res;
-    });
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("customerservices")
+          && !Object.keys(this.userRole).includes("Archives")) {
+          this.router.navigate(['/']);
+        } else {
+          this.toggleControl(false);
+          this.loadUnitsOptions();
+          this.loadOwnersOptions();
+          this.loadDeveloperOptions();
+          this.loadProjectsOptions();
+          this.loadLandsoptions();
+          this.loadOldLandsoptions();
+          this.loadBlockageEntities();
+          this.route.queryParams.subscribe(async (params) => {
+            if (!_.isEqual(params, {})) {
+              _.keys(params).forEach(key => {
+                this.formData[key] = params[key]
+                if (key != 'type')
+                  this.searchby = key
+              });
 
-
-    this.route.queryParams.subscribe(async (params) => {
-      if (!_.isEqual(params, {})) {
-        _.keys(params).forEach(key => {
-          this.formData[key] = params[key]
-          if (key != 'type')
-            this.searchby = key
-        });
-
-        await this.searchData(this.formData);
-      }
-    });
+              await this.searchData(this.formData);
+            }
+          });
+        }
+      });
   }
 
   getRole(data: any, permission: string) {
@@ -238,8 +241,8 @@ export class SearchPageComponent implements OnInit {
     console.log(field_name + "  " + val);
     this.setSearchByandTypeValues(val, field_name)
   }
-  testEnter(field_name :string,val : any){
-    console.log(field_name + ' '  + val);
+  testEnter(field_name: string, val: any) {
+    console.log(field_name + ' ' + val);
     this.setSearchByandTypeValues(val, field_name)
   }
 
@@ -426,10 +429,10 @@ export class SearchPageComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   resetAddBlockToOwnerPropertiesModal() {
@@ -488,10 +491,10 @@ export class SearchPageComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   getActiveLandDetails(land: any) {

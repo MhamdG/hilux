@@ -51,7 +51,9 @@ export class LegalBlocksComponent implements OnInit {
   blockageEntitySearchInput$ = new Subject<string>();
   blockageEntityOptionsLoading = false;
   searchby: any;
-  hideAttachmentsControl;
+  hideAttachmentsControl:any;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,18 +66,27 @@ export class LegalBlocksComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.toggleControl(false);
-    this.loadUnitsOptions();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadLandsoptions();
-    this.loadOldLandsoptions();
-    this.loadBlockageEntities();
-
-    this.route.queryParams.subscribe(async (params) => {
-      if (!_.isEqual(params, {})) {
-        this.formData.propertyId = params.propertyId;
-        await this.searchData(this.formData);
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      console.log(this.userRole);
+      if ( ! Object.keys(this.userRole).includes("Admin") && ! Object.keys(this.userRole).includes("Legal")) {
+        this.router.navigate(['/']);
+      } else {
+        this.toggleControl(false);
+        this.loadUnitsOptions();
+        this.loadDeveloperOptions();
+        this.loadProjectsOptions();
+        this.loadLandsoptions();
+        this.loadOldLandsoptions();
+        this.loadBlockageEntities();
+    
+        this.route.queryParams.subscribe(async (params) => {
+          if (!_.isEqual(params, {})) {
+            this.formData.propertyId = params.propertyId;
+            await this.searchData(this.formData);
+          }
+        });
       }
     });
   }

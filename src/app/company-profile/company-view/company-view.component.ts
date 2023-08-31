@@ -34,9 +34,11 @@ export class CompanyViewComponent implements OnInit {
   searchCompanyNameInput$ = new Subject<string>();
   searchCompanyLicenseNumberInput$ = new Subject<string>();
   searchby: any;
-  establishmentContractDmsId:any;
+  establishmentContractDmsId: any;
   // pdfPath = require("../../../assets/images/pdf.png");
-  photoPath :any;
+  photoPath: any;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,42 +50,52 @@ export class CompanyViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadEmiratesOptions();
-    this.loadLicenseTypeOptions();
-    this.loadOwnerOptions();
-    this.loadCompanyTypeOptions();
-    this.loadLicenseIssuerOptions();
-    this.loadCompanyNameOptions();
-    this.loadCompanyLicenseNumberOptions();
-    this.establishmentContractDmsId =[];
-    // this.pdfPath = 
-    // this.photoPath = require("../../../assets/images/photo.png");
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe(async (profile: any) => {
-      if (profile && profile.id) {
-        await this.prepareOwnerValueOptions(profile);
-        this.formData = profile as any;
-        console.log(this.formData);
-        // let establishmentContractDmsId =this.formData.establishmentContractDmsId;
-        if (this.formData.establishmentContractDmsId.length > 0) {
-          for (let index = 0; index < this.formData.establishmentContractDmsId.length; index++) {
-            let parts = this.formData.establishmentContractDmsId[index].split('.');
-            let ex =parts[parts.length - 1];
-            let obj =this.formData.establishmentContractDmsId[index]
-            this.establishmentContractDmsId.push(obj);
-            if ((index + 1) == this.formData.establishmentContractDmsId.length) {
-              console.log(this.establishmentContractDmsId);
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("customerservices")
+          && !Object.keys(this.userRole).includes("Archives")) {
+          this.router.navigate(['/']);
+        } else {
+          this.minDate = new Date();
+          this.loadEmiratesOptions();
+          this.loadLicenseTypeOptions();
+          this.loadOwnerOptions();
+          this.loadCompanyTypeOptions();
+          this.loadLicenseIssuerOptions();
+          this.loadCompanyNameOptions();
+          this.loadCompanyLicenseNumberOptions();
+          this.establishmentContractDmsId = [];
+          // this.pdfPath = 
+          // this.photoPath = require("../../../assets/images/photo.png");
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe(async (profile: any) => {
+            if (profile && profile.id) {
+              await this.prepareOwnerValueOptions(profile);
+              this.formData = profile as any;
+              console.log(this.formData);
+              // let establishmentContractDmsId =this.formData.establishmentContractDmsId;
+              if (this.formData.establishmentContractDmsId.length > 0) {
+                for (let index = 0; index < this.formData.establishmentContractDmsId.length; index++) {
+                  let parts = this.formData.establishmentContractDmsId[index].split('.');
+                  let ex = parts[parts.length - 1];
+                  let obj = this.formData.establishmentContractDmsId[index]
+                  this.establishmentContractDmsId.push(obj);
+                  if ((index + 1) == this.formData.establishmentContractDmsId.length) {
+                    console.log(this.establishmentContractDmsId);
+                  }
+                }
+              }
+
+              console.log('..............');
+              console.log(this.formData);
+            } else {
+              this.formData = { owners: [{}] };
             }
-          }
+          });
         }
-        
-        console.log('..............');
-        console.log(this.formData);
-      } else {
-        this.formData = { owners: [{}] };
-      }
-    });
+      });
   }
   editFun() {
     this.router.navigate(['company/profile/', this.formData.id, 'edit']);

@@ -38,6 +38,8 @@ export class CompanyDetailsComponent implements OnInit {
   ownerIdVal: any;
   establishmentContractDmsId: any;
   flagUpload: any;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,54 +51,64 @@ export class CompanyDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadEmiratesOptions();
-    this.loadLicenseTypeOptions();
-    this.loadOwnerOptions();
-    this.loadCompanyTypeOptions();
-    this.loadLicenseIssuerOptions();
-    this.loadCompanyNameOptions();
-    this.loadCompanyLicenseNumberOptions();
-    this.ownersList = [];
-    this.establishmentContractDmsId = [];
-    this.flagUpload = true;
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe(async (profile: any) => {
-      if (profile && profile.id) {
-        await this.prepareOwnerValueOptions(profile);
-        this.formData = profile as any;
-        if (this.formData.establishmentContractDmsId.length > 0) {
-          this.flagUpload = false;
-          for (let index = 0; index < this.formData.establishmentContractDmsId.length; index++) {
-            let parts = this.formData.establishmentContractDmsId[index].split('.');
-            let ex = parts[parts.length - 1];
-            let obj = this.formData.establishmentContractDmsId[index]
-            this.establishmentContractDmsId.push(obj);
-            if ((index + 1) == this.formData.establishmentContractDmsId.length) {
-              console.log(this.establishmentContractDmsId);
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("customerservices")
+          && !Object.keys(this.userRole).includes("Archives")) {
+          this.router.navigate(['/']);
+        } else {
+          this.minDate = new Date();
+          this.loadEmiratesOptions();
+          this.loadLicenseTypeOptions();
+          this.loadOwnerOptions();
+          this.loadCompanyTypeOptions();
+          this.loadLicenseIssuerOptions();
+          this.loadCompanyNameOptions();
+          this.loadCompanyLicenseNumberOptions();
+          this.ownersList = [];
+          this.establishmentContractDmsId = [];
+          this.flagUpload = true;
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe(async (profile: any) => {
+            if (profile && profile.id) {
+              await this.prepareOwnerValueOptions(profile);
+              this.formData = profile as any;
+              if (this.formData.establishmentContractDmsId.length > 0) {
+                this.flagUpload = false;
+                for (let index = 0; index < this.formData.establishmentContractDmsId.length; index++) {
+                  let parts = this.formData.establishmentContractDmsId[index].split('.');
+                  let ex = parts[parts.length - 1];
+                  let obj = this.formData.establishmentContractDmsId[index]
+                  this.establishmentContractDmsId.push(obj);
+                  if ((index + 1) == this.formData.establishmentContractDmsId.length) {
+                    console.log(this.establishmentContractDmsId);
+                  }
+                }
+              }
+              // this.getOwnersData();
+            } else {
+              this.formData = { owners: [{}] };
             }
-          }
+          });
         }
-        // this.getOwnersData();
-      } else {
-        this.formData = { owners: [{}] };
-      }
-    });
+      });
   }
 
   updateData(formData: any) {
     let fd = new FormData();
     console.log("updateData  ");
-   
+
     console.log(this.establishmentContractDmsId);
     if (!formData.establishmentContractFile) {
       if (this.establishmentContractDmsId) {
         formData.establishmentContractFile = this.establishmentContractDmsId;
       }
     }
-    if (formData.companyType == 2 || formData.companyType =="2") {
+    if (formData.companyType == 2 || formData.companyType == "2") {
       if (formData.owners && formData.owners.length > 0) {
-        formData.owners[0].share = 100 ;
+        formData.owners[0].share = 100;
       }
     }
     fd.append('company', JSON.stringify(formData));
@@ -108,7 +120,7 @@ export class CompanyDetailsComponent implements OnInit {
           console.log("retun data ... ");
           console.log(data);
           this.toastr.success(data.message, 'Success');
-        
+
           // this.router.navigate(['company/profile/' + formData.id + '/view'])
           //   .then(() => {
           //     window.location.reload();
@@ -227,9 +239,9 @@ export class CompanyDetailsComponent implements OnInit {
   isNotGovernmentAndIndividualInstitute() {
     return this.formData.companyType && !(
       ["2", "3", "4", "5"].includes(this.formData.companyType)
-       ||
-        [2, 3, 4, 5].includes(this.formData.companyType)
-        )
+      ||
+      [2, 3, 4, 5].includes(this.formData.companyType)
+    )
   }
 
   isGovernmentOrg() {

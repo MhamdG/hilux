@@ -38,6 +38,8 @@ export class UnitEditComponent implements OnInit {
   searchProjectNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
   projectNameOptionsLoading =  false;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,6 +51,14 @@ export class UnitEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      console.log(this.userRole);
+      if (! Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Engineering")) {
+        this.router.navigate(['/']);
+      } else {
+        
     this.minDate = new Date();
     this.loadDeveloperOptions();
     this.loadProjectsOptions();
@@ -67,6 +77,9 @@ export class UnitEditComponent implements OnInit {
         this.formData = { };
       }
     });
+      }
+    });
+
   }
 
   saveData(formData: any) {

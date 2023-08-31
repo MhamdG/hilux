@@ -25,7 +25,7 @@ export class DeveloperDetailsComponent implements OnInit {
   licenseIssuerOptions: any;
   ownerOptions: Observable<any>;
   companyTypeOptions: any;
-  minDate:any;
+  minDate: any;
   dataOptionsLoading = false;
   searchInput$ = new Subject<string>();
   companyOptionsLoading = false;
@@ -38,6 +38,9 @@ export class DeveloperDetailsComponent implements OnInit {
   searchDeveloperNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
   searchCompanyBy: any;
+  roles$: object;
+  userRole: any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -49,34 +52,43 @@ export class DeveloperDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadEmiratesOptions();
-    this.loadLicenseTypeOptions();
-    this.loadOwnerOptions();
-    this.loadCompanyTypeOptions();
-    this.loadLicenseIssuerOptions();
-    this.loadCompanyOptions();
-    this.loadCompanyOptionsByLicenseNumber();
-    this.loadDeveloperNameOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Engineering")) {
+          this.router.navigate(['/']);
+        } else {
+          this.minDate = new Date();
+          this.loadEmiratesOptions();
+          this.loadLicenseTypeOptions();
+          this.loadOwnerOptions();
+          this.loadCompanyTypeOptions();
+          this.loadLicenseIssuerOptions();
+          this.loadCompanyOptions();
+          this.loadCompanyOptionsByLicenseNumber();
+          this.loadDeveloperNameOptions();
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-        this.getCompanyProfile(profile.companyId)
-      } else {
-        this.formData = { owners: [{}] };
-      }
-    });
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = profile as any;
+              this.getCompanyProfile(profile.companyId)
+            } else {
+              this.formData = { owners: [{}] };
+            }
+          });
 
-    this.developerTypeOptions = [{
-      key: "1",
-      value: { en: 'Master Project', ar: 'مشروع رئيسي' }
-    },
-    {
-      key: "0",
-      value: { en: 'Sub Project', ar: 'مشروع فرعي' }
-    }];
+          this.developerTypeOptions = [{
+            key: "1",
+            value: { en: 'Master Project', ar: 'مشروع رئيسي' }
+          },
+          {
+            key: "0",
+            value: { en: 'Sub Project', ar: 'مشروع فرعي' }
+          }];
+        }
+      });
   }
 
   updateData(formData: any) {
@@ -91,66 +103,68 @@ export class DeveloperDetailsComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   loadEmiratesOptions() {
     this.lookupsService.loadEmiratesOptions()
-    .subscribe((data) => {
-      this.emiratesOptions = data;
-    })
+      .subscribe((data) => {
+        this.emiratesOptions = data;
+      })
   }
 
   loadLicenseTypeOptions() {
     this.lookupsService.loadLicenseTypeOptions()
-    .subscribe((data) => {
-      this.licenseTypeOptions = data;
-    })
+      .subscribe((data) => {
+        this.licenseTypeOptions = data;
+      })
   }
 
   loadLicenseIssuerOptions() {
     this.lookupsService.loadLicenseIssuerOptions()
-    .subscribe((data) => {
-      this.licenseIssuerOptions = data;
-    })
+      .subscribe((data) => {
+        this.licenseIssuerOptions = data;
+      })
   }
 
   loadOwnerOptions() {
     this.ownerOptions = concat(
       of([]), // default items
       this.searchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.dataOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadOwners({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.dataOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.dataOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadOwners({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.dataOptionsLoading = false)
+          )
+        })
       )
     );
   }
 
   loadCompanyTypeOptions() {
     this.lookupsService.loadCompanyTypeOptions()
-    .subscribe((data) => {
-      this.companyTypeOptions = data;
-    })
+      .subscribe((data) => {
+        this.companyTypeOptions = data;
+      })
   }
 
   loadCompanyOptions() {
     this.companyOptions = concat(
       of([]), // default items
       this.companySearchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.companyOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadCompanies({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.companyOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.companyOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadCompanies({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.companyOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -159,26 +173,27 @@ export class DeveloperDetailsComponent implements OnInit {
     this.licenseNumberCompanyOptions = concat(
       of([]), // default items
       this.licenseSearchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.licenseNumberOptionsLoading = true),
-          switchMap(licenseNumber => {
-            return this.lookupsService.loadCompanies({ licenseNumber }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.licenseNumberOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.licenseNumberOptionsLoading = true),
+        switchMap(licenseNumber => {
+          return this.lookupsService.loadCompanies({ licenseNumber }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.licenseNumberOptionsLoading = false)
+          )
+        })
       )
     );
   }
 
-  isNotGovernmentInstitute () {
+  isNotGovernmentInstitute() {
     return this.companyDetails.companyType && !(["3", "4", "5"].includes(this.companyDetails.companyType) || [3, 4, 5].includes(this.companyDetails.companyType))
   }
 
-  isNotGovernmentAndIndividualInstitute () {
+  isNotGovernmentAndIndividualInstitute() {
     return this.companyDetails.companyType && !(["2", "3", "4", "5"].includes(this.companyDetails.companyType) || [2, 3, 4, 5].includes(this.companyDetails.companyType))
   }
 
-  isGovernmentOrg () {
+  isGovernmentOrg() {
     return this.companyDetails.companyType && (["3"].includes(this.companyDetails.companyType) || [3].includes(this.companyDetails.companyType))
   }
 
@@ -211,14 +226,14 @@ export class DeveloperDetailsComponent implements OnInit {
   }
 
   async prepareOwnerValueOptions(profile: any) {
-    for(let owner of (profile.owners || [])) {
+    for (let owner of (profile.owners || [])) {
       await setTimeout(() => {
         this.lookupsService.loadOwners({ id: owner.ownerId })
-        .subscribe((option)=> {
-          this.searchInput$.next(option.value && option.value.ar);
-        })
+          .subscribe((option) => {
+            this.searchInput$.next(option.value && option.value.ar);
+          })
       },
-      100)
+        100)
     }
   }
 
@@ -289,13 +304,14 @@ export class DeveloperDetailsComponent implements OnInit {
     this.developerNameOptions = concat(
       of([]), // default items
       this.searchDeveloperNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.developerNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadDevelopers({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.developerNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.developerNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadDevelopers({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.developerNameOptionsLoading = false)
+          )
+        })
       )
     );
   }

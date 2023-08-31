@@ -25,7 +25,7 @@ export class CompanyEditComponent implements OnInit {
   companyNameOptions: Observable<any>;
   companyLicenseNumberOptions: Observable<any>;
   companyTypeOptions: any;
-  minDate:any;
+  minDate: any;
   dataOptionsLoading = false;
   searchInput$ = new Subject<string>();
   formErrors: any = {};
@@ -34,6 +34,8 @@ export class CompanyEditComponent implements OnInit {
   searchCompanyNameInput$ = new Subject<string>();
   searchCompanyLicenseNumberInput$ = new Subject<string>();
   searchby: any;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,23 +47,33 @@ export class CompanyEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadEmiratesOptions();
-    this.loadLicenseTypeOptions();
-    this.loadOwnerOptions();
-    this.loadCompanyTypeOptions();
-    this.loadLicenseIssuerOptions();
-    this.loadCompanyNameOptions();
-    this.loadCompanyLicenseNumberOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("customerservices")
+          && !Object.keys(this.userRole).includes("Archives")) {
+          this.router.navigate(['/']);
+        } else {
+          this.minDate = new Date();
+          this.loadEmiratesOptions();
+          this.loadLicenseTypeOptions();
+          this.loadOwnerOptions();
+          this.loadCompanyTypeOptions();
+          this.loadLicenseIssuerOptions();
+          this.loadCompanyNameOptions();
+          this.loadCompanyLicenseNumberOptions();
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-      } else {
-        this.formData = { owners: [{}] };
-      }
-    });
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = profile as any;
+            } else {
+              this.formData = { owners: [{}] };
+            }
+          });
+        }
+      });
   }
 
   saveData(formData: any) {
@@ -69,72 +81,73 @@ export class CompanyEditComponent implements OnInit {
     fd.append('company', JSON.stringify(formData));
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/companies/create`, fd)
       .subscribe((data: any) => {
-       if (data.status == 'success') {
-        this.toastr.success(data.message, 'Success');
-        if (data.data.id)
-          this.router.navigate(['company/profile', data.data.id, 'edit']);
-      } else {
-        this.formErrors = data.data;
-        this.toastr.error(JSON.stringify(data.message), 'Error')
-      }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+        if (data.status == 'success') {
+          this.toastr.success(data.message, 'Success');
+          if (data.data.id)
+            this.router.navigate(['company/profile', data.data.id, 'edit']);
+        } else {
+          this.formErrors = data.data;
+          this.toastr.error(JSON.stringify(data.message), 'Error')
+        }
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   loadEmiratesOptions() {
     this.lookupsService.loadEmiratesOptions()
-    .subscribe((data) => {
-      this.emiratesOptions = data;
-    })
+      .subscribe((data) => {
+        this.emiratesOptions = data;
+      })
   }
 
   loadLicenseTypeOptions() {
     this.lookupsService.loadLicenseTypeOptions()
-    .subscribe((data) => {
-      this.licenseTypeOptions = data;
-    })
+      .subscribe((data) => {
+        this.licenseTypeOptions = data;
+      })
   }
 
   loadLicenseIssuerOptions() {
     this.lookupsService.loadLicenseIssuerOptions()
-    .subscribe((data) => {
-      this.licenseIssuerOptions = data;
-    })
+      .subscribe((data) => {
+        this.licenseIssuerOptions = data;
+      })
   }
 
   loadOwnerOptions() {
     this.ownerOptions = concat(
       of([]), // default items
       this.searchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.dataOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadOwners({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.dataOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.dataOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadOwners({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.dataOptionsLoading = false)
+          )
+        })
       )
     );
   }
 
   loadCompanyTypeOptions() {
     this.lookupsService.loadCompanyTypeOptions()
-    .subscribe((data) => {
-      this.companyTypeOptions = data;
-    })
+      .subscribe((data) => {
+        this.companyTypeOptions = data;
+      })
   }
 
-  isNotGovernmentInstitute () {
+  isNotGovernmentInstitute() {
     return this.formData.companyType && !(["3", "4", "5"].includes(this.formData.companyType) || [3, 4, 5].includes(this.formData.companyType))
   }
 
-  isNotGovernmentAndIndividualInstitute () {
+  isNotGovernmentAndIndividualInstitute() {
     return this.formData.companyType && !(["2", "3", "4", "5"].includes(this.formData.companyType) || [2, 3, 4, 5].includes(this.formData.companyType))
   }
 
-  isGovernmentOrg () {
+  isGovernmentOrg() {
     return this.formData.companyType && (["3"].includes(this.formData.companyType) || [3].includes(this.formData.companyType))
   }
 
@@ -151,8 +164,8 @@ export class CompanyEditComponent implements OnInit {
   }
 
   deleteRow(index) {
-    _.remove(this.formData.owners, function(resource, i) {
-        return index === i;
+    _.remove(this.formData.owners, function (resource, i) {
+      return index === i;
     });
   }
 
@@ -229,13 +242,14 @@ export class CompanyEditComponent implements OnInit {
     this.companyNameOptions = concat(
       of([]), // default items
       this.searchCompanyNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.companyNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadCompanies({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.companyNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.companyNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadCompanies({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.companyNameOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -244,13 +258,14 @@ export class CompanyEditComponent implements OnInit {
     this.companyLicenseNumberOptions = concat(
       of([]), // default items
       this.searchCompanyLicenseNumberInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.companyLicenseNumberOptionsLoading = true),
-          switchMap(licenseNumber => {
-            return this.lookupsService.loadCompanies({ licenseNumber }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.companyLicenseNumberOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.companyLicenseNumberOptionsLoading = true),
+        switchMap(licenseNumber => {
+          return this.lookupsService.loadCompanies({ licenseNumber }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.companyLicenseNumberOptionsLoading = false)
+          )
+        })
       )
     );
   }

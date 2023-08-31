@@ -38,6 +38,9 @@ export class UnitProfileComponent implements OnInit {
   searchProjectNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
   projectNameOptionsLoading =  false;
+  roles$: object;
+  userRole: any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -49,22 +52,31 @@ export class UnitProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadLandsoptions();
-    this.loadUnitsTypesOptions();
-    this.loadunitsUsageTypesOptions();
-    this.loadDeveloperNameOptions();
-    this.loadProjectNameOptions();
-    this.loadUnitNumberOptions();
-
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      console.log(this.userRole);
+      if (! Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Engineering")) {
+        this.router.navigate(['/']);
       } else {
-        this.formData = { };
+        this.minDate = new Date();
+        this.loadDeveloperOptions();
+        this.loadProjectsOptions();
+        this.loadLandsoptions();
+        this.loadUnitsTypesOptions();
+        this.loadunitsUsageTypesOptions();
+        this.loadDeveloperNameOptions();
+        this.loadProjectNameOptions();
+        this.loadUnitNumberOptions();
+    
+        this.profile$ = this.route.data.pipe(pluck('profile'));
+        this.profile$.subscribe((profile: any) => {
+          if (profile && profile.id) {
+            this.formData = profile as any;
+          } else {
+            this.formData = { };
+          }
+        });
       }
     });
   }

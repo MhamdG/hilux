@@ -24,7 +24,7 @@ export class ProjectProfileComponent implements OnInit {
   projectsOptions: Observable<any>;
   projectsTypesOptions: any;
   projectsRegistrationTypesOptions: any;
-  minDate:any;
+  minDate: any;
   developerDataOptionsLoading = false;
   developerSearchInput$ = new Subject<string>();
   projectsSearchInput$ = new Subject<string>();
@@ -42,7 +42,9 @@ export class ProjectProfileComponent implements OnInit {
   searchDeveloperNameInput$ = new Subject<string>();
   searchProjectNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
-  projectNameOptionsLoading =  false;
+  projectNameOptionsLoading = false;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,37 +56,46 @@ export class ProjectProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadDeveloperOptions();
-    this.loadLandsoptions();
-    this.loadProjectsOptions();
-    this.loadProjectsTypesOptions();
-    this.loadProjectsRegistrationTypesOptions();
-    this.loadProjectUsageTypesOptions();
-    this.loadContractorsOptions();
-    this.loadConsultantsOptions();
-    this.loadAccountTrusteesOptions();
-    this.loadProjectStatusOptions();
-    this.loadDeveloperNameOptions();
-    this.loadProjectNameOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Engineering")) {
+          this.router.navigate(['/']);
+        } else {
+          this.minDate = new Date();
+          this.loadDeveloperOptions();
+          this.loadLandsoptions();
+          this.loadProjectsOptions();
+          this.loadProjectsTypesOptions();
+          this.loadProjectsRegistrationTypesOptions();
+          this.loadProjectUsageTypesOptions();
+          this.loadContractorsOptions();
+          this.loadConsultantsOptions();
+          this.loadAccountTrusteesOptions();
+          this.loadProjectStatusOptions();
+          this.loadDeveloperNameOptions();
+          this.loadProjectNameOptions();
 
-    this.isMainOptions = [{
-      key: 1,
-      value: { en: 'Master Project', ar: 'مشروع رئيسي' }
-    },
-    {
-      key: 0,
-      value: { en: 'Sub Project', ar: 'مشروع فرعي' }
-    }];
+          this.isMainOptions = [{
+            key: 1,
+            value: { en: 'Master Project', ar: 'مشروع رئيسي' }
+          },
+          {
+            key: 0,
+            value: { en: 'Sub Project', ar: 'مشروع فرعي' }
+          }];
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-      } else {
-        this.formData = { };
-      }
-    });
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = profile as any;
+            } else {
+              this.formData = {};
+            }
+          });
+        }
+      });
   }
 
   saveData(formData: any) {
@@ -92,31 +103,32 @@ export class ProjectProfileComponent implements OnInit {
     fd.append('project', JSON.stringify(formData));
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/projects/create`, fd)
       .subscribe((data: any) => {
-       if (data.status == 'success') {
-        this.toastr.success(data.message, 'Success');
-        if (data.data.id)
-          this.router.navigate(['project/profile', data.data.id, 'edit']);
-      } else {
-        this.formErrors = data.data;
-        this.toastr.error(JSON.stringify(data.message), 'Error')
-      }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+        if (data.status == 'success') {
+          this.toastr.success(data.message, 'Success');
+          if (data.data.id)
+            this.router.navigate(['project/profile', data.data.id, 'edit']);
+        } else {
+          this.formErrors = data.data;
+          this.toastr.error(JSON.stringify(data.message), 'Error')
+        }
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   loadDeveloperOptions() {
     this.developerOptions = concat(
       of([]), // default items
       this.developerSearchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.developerDataOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loaddevelopersStatusTypes({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.developerDataOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.developerDataOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loaddevelopersStatusTypes({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.developerDataOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -125,13 +137,14 @@ export class ProjectProfileComponent implements OnInit {
     this.projectsOptions = concat(
       of([]), // default items
       this.projectsSearchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.projectDataOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadNewProjects({ term, developerId: this.formData.developerId }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.projectDataOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.projectDataOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadNewProjects({ term, developerId: this.formData.developerId }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.projectDataOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -140,64 +153,65 @@ export class ProjectProfileComponent implements OnInit {
     this.landsoptions = concat(
       of([]), // default items
       this.landSearchInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.landDataOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadLands({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.landDataOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.landDataOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadLands({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.landDataOptionsLoading = false)
+          )
+        })
       )
     );
   }
 
   loadProjectsTypesOptions() {
     this.lookupsService.loadProjectsTypesOptions()
-    .subscribe((data) => {
-      this.projectsTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.projectsTypesOptions = data;
+      })
   }
 
   loadProjectStatusOptions() {
     this.lookupsService.loadProjectStatusOptions()
-    .subscribe((data) => {
-      this.projectStatusOptions = data;
-    })
+      .subscribe((data) => {
+        this.projectStatusOptions = data;
+      })
   }
 
   loadProjectsRegistrationTypesOptions() {
     this.lookupsService.loadProjectsRegistrationTypesOptions()
-    .subscribe((data) => {
-      this.projectsRegistrationTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.projectsRegistrationTypesOptions = data;
+      })
   }
 
   loadProjectUsageTypesOptions() {
     this.lookupsService.loadProjectUsageTypesOptions()
-    .subscribe((data) => {
-      this.projectUsageTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.projectUsageTypesOptions = data;
+      })
   }
 
   loadContractorsOptions() {
     this.lookupsService.loadContractorsOptions()
-    .subscribe((data) => {
-      this.contractorsOptions = data;
-    })
+      .subscribe((data) => {
+        this.contractorsOptions = data;
+      })
   }
 
   loadConsultantsOptions() {
     this.lookupsService.loadConsultantsOptions()
-    .subscribe((data) => {
-      this.consultantsOptions = data;
-    })
+      .subscribe((data) => {
+        this.consultantsOptions = data;
+      })
   }
 
   loadAccountTrusteesOptions() {
     this.lookupsService.loadAccountTrusteesOptions()
-    .subscribe((data) => {
-      this.accountTrusteesOptions = data;
-    })
+      .subscribe((data) => {
+        this.accountTrusteesOptions = data;
+      })
   }
 
   getAttachments() {
@@ -281,13 +295,14 @@ export class ProjectProfileComponent implements OnInit {
     this.developerNameOptions = concat(
       of([]), // default items
       this.searchDeveloperNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.developerNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadDevelopers({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.developerNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.developerNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadDevelopers({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.developerNameOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -296,13 +311,14 @@ export class ProjectProfileComponent implements OnInit {
     this.projectNameOptions = concat(
       of([]), // default items
       this.searchProjectNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.projectNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadProjects({ term, developerId: this.searchData.searchDeveloperId }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.projectNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.projectNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadProjects({ term, developerId: this.searchData.searchDeveloperId }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.projectNameOptionsLoading = false)
+          )
+        })
       )
     );
   }

@@ -46,6 +46,8 @@ export class ApplicationSearchComponent implements OnInit {
   minDate:any;
   applicationSourceOptions: any;
   serviceNameOptions: any;
+  roles$: object;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,29 +59,40 @@ export class ApplicationSearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
-    this.loadUnitsOptions();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadLandsoptions();
-    this.loadOldLandsoptions();
-    this.loadOwnersOptions();
-    this.loadServiceNamesOptionsByUser()
-
-    this.applicationSourceOptions = [
-      {
-        key: "hilux",
-        value: { en: 'Hilux', ar: 'النظام الداخلي' }
-      },
-      {
-        key: "eserviceportal",
-        value: { en: 'Web', ar: 'البوابة الاكترونية' }
-      },
-      {
-        key: "mobile",
-        value: { en: 'mobile', ar: 'موبايل' }
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+      console.log(this.userRole);
+      if ( ! Object.keys(this.userRole).includes("Admin") && ! Object.keys(this.userRole).includes("customerservices")
+      && ! Object.keys(this.userRole).includes("Archives")  && ! Object.keys(this.userRole).includes("Real Estate Offices")
+      && ! Object.keys(this.userRole).includes("Legal")) {
+        this.router.navigate(['/']);
+      } else {
+        this.minDate = new Date();
+        this.loadUnitsOptions();
+        this.loadDeveloperOptions();
+        this.loadProjectsOptions();
+        this.loadLandsoptions();
+        this.loadOldLandsoptions();
+        this.loadOwnersOptions();
+        this.loadServiceNamesOptionsByUser()
+    
+        this.applicationSourceOptions = [
+          {
+            key: "hilux",
+            value: { en: 'Hilux', ar: 'النظام الداخلي' }
+          },
+          {
+            key: "eserviceportal",
+            value: { en: 'Web', ar: 'البوابة الاكترونية' }
+          },
+          {
+            key: "mobile",
+            value: { en: 'mobile', ar: 'موبايل' }
+          }
+        ]
       }
-    ]
+    });
   }
 
   searchData(formData: any) {
