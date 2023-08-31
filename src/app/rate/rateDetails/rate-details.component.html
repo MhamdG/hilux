@@ -7,7 +7,7 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileSearchDeveloperName">Developer Name
+              <label class="col-sm-3 col-form-label" i18n="@@projectName">Project Name
                 <span>*</span>
               </label>
               <div class="col-sm-9">
@@ -165,6 +165,11 @@
             </tbody>
           </table>
         </div>
+        <label *ngIf="! pageData || pageData.length == 0" class="col-form-label text-center"
+        style="width: 100%;text-align: center;"
+        i18n="@@noData">
+          Not Found Data
+        </label>
       </div>
       <!-- <div class="card-footer">
         <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid"

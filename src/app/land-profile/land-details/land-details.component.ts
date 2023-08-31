@@ -141,10 +141,13 @@ export class LandDetailsComponent implements OnInit {
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
-          this.router.navigate(['land/profile/' + formData.id + '/view'])
+          setTimeout(() => {
+            this.router.navigate(['land/profile/' + formData.id + '/view'])
             .then(() => {
               window.location.reload();
             });
+          }, 500);
+        
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')

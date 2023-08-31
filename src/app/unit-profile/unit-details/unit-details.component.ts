@@ -41,6 +41,7 @@ export class UnitDetailsComponent implements OnInit {
   roles$: object;
   userRole: any;
 
+  sitePLANList :any;
 
   constructor(
     private route: ActivatedRoute,
@@ -100,6 +101,21 @@ export class UnitDetailsComponent implements OnInit {
       this.router.navigate(['error'])
     })
   }
+   prepareGalleryField() {
+    return {
+      fieldID: "sitePLAN",
+      fieldType: "fileupload",
+      // required: this.flagUpload,
+      fieldName: {
+        "ar": "sitePLAN",
+        "en": "sitePLAN"
+      },
+      auxInfo: {
+        multiple: true
+      }
+    }
+  }
+
 
   loadDeveloperOptions() {
     this.developerOptions = concat(
@@ -154,7 +170,7 @@ export class UnitDetailsComponent implements OnInit {
   }
 
   loadunitsUsageTypesOptions() {
-    this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/unitsUsageTypes`)
+    this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/unitsTypes`)
     .subscribe((data) => {
       this.unitsUsageTypesOptions = data;
     })

@@ -37,6 +37,8 @@ export class LandProfileComponent implements OnInit {
   searchOldLandOptionsLoading = false;
   roles$: object;
   userRole: any;
+  distructsTypesOptions: any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -94,6 +96,12 @@ export class LandProfileComponent implements OnInit {
     }, (error) => {
       this.toastr.error('Something went Wrong', 'Error')
       this.router.navigate(['error'])
+    })
+  }
+  loadDistructsTypesOptions() {
+    this.lookupsService.loadSectionsOptions()
+    .subscribe((data) => {
+      this.distructsTypesOptions = data;
     })
   }
 

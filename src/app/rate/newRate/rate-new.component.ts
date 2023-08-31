@@ -38,7 +38,9 @@ export class newRateComponent implements OnInit {
   projectNameOptions: Observable<any>;
   projectNameOptionsLoading = false;
   searchProjectNameInput$ = new Subject<string>();
-  apartmentsNameOptions:any; 
+  apartmentsNameOptions: any;
+  roles$: object;
+  userRole: any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -49,41 +51,50 @@ export class newRateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadSectorsOptions();
-    this.loadSectionsOptions();
-    this.loadStreetNamesOptions();
-    this.loadStreetTypesOptions();
-    this.loadMainUsageTypesOptions();
-    this.loadSubUsageTypesOptions();
-    this.loadCitiesOptions();
-    this.loadPropertyTypesOptions();
-    this.loadLandNameOptions();
-    this.loadSearchOldLandIdOptions();
-    this.loadProjectNameOptions();
-    this.loadApartmentNameOptions();
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Tathmeen")) {
+          this.router.navigate(['/']);
+        } else {
+          this.loadSectorsOptions();
+          this.loadSectionsOptions();
+          this.loadStreetNamesOptions();
+          this.loadStreetTypesOptions();
+          this.loadMainUsageTypesOptions();
+          this.loadSubUsageTypesOptions();
+          this.loadCitiesOptions();
+          this.loadPropertyTypesOptions();
+          this.loadLandNameOptions();
+          this.loadSearchOldLandIdOptions();
+          this.loadProjectNameOptions();
+          this.loadApartmentNameOptions();
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-        console.log(".........");
-        console.log(this.formData.landTreeHistory);
-        if (!this.formData.buildingDetails) {
-          this.formData.buildingDetails = {}
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = profile as any;
+              console.log(".........");
+              console.log(this.formData.landTreeHistory);
+              if (!this.formData.buildingDetails) {
+                this.formData.buildingDetails = {}
+              }
+              if (!this.formData.buildingFinishes) {
+                this.formData.buildingFinishes = {}
+              }
+            } else {
+              this.formData = { buildingDetails: {}, buildingFinishes: {} };
+            }
+          });
         }
-        if (!this.formData.buildingFinishes) {
-          this.formData.buildingFinishes = {}
-        }
-       } else {
-        this.formData = { buildingDetails: {}, buildingFinishes: {} };
-      }
-    });
+      });
   }
-  loadApartmentNameOptions(){
+  loadApartmentNameOptions() {
     this.lookupsService.loadApartments()
-    .subscribe((data) => {
-      this.apartmentsNameOptions = data;
-    })
+      .subscribe((data) => {
+        this.apartmentsNameOptions = data;
+      })
   }
   loadProjectNameOptions() {
     this.projectNameOptions = concat(
@@ -101,15 +112,15 @@ export class newRateComponent implements OnInit {
     );
   }
 
-  saveData(formData :any) {
+  saveData(formData: any) {
     console.log(formData);
-    if (formData.projectNameSearch && formData.searchApartmentId && formData.rating && formData.servicesFees) {
+    if (formData.projectNameSearch && formData.searchApartmentId && formData.rating && formData.servicesFees >= 0) {
       let fd = new FormData();
-      let obj ={
-        projectId:formData.projectNameSearch,
-        pricePerMeter:formData.rating,
-        unitTypeId:formData.searchApartmentId,
-        ServiceFeesPerMeter:formData.servicesFees
+      let obj = {
+        projectId: formData.projectNameSearch,
+        pricePerMeter: formData.rating,
+        unitTypeId: formData.searchApartmentId,
+        ServiceFeesPerMeter: formData.servicesFees
       }
       fd.append('data', JSON.stringify(obj));
       this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/Tathmeen/updateUnitsEvaluation`, fd)
@@ -124,74 +135,74 @@ export class newRateComponent implements OnInit {
             this.formErrors = data.data;
             this.toastr.error(JSON.stringify(data.message), 'Error')
           }
-      }, (error) => {
-        this.toastr.error('Something went Wrong', 'Error')
-        this.router.navigate(['error'])
-      })
+        }, (error) => {
+          this.toastr.error('Something went Wrong', 'Error')
+          this.router.navigate(['error'])
+        })
     }
-    else return ;
+    else return;
   }
-  editFun(){
+  editFun() {
     this.router.navigate(['land/profile/', this.formData.id, 'edit']);
 
   }
-  backFun(){
+  backFun() {
     this.router.navigate(['rate']);
   }
   loadSectorsOptions() {
     this.lookupsService.loadSectorsOptions()
-    .subscribe((data) => {
-      this.sectorsOptions = data;
-    })
+      .subscribe((data) => {
+        this.sectorsOptions = data;
+      })
   }
 
   loadSectionsOptions() {
     this.lookupsService.loadSectionsOptions()
-    .subscribe((data) => {
-      this.sectionsOptions = data;
-    })
+      .subscribe((data) => {
+        this.sectionsOptions = data;
+      })
   }
 
   loadStreetNamesOptions() {
     this.lookupsService.loadStreetNamesOptions()
-    .subscribe((data) => {
-      this.streetsNamesOptions = data;
-    })
+      .subscribe((data) => {
+        this.streetsNamesOptions = data;
+      })
   }
 
   loadStreetTypesOptions() {
     this.lookupsService.loadStreetTypesOptions()
-    .subscribe((data) => {
-      this.streetsTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.streetsTypesOptions = data;
+      })
   }
 
   loadMainUsageTypesOptions() {
     this.lookupsService.loadMainUsageTypesOptions()
-    .subscribe((data) => {
-      this.mainUsageTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.mainUsageTypesOptions = data;
+      })
   }
 
   loadSubUsageTypesOptions() {
     this.lookupsService.loadSubUsageTypesOptions()
-    .subscribe((data) => {
-      this.subUsageTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.subUsageTypesOptions = data;
+      })
   }
 
   loadCitiesOptions() {
     this.lookupsService.loadCitiesOptions()
-    .subscribe((data) => {
-      this.citiesOptions = data;
-    })
+      .subscribe((data) => {
+        this.citiesOptions = data;
+      })
   }
 
   loadPropertyTypesOptions() {
     this.lookupsService.loadPropertyTypesOptions()
-    .subscribe((data) => {
-      this.propertyTypesOptions = data;
-    })
+      .subscribe((data) => {
+        this.propertyTypesOptions = data;
+      })
   }
 
   isShoporShoppingMall() {
@@ -266,7 +277,7 @@ export class newRateComponent implements OnInit {
   getImageAttachments(data: any, filed_name: any) {
     return data[filed_name] ? [data[filed_name]] : [];
   }
-  
+
   setSearchType(field_name: any, event: any) {
     var val = event.target.value.trim();
     this.setSearchByandTypeValues(val, field_name)
@@ -321,13 +332,14 @@ export class newRateComponent implements OnInit {
     this.landNameOptions = concat(
       of([]), // default items
       this.searchLandNameInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.landNameOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadLands({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.landNameOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.landNameOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadLands({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.landNameOptionsLoading = false)
+          )
+        })
       )
     );
   }
@@ -336,13 +348,14 @@ export class newRateComponent implements OnInit {
     this.searchOldLandOptions = concat(
       of([]), // default items
       this.searchOldLandIdInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.searchOldLandOptionsLoading = true),
-          switchMap(term => {
-            return this.lookupsService.loadOldLands({ term }).pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => this.searchOldLandOptionsLoading = false)
-          )})
+        distinctUntilChanged(),
+        tap(() => this.searchOldLandOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadOldLands({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.searchOldLandOptionsLoading = false)
+          )
+        })
       )
     );
   }

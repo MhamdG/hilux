@@ -4315,7 +4315,7 @@
       </trans-unit>
       <trans-unit id="legalBlocksResultsLegalBlockages" datatype="html">
         <source>Legal Blockages:</source>
-        <target>الحجوزات القانونية:</target>
+        <target>الحجوزاتالقانونية:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/legal-blocks/legal-blocks.component.html</context>
           <context context-type="linenumber">181</context>
@@ -5940,6 +5940,10 @@
       <trans-unit id="back" datatype="html">
       <source>Back</source>
         <target>الرجوع</target>
+      </trans-unit>
+       <trans-unit id="noData" datatype="html">
+      <source>Not Found Data</source>
+        <target>لا يوجد بيانات</target>
       </trans-unit>
       
       

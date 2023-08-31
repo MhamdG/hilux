@@ -36,12 +36,14 @@ export class RateViewComponent implements OnInit {
   searchOldLandIdInput$ = new Subject<string>();
   searchOldLandOptionsLoading = false;
   projectNameOptions: Observable<any>;
-  apartmentsNameOptions:any;
+  apartmentsNameOptions: any;
   projectNameOptionsLoading = false;
   apartmentNameOptionsLoading = false;
   searchProjectNameInput$ = new Subject<string>();
   searchApartmentNameInput$ = new Subject<string>();
-  kpiObj :any;
+  kpiObj: any;
+  roles$: object;
+  userRole: any;
 
 
   constructor(
@@ -54,28 +56,38 @@ export class RateViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadSectorsOptions();
-    this.loadSectionsOptions();
-    this.loadStreetNamesOptions();
-    this.loadStreetTypesOptions();
-    this.loadMainUsageTypesOptions();
-    this.loadSubUsageTypesOptions();
-    this.loadCitiesOptions();
-    this.loadPropertyTypesOptions();
-    this.loadLandNameOptions();
-    this.loadSearchOldLandIdOptions();
-    this.loadProjectNameOptions();
-    this.loadApartmentNameOptions();
-    this.getKpiFun();
 
-    this.profile$ = this.route.data.pipe(pluck('profile'));
-    this.profile$.subscribe((profile: any) => {
-      if (profile && profile.id) {
-        this.formData = profile as any;
-      } else {
-        this.formData = { buildingDetails: {}, buildingFinishes: {} };
-      }
-    });
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+      .subscribe((res) => {
+        this.userRole = res;
+        console.log(this.userRole);
+        if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Tathmeen")) {
+          this.router.navigate(['/']);
+        } else {
+          this.loadSectorsOptions();
+          this.loadSectionsOptions();
+          this.loadStreetNamesOptions();
+          this.loadStreetTypesOptions();
+          this.loadMainUsageTypesOptions();
+          this.loadSubUsageTypesOptions();
+          this.loadCitiesOptions();
+          this.loadPropertyTypesOptions();
+          this.loadLandNameOptions();
+          this.loadSearchOldLandIdOptions();
+          this.loadProjectNameOptions();
+          this.loadApartmentNameOptions();
+          this.getKpiFun();
+
+          this.profile$ = this.route.data.pipe(pluck('profile'));
+          this.profile$.subscribe((profile: any) => {
+            if (profile && profile.id) {
+              this.formData = profile as any;
+            } else {
+              this.formData = { buildingDetails: {}, buildingFinishes: {} };
+            }
+          });
+        }
+      });
   }
 
 
@@ -103,9 +115,9 @@ export class RateViewComponent implements OnInit {
     this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/Tathmeen/unitsEvaluationKpi`)
       .subscribe((data: any) => {
         if (data.status == 'success') {
-          this.kpiObj =data;
-         console.log("kpi api status success");
-         console.log(this.kpiObj);
+          this.kpiObj = data;
+          console.log("kpi api status success");
+          console.log(this.kpiObj);
         } else {
           console.log("kpi api status fail");
         }
@@ -143,9 +155,9 @@ export class RateViewComponent implements OnInit {
     //   )
     // );
     this.lookupsService.loadApartments()
-    .subscribe((data) => {
-      this.apartmentsNameOptions = data;
-    })
+      .subscribe((data) => {
+        this.apartmentsNameOptions = data;
+      })
   }
 
   loadSectorsOptions() {
@@ -321,12 +333,12 @@ export class RateViewComponent implements OnInit {
     return (this.searchData[field_name] == undefined)
   }
 
-  searchResourceData(data: any,searchApartmentId:any) {
+  searchResourceData(data: any, searchApartmentId: any) {
     console.log(" searchResourceData fun ...");
     console.log(searchApartmentId.model)
     console.log(data);
     if (data.searchProjectId) {
-      this.router.navigate(['rate/profile/'+data.searchProjectId+"/"+searchApartmentId.model+"/view"]);
+      this.router.navigate(['rate/profile/' + data.searchProjectId + "/" + searchApartmentId.model + "/view"]);
     }
   }
 

@@ -37,6 +37,7 @@ export class LandViewComponent implements OnInit {
   searchOldLandOptionsLoading = false;
   roles$: object;
   userRole: any;
+  distructsTypesOptions: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -84,6 +85,12 @@ export class LandViewComponent implements OnInit {
         });
       }
     });
+  }
+  loadDistructsTypesOptions() {
+    this.lookupsService.loadSectionsOptions()
+    .subscribe((data) => {
+      this.distructsTypesOptions = data;
+    })
   }
 
   updateData(formData: any) {

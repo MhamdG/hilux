@@ -143,8 +143,12 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="district" required="true" class="form-control" [(ngModel)]="formData.sectionId"
-                  #district="ngModel" [disabled]="true">
+                <!-- <input type="text" name="district" required="true" class="form-control" [(ngModel)]="formData.sectionId"
+                  #district="ngModel" [disabled]="true"> -->
+                <ng-select class="rtl" [items]="distructsTypesOptions" name="district" [(ngModel)]="formData.district"
+                  required="true" bindLabel="value.ar" disabled="true" bindValue="key" notFoundText="لا يوجد نتائج للبحث"
+                  #district="ngModel">
+                </ng-select>
                 <div *ngIf="district.invalid && (district.dirty || district.touched)" class="alert alert-danger">
                   <div *ngIf="district.errors?.required">
                     District can not be blank
@@ -932,7 +936,7 @@
                       {{item.comments}}
                     </label>
                     <label class="col-form-label" *ngIf=" ! item.comments">
-                     ---
+                      ---
                     </label>
                   </td>
                 </tr>

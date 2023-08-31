@@ -107,7 +107,7 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives') || getRole(userRole,'Real Estate Offices') || getRole (userRole,'Legal') || getRole (userRole,'ApplicationsSearch') ">
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') || getRole (userRole,'customerservices') || getRole(userRole,'Archives') || getRole(userRole,'Real Estate Offices') || getRole (userRole,'Legal') || getRole (userRole,'ApplicationsSearch') ">
                 <a
                         class="dropdown-item"
                         href="/application_search"
@@ -135,7 +135,7 @@
                     </a>
                 </ng-container>
                 <ng-container
-                    *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices') || getRole(userRole,'Archives')">
+                    *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') ">
                     <a class="dropdown-item" href="/rate" i18n="@@Rating">
                         <i class="fas fa-plus float-left"></i>
                         Rating

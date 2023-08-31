@@ -106,7 +106,8 @@
               <div class="col-sm-9">
                 <ng-select
                   class="rtl"
-                  required="true"
+                  required="false"
+                  disabled="true"
                   [items]="developerOptions | async"
                   name="developerId" [hideSelected]="true"
                   [(ngModel)]="formData.developerId" [typeahead]="developerSearchInput$"
@@ -133,7 +134,8 @@
               <div class="col-sm-9">
                 <ng-select
                   class="rtl"
-                  required="true"
+                  required="false"
+                  disabled="true"
                   [items]="projectsOptions | async"
                   name="project" [hideSelected]="true"
                   [(ngModel)]="formData.projectId" [minTermLength]="4"
@@ -234,8 +236,9 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="floorNumber" required="true" class="form-control" [(ngModel)]="formData.floorNumber" #floorNumber="ngModel" numbersOnly precision="0" pattern="[0-9]*" 
+                <input type="text" name="floorNumber" required="true" class="form-control" [(ngModel)]="formData.floorNumber" #floorNumber="ngModel" 
                 >
+                <!-- numbersOnly precision="0" pattern="[0-9]*"  -->
                 <div *ngIf="floorNumber.invalid && (floorNumber.dirty || floorNumber.touched)" class="alert alert-danger">
                   <div *ngIf="floorNumber.errors?.required">
                     Floor Number can not be blank
@@ -516,16 +519,45 @@
           </div>
         </div>
 
-        <div class="form-group row">
-          <div class="col-sm-6">
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label" i18n="@@unitProfileSitePlan">Site Plan</label>
-              <div class="text-center col-sm-10 gallery-wrapper img-fluid">
-                <app-media-gallery [medias]="getAttachments()" *ngIf="getAttachments()?.length > 0"></app-media-gallery>
-              </div>
+      
+        
+        <!-- <div class="col-sm-6">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" i18n="@@unitProfileSitePlan">Site Plan
+            </label>
+            <div class="col-sm-9">
+              <app-file-upload [field]="prepareGalleryField()" [formData]="formData"
+                [defaultValues]="formData"></app-file-upload>
+            </div>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-sm btn-danger" style="margin-right: 5px;margin-left: 5px;" 
+               *ngFor="let item of formData.sitePLAN let i = index">
+                <a href="{{item}}" target="_blank"> ملف {{i+1}}</a>
+              </button>
             </div>
           </div>
+        </div> -->
+
+
+
+        <div class="form-group row" >
           <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@unitProfileSitePlan">Site Plan
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <app-file-upload [field]="prepareGalleryField()" [formData]="formData" [defaultValues]="formData"></app-file-upload>
+              </div>
+            </div>
+           
+          </div>
+          <div class="col-sm-6">
+            <button type="button" class="btn btn-sm btn-danger" style="margin-right: 5px;margin-left: 5px;" 
+            >
+            <!-- *ngFor="let item of formData.sitePLAN let i = index" -->
+            <a href="{{formData.sitePLAN}}" target="_blank"> ملف 1</a>
+            </button>
           </div>
         </div>
       </div>
