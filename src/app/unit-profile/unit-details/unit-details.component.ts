@@ -92,6 +92,12 @@ export class UnitDetailsComponent implements OnInit {
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
+          setTimeout(() => {
+            this.router.navigate(['unit/profile/' + formData.id + '/view'])
+            .then(() => {
+              window.location.reload();
+            });
+          }, 500);
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
@@ -170,7 +176,7 @@ export class UnitDetailsComponent implements OnInit {
   }
 
   loadunitsUsageTypesOptions() {
-    this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/unitsTypes`)
+    this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/unitsUsageTypes`)
     .subscribe((data) => {
       this.unitsUsageTypesOptions = data;
     })

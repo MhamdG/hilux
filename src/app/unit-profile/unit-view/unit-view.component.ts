@@ -158,6 +158,7 @@ export class UnitViewComponent implements OnInit {
   loadunitsUsageTypesOptions() {
     this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/unitsUsageTypes`)
     .subscribe((data) => {
+      console.log(data);
       this.unitsUsageTypesOptions = data;
     })
   }

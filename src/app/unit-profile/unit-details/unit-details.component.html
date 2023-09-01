@@ -162,7 +162,7 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input name="unitNumber"  type="text" class="form-control" [(ngModel)]="formData.unitNumber" #unitNumber="ngModel" numbersOnly precision="0">
+                <input name="unitNumber"  type="text" class="form-control" [(ngModel)]="formData.unitNumber" #unitNumber="ngModel" disabled="true" numbersOnly precision="0">
                 <div *ngIf="unitNumber.invalid && (unitNumber.dirty || unitNumber.touched)" class="alert alert-danger">
                   <div *ngIf="unitNumber.errors?.pattern || unitNumber.errors?.minlength">
                     Enter valid Unit Number

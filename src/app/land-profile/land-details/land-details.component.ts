@@ -211,6 +211,8 @@ export class LandDetailsComponent implements OnInit {
     this.lookupsService.loadPropertyTypesOptions()
       .subscribe((data) => {
         this.propertyTypesOptions = data;
+        console.log("propertyTypesOptions  ")
+        console.log(data);
       })
   }
 
