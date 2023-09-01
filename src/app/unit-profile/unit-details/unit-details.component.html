@@ -268,13 +268,13 @@
                   #land="ngModel"
                 >
                 </ng-select> -->
-                <input type="text" maxlength="9" name="landId" required="true" class="form-control" [(ngModel)]="formData.landId" #landId="ngModel" numbersOnly precision="0"/>
+                <input type="text" maxlength="9" name="landId" required="false" class="form-control" [(ngModel)]="formData.landId" #landId="ngModel" numbersOnly precision="0"/>
                 
-                <div *ngIf="landId.invalid && (landId.dirty || landId.touched)" class="alert alert-danger">
+                <!-- <div *ngIf="landId.invalid && (landId.dirty || landId.touched)" class="alert alert-danger">
                   <div *ngIf="landId.errors?.required">
                     Land can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
