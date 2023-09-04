@@ -5941,6 +5941,26 @@
       <source>Back</source>
         <target>الرجوع</target>
       </trans-unit>
+        <trans-unit id="source" datatype="html">
+      <source>Source</source>
+        <target>المصدر</target>
+      </trans-unit>
+       <trans-unit id="request" datatype="html">
+      <source>Request</source>
+        <target>الطلب</target>
+      </trans-unit>
+        <trans-unit id="details" datatype="html">
+      <source>Details</source>
+        <target>تفاصيل</target>
+      </trans-unit>
+       <trans-unit id="receipt" datatype="html">
+      <source>Receipt</source>
+        <target>الايصال</target>
+      </trans-unit>
+        <trans-unit id="time" datatype="html">
+      <source>Time</source>
+        <target>الوقت</target>
+              </trans-unit> 
        <trans-unit id="noData" datatype="html">
       <source>Not Found Data</source>
         <target>لا يوجد بيانات</target>
