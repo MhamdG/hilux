@@ -10,10 +10,10 @@ import { LookupsService } from '../../shared/lookups.service';
 
 @Component({
   // selector: 'app-land-profile',
-  templateUrl: './rate-view.component.html',
-  styleUrls: ['./rate-view.component.css']
+  templateUrl: './pricingUnit-search.component.html',
+  styleUrls: ['./pricingUnit-search.component.css']
 })
-export class RateViewComponent implements OnInit {
+export class PricingUnitComponent implements OnInit {
   formData: any = { buildingDetails: {}, buildingFinishes: {} };
   searchData: any = {};
   formErrors: any = {};
@@ -163,9 +163,6 @@ export class RateViewComponent implements OnInit {
   }
   addNewFun() {
     this.router.navigate(['rate/new']);
-  }
-  unitPricingFun (){
-    this.router.navigate(['pricingUnit']);
   }
 
   loadSectionsOptions() {
