@@ -51,7 +51,7 @@ export class LookupsService {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/projectsUnactiveSH`, params);
   }
   loadAllProjects(params: any = {}) {
-    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/allProjecta`, params);
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/allProjects`, params);
   }
   loadApartments(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/unitsTypesForTathmeen`, params);
