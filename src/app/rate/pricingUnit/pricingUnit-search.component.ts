@@ -44,6 +44,7 @@ export class PricingUnitComponent implements OnInit {
   kpiObj: any;
   roles$: object;
   userRole: any;
+  unitNumberOptions: any;
 
 
   constructor(
@@ -76,6 +77,7 @@ export class PricingUnitComponent implements OnInit {
           this.loadProjectNameOptions();
           this.loadApartmentNameOptions();
           this.getKpiFun();
+          this.loadUnitNumberOptions();
 
           this.profile$ = this.route.data.pipe(pluck('profile'));
           this.profile$.subscribe((profile: any) => {
@@ -89,7 +91,12 @@ export class PricingUnitComponent implements OnInit {
       });
   }
 
-
+  loadUnitNumberOptions() {
+    this.lookupsService.loadUnitsByUnitIDOptions({ projectId: this.searchData.searchProjectId })
+      .subscribe((data) => {
+        this.unitNumberOptions = data;
+      })
+  }
   saveData(formData: any) {
     let fd = new FormData();
     fd.append('land', JSON.stringify(formData));
@@ -328,9 +335,9 @@ export class PricingUnitComponent implements OnInit {
     return (this.searchData[field_name] == undefined)
   }
 
-  searchResourceData(data: any, searchApartmentId: any) {
+  searchResourceData(data: any, unitNumberSearch: any) {
     if (data.searchProjectId) {
-      this.router.navigate(['rate/profile/' + data.searchProjectId + "/" + searchApartmentId.model + "/view"]);
+      this.router.navigate(['rate/profile/' + data.searchProjectId + "/" + unitNumberSearch.model + "/view"]);
     }
   }
 

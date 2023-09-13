@@ -15,51 +15,13 @@
         <div class="col-md-12" *ngIf="profile$ | async as profile">
           <div class="card card-purple">
             <div class="card-header">
-              <h3 class="card-title"> التقييم </h3>
+              <h3 class="card-title">بحث تسعير الوحدات </h3>
             </div>
-            <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
-              <button type="button" (click)="addNewFun()"
-                style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
-                i18n="@@addNew">+ Add New</button>
-            </div>
-            <div class="row">
-              <div class="col-lg-6 col-12">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <h4 style="text-align: center;" i18n="@@totalEvaluatedUnits">
-                      total Evaluated Units
-                    </h4>
-
-                    <h5 style="color: black;text-align: center;">{{kpiObj.data.totalEvaluatedUnits}}</h5>
-                  </div>
-                  <div class="icon">
-                    <!-- <i class="ion ion-podium"></i> -->
-                    <!-- <i class="fa-thin fa-star"></i> -->
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-12">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <h4 style="text-align: center;" i18n="@@totalNonEvaluatedUnits">
-                      total Non Evaluated Units
-                    </h4>
-
-                    <h5 style="color: black;text-align: center;">{{kpiObj.data.totalNonEvaluatedUnits}}</h5>
-                  </div>
-                  <div class="icon">
-                    <!-- <i class="star-rate-outline"></i> -->
-                    <!-- <i class="fa-thin fa-star"></i> -->
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <router-outlet></router-outlet>
             <section class="content" *ngIf="formData && !formData.id">
               <div class="container-fluid">
                 <app-alerts [errors]="formErrors"></app-alerts>
-                <form class="form-horizontal" (ngSubmit)="searchResourceData(searchData,searchApartmentId)" #sf="ngForm"
+                <form class="form-horizontal" (ngSubmit)="searchResourceData(searchData,unitNumberSearch)" #sf="ngForm"
                   enctype='multipart/form-data' novalidate>
                   <div class="card-body">
                     <div class="form-group row">
@@ -79,7 +41,7 @@
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@apartmentType">Apartment Type</label>
+                          <label class="col-sm-3 col-form-label" i18n="@@unitNumber">Unit Number</label>
                           <div class="col-sm-9">
                             <!-- <ng-select class="rtl" [items]="apartmentsNameOptions | async" name="searchApartmentId"
                               [hideSelected]="true"
@@ -89,9 +51,10 @@
                               notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchApartmentNameInput$"
                               #searchApartmentId="ngModel">
                             </ng-select> -->
-                            <ng-select class="rtl" [items]="apartmentsNameOptions" name="searchApartmentId"
-                              [(ngModel)]="formData.searchApartmentId" bindLabel="value.ar" bindValue="key"
-                              notFoundText="لا يوجد نتائج للبحث" #searchApartmentId="ngModel">
+                            <ng-select required="true" [items]="unitNumberOptions" name="unitNumberSearch"
+                              [(ngModel)]="searchData.searchUnitNumber" bindLabel="value.ar" bindValue="key"
+                              notFoundText="لا يوجد نتائج للبحث" #unitNumberSearch="ngModel"
+                              (open)="loadUnitNumberOptions()">
                             </ng-select>
                           </div>
                         </div>

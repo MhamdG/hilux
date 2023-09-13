@@ -5991,6 +5991,10 @@
         <target>يتم سحب بيانات الأراضي من البلدية 
          يرجى الانتظار بعض الوقت</target>
       </trans-unit>
+      <trans-unit id="unitNumber" datatype="html">
+        <source>Unit Number</source>
+        <target>رقم الوحدة العقارية</target>
+      </trans-unit>
       
       
     </body>
