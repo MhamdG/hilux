@@ -134,7 +134,7 @@ export class PricingUnitComponent implements OnInit {
         distinctUntilChanged(),
         tap(() => this.projectNameOptionsLoading = true),
         switchMap(term => {
-          return this.lookupsService.loadAllProjects({ term }).pipe(
+          return this.lookupsService.loadAllProjects({ term, developerId: this.searchData.searchDeveloperId }).pipe(
             catchError(() => of([])), // empty list on error
             tap(() => this.projectNameOptionsLoading = false)
           )
