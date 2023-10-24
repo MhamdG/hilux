@@ -6010,6 +6010,15 @@
         <target>موافق</target>
       </trans-unit>
       
+     <trans-unit id="roomsCount" datatype="html">
+      <source>Rooms Count</source>
+        <target>عدد الغرف</target>
+      </trans-unit>
+       <trans-unit id="meterJoinActualArea" datatype="html">
+      <source>Meter Join Actual Area</source>
+        <target>المساحة المشتركة الفعلية</target>
+      </trans-unit>
+      
       
     </body>
   </file>

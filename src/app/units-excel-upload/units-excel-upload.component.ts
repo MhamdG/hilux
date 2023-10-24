@@ -307,10 +307,13 @@ export class UnitsExcelUploadComponent implements OnInit {
   }
 
   getOwnersName(owners: any) {
-    return _.join(owners, ', ');
+    return _.join(owners, '\n , \n ');
   }
 
   getExcelLink() {
     return `${environment.apiHost}/units.xlsx`;
+  }
+  getLookupUnitsLink() {
+    return `${environment.apiHost}/unit-types-and-uses.xlsx`;
   }
 }
