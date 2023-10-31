@@ -51,6 +51,7 @@ export class UnitsExcelUploadComponent implements OnInit {
   resErrors :any;
   flagUpload :any;
   flagRes :any;
+  showUpload :any;
   @ViewChild('controlLabel') controlLabel: ElementRef;
   constructor(
     private route: ActivatedRoute,
@@ -68,6 +69,7 @@ export class UnitsExcelUploadComponent implements OnInit {
     this.loadProjectsOptions();
     this.loadUnitTypesOptions()
     this.flagRes =false;
+    this.showUpload =false;
     this.myDialog = document.querySelector('#my-dialog');
     this.flagUpload = false;
     // this.resErrors =[
@@ -94,13 +96,14 @@ export class UnitsExcelUploadComponent implements OnInit {
 
   searchData(formData: any) {
     this.flagRes =true;
+    this.showUpload =true;
     let fd = new FormData();
     fd.append('data', JSON.stringify(_.omit(formData, 'developerId')));
 
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/projects/unitsProject`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
-          this.response = data.data;
+         this.response = data.data;
           this.prepareUnitNumberOptions(this.response);
           this.prepareMeterTotalSoldAreaOptions(this.response);
           this.flagRes = false;
