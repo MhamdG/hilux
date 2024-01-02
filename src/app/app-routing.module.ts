@@ -65,6 +65,7 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { RateDetailsComponent } from './rate/rateDetails/rate-details.component';
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
+import { HandingPropertyComponent } from './Handing-property/Handing-property.component';
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
   { path: 'login', component: LoginComponent },
@@ -189,7 +190,10 @@ const routes: Routes = [
   { path: 'units_excel_upload', component: UnitsExcelUploadComponent, canActivate: [AuthenticationGuard] },
   { path: 'application_search/:applicationId', component: SingleApplicationSearchComponent, canActivate: [AuthenticationGuard], resolve: { application_search: ApplicationSearchResolver } },
   { path: 'units_valuation', component: UnitsValuationComponent, canActivate: [AuthenticationGuard] },
-];
+  { path: 'handlingProperty', component: HandingPropertyComponent,resolve: { profile: LandProfileResolver }, canActivate: [AuthenticationGuard] },
+
+]
+;
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { paramsInheritanceStrategy: 'always' })],

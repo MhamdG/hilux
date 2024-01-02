@@ -1,0 +1,399 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <!-- <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+          </ol>
+        </div> -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-purple">
+            <div class="card-header">
+              <h3 class="card-title"> التقييم </h3>
+            </div>
+            <!-- *ngIf="profile$ | async as profile" -->
+
+
+            <router-outlet></router-outlet>
+            <section class="content" *ngIf="formData && !formData.id">
+              <div class="container-fluid">
+                <app-alerts [errors]="formErrors"></app-alerts>
+             
+
+                <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm"
+                  enctype='multipart/form-data' novalidate>
+                  <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-sm-4">
+
+
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@searchPageProjectName">Project Name
+                            <span *ngIf="isSearchByUnit()">*</span>
+                          </label>
+                          <div class="col-sm-9">
+                            <ng-select required="isSearchByUnit()" [items]="projectsOptions | async" name="project"
+                              [hideSelected]="true" [(ngModel)]="formData.projectId" [minTermLength]="1"
+                              bindLabel="value.ar" typeToSearchText="Please enter 1 or more characters" bindValue="key"
+                              [typeahead]="projectsSearchInput$" notFoundText="لا يوجد نتائج للبحث"
+                              [loading]="projectDataOptionsLoading" #project="ngModel"
+                              (keyup)="setSearchType('unitId', $event)" (blur)="checkTypeAndValues('projectId')"
+                              (change)="resetUnit()" (keyup.enter)="testEnter('projectId',formData.projectId)">
+
+                            </ng-select>
+                            <!-- [disabled]="isNotSearchTypeUnit() || isEmpty('developerId')" -->
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@searchPageUnitID">Unit ID
+                            <span *ngIf="isSearchByUnit()">*</span>
+                          </label>
+                          <div class="col-sm-9">
+                            <ng-select required="isSearchByUnit()" [items]="unitsOptions" name="units"
+                              [(ngModel)]="formData.unitId" bindLabel="value.ar" bindValue="key"
+                              notFoundText="لا يوجد نتائج للبحث" #unitId="ngModel" (open)="loadUnitsOptions()"
+                              (keyup.enter)="testEnter('projectId',formData.projectId)">
+
+                            </ng-select>
+                            <!-- [disabled]="isNotSearchTypeUnit() || isEmpty('projectId')"  -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-4">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@searchPageLandID">Land ID
+                          </label>
+                          <div class="col-sm-9">
+                            <ng-select required="true" [items]="landsOptions | async" name="land" [hideSelected]="true"
+                              [(ngModel)]="formData.landId" [typeahead]="landSearchInput$" bindLabel="value.ar"
+                              [minTermLength]="1" bindValue="key" [loading]="landDataOptionsLoading"
+                              notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
+                              #land="ngModel" (blur)="checkTypeAndValues('landId')"
+                              (keyup)="setSearchType('landId', $event)"
+                              (keyup.enter)="testEnter('landId',formData.landId)">
+                            </ng-select>
+                            <!-- [disabled]="isNotSearchTypeLand() || isNotSearchBy('landId')" -->
+                          </div>
+                        </div>
+
+
+                      </div>
+                      <!-- // hashem search owner auto complete  -->
+                      <div class="col-sm-4">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@applicationIdHoldingProperty">Application ID
+                          </label>
+                          <div class="col-sm-9">
+                            <ng-select required="true" [items]="ownersOptions | async" [(ngModel)]="formData.owner"
+                              [hideSelected]="true" name="Owner" bindLabel="value.ar" bindValue="key"
+                              [minTermLength]="1" [typeahead]="ownersSearchInput$" [loading]="ownersOptionsLoading"
+                              notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
+                              #owner="ngModel" (blur)="checkTypeAndValues('owner')"
+                              (keyup)="setSearchType('owner', $event)"
+                              (keyup.enter)="testEnter('owner',formData.owner)">
+                            </ng-select>
+                            <!-- [disabled]="isNotSearchTypeOwner() || isNotSearchBy('owner')" -->
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="row ">
+                      <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-primary" i18n="@@searchPageSearchButton">Search</button>
+                        <!-- [disabled]="f.invalid" -->
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <hr />
+
+
+                <form class="form-horizontal" #f="ngForm" enctype='multipart/form-data' novalidate>
+                  <!-- (ngSubmit)="updateData(formData)" -->
+                  <div class="card-body">
+
+                    <div class="form-group row">
+                      <!-- *ngIf="formData.landTreeHistory.length > 0" -->
+                      <!-- <div class="col-sm-12"> -->
+                      <!-- <label class="col-form-label" style="text-align: center;width: 100%;" i18n="@@sortAndMerge">
+              Sort And Merge
+            </label> -->
+                      <table style="border: 1px solid black;width: 100%;">
+                        <thead style="border: 1px solid black;" *ngIf="pageData && pageData.length > 0">
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@landIdHoldingProperty">Land ID</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@projectNameHoldingProperty">Project Name</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@unitIdholdingProperty">Unit ID</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@applicationIdHoldingProperty">Application ID</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@statusHoldingProperty">Status</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@ownerArNameHoldingProperty">Onwer Arbic Name</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@ownerEnNameHoldingProperty">Onwer English Name</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@transactionTypeHoldingProperty">Transaction
+                              Type</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@IssueDateHoldingProperty">Issue Date the
+                              holding</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@createdByHoldingProperty">Created By</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@delivedByHoldingProperty">Delived By</label>
+                          </th>
+                          <th style="border: 1px solid black; text-align: center;">
+                            <label class="col-form-label" i18n="@@delivedDateHoldingProperty">Delived Date</label>
+                          </th>
+                          <th>#</th>
+                        </thead>
+                        <tbody style="border: 1px solid black;">
+                          <!-- <tr *ngFor="let item of formData.landTreeHistory let j = index"> -->
+                          <tr *ngFor="let item of pageData let j = index">
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.landId">
+                                {{item.landId}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.landId">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.projectName">
+                                {{item.projectName}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.projectName">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.unitId">
+                                {{item.unitId}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.unitId">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.applicationId">
+                                {{item.applicationId}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.applicationId">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.status">
+                                {{item.status}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.status">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.ownerNameAr">
+                                {{item.ownerNameAr}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.ownerNameAr">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.ownerNameEn">
+                                {{item.ownerNameEn}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.ownerNameEn">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.type">
+                                {{item.type}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.type">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.date">
+                                {{item.date}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.date">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.nameproperty">
+                                {{item.nameproperty}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.nameproperty">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.recivedBy">
+                                {{item.recivedBy}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.recivedBy">
+                                ---
+                              </label>
+                            </td>
+                            <td style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label" *ngIf="item.recivedDate">
+                                {{item.recivedDate}}
+                              </label>
+                              <label class="col-form-label" *ngIf="! item.recivedDate">
+                                ---
+                              </label>
+                            </td>
+                            <td> <button (click)="openModalFun()">
+                                <p> + </p>
+                              </button> </td>
+                            <!-- <td style="border: 1px solid black; text-align: center;">
+                <span class="col-form-label" *ngIf="item.status == 0">
+                  <label class="col-form-label" i18n="@@deactive">Deactive</label>
+                </span>
+                <span class="col-form-label" *ngIf="item.status == 1">
+                  <label class="col-form-label0" i18n="@@active">Active</label>
+                </span>
+                <span class="col-form-label" *ngIf="item.status != 1 && item.status != 0 ">
+                  <label class="col-form-label0">---</label>
+                </span>
+              </td> -->
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <label *ngIf="! pageData || pageData.length == 0" class="col-form-label text-center"
+                      style="width: 100%;text-align: center;" i18n="@@noData">
+                      Not Found Data
+                    </label>
+                  </div>
+                  <ngx-smart-modal #updateDataModal identifier="updateDataModal" [escapable]="true" escapable="true"
+                    (onAnyCloseEvent)="resetAddBlockModal()" [dismissable] = "false">
+                    <div style="width: 100%;" class="modal-header pt-0">
+                      <div style="width: 100%;" class="modal-title">
+                        <h4 style="width: 100%; text-align: center;font-size: 30px;" i18n="@@HandingOverOwnership">+
+                          Handing over ownership</h4>
+                      </div>
+                    </div>
+                    <form class="rtl" #f="ngForm" novalidate>
+                      <div class="col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-group row">
+                              <label class="col-form-label" i18n="@@projectNameHoldingProperty">Project Name</label>
+                              <div class="col-sm-9">
+                                <label class="col-form-label">Falcon Towers</label>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-form-label" i18n="@@landIdHoldingProperty">Land ID</label>
+                              <div class="col-sm-9">
+                                <label class="col-form-label">123456789</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group row">
+                              <label class="col-form-label" i18n="@@unitIdholdingProperty">Unit ID</label>
+                              <div class="col-sm-9">
+                                <label class="col-form-label">611</label>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-group row">
+                              <label class="col-form-label" i18n="@@OwnershipRecipientTypeHoldingProperty">Ownership Recipient Type</label>
+                              <div class="col-sm-9">
+                                <label class="col-form-label">Falcon Towers</label>
+                                <ng-select required="isSearchByUnit()" [items]="projectsOptions | async" name="project"
+                              [hideSelected]="true" [(ngModel)]="formData.projectId" [minTermLength]="1"
+                              bindLabel="value.ar" typeToSearchText="Please enter 1 or more characters" bindValue="key"
+                              [typeahead]="projectsSearchInput$" notFoundText="لا يوجد نتائج للبحث"
+                              [loading]="projectDataOptionsLoading" #project="ngModel"
+                              (keyup)="setSearchType('unitId', $event)" (blur)="checkTypeAndValues('projectId')"
+                              (change)="resetUnit()" (keyup.enter)="testEnter('projectId',formData.projectId)">
+
+                            </ng-select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-form-label" i18n="@@delivedByHoldingProperty">Recived By</label>
+                              <div class="col-sm-9">
+                                <ng-select required="isSearchByUnit()" [items]="unitsOptions" name="units"
+                                [(ngModel)]="formData.unitId" bindLabel="value.ar" bindValue="key"
+                                notFoundText="لا يوجد نتائج للبحث" #unitId="ngModel" (open)="loadUnitsOptions()"
+                                (keyup.enter)="testEnter('projectId',formData.projectId)">
+                              </ng-select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group row">
+                              <label class="col-form-label" i18n="@@copyOftheAgencyOrAuthorizationHoldingProperty">
+                                Copy Of the Agency Or Authorization
+                              </label>
+                              <div class="col-sm-9">
+                                <input type="file"
+                                class="custom-file-input"
+                                />
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div style="width: 100%; text-align: center;">
+                        <button style="margin-bottom: 1vh;" type="submit" class="btn btn-primary"
+                          i18n='="@@submit'>Submit</button>
+                          </div>
+                      </div>
+                      <!-- <a href="" (click)="forgetPasswordFun()">  -->
+                      <!-- </a> -->
+                    </form>
+                  </ngx-smart-modal>
+                  <!-- <div class="card-footer">
+      <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid"
+        i18n="@@formSubmitLabel">Submit</button>
+    </div> -->
+                </form>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
