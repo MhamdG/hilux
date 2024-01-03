@@ -365,52 +365,105 @@
           </div>
         </div>
 
-        <div class="form-group row" *ngFor="let owner of getOwnersData(); let j = index">
-          <div class="col-sm-6" *ngIf="isNotGovernmentInstitute()">
-            <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwner">Owner
-                <span>*</span>
-              </label>
-              <div class="col-sm-9">
-                <ng-select class="rtl" [items]="ownerOptions | async" [name]="getName('ownerId', j)"
-                  [hideSelected]="true" required="true" [minTermLength]="4" [(ngModel)]="owner.ownerId"
-                  [loading]="dataOptionsLoading" bindLabel="value.ar" bindValue="key"
-                  typeToSearchText="Please enter 4 or more characters" notFoundText="لا يوجد نتائج للبحث"
-                  [typeahead]="searchInput$" #ownerId="ngModel">
-                </ng-select>
-                <div *ngIf="ownerId.invalid && (ownerId.dirty || ownerId.touched)" class="alert alert-danger">
-                  <div *ngIf="ownerId.errors?.required">
-                    Owner can not be blank
+
+
+
+        <!-- <div *ngIf="formData.owners.length > 0"> -->
+          <div class="form-group row" *ngFor="let owner of getOwnersData(); let j = index">
+            <div class="col-sm-6" *ngIf="isNotGovernmentInstitute()">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwner">Owner
+                  <span>*</span>
+                </label>
+                <div class="col-sm-9">
+                  <ng-select class="rtl" [items]="ownerOptions | async" [name]="getName('ownerId', j)"
+                    [hideSelected]="true" required="true" [minTermLength]="4" [(ngModel)]="owner.ownerId"
+                    [loading]="dataOptionsLoading" bindLabel="value.ar" bindValue="key"
+                    typeToSearchText="Please enter 4 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                    [typeahead]="searchInput$" #ownerId="ngModel">
+                  </ng-select>
+                  <div *ngIf="ownerId.invalid && (ownerId.dirty || ownerId.touched)" class="alert alert-danger">
+                    <div *ngIf="ownerId.errors?.required">
+                      Owner can not be blank
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6" *ngIf="isNotGovernmentAndIndividualInstitute()">
-            <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwnershipPercentage">Ownership percentage
-                <span>*</span>
-              </label>
-              <div class="col-sm-9">
-                <input [name]="getName('share', j)" maxlength="6" required="true" type="text" class="form-control"
-                  [(ngModel)]="owner.share" #share="ngModel" numbersOnly precision="2">
-                <div class="alert alert-danger"
-                  *ngIf="share.invalid && (share.dirty || share.touched) && share.errors?.required">
-                  Ownership Percentage can not be blank
-                </div>
+            <div class="col-sm-6" *ngIf="isNotGovernmentAndIndividualInstitute()">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwnershipPercentage">Ownership percentage
+                  <span>*</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [name]="getName('share', j)" maxlength="6" required="true" type="text" class="form-control"
+                    [(ngModel)]="owner.share" #share="ngModel" numbersOnly precision="2">
+                  <div class="alert alert-danger"
+                    *ngIf="share.invalid && (share.dirty || share.touched) && share.errors?.required">
+                    Ownership Percentage can not be blank
+                  </div>
 
-                <div class="alert alert-danger" *ngIf="false">
-                  Ownership Percentage Total should be 100
+                  <div class="alert alert-danger" *ngIf="false">
+                    Ownership Percentage Total should be 100
+                  </div>
                 </div>
               </div>
             </div>
+            <div class="col-sm-12 mt-2 d-flex flex-row-reverse" *ngIf="isNotGovernmentInstitute()">
+              <button type="button" (click)="deleteRow(j)" class="btn btn-sm btn-danger" *ngIf="j!= 0">Remove</button>
+              <button type="button" (click)="addRow()" class="btn btn-sm btn-primary" *ngIf="j == 0">add</button>
+              <hr *ngIf="j != 0" />
+            </div>
           </div>
-          <div class="col-sm-12 mt-2 d-flex flex-row-reverse" *ngIf="isNotGovernmentInstitute()">
-            <button type="button" (click)="deleteRow(j)" class="btn btn-sm btn-danger" *ngIf="j!= 0">Remove</button>
-            <button type="button" (click)="addRow()" class="btn btn-sm btn-primary" *ngIf="j == 0">add</button>
-            <hr *ngIf="j != 0" />
+        <!-- </div> -->
+        <!-- <div *ngIf="formData.owners.length == 0">
+          <div class="form-group row" *ngFor="let owner of getOwnersData(); let j = index">
+            <div class="col-sm-6" >
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwner">Owner
+                  <span>*</span>
+                </label>
+                <div class="col-sm-9">
+                  <ng-select class="rtl" [items]="ownerOptions | async" [name]="getName('ownerId', j)"
+                    [hideSelected]="true" required="true" [minTermLength]="4" [(ngModel)]="owner.ownerId"
+                    [loading]="dataOptionsLoading" bindLabel="value.ar" bindValue="key"
+                    typeToSearchText="Please enter 4 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                    [typeahead]="searchInput$" #ownerId="ngModel">
+                  </ng-select>
+                  <div *ngIf="ownerId.invalid && (ownerId.dirty || ownerId.touched)" class="alert alert-danger">
+                    <div *ngIf="ownerId.errors?.required">
+                      Owner can not be blank
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6" *ngIf="isNotGovernmentAndIndividualInstitute()">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwnershipPercentage">Ownership percentage
+                  <span>*</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [name]="getName('share', j)" maxlength="6" required="true" type="text" class="form-control"
+                    [(ngModel)]="owner.share" #share="ngModel" numbersOnly precision="2">
+                  <div class="alert alert-danger"
+                    *ngIf="share.invalid && (share.dirty || share.touched) && share.errors?.required">
+                    Ownership Percentage can not be blank
+                  </div>
+
+                  <div class="alert alert-danger" *ngIf="false">
+                    Ownership Percentage Total should be 100
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 mt-2 d-flex flex-row-reverse" *ngIf="isNotGovernmentInstitute()">
+              <button type="button" (click)="deleteRow(j)" class="btn btn-sm btn-danger" *ngIf="j!= 0">Remove</button>
+              <button type="button" (click)="addRow()" class="btn btn-sm btn-primary" *ngIf="j == 0">add</button>
+              <hr *ngIf="j != 0" />
+            </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- <div class="form-group row" *ngIf="isNotGovernmentAndIndividualInstitute()"> -->
         <div class="form-group row">

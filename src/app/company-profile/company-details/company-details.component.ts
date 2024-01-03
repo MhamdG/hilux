@@ -133,50 +133,11 @@ export class CompanyDetailsComponent implements OnInit {
   async loadOwnerOptions() {
 
 
-    // let vals = [];
-    // await this.searchInput$.subscribe(val => vals.push(val));
+   
     await this.searchInput$.subscribe(val => {
       // vals.push(val);
       this.LoadOptionsData(val);
     });
-
-    // setTimeout(async () => {
-    //   if (vals.length > 0) {
-    //     for (let index = 0; index < vals.length; index++) {
-    //       let term = vals[index];
-    //       await setTimeout(() => {
-    //         this.lookupsService.loadOwners3({ term })
-    //           .subscribe((option) => {
-    //             // this.loadOwnerOptions(owner.ownerId)
-    //             let obj = option;
-    //             this.ownerOptions = concat(
-    //               of([]), // default items
-    //               [obj]
-    //             );
-    //           })
-    //       },
-    //         500)
-
-    //     }
-    //   } else {
-    //   }
-    // }, 500);
-
-
-    // this.ownerOptions = concat(
-    //   of([]), // default items
-    //   this.searchInput$.pipe(
-    //     distinctUntilChanged(),
-    //     tap(() => this.dataOptionsLoading = true),
-    //     switchMap(term => {
-    //       return this.lookupsService.loadOwners3({ term }).pipe(
-    //         catchError(() => of([])), // empty list on error
-    //         tap(() => this.dataOptionsLoading = false)
-    //       )
-    //     })
-    //   )
-    // );
-
 
   }
   async LoadOptionsData(term) {
@@ -229,7 +190,7 @@ export class CompanyDetailsComponent implements OnInit {
   }
 
   getOwnersData() {
-    return this.formData.owners ? this.formData.owners : (this.formData.owners = [{}]);
+    return this.formData.owners && this.formData.owners.length > 0 ? this.formData.owners : (this.formData.owners = [{}]);
     // return this.ownersList =  this.formData.owners ? this.formData.owners :  [{}];
   }
 
