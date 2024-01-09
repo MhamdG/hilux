@@ -115,6 +115,9 @@ export class CompanyDetailsComponent implements OnInit {
         this.router.navigate(['error'])
       })
   }
+  clearChanges(){
+    window.location.reload();
+  }
 
   loadEmiratesOptions() {
     this.lookupsService.loadEmiratesOptions()

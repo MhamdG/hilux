@@ -101,6 +101,9 @@ export class CustomerDetailsComponent implements OnInit {
       }
     }
   }
+  clearChanges(){
+    window.location.reload();
+  }
   updateData(formData: any) {
     let fd = new FormData();
     fd.append('customer', JSON.stringify(formData));

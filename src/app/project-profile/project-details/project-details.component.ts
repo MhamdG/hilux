@@ -106,6 +106,9 @@ export class ProjectDetailsComponent implements OnInit {
       this.router.navigate(['error'])
     })
   }
+  clearChanges(){
+    window.location.reload();
+  }
 
   loadDeveloperOptions() {
     this.developerOptions = concat(

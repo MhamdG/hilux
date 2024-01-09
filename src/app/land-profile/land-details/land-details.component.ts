@@ -98,6 +98,9 @@ export class LandDetailsComponent implements OnInit {
       this.distructsTypesOptions = data;
     })
   }
+  clearChanges(){
+    window.location.reload();
+  }
  prepareEstablishmentContractFileField() {
     return {
       fieldID: "districtImage",

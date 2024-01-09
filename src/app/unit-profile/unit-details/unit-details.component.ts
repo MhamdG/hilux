@@ -98,6 +98,9 @@ export class UnitDetailsComponent implements OnInit {
       this.router.navigate(['error'])
     })
   }
+  clearChanges(){
+    window.location.reload();
+  }
    prepareGalleryField() {
     return {
       fieldID: "sitePLAN",
