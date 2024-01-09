@@ -5,7 +5,7 @@
       <div class="card-body">
         <div class="form-group row">
           <div class="col-sm-6">
-            <div class="form-group row">
+            <div class="form-group row"> 
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileSearchDeveloperName">Developer Name
                 <span>*</span>
               </label>
@@ -200,7 +200,7 @@
                 <span *ngIf="isNotMain()">*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="buildingNameAr" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNameAr" #buildingNameAr="ngModel" disabled="true">
+                <input disabled="true" type="text" name="buildingNameAr" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNameAr" #buildingNameAr="ngModel" disabled="true">
                 <div *ngIf="buildingNameAr.invalid && (buildingNameAr.dirty || buildingNameAr.touched)" class="alert alert-danger">
                   <div *ngIf="buildingNameAr.errors?.required">
                     Building Name in Arabic can not be blank
@@ -215,7 +215,7 @@
                 <span *ngIf="isNotMain()">*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="buildingNameEn" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNameEn" #buildingNameEn="ngModel" disabled="true">
+                <input disabled="true" type="text" name="buildingNameEn" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNameEn" #buildingNameEn="ngModel" disabled="true">
                 <div *ngIf="buildingNameEn.invalid && (buildingNameEn.dirty || buildingNameEn.touched)" class="alert alert-danger">
                   <div *ngIf="buildingNameEn.errors?.required">
                     Building Name in English can not be blank
@@ -233,7 +233,7 @@
                 <span *ngIf="isNotMain()">*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="buildingNumber" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNumber" #buildingNumber="ngModel" disabled="true">
+                <input  type="text" name="buildingNumber" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNumber" #buildingNumber="ngModel" disabled="true">
                 <div *ngIf="buildingNumber.invalid && (buildingNumber.dirty || buildingNumber.touched)" class="alert alert-danger">
                   <div *ngIf="buildingNumber.errors?.required">
                     Building Number can not be blank
@@ -573,7 +573,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingPermitNumber">Building permit number
               </label>
               <div class="col-sm-9">
-                <input name="buildingPermitNumber" type="text" class="form-control" [(ngModel)]="formData.buildingPermitNumber" #buildingPermitNumber="ngModel">
+                <input disabled="true" name="buildingPermitNumber" type="text" class="form-control" [(ngModel)]="formData.buildingPermitNumber" #buildingPermitNumber="ngModel">
               </div>
             </div>
           </div>
@@ -668,7 +668,7 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input name="projectCompletionpercentage" type="text" class="form-control" required="true" [(ngModel)]="formData.projectCompletionpercentage" #projectCompletionpercentage="ngModel" numbersOnly precision="0" [disabled]="isProjectCompleted()">
+                <input disabled="true" name="projectCompletionpercentage" type="text" class="form-control" required="true" [(ngModel)]="formData.projectCompletionpercentage" #projectCompletionpercentage="ngModel" numbersOnly precision="0" [disabled]="isProjectCompleted()">
                 <div *ngIf="projectCompletionpercentage.invalid && (projectCompletionpercentage.dirty || projectCompletionpercentage.touched)" class="alert alert-danger">
                   <div *ngIf="projectCompletionpercentage.errors?.pattern || projectCompletionpercentage.errors?.required">
                     Enter valid Project Completion Percentage
@@ -712,7 +712,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileConsultantContractValue">Consultant contract Value
               </label>
               <div class="col-sm-9">
-                <input name="consultantContractValue" type="text" class="form-control" [(ngModel)]="formData.consultantContractValue" #consultantContractValue="ngModel" numbersOnly precision="0">
+                <input disabled="true" name="consultantContractValue" type="text" class="form-control" [(ngModel)]="formData.consultantContractValue" #consultantContractValue="ngModel" numbersOnly precision="0">
                 <div *ngIf="consultantContractValue.invalid && (consultantContractValue.dirty || consultantContractValue.touched)" class="alert alert-danger">
                   <div *ngIf="consultantContractValue.errors?.pattern || consultantContractValue.errors?.minlength">
                     Enter valid Consultant contract Value
@@ -756,7 +756,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileContractorContractValue">Contractor contract Value
               </label>
               <div class="col-sm-9">
-                <input name="contractorContractValue" type="text" class="form-control" [(ngModel)]="formData.contractorContractValue" #contractorContractValue="ngModel" numbersOnly precision="0">
+                <input disabled="true" name="contractorContractValue" type="text" class="form-control" [(ngModel)]="formData.contractorContractValue" #contractorContractValue="ngModel" numbersOnly precision="0">
                 <div *ngIf="contractorContractValue.invalid && (contractorContractValue.dirty || contractorContractValue.touched)" class="alert alert-danger">
                   <div *ngIf="contractorContractValue.errors?.pattern || contractorContractValue.errors?.minlength">
                     Enter valid Contractor contract Value
