@@ -39,6 +39,21 @@
                   <label i18n="@@singleApplicationChannelLabel">Channel: </label><span>{{response.channel}}</span>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-sm-6" *ngIf="response.rejectionReason">
+                  <label>سبب الرفض</label><span>{{response.rejectionReason}}</span>
+                </div>
+                <div class="col-sm-6" *ngIf="response.rejectionRemarks">
+                  <label>ملاحظات الرفض</label><span>{{response.rejectionRemarks}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6" *ngIf="response.editRemarks">
+                  <label>ملاحظات الارجاع</label><span>{{response.editRemarks}}</span>
+                </div>
+                <div class="col-sm-6">
+                </div>
+              </div>
               <div class="card" *ngFor="let application_step of response.steps; let i = index">
                 <div class="card-header border-0">
                   <div class="card-tools">
