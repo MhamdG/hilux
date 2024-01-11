@@ -145,7 +145,7 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
+                <!-- <ng-select
                   class="rtl"
                   required="true"
                   [items]="isMainOptions"
@@ -156,12 +156,18 @@
                   notFoundText="لا يوجد نتائج للبحث"
                   #isMain="ngModel" disabled="true"
                 >
-                </ng-select>
-                <div *ngIf="isMain.invalid && (isMain.dirty || isMain.touched)" class="alert alert-danger">
+                </ng-select> -->
+                <input *ngIf="formData.isMain == 0" [disabled]="true" type="text" name="isMain" class="form-control" 
+                  value="فرعي">
+                  <input *ngIf="formData.isMain == 1" [disabled]="true" type="text" name="isMain" class="form-control" 
+                  value="رئيسي">
+                  <input *ngIf="formData.isMain != 1 && formData.isMain != 0 " [disabled]="true" type="text" name="isMain" class="form-control" 
+                  [(ngModel)]="formData.isMain" #isMain="ngModel" >
+                <!-- <div *ngIf="isMain.invalid && (isMain.dirty || isMain.touched)" class="alert alert-danger">
                   <div *ngIf="isMain.errors?.required">
                     Is Main can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -171,7 +177,7 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
+                <!-- <ng-select
                   class="rtl"
                   [items]="projectsOptions | async"
                   required="true"
@@ -182,9 +188,10 @@
                   notFoundText="لا يوجد نتائج للبحث" [loading]="projectDataOptionsLoading"
                   #mainProject="ngModel" disabled="true"
                 >
-                </ng-select>
-                <div *ngIf="mainProject.invalid && (mainProject.dirty || mainProject.touched)" class="alert alert-danger">
-                  <div *ngIf="mainProject.errors?.required">
+                </ng-select> -->
+                <input [disabled]="true" type="text" name="mainProjectId" class="form-control" [(ngModel)]="formData.mainProjectId" #mainProjectId="ngModel">
+                <div *ngIf="mainProjectId.invalid && (mainProjectId.dirty || mainProjectId.touched)" class="alert alert-danger">
+                  <div *ngIf="mainProjectId.errors?.required">
                     Main Project can not be blank
                   </div>
                 </div>
@@ -266,7 +273,7 @@
                 <span *ngIf="isNotMain()">*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
+                <!-- <ng-select
                   class="rtl"
                   [required]="isNotMain()"
                   [items]="landsoptions | async"
@@ -277,12 +284,13 @@
                   notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
                   #parcelId="ngModel" disabled="true"
                 >
-                </ng-select>
-                <div *ngIf="parcelId.invalid && (parcelId.dirty || parcelId.touched)" class="alert alert-danger">
+                </ng-select> -->
+                <input [disabled]="true" type="text" name="landId" class="form-control" [(ngModel)]="formData.landId" #landId="ngModel">
+                <!-- <div *ngIf="landId.invalid && (landId.dirty || parcelId.touched)" class="alert alert-danger">
                   <div *ngIf="parcelId.errors?.required">
                     Parcel Id can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>

@@ -631,13 +631,13 @@
           <div class="col-sm-6">
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileProjectStatus">Project Status
-                <span>*</span>
+                <!-- <span>*</span> -->
               </label>
               <div class="col-sm-9">
                 <ng-select
                   class="rtl"
                   [items]="projectStatusOptions"
-                  required="true"
+                  required="false"
                   name="projectStatus"
                   [(ngModel)]="formData.projectStatusId"
                   bindLabel="value.ar"
