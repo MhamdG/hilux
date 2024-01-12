@@ -6018,6 +6018,10 @@
       <source>Meter Join Actual Area</source>
         <target>المساحة المشتركة الفعلية</target>
       </trans-unit>
+       <trans-unit id="landCancel" datatype="html">
+      <source>Land Cancel</source>
+        <target>إلغاء الأرض</target>
+      </trans-unit>
       
       
     </body>

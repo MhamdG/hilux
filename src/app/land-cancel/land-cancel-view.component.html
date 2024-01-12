@@ -1,0 +1,1012 @@
+<section class="content" *ngIf="profile$ | async as profile">
+  <div class="container-fluid">
+    <app-alerts [errors]="formErrors"></app-alerts>
+    <form *ngIf="flagwithdrawData" class="form-horizontal" (ngSubmit)="searchResourceData(searchData)" #sf="ngForm" enctype='multipart/form-data'
+      novalidate>
+      <div class="card-body">
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchLandId">Land Id</label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch" [hideSelected]="true"
+                  [minTermLength]="1" [(ngModel)]="searchData.term" [loading]="landNameOptionsLoading"
+                  bindLabel="value.ar" bindValue="value.entityId" typeToSearchText="Please enter 1 or more characters"
+                  notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchLandNameInput$"
+                  (keyup)="setSearchType('term', $event)" [disabled]="isSearchBy('searchOldLandId')"
+                  (blur)="checkTypeAndValues('term')" #LandNameSearch="ngModel">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchOldLandId">
+                Old Land Id
+              </label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="searchOldLandOptions | async" name="OldLandIdSearch"
+                  [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.searchOldLandId"
+                  [loading]="searchOldLandOptionsLoading" bindLabel="value.ar" bindValue="key"
+                  typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                  [typeahead]="searchOldLandIdInput$" #OldLandIdSearch="ngModel"
+                  (keyup)="setSearchType('searchOldLandId', $event)" [disabled]="isSearchBy('term')"
+                  (blur)="checkTypeAndValues('searchOldLandId')">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="isSearchFormValid()"
+          i18n="@@landProfileSearchButton">Search</button>
+      </div>
+    </form>
+
+    <hr />
+
+    <form class="form-horizontal" (ngSubmit)="updateData(formData)" #f="ngForm" enctype='multipart/form-data'
+      novalidate>
+
+      <div *ngIf="flagwithdrawData"  class="card-body">
+
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
+              <button type="button" (click)="withdrawData()"
+                style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;margin-top: 50px;"
+                class="btn btn-primary" i18n="@@withdrawDataFromMunicipality">Withdraw Data From Municipality</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="offset-sm-2 col-sm-10 placeholder">
+              <div class="form-check float-right">
+                <!-- <input name="freeHold" type="checkbox" class="form-check-input" [(ngModel)]="formData.freeHold"> -->
+                <input name="freeHold" [checked]="formData.freeHold == 1 ? true :false" type="checkbox" class="form-check-input" >
+                <label class="form-check-label" i18n="@@landProfileFreeHold">Free Hold</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileLandID">Land ID
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="landId" required="true" class="form-control" [(ngModel)]="formData.landId"
+                  #landId="ngModel" numbersOnly precision="0" [disabled]="true">
+                <div *ngIf="landId.invalid && (landId.dirty || landId.touched)" class="alert alert-danger">
+                  <div *ngIf="landId.errors?.required">
+                    Land ID can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileOldLandID">Old Land ID
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="oldLandId" class="form-control" [(ngModel)]="formData.oldLandId"
+                  #oldLandId="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@city">City</label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="citiesOptions" name="city" required="false" [(ngModel)]="formData.cityId"
+                  bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث" #cityId="ngModel"
+                  [disabled]="true">
+                </ng-select>
+                <div *ngIf="cityId.invalid && (cityId.dirty || cityId.touched)" class="alert alert-danger">
+                  <div *ngIf="cityId.errors?.required">
+                    City can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@Sector">Sector</label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" required="false" [items]="sectorsOptions" name="sector"
+                  [(ngModel)]="formData.sectorId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #sectorId="ngModel" [disabled]="true">
+                </ng-select>
+                <div *ngIf="sectorId.invalid && (sectorId.dirty || sectorId.touched)" class="alert alert-danger">
+                  <div *ngIf="sectorId.errors?.required">
+                    Sector can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@District">District</label>
+              <div class="col-sm-9">
+                <!-- <input type="text" name="district" required="true" class="form-control" [(ngModel)]="formData.sectionId"
+                  #district="ngModel" [disabled]="true"> -->
+                  <ng-select class="rtl" [items]="distructsTypesOptions" name="sectionId" [(ngModel)]="formData.sectionId"
+                  required="false" [disabled]="true" bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث"
+                  #sectionId="ngModel">
+                </ng-select>
+                <!-- <input type="text" name="sectionId" required="false" class="form-control" [(ngModel)]="formData.sectionId"
+                #sectionId="ngModel" [disabled]="true" numbersOnly precision="0"> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@Plot">Plot</label>
+              <div class="col-sm-9">
+                <input type="text" name="plot" required="false" class="form-control" [(ngModel)]="formData.pieceNumber"
+                  #plot="ngModel" numbersOnly precision="0" [disabled]="true">
+                <div *ngIf="plot.invalid && (plot.dirty || plot.touched)" class="alert alert-danger">
+                  <div *ngIf="plot.errors?.required">
+                    Plot can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileLandUse">Land Use
+              </label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="mainUsageTypesOptions" name="landUse"
+                  [(ngModel)]="formData.mainUsageTypeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #landUse="ngModel" [disabled]="true">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileSubLandUse">Sub Land Use
+              </label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="subUsageTypesOptions" name="subLandUse"
+                  [(ngModel)]="formData.subUsageTypeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #subLandUse="ngModel" [disabled]="true">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfilePropertyType">Property Type
+              </label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="propertyTypesOptions" name="propertyType" [(ngModel)]="formData.typeId"
+                  bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث" #propertyTypeId="ngModel"
+                  [disabled]="true">
+                </ng-select>
+                <div *ngIf="propertyTypeId.invalid && (propertyTypeId.dirty || propertyTypeId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="propertyTypeId.errors?.required">
+                    Property Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileLandAreaM2">Land Area m2
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="landAreaM2" class="form-control" [(ngModel)]="formData.area"
+                  #landAreaM2="ngModel" numbersOnly precision="2" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileFloorsasperSiteMap">Floors as per Site Map
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="floorsasperSiteMap" class="form-control" [(ngModel)]="formData.floors"
+                  #floorsasperSiteMap="ngModel" numbersOnly precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileMunicipalityRemarks">Municipality
+                Remarks</label>
+              <div class="col-sm-9">
+                <textarea name="municipalityRemarks" class="form-control" rows="3" [disabled]="true"
+                  [(ngModel)]="formData.municipalityRemarks"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileEngineeringsRemarks">Engineerings
+                Remarks</label>
+              <div class="col-sm-9">
+                <textarea name="engineeringsRemarks" class="form-control" rows="3" [disabled]="true"
+                  [(ngModel)]="formData.remarks"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileStreetType">Street Type
+              </label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="streetsTypesOptions" name="streetType"
+                  [(ngModel)]="formData.streetTypeId" bindLabel="value.ar" bindValue="key" [disabled]="true"
+                  notFoundText="لا يوجد نتائج للبحث" #streetTypeId="ngModel">
+                </ng-select>
+                <div *ngIf="streetTypeId.invalid && (streetTypeId.dirty || streetTypeId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="streetTypeId.errors?.required">
+                    Street Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileStreetName">Street Name
+              </label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="streetsNamesOptions" name="streetName" [(ngModel)]="formData.streetId"
+                  bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث" #streetNameId="ngModel"
+                  [disabled]="true">
+                </ng-select>
+                <div *ngIf="streetNameId.invalid && (streetNameId.dirty || streetNameId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="streetNameId.errors?.required">
+                    Street Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <h5>الارتدادت</h5>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNorth">North
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="north" class="form-control" [(ngModel)]="formData.north" #north="ngModel"
+                  [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileSouth">South
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="south" class="form-control" [(ngModel)]="formData.south" #south="ngModel"
+                  [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileEast">East
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="east" class="form-control" [(ngModel)]="formData.east" #east="ngModel"
+                  [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileWest">West
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="west" class="form-control" [(ngModel)]="formData.west" #west="ngModel"
+                  [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <h5>تفاصيل العقار</h5>
+        </div>
+
+
+        <div class="form-group row" *ngIf="isNotVacantLand()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileBuildingArea">Building area
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="buildingArea" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.buildingArea" #buildingArea="ngModel" numbersOnly precision="2"
+                  [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofBuiltFloors">Number of Built Floors
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofBuiltFloors" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofBuiltFloors" #numberofBuiltFloors="ngModel" numbersOnly
+                  precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isNotVacantLand()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileCompletionRate">Completion rate
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="completionRate" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.completionRate" #completionRate="ngModel" numbersOnly
+                  precision="2" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileBuildingAge">Building Age
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="buildingAge" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.buildingAge" #buildingAge="ngModel" numbersOnly precision="0"
+                  [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isNotVacantLand()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10 placeholder">
+                <div class="form-check float-right">
+                  <input name="propertyLeased" type="checkbox" class="form-check-input"
+                    [(ngModel)]="formData.buildingDetails.propertyLeased" [disabled]="true">
+                  <label class="form-check-label" i18n="@@landProfilePropertyLeased">Property leased</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row" *ngIf="isLeased()">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileAnnualincomefromRent">Annual income from rent
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="annualIncomeFromRent" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.annualIncomeFromRent" #annualIncomeFromRent="ngModel"
+                  numbersOnly precision="2" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isNotVacantLand()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileAnnualMaintenanceAmount">Annual maintenance
+                amount
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="annualMaintenanceAmount" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.annualMaintenanceAmount" #annualMaintenanceAmount="ngModel"
+                  numbersOnly precision="2" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isShoporShoppingMall()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofShops">Number of shops
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofShops" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofShops" #numberofShops="ngModel" numbersOnly
+                  precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isShoporShoppingMall()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofVacantShops">Number of vacant shops
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofVacantShops" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofVacantShops" #numberofVacantShops="ngModel" numbersOnly
+                  precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileTheNumberofRentedShops">The number of rented
+                shops
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="theNumberofRentedShops" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.theNumberofRentedShops" #theNumberofRentedShops="ngModel"
+                  numbersOnly precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group row" *ngIf="isWarehouse()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofWarehouses">Number of warehouses
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofWarehouses" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofWarehouses" #numberofWarehouses="ngModel" numbersOnly
+                  precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isWarehouse()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofVacantWarehouses">Number of vacant
+                warehouses
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofVacantWarehouses" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofVacantWarehouses" #numberofVacantWarehouses="ngModel"
+                  numbersOnly precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileTheNumberofRentedWarehouses">The number of
+                rented warehouses
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="theNumberofRentedWarehouses" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.theNumberofRentedWarehouses"
+                  #theNumberofRentedWarehouses="ngModel" numbersOnly precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isLabourerHousing()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofRooms">Number of rooms
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofRooms" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofRooms" #numberofRooms="ngModel" numbersOnly
+                  precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofServiceUnits">Number of service units
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofServiceUnits" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofServiceUnits" #numberofServiceUnits="ngModel"
+                  numbersOnly precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isLabourerHousing()">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofVacantRooms">Number of vacant rooms
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofVacantRooms" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofVacantRooms" #numberofVacantRooms="ngModel" numbersOnly
+                  precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNumberofRentedRooms">Number of rented rooms
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="numberofRentedRooms" class="form-control"
+                  [(ngModel)]="formData.buildingDetails.numberofRentedRooms" #numberofRentedRooms="ngModel" numbersOnly
+                  precision="0" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <h5>Site Plan</h5>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" i18n="@@landProfileDistrictImage">District Image</label>
+              <div class="text-center col-sm-2 gallery-wrapper profile-user-img img-fluid img-circle">
+                <app-media-gallery [medias]="getImageAttachments(formData, 'districtImageUrl')"></app-media-gallery>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" i18n="@@landProfileSectorImage">Sector Image</label>
+              <div class="text-center col-sm-2 gallery-wrapper profile-user-img img-fluid img-circle">
+                <app-media-gallery [medias]="getImageAttachments(formData, 'sectorImageUrl')"></app-media-gallery>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" i18n="@@landProfileParcelImage">Parcel Image</label>
+              <div class="text-center col-sm-2 gallery-wrapper profile-user-img img-fluid img-circle">
+                <app-media-gallery [medias]="getImageAttachments(formData, 'parcelImageUrl')"></app-media-gallery>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <h5>التشطيبات الخارجية و الهيكل</h5>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileNorthFacade">North facade
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="northFacade" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.northFacade" #northFacade="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileEastern">Eastern
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="eastern" class="form-control" [(ngModel)]="formData.buildingFinishes.eastern"
+                  #eastern="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileSouthern">Southern
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="southern" class="form-control" [(ngModel)]="formData.buildingFinishes.southern"
+                  #southern="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileWestern">Western
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="western" class="form-control" [(ngModel)]="formData.buildingFinishes.western"
+                  #western="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileStructureType">Structure type
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="structureType" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.structureType" #structureType="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <h5>تشطيبات الارضيات</h5>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileExternalYards">External yards
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="externalYards" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.externalYards" #externalYards="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileReception">Reception
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="reception" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.reception" #reception="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileTheEntrance">The Entrance
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="theEntrance" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.theEntrance" #theEntrance="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileTheRooms">The rooms
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="theRooms" class="form-control" [(ngModel)]="formData.buildingFinishes.theRooms"
+                  #theRooms="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <h5>أنواع الاجهزة و المعدات و الخدمات و ملاحق</h5>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileLiftsStairsEscalators">Lifts / Stairs /
+                Escalators
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="liftsStairsEscalators" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.liftsStairsEscalators" #liftsStairsEscalators="ngModel"
+                  [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileElectricity">Electricity
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="electricity" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.electricity" #electricity="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileAirConditioning">Air conditioning
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="airConditioning" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.airConditioning" #airConditioning="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileAppendix">Appendix
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="appendix" class="form-control" [(ngModel)]="formData.buildingFinishes.appendix"
+                  #appendix="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileGas">Gas
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="gas" class="form-control" [(ngModel)]="formData.buildingFinishes.gas"
+                  #gas="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileCarParking">car parking
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="carParking" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.carParking" #carParking="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileMetalAwnings">Metal awnings
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="metalAwnings" class="form-control"
+                  [(ngModel)]="formData.buildingFinishes.metalAwnings" #metalAwnings="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfileGates">Gates
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="gates" class="form-control" [(ngModel)]="formData.buildingFinishes.gates"
+                  #gates="ngModel" [disabled]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@landProfilePropertyDescription">Property
+                Description</label>
+              <div class="col-sm-9">
+                <textarea name="propertyDescription" class="form-control" rows="3" [disabled]="true"
+                  [(ngModel)]="formData.buildingFinishes.propertyDescription"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="formData.landIdConversionsHistory.length > 0">
+          <div class="col-sm-12">
+            <label class="col-form-label" style="text-align: center;width: 100%;" i18n="@@historyOfConversionOfLandId">
+              History Of Conversion Of Land Id
+            </label>
+            <table style="border: 1px solid black;width: 100%;">
+              <thead style="border: 1px solid black;">
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@previousLandId">Previous Land Id</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@convertedTo">Converted To</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@convertedBy">Converted By</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@convertedAt">Converted At</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@remarks">Remarks</label>
+                </th>
+              </thead>
+              <tbody style="border: 1px solid black;">
+                <tr *ngFor="let item of formData.landIdConversionsHistory let j = index">
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.previousLandId}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.convertedTo}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.convertedBy}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.convertedAt}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label" *ngIf="item.comments">
+                      {{item.comments}}
+                    </label>
+                    <label class="col-form-label" *ngIf=" ! item.comments">
+                      ---
+                    </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="formData.landTreeHistory.length > 0">
+          <div class="col-sm-12">
+            <label class="col-form-label" style="text-align: center;width: 100%;" i18n="@@sortAndMerge">
+              Sort And Merge
+            </label>
+            <table style="border: 1px solid black;width: 100%;">
+              <thead style="border: 1px solid black;">
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@no">#</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@Operation">Operation</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@landId">land Id</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@convertedAt">Converted At</label>
+                </th>
+              </thead>
+              <tbody style="border: 1px solid black;">
+                <tr *ngFor="let item of formData.landTreeHistory let j = index">
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.no}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.Operation}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.landId}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.on}}
+                    </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <!-- <div class="card-footer">
+        <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid" i18n="@@formSubmitLabel">Submit</button>
+      </div> -->
+      <div *ngIf="flagwithdrawData" class="card-footer">
+        <button type="button" (click)="editFun()" class="btn btn-primary float-left" i18n="@@edit">Edit</button>
+      </div>
+      <div *ngIf="!flagwithdrawData" class="loader">
+      </div>
+      <div *ngIf="!flagwithdrawData" style="width: 100%;text-align: center;margin-top: 10px;">
+        <label class="col-form-label" i18n="@@withdrawDataFromMunicipalityLoadingTxt">
+          Land data is being retrieved from the municipality \n Please wait a few time</label>
+      </div>
+    </form>
+  </div>
+</section>
