@@ -6038,6 +6038,13 @@
       <source>Project Certificates</source>
         <target>شهادات المشروع</target>
       </trans-unit>
+      <trans-unit id="ProjectStatusKey" datatype="html">
+        <source>Project Status
+                          </source>
+        <target>حالة المشروع
+                          </target>
+                                </trans-unit>
+
       
       
     </body>
