@@ -6022,9 +6022,9 @@
       <source>Reset</source>
         <target>  إعادة البيانات</target>
       </trans-unit>
-        <trans-unit id="applicationID" datatype="html">
-      <source>Applicatio ID</source>
-        <target>الرقم المعرف</target>
+        <trans-unit id="transactionID" datatype="html">
+      <source>Transaction ID</source>
+        <target>الرقم المعاملة</target>
       </trans-unit>
        <trans-unit id="expiryDate" datatype="html">
       <source>Expiry Date</source>
@@ -6043,7 +6043,11 @@
                           </source>
         <target>حالة المشروع
                           </target>
-                                </trans-unit>
+        </trans-unit>
+       <trans-unit id="projectRegistrationNumber" datatype="html">
+      <source>Project Registration Number</source>
+        <target>رقم تسجيل المشروع</target>
+      </trans-unit>
 
       
       
