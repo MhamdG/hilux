@@ -6022,6 +6022,22 @@
       <source>Reset</source>
         <target>  إعادة البيانات</target>
       </trans-unit>
+        <trans-unit id="applicationID" datatype="html">
+      <source>Applicatio ID</source>
+        <target>الرقم المعرف</target>
+      </trans-unit>
+       <trans-unit id="expiryDate" datatype="html">
+      <source>Expiry Date</source>
+        <target>تاريخ الانتهاء</target>
+      </trans-unit>
+       <trans-unit id="issueDate" datatype="html">
+      <source>Issue Date</source>
+        <target>تاريخ الإصدار</target>
+      </trans-unit>
+        <trans-unit id="projectCertificates" datatype="html">
+      <source>Project Certificates</source>
+        <target>شهادات المشروع</target>
+      </trans-unit>
       
       
     </body>

@@ -1,32 +1,22 @@
 <section class="content" *ngIf="profile$ | async as profile">
   <div class="container-fluid">
     <app-alerts [errors]="formErrors"></app-alerts>
-    <form class="form-horizontal" (ngSubmit)="searchResourceData(searchData)" #sf="ngForm" enctype='multipart/form-data' novalidate>
+    <form class="form-horizontal" (ngSubmit)="searchResourceData(searchData)" #sf="ngForm" enctype='multipart/form-data'
+      novalidate>
       <div class="card-body">
         <div class="form-group row">
           <div class="col-sm-6">
-            <div class="form-group row"> 
+            <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileSearchDeveloperName">Developer Name
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  [items]="developerNameOptions | async"
-                  name="developerNameSearch"
-                  [hideSelected]="true"
-                  [minTermLength]="1"
-                  required="true"
-                  [(ngModel)]="searchData.searchDeveloperId"
-                  [loading]="developerNameOptionsLoading"
-                  bindLabel="value.ar"
-                  bindValue="key"
-                  typeToSearchText="Please enter 1 or more characters"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  [typeahead]="searchDeveloperNameInput$"
-                  #developerNameSearch="ngModel"
-                  (change)="resetSearchProject()"
-                >
+                <ng-select class="rtl" [items]="developerNameOptions | async" name="developerNameSearch"
+                  [hideSelected]="true" [minTermLength]="1" required="true" [(ngModel)]="searchData.searchDeveloperId"
+                  [loading]="developerNameOptionsLoading" bindLabel="value.ar" bindValue="key"
+                  typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                  [typeahead]="searchDeveloperNameInput$" #developerNameSearch="ngModel"
+                  (change)="resetSearchProject()">
                 </ng-select>
               </div>
             </div>
@@ -38,22 +28,11 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  [items]="projectNameOptions | async"
-                  name="projectNameSearch"
-                  [hideSelected]="true"
-                  [minTermLength]="1"
-                  required="true"
-                  [(ngModel)]="searchData.searchProjectId"
-                  [loading]="projectNameOptionsLoading"
-                  bindLabel="value.ar"
-                  bindValue="key"
-                  typeToSearchText="Please enter 1 or more characters"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  [typeahead]="searchProjectNameInput$"
-                  #projectNameSearch="ngModel"
-                >
+                <ng-select class="rtl" [items]="projectNameOptions | async" name="projectNameSearch"
+                  [hideSelected]="true" [minTermLength]="1" required="true" [(ngModel)]="searchData.searchProjectId"
+                  [loading]="projectNameOptionsLoading" bindLabel="value.ar" bindValue="key"
+                  typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                  [typeahead]="searchProjectNameInput$" #projectNameSearch="ngModel">
                 </ng-select>
               </div>
             </div>
@@ -62,31 +41,28 @@
       </div>
 
       <div class="card-footer text-center">
-        <button type="submit" class="btn btn-primary" [disabled]="sf.invalid" i18n="@@projectProfileSearchButton">Search</button>
+        <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
+          i18n="@@projectProfileSearchButton">Search</button>
       </div>
     </form>
 
-    <hr/>
+    <hr />
 
-    <form class="form-horizontal" (ngSubmit)="updateData(formData)" #f="ngForm" enctype='multipart/form-data' novalidate>
-      <div class="card-body"> <div class="form-group row">
+    <form class="form-horizontal" (ngSubmit)="updateData(formData)" #f="ngForm" enctype='multipart/form-data'
+      novalidate>
+      <div class="card-body">
+        <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileDeveloper">Developer
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  required="true"
-                  [items]="developerOptions | async"
-                  name="developer" [hideSelected]="true"
-                  [(ngModel)]="formData.developerId" [typeahead]="developerSearchInput$"
-                  bindLabel="value.ar" [minTermLength]="4"
-                  bindValue="key" [loading]="developerDataOptionsLoading"
+                <ng-select class="rtl" required="true" [items]="developerOptions | async" name="developer"
+                  [hideSelected]="true" [(ngModel)]="formData.developerId" [typeahead]="developerSearchInput$"
+                  bindLabel="value.ar" [minTermLength]="4" bindValue="key" [loading]="developerDataOptionsLoading"
                   notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
-                  #developer="ngModel" disabled="true"
-                >
+                  #developer="ngModel" disabled="true">
                 </ng-select>
                 <div *ngIf="developer.invalid && (developer.dirty || developer.touched)" class="alert alert-danger">
                   <div *ngIf="developer.errors?.required">
@@ -107,7 +83,8 @@
                 <span *ngIf="isOneOrOtherNameRequired('nameAr')">*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="nameAr" [required]="isOneOrOtherNameRequired('nameAr')" class="form-control" [(ngModel)]="formData.nameAr" #nameAr="ngModel" disabled="true">
+                <input type="text" name="nameAr" [required]="isOneOrOtherNameRequired('nameAr')" class="form-control"
+                  [(ngModel)]="formData.nameAr" #nameAr="ngModel" disabled="true">
                 <div *ngIf="nameAr.invalid && (nameAr.dirty || nameAr.touched)" class="alert alert-danger">
                   <div *ngIf="nameAr.errors?.required">
                     Name in Arabic can not be blank
@@ -122,7 +99,8 @@
                 <span *ngIf="isOneOrOtherNameRequired('nameEn')">*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text" name="nameEn" [required]="isOneOrOtherNameRequired('nameEn')" class="form-control" [(ngModel)]="formData.nameEn" #nameEn="ngModel" disabled="true">
+                <input type="text" name="nameEn" [required]="isOneOrOtherNameRequired('nameEn')" class="form-control"
+                  [(ngModel)]="formData.nameEn" #nameEn="ngModel" disabled="true">
                 <div *ngIf="nameEn.invalid && (nameEn.dirty || nameEn.touched)" class="alert alert-danger">
                   <div *ngIf="nameEn.errors?.required">
                     Name in English can not be blank
@@ -132,7 +110,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="form-group row">
           بيانات المشروع الرئيسية
         </div>
@@ -157,12 +135,12 @@
                   #isMain="ngModel" disabled="true"
                 >
                 </ng-select> -->
-                <input *ngIf="formData.isMain == 0" [disabled]="true" type="text" name="isMain" class="form-control" 
+                <input *ngIf="formData.isMain == 0" [disabled]="true" type="text" name="isMain" class="form-control"
                   value="فرعي">
-                  <input *ngIf="formData.isMain == 1" [disabled]="true" type="text" name="isMain" class="form-control" 
+                <input *ngIf="formData.isMain == 1" [disabled]="true" type="text" name="isMain" class="form-control"
                   value="رئيسي">
-                  <input *ngIf="formData.isMain != 1 && formData.isMain != 0 " [disabled]="true" type="text" name="isMain" class="form-control" 
-                  [(ngModel)]="formData.isMain" #isMain="ngModel" >
+                <input *ngIf="formData.isMain != 1 && formData.isMain != 0 " [disabled]="true" type="text" name="isMain"
+                  class="form-control" [(ngModel)]="formData.isMain" #isMain="ngModel">
                 <!-- <div *ngIf="isMain.invalid && (isMain.dirty || isMain.touched)" class="alert alert-danger">
                   <div *ngIf="isMain.errors?.required">
                     Is Main can not be blank
@@ -189,8 +167,10 @@
                   #mainProject="ngModel" disabled="true"
                 >
                 </ng-select> -->
-                <input [disabled]="true" type="text" name="mainProjectId" class="form-control" [(ngModel)]="formData.mainProjectId" #mainProjectId="ngModel">
-                <div *ngIf="mainProjectId.invalid && (mainProjectId.dirty || mainProjectId.touched)" class="alert alert-danger">
+                <input [disabled]="true" type="text" name="mainProjectId" class="form-control"
+                  [(ngModel)]="formData.mainProjectId" #mainProjectId="ngModel">
+                <div *ngIf="mainProjectId.invalid && (mainProjectId.dirty || mainProjectId.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="mainProjectId.errors?.required">
                     Main Project can not be blank
                   </div>
@@ -207,8 +187,10 @@
                 <span *ngIf="isNotMain()">*</span>
               </label>
               <div class="col-sm-9">
-                <input disabled="true" type="text" name="buildingNameAr" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNameAr" #buildingNameAr="ngModel" disabled="true">
-                <div *ngIf="buildingNameAr.invalid && (buildingNameAr.dirty || buildingNameAr.touched)" class="alert alert-danger">
+                <input disabled="true" type="text" name="buildingNameAr" [required]="isNotMain()" class="form-control"
+                  [(ngModel)]="formData.buildingNameAr" #buildingNameAr="ngModel" disabled="true">
+                <div *ngIf="buildingNameAr.invalid && (buildingNameAr.dirty || buildingNameAr.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="buildingNameAr.errors?.required">
                     Building Name in Arabic can not be blank
                   </div>
@@ -218,12 +200,15 @@
           </div>
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingNameInEnglish">Building Name in English
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingNameInEnglish">Building Name in
+                English
                 <span *ngIf="isNotMain()">*</span>
               </label>
               <div class="col-sm-9">
-                <input disabled="true" type="text" name="buildingNameEn" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNameEn" #buildingNameEn="ngModel" disabled="true">
-                <div *ngIf="buildingNameEn.invalid && (buildingNameEn.dirty || buildingNameEn.touched)" class="alert alert-danger">
+                <input disabled="true" type="text" name="buildingNameEn" [required]="isNotMain()" class="form-control"
+                  [(ngModel)]="formData.buildingNameEn" #buildingNameEn="ngModel" disabled="true">
+                <div *ngIf="buildingNameEn.invalid && (buildingNameEn.dirty || buildingNameEn.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="buildingNameEn.errors?.required">
                     Building Name in English can not be blank
                   </div>
@@ -240,8 +225,10 @@
                 <span *ngIf="isNotMain()">*</span>
               </label>
               <div class="col-sm-9">
-                <input  type="text" name="buildingNumber" [required]="isNotMain()" class="form-control" [(ngModel)]="formData.buildingNumber" #buildingNumber="ngModel" disabled="true">
-                <div *ngIf="buildingNumber.invalid && (buildingNumber.dirty || buildingNumber.touched)" class="alert alert-danger">
+                <input type="text" name="buildingNumber" [required]="isNotMain()" class="form-control"
+                  [(ngModel)]="formData.buildingNumber" #buildingNumber="ngModel" disabled="true">
+                <div *ngIf="buildingNumber.invalid && (buildingNumber.dirty || buildingNumber.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="buildingNumber.errors?.required">
                     Building Number can not be blank
                   </div>
@@ -254,8 +241,10 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingCode">Building Code
               </label>
               <div class="col-sm-9">
-                <input type="text" name="buildingCode" class="form-control" [(ngModel)]="formData.buildingCode" #buildingCode="ngModel" disabled="true">
-                <div *ngIf="buildingCode.invalid && (buildingCode.dirty || buildingCode.touched)" class="alert alert-danger">
+                <input type="text" name="buildingCode" class="form-control" [(ngModel)]="formData.buildingCode"
+                  #buildingCode="ngModel" disabled="true">
+                <div *ngIf="buildingCode.invalid && (buildingCode.dirty || buildingCode.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="buildingCode.errors?.required">
                     Building Code can not be blank
                   </div>
@@ -285,7 +274,8 @@
                   #parcelId="ngModel" disabled="true"
                 >
                 </ng-select> -->
-                <input [disabled]="true" type="text" name="landId" class="form-control" [(ngModel)]="formData.landId" #landId="ngModel">
+                <input [disabled]="true" type="text" name="landId" class="form-control" [(ngModel)]="formData.landId"
+                  #landId="ngModel">
                 <!-- <div *ngIf="landId.invalid && (landId.dirty || parcelId.touched)" class="alert alert-danger">
                   <div *ngIf="parcelId.errors?.required">
                     Parcel Id can not be blank
@@ -299,8 +289,10 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileDevPartNumber">Dev Part Number
               </label>
               <div class="col-sm-9">
-                <input type="text" name="devPartNumber" class="form-control" [(ngModel)]="formData.devPartNumber" #devPartNumber="ngModel" disabled="true">
-                <div *ngIf="devPartNumber.invalid && (devPartNumber.dirty || devPartNumber.touched)" class="alert alert-danger">
+                <input type="text" name="devPartNumber" class="form-control" [(ngModel)]="formData.devPartNumber"
+                  #devPartNumber="ngModel" disabled="true">
+                <div *ngIf="devPartNumber.invalid && (devPartNumber.dirty || devPartNumber.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="devPartNumber.errors?.required">
                     Dev Part Number can not be blank
                   </div>
@@ -316,19 +308,12 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileProjectType">Project Type
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  [items]="projectsTypesOptions"
-                  name="projectType"
-                  [(ngModel)]="formData.projectTypeId"
-                  bindLabel="value.ar"
-                  bindValue="key"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  #projectType="ngModel"
-                  disabled="true"
-                >
+                <ng-select class="rtl" [items]="projectsTypesOptions" name="projectType"
+                  [(ngModel)]="formData.projectTypeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #projectType="ngModel" disabled="true">
                 </ng-select>
-                <div *ngIf="projectType.invalid && (projectType.dirty || projectType.touched)" class="alert alert-danger">
+                <div *ngIf="projectType.invalid && (projectType.dirty || projectType.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="projectType.errors?.required">
                     Project Type can not be blank
                   </div>
@@ -343,19 +328,14 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileCompletionCertificateDate">Completion Certificate Date
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileCompletionCertificateDate">Completion
+                Certificate Date
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                name="completionCertificateDate"
-                class="form-control"
-                (dateTimeChange)="formatDate('completionCertificateDate')"
-                [(ngModel)]="formData.completionCertificateDate"
-                [owlDateTime]="dt6"
-                [owlDateTimeTrigger]="dt6"
-                #completionCertificateDate="ngModel"
-                disabled="true"
-                >
+                <input type="text" name="completionCertificateDate" class="form-control"
+                  (dateTimeChange)="formatDate('completionCertificateDate')"
+                  [(ngModel)]="formData.completionCertificateDate" [owlDateTime]="dt6" [owlDateTimeTrigger]="dt6"
+                  #completionCertificateDate="ngModel" disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt6></owl-date-time>
               </div>
             </div>
@@ -365,8 +345,10 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileTotalBuiltUpArea">Total Built Up Area
               </label>
               <div class="col-sm-9">
-                <input name="totalBuiltUpArea" type="text" class="form-control" [(ngModel)]="formData.totalBuiltUpArea" #totalBuiltUpArea="ngModel" numbersOnly precision="2" disabled="true">
-                <div *ngIf="totalBuiltUpArea.invalid && (totalBuiltUpArea.dirty || totalBuiltUpArea.touched)" class="alert alert-danger">
+                <input name="totalBuiltUpArea" type="text" class="form-control" [(ngModel)]="formData.totalBuiltUpArea"
+                  #totalBuiltUpArea="ngModel" numbersOnly precision="2" disabled="true">
+                <div *ngIf="totalBuiltUpArea.invalid && (totalBuiltUpArea.dirty || totalBuiltUpArea.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="totalBuiltUpArea.errors?.pattern || totalBuiltUpArea.errors?.minlength">
                     Enter valid Total Built Up Area
                   </div>
@@ -382,8 +364,11 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileMeterTotalArea">Meter Total Area
               </label>
               <div class="col-sm-9">
-                <input name="meterTotalArea" (change)="calculateJointSoldArea()" type="text" class="form-control" [(ngModel)]="formData.meterTotalArea" #meterTotalArea="ngModel" numbersOnly precision="2" disabled="true">
-                <div *ngIf="meterTotalArea.invalid && (meterTotalArea.dirty || meterTotalArea.touched)" class="alert alert-danger">
+                <input name="meterTotalArea" (change)="calculateJointSoldArea()" type="text" class="form-control"
+                  [(ngModel)]="formData.meterTotalArea" #meterTotalArea="ngModel" numbersOnly precision="2"
+                  disabled="true">
+                <div *ngIf="meterTotalArea.invalid && (meterTotalArea.dirty || meterTotalArea.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="meterTotalArea.errors?.minlength">
                     Enter valid Meter Total Area
                   </div>
@@ -400,8 +385,10 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileMeterNetArea">Meter Net Area</label>
               <div class="col-sm-9">
-                <input name="meterNetArea" type="text" (change)="calculateJointSoldArea()" class="form-control" [(ngModel)]="formData.meterNetArea" #meterNetArea="ngModel" numbersOnly precision="2" disabled="true">
-                <div *ngIf="meterNetArea.invalid && (meterNetArea.dirty || meterNetArea.touched)" class="alert alert-danger">
+                <input name="meterNetArea" type="text" (change)="calculateJointSoldArea()" class="form-control"
+                  [(ngModel)]="formData.meterNetArea" #meterNetArea="ngModel" numbersOnly precision="2" disabled="true">
+                <div *ngIf="meterNetArea.invalid && (meterNetArea.dirty || meterNetArea.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="meterNetArea.errors?.pattern || meterNetArea.errors?.minlength">
                     Enter valid Meter Net Area
                   </div>
@@ -413,8 +400,10 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileMeterJointArea">Meter Joint Area</label>
               <div class="col-sm-9">
-                <input name="meterJointArea" type="text" class="form-control" [(ngModel)]="formData.meterJointArea" #meterJointArea="ngModel" numbersOnly precision="2" disabled="true">
-                <div *ngIf="meterJointArea.invalid && (meterJointArea.dirty || meterJointArea.touched)" class="alert alert-danger">
+                <input name="meterJointArea" type="text" class="form-control" [(ngModel)]="formData.meterJointArea"
+                  #meterJointArea="ngModel" numbersOnly precision="2" disabled="true">
+                <div *ngIf="meterJointArea.invalid && (meterJointArea.dirty || meterJointArea.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="meterJointArea.errors?.pattern || meterJointArea.errors?.minlength">
                     Enter valid Meter Joint Area
                   </div>
@@ -429,7 +418,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileLongitude">Longitude</label>
               <div class="col-sm-9">
-                <input name="longitude" type="text" class="form-control" [(ngModel)]="formData.longitude" #longitude="ngModel" numbersOnly precision="5" disabled="true">
+                <input name="longitude" type="text" class="form-control" [(ngModel)]="formData.longitude"
+                  #longitude="ngModel" numbersOnly precision="5" disabled="true">
                 <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)" class="alert alert-danger">
                   <div *ngIf="longitude.errors?.pattern || longitude.errors?.minlength">
                     Enter valid Longitude
@@ -442,7 +432,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileLatitude">Latitude</label>
               <div class="col-sm-9">
-                <input name="latitude" type="text" class="form-control" [(ngModel)]="formData.latitude" #latitude="ngModel" numbersOnly precision="5" disabled="true">
+                <input name="latitude" type="text" class="form-control" [(ngModel)]="formData.latitude"
+                  #latitude="ngModel" numbersOnly precision="5" disabled="true">
                 <div *ngIf="latitude.invalid && (latitude.dirty || latitude.touched)" class="alert alert-danger">
                   <div *ngIf="latitude.errors?.pattern || latitude.errors?.minlength">
                     Enter valid Latitude
@@ -459,19 +450,12 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileAccountTrustee">Account Trustee
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  [items]="accountTrusteesOptions"
-                  name="accountTrustee"
-                  [(ngModel)]="formData.accountTrusteeId"
-                  bindLabel="value.ar"
-                  bindValue="key"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  #accountTrustee="ngModel"
-                  disabled="true"
-                >
+                <ng-select class="rtl" [items]="accountTrusteesOptions" name="accountTrustee"
+                  [(ngModel)]="formData.accountTrusteeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #accountTrustee="ngModel" disabled="true">
                 </ng-select>
-                <div *ngIf="accountTrustee.invalid && (accountTrustee.dirty || accountTrustee.touched)" class="alert alert-danger">
+                <div *ngIf="accountTrustee.invalid && (accountTrustee.dirty || accountTrustee.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="accountTrustee.errors?.required">
                     Account Trustee can not be blank
                   </div>
@@ -486,11 +470,14 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileEscrowAccountNumber">Escrow Account Number 
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileEscrowAccountNumber">Escrow Account Number
               </label>
               <div class="col-sm-9">
-                <input name="escrowAccountNumber" type="text" class="form-control" [(ngModel)]="formData.escrowAccountNumber" #escrowAccountNumber="ngModel" numbersOnly precision="0" disabled="true">
-                <div *ngIf="escrowAccountNumber.invalid && (escrowAccountNumber.dirty || escrowAccountNumber.touched)" class="alert alert-danger">
+                <input name="escrowAccountNumber" type="text" class="form-control"
+                  [(ngModel)]="formData.escrowAccountNumber" #escrowAccountNumber="ngModel" numbersOnly precision="0"
+                  disabled="true">
+                <div *ngIf="escrowAccountNumber.invalid && (escrowAccountNumber.dirty || escrowAccountNumber.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="escrowAccountNumber.errors?.pattern || escrowAccountNumber.errors?.minlength">
                     Enter valid Escrow Account Number
                   </div>
@@ -503,16 +490,9 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileAccountOpeningDate">Account Opening Date
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                name="accountOpeningDate"
-                class="form-control"
-                (dateTimeChange)="formatDate('accountOpeningDate')"
-                [(ngModel)]="formData.accountOpeningDate"
-                [owlDateTime]="dt7"
-                [owlDateTimeTrigger]="dt7"
-                #accountOpeningDate="ngModel"
-                disabled="true"
-                >
+                <input type="text" name="accountOpeningDate" class="form-control"
+                  (dateTimeChange)="formatDate('accountOpeningDate')" [(ngModel)]="formData.accountOpeningDate"
+                  [owlDateTime]="dt7" [owlDateTimeTrigger]="dt7" #accountOpeningDate="ngModel" disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt7></owl-date-time>
               </div>
             </div>
@@ -520,7 +500,7 @@
         </div>
 
         <div class="form-group row">
-          تفاصيل المشروع 
+          تفاصيل المشروع
         </div>
 
         <div class="form-group row">
@@ -530,18 +510,13 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                name="registrationDate"
-                class="form-control"
-                (dateTimeChange)="formatDate('registrationDate')"
-                [(ngModel)]="formData.registrationDate"
-                required="true"
-                [owlDateTime]="dt9"
-                [owlDateTimeTrigger]="dt9"
-                #registrationDate="ngModel" disabled="true"
-                >
+                <input type="text" name="registrationDate" class="form-control"
+                  (dateTimeChange)="formatDate('registrationDate')" [(ngModel)]="formData.registrationDate"
+                  required="true" [owlDateTime]="dt9" [owlDateTimeTrigger]="dt9" #registrationDate="ngModel"
+                  disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt9></owl-date-time>
-                <div *ngIf="registrationDate.invalid && (registrationDate.dirty || registrationDate.touched)" class="alert alert-danger">
+                <div *ngIf="registrationDate.invalid && (registrationDate.dirty || registrationDate.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="registrationDate.errors?.required">
                     Registration Date can not be blank
                   </div>
@@ -554,16 +529,9 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileExpiryDate">Expiry Date
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                  name="expiryDate"
-                  class="form-control"
-                  [(ngModel)]="formData.expiryDate"
-                  (dateTimeChange)="formatDate('expiryDate')"
-                  [owlDateTime]="dt41"
-                  [owlDateTimeTrigger]="dt41"
-                  #expiryDate="ngModel"
-                  disabled="true"
-                >
+                <input type="text" name="expiryDate" class="form-control" [(ngModel)]="formData.expiryDate"
+                  (dateTimeChange)="formatDate('expiryDate')" [owlDateTime]="dt41" [owlDateTimeTrigger]="dt41"
+                  #expiryDate="ngModel" disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt41></owl-date-time>
                 <div *ngIf="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)" class="alert alert-danger">
                   <div *ngIf="expiryDate.errors?.required">
@@ -581,7 +549,8 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingPermitNumber">Building permit number
               </label>
               <div class="col-sm-9">
-                <input disabled="true" name="buildingPermitNumber" type="text" class="form-control" [(ngModel)]="formData.buildingPermitNumber" #buildingPermitNumber="ngModel">
+                <input disabled="true" name="buildingPermitNumber" type="text" class="form-control"
+                  [(ngModel)]="formData.buildingPermitNumber" #buildingPermitNumber="ngModel">
               </div>
             </div>
           </div>
@@ -592,24 +561,21 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingPermitIssuanceDate">Building permit issuance date
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingPermitIssuanceDate">Building permit
+                issuance date
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                name="buildingPermitIssuanceDate"
-                class="form-control"
-                (dateTimeChange)="formatDate('buildingPermitIssuanceDate')" [max]="minDate"
-                [(ngModel)]="formData.buildingPermitIssuanceDate"
-                [owlDateTime]="dt10"
-                [owlDateTimeTrigger]="dt10"
-                #buildingPermitIssuanceDate="ngModel"
-                disabled="true"
-                >
+                <input type="text" name="buildingPermitIssuanceDate" class="form-control"
+                  (dateTimeChange)="formatDate('buildingPermitIssuanceDate')" [max]="minDate"
+                  [(ngModel)]="formData.buildingPermitIssuanceDate" [owlDateTime]="dt10" [owlDateTimeTrigger]="dt10"
+                  #buildingPermitIssuanceDate="ngModel" disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt10></owl-date-time>
-                <div class="alert alert-danger" *ngIf="buildingPermitIssuanceDate.invalid && (buildingPermitIssuanceDate.dirty || buildingPermitIssuanceDate.touched) && buildingPermitIssuanceDate.errors?.required">
+                <div class="alert alert-danger"
+                  *ngIf="buildingPermitIssuanceDate.invalid && (buildingPermitIssuanceDate.dirty || buildingPermitIssuanceDate.touched) && buildingPermitIssuanceDate.errors?.required">
                   Building permit issuance date can not be blank
                 </div>
-                <div class="alert alert-danger" *ngIf="buildingPermitIssuanceDate.invalid && buildingPermitIssuanceDate.errors?.owlDateTimeMax">
+                <div class="alert alert-danger"
+                  *ngIf="buildingPermitIssuanceDate.invalid && buildingPermitIssuanceDate.errors?.owlDateTimeMax">
                   Enter valid Building permit issuance date
                 </div>
               </div>
@@ -617,24 +583,21 @@
           </div>
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingPermitExpiryDate">Building permit expiry date
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingPermitExpiryDate">Building permit
+                expiry date
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                  name="buildingPermitExpiryDate"
-                  class="form-control"
+                <input type="text" name="buildingPermitExpiryDate" class="form-control"
                   [(ngModel)]="formData.buildingPermitExpiryDate"
-                  (dateTimeChange)="formatDate('buildingPermitExpiryDate')" [min]="minDate"
-                  [owlDateTime]="dt1"
-                  [owlDateTimeTrigger]="dt1"
-                  #buildingPermitExpiryDate="ngModel"
-                  disabled="true"
-                >
+                  (dateTimeChange)="formatDate('buildingPermitExpiryDate')" [min]="minDate" [owlDateTime]="dt1"
+                  [owlDateTimeTrigger]="dt1" #buildingPermitExpiryDate="ngModel" disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
-                <div class="alert alert-danger" *ngIf="buildingPermitExpiryDate.invalid && (buildingPermitExpiryDate.dirty || buildingPermitExpiryDate.touched) && buildingPermitExpiryDate.errors?.required">
+                <div class="alert alert-danger"
+                  *ngIf="buildingPermitExpiryDate.invalid && (buildingPermitExpiryDate.dirty || buildingPermitExpiryDate.touched) && buildingPermitExpiryDate.errors?.required">
                   Building permit expiry date can not be blank
                 </div>
-                <div class="alert alert-danger" *ngIf="buildingPermitExpiryDate.invalid && buildingPermitExpiryDate.errors?.owlDateTimeMin">
+                <div class="alert alert-danger"
+                  *ngIf="buildingPermitExpiryDate.invalid && buildingPermitExpiryDate.errors?.owlDateTimeMin">
                   Enter valid Building permit expiry date
                 </div>
               </div>
@@ -649,20 +612,13 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  [items]="projectStatusOptions"
-                  required="true"
-                  name="projectStatus"
-                  [(ngModel)]="formData.projectStatusId"
-                  bindLabel="value.ar"
-                  bindValue="key"
+                <ng-select class="rtl" [items]="projectStatusOptions" required="true" name="projectStatus"
+                  [(ngModel)]="formData.statusId" bindLabel="value.ar" bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث" (change)="setProjectCompletionPercentage()"
-                  #projectStatus="ngModel"
-                  disabled="true"
-                >
+                  #projectStatus="ngModel" disabled="true">
                 </ng-select>
-                <div *ngIf="projectStatus.invalid && (projectStatus.dirty || projectStatus.touched)" class="alert alert-danger">
+                <div *ngIf="projectStatus.invalid && (projectStatus.dirty || projectStatus.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="projectStatus.errors?.required">
                     Project Status can not be blank
                   </div>
@@ -672,13 +628,19 @@
           </div>
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileProjectCompletionpercentage">Project Completion percentage
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileProjectCompletionpercentage">Project
+                Completion percentage
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input disabled="true" name="projectCompletionpercentage" type="text" class="form-control" required="true" [(ngModel)]="formData.projectCompletionpercentage" #projectCompletionpercentage="ngModel" numbersOnly precision="0" [disabled]="isProjectCompleted()">
-                <div *ngIf="projectCompletionpercentage.invalid && (projectCompletionpercentage.dirty || projectCompletionpercentage.touched)" class="alert alert-danger">
-                  <div *ngIf="projectCompletionpercentage.errors?.pattern || projectCompletionpercentage.errors?.required">
+                <input disabled="true" name="projectCompletionpercentage" type="text" class="form-control"
+                  required="true" [(ngModel)]="formData.projectCompletionpercentage"
+                  #projectCompletionpercentage="ngModel" numbersOnly precision="0" [disabled]="isProjectCompleted()">
+                <div
+                  *ngIf="projectCompletionpercentage.invalid && (projectCompletionpercentage.dirty || projectCompletionpercentage.touched)"
+                  class="alert alert-danger">
+                  <div
+                    *ngIf="projectCompletionpercentage.errors?.pattern || projectCompletionpercentage.errors?.required">
                     Enter valid Project Completion Percentage
                   </div>
                 </div>
@@ -694,18 +656,9 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  [items]="consultantsOptions"
-                  name="consultant"
-                  required="true"
-                  [(ngModel)]="formData.consultantId"
-                  bindLabel="value.ar"
-                  bindValue="key"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  #consultant="ngModel"
-                  disabled="true"
-                >
+                <ng-select class="rtl" [items]="consultantsOptions" name="consultant" required="true"
+                  [(ngModel)]="formData.consultantId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #consultant="ngModel" disabled="true">
                 </ng-select>
                 <div *ngIf="consultant.invalid && (consultant.dirty || consultant.touched)" class="alert alert-danger">
                   <div *ngIf="consultant.errors?.required">
@@ -717,11 +670,16 @@
           </div>
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileConsultantContractValue">Consultant contract Value
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileConsultantContractValue">Consultant contract
+                Value
               </label>
               <div class="col-sm-9">
-                <input disabled="true" name="consultantContractValue" type="text" class="form-control" [(ngModel)]="formData.consultantContractValue" #consultantContractValue="ngModel" numbersOnly precision="0">
-                <div *ngIf="consultantContractValue.invalid && (consultantContractValue.dirty || consultantContractValue.touched)" class="alert alert-danger">
+                <input disabled="true" name="consultantContractValue" type="text" class="form-control"
+                  [(ngModel)]="formData.consultantContractValue" #consultantContractValue="ngModel" numbersOnly
+                  precision="0">
+                <div
+                  *ngIf="consultantContractValue.invalid && (consultantContractValue.dirty || consultantContractValue.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="consultantContractValue.errors?.pattern || consultantContractValue.errors?.minlength">
                     Enter valid Consultant contract Value
                   </div>
@@ -738,18 +696,9 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  [items]="contractorsOptions"
-                  name="contractor"
-                  required="true"
-                  [(ngModel)]="formData.contractorId"
-                  bindLabel="value.ar"
-                  bindValue="key"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  #contractor="ngModel"
-                  disabled="true"
-                >
+                <ng-select class="rtl" [items]="contractorsOptions" name="contractor" required="true"
+                  [(ngModel)]="formData.contractorId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #contractor="ngModel" disabled="true">
                 </ng-select>
                 <div *ngIf="contractor.invalid && (contractor.dirty || contractor.touched)" class="alert alert-danger">
                   <div *ngIf="contractor.errors?.required">
@@ -761,11 +710,16 @@
           </div>
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileContractorContractValue">Contractor contract Value
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileContractorContractValue">Contractor contract
+                Value
               </label>
               <div class="col-sm-9">
-                <input disabled="true" name="contractorContractValue" type="text" class="form-control" [(ngModel)]="formData.contractorContractValue" #contractorContractValue="ngModel" numbersOnly precision="0">
-                <div *ngIf="contractorContractValue.invalid && (contractorContractValue.dirty || contractorContractValue.touched)" class="alert alert-danger">
+                <input disabled="true" name="contractorContractValue" type="text" class="form-control"
+                  [(ngModel)]="formData.contractorContractValue" #contractorContractValue="ngModel" numbersOnly
+                  precision="0">
+                <div
+                  *ngIf="contractorContractValue.invalid && (contractorContractValue.dirty || contractorContractValue.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="contractorContractValue.errors?.pattern || contractorContractValue.errors?.minlength">
                     Enter valid Contractor contract Value
                   </div>
@@ -778,38 +732,28 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileContractorContractStartDate">Contractor Contract start Date
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileContractorContractStartDate">Contractor
+                Contract start Date
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                name="contractorContractStartDate"
-                class="form-control"
-                (dateTimeChange)="formatDate('contractorContractStartDate')"
-                [(ngModel)]="formData.contractorContractStartDate"
-                [owlDateTime]="dt12"
-                [owlDateTimeTrigger]="dt12"
-                #contractorContractStartDate="ngModel"
-                disabled="true"
-                >
+                <input type="text" name="contractorContractStartDate" class="form-control"
+                  (dateTimeChange)="formatDate('contractorContractStartDate')"
+                  [(ngModel)]="formData.contractorContractStartDate" [owlDateTime]="dt12" [owlDateTimeTrigger]="dt12"
+                  #contractorContractStartDate="ngModel" disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt12></owl-date-time>
               </div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileContractorContractEndDate">Contractor Contract End Date
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileContractorContractEndDate">Contractor
+                Contract End Date
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                  name="contractorContractEndDate"
-                  class="form-control"
+                <input type="text" name="contractorContractEndDate" class="form-control"
                   [(ngModel)]="formData.contractorContractEndDate"
-                  (dateTimeChange)="formatDate('contractorContractEndDate')"
-                  [owlDateTime]="dt11"
-                  [owlDateTimeTrigger]="dt11"
-                  #contractorContractEndDate="ngModel"
-                  disabled="true"
-                >
+                  (dateTimeChange)="formatDate('contractorContractEndDate')" [owlDateTime]="dt11"
+                  [owlDateTimeTrigger]="dt11" #contractorContractEndDate="ngModel" disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt11></owl-date-time>
               </div>
             </div>
@@ -822,16 +766,9 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileActualStartDate">Actual Start Date
               </label>
               <div class="col-sm-9">
-                <input type="text"
-                name="actualStartDate"
-                class="form-control"
-                (dateTimeChange)="formatDate('actualStartDate')"
-                [(ngModel)]="formData.actualStartDate"
-                [owlDateTime]="dt14"
-                [owlDateTimeTrigger]="dt14"
-                #actualStartDate="ngModel"
-                disabled="true"
-                >
+                <input type="text" name="actualStartDate" class="form-control"
+                  (dateTimeChange)="formatDate('actualStartDate')" [(ngModel)]="formData.actualStartDate"
+                  [owlDateTime]="dt14" [owlDateTimeTrigger]="dt14" #actualStartDate="ngModel" disabled="true">
                 <owl-date-time [pickerType]="'calendar'" #dt14></owl-date-time>
               </div>
             </div>
@@ -841,7 +778,8 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileTotalProjectCost">Total project cost
               </label>
               <div class="col-sm-9">
-                <input name="totalProjectCost" type="text" class="form-control" [(ngModel)]="formData.totalProjectCost" #totalProjectCost="ngModel" numbersOnly precision="0" disabled="true">
+                <input name="totalProjectCost" type="text" class="form-control" [(ngModel)]="formData.totalProjectCost"
+                  #totalProjectCost="ngModel" numbersOnly precision="0" disabled="true">
               </div>
             </div>
           </div>
@@ -853,17 +791,9 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileTypeOfUse">Type of use
               </label>
               <div class="col-sm-9">
-                <ng-select
-                  class="rtl"
-                  [items]="projectUsageTypesOptions"
-                  name="typeOfUse"
-                  [(ngModel)]="formData.typeOfUseId"
-                  bindLabel="value.ar"
-                  bindValue="key"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  #typeOfUse="ngModel"
-                  disabled="true"
-                >
+                <ng-select class="rtl" [items]="projectUsageTypesOptions" name="typeOfUse"
+                  [(ngModel)]="formData.typeOfUseId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #typeOfUse="ngModel" disabled="true">
                 </ng-select>
               </div>
             </div>
@@ -874,8 +804,10 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input name="techDescription" type="text" required="true" class="form-control" [(ngModel)]="formData.techDescription" #techDescription="ngModel" disabled="true">
-                <div *ngIf="techDescription.invalid && (techDescription.dirty || techDescription.touched)" class="alert alert-danger">
+                <input name="techDescription" type="text" required="true" class="form-control"
+                  [(ngModel)]="formData.techDescription" #techDescription="ngModel" disabled="true">
+                <div *ngIf="techDescription.invalid && (techDescription.dirty || techDescription.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="techDescription.errors?.required">
                     Tech Description can not be blank
                   </div>
@@ -888,17 +820,23 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofElevators">Number of Elevators</label>
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofElevators">Number of
+                Elevators</label>
               <div class="col-sm-9">
-                <input name="numberofElevators" type="text" class="form-control" [(ngModel)]="formData.numberofElevators" #numberofElevators="ngModel" numbersOnly precision="0" disabled="true">
+                <input name="numberofElevators" type="text" class="form-control"
+                  [(ngModel)]="formData.numberofElevators" #numberofElevators="ngModel" numbersOnly precision="0"
+                  disabled="true">
               </div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofSwimmingPool">Number of Swimming Pool</label>
+              <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofSwimmingPool">Number of Swimming
+                Pool</label>
               <div class="col-sm-9">
-                <input name="numberofSwimmingPool" type="text" class="form-control" [(ngModel)]="formData.numberofSwimmingPool" #numberofSwimmingPool="ngModel" numbersOnly precision="0" disabled="true">
+                <input name="numberofSwimmingPool" type="text" class="form-control"
+                  [(ngModel)]="formData.numberofSwimmingPool" #numberofSwimmingPool="ngModel" numbersOnly precision="0"
+                  disabled="true">
               </div>
             </div>
           </div>
@@ -909,7 +847,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofFloors">Number of Floors</label>
               <div class="col-sm-9">
-                <input name="numberofFloors" type="text" class="form-control" [(ngModel)]="formData.numberofFloors" #numberofFloors="ngModel" numbersOnly precision="0" disabled="true">
+                <input name="numberofFloors" type="text" class="form-control" [(ngModel)]="formData.numberofFloors"
+                  #numberofFloors="ngModel" numbersOnly precision="0" disabled="true">
               </div>
             </div>
           </div>
@@ -917,7 +856,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofFlats">Number of Flats</label>
               <div class="col-sm-9">
-                <input name="numberofFlats" type="text" class="form-control" [(ngModel)]="formData.numberofFlats" #numberofFlats="ngModel" numbersOnly precision="0" disabled="true">
+                <input name="numberofFlats" type="text" class="form-control" [(ngModel)]="formData.numberofFlats"
+                  #numberofFlats="ngModel" numbersOnly precision="0" disabled="true">
               </div>
             </div>
           </div>
@@ -928,7 +868,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofOffices">Number of Offices</label>
               <div class="col-sm-9">
-                <input name="numberofOffices" type="text" class="form-control" [(ngModel)]="formData.numberofOffices" #numberofOffices="ngModel" numbersOnly precision="0" disabled="true">
+                <input name="numberofOffices" type="text" class="form-control" [(ngModel)]="formData.numberofOffices"
+                  #numberofOffices="ngModel" numbersOnly precision="0" disabled="true">
               </div>
             </div>
           </div>
@@ -936,7 +877,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofShops">Number of Shops</label>
               <div class="col-sm-9">
-                <input name="numberofShops" type="text" class="form-control" [(ngModel)]="formData.numberofShops" #numberofShops="ngModel" numbersOnly precision="0" disabled="true">
+                <input name="numberofShops" type="text" class="form-control" [(ngModel)]="formData.numberofShops"
+                  #numberofShops="ngModel" numbersOnly precision="0" disabled="true">
               </div>
             </div>
           </div>
@@ -947,11 +889,51 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofCarParks">Number of Car Parks</label>
               <div class="col-sm-9">
-                <input name="numberofCarParks" type="text" class="form-control" [(ngModel)]="formData.numberofCarParks" #numberofCarParks="ngModel" numbersOnly precision="0" disabled="true">
+                <input name="numberofCarParks" type="text" class="form-control" [(ngModel)]="formData.numberofCarParks"
+                  #numberofCarParks="ngModel" numbersOnly precision="0" disabled="true">
               </div>
             </div>
           </div>
           <div class="col-sm-6">
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="formData.certificates.length > 0">
+          <div class="col-sm-12">
+            <label class="col-form-label" style="text-align: center;width: 100%;" i18n="@@projectCertificates">
+              Project Certificates
+            </label>
+            <table style="border: 1px solid black;width: 100%;">
+              <thead style="border: 1px solid black;">
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@applicationID">Application ID</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@expiryDate">Expiry Date</label>
+                </th>
+                <th style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" i18n="@@issueDate">Issue Date</label>
+                </th>
+              </thead>
+              <tbody style="border: 1px solid black;">
+                <tr *ngFor="let item of formData.certificates let j = index">
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.applicationID}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.expiryDate}}
+                    </label>
+                  </td>
+                  <td style="border: 1px solid black; text-align: center;">
+                    <label class="col-form-label">
+                      {{item.issueDate}}
+                    </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
