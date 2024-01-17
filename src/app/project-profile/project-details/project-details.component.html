@@ -54,6 +54,17 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@projectRegistrationNumber">Project Registration Number
+              </label>
+              <div class="col-sm-9">
+                <input type="text" name="id"  class="form-control"
+                  [(ngModel)]="formData.id" #id="ngModel" disabled="true">
+               
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileDeveloper">Developer
                 <span>*</span>
               </label>
@@ -122,10 +133,10 @@
                 Is Main
                 <span>*</span>
               </label>
-              <div class="col-sm-9">
+              <div class="col-sm-9"> 
                 <ng-select class="rtl" required="true" [items]="isMainOptions" name="isMain"
                   [(ngModel)]="formData.isMain" bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث"
-                  #isMain="ngModel" disabled="true">
+                  #isMain="ngModel" disabled="true"  >
                 </ng-select>
                 <div *ngIf="isMain.invalid && (isMain.dirty || isMain.touched)" class="alert alert-danger">
                   <div *ngIf="isMain.errors?.required">
@@ -141,18 +152,20 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [items]="projectsOptions | async" required="true" name="mainProject"
+                <!-- <ng-select class="rtl" [items]="projectsOptions | async" required="true" name="mainProject"
                   [hideSelected]="true" [(ngModel)]="formData.mainProjectId" [minTermLength]="4" bindLabel="value.ar"
                   typeToSearchText="Please enter 4 or more characters" bindValue="key"
                   [typeahead]="projectsSearchInput$" notFoundText="لا يوجد نتائج للبحث"
                   [loading]="projectDataOptionsLoading" #mainProject="ngModel" disabled="true">
-                </ng-select>
-                <div *ngIf="mainProject.invalid && (mainProject.dirty || mainProject.touched)"
+                </ng-select> -->
+                <input [disabled]="true" type="text" name="mainProjectId" class="form-control"
+                [(ngModel)]="mainProjectName" readonly="true" >
+                <!-- <div *ngIf="mainProject.invalid && (mainProject.dirty || mainProject.touched)"
                   class="alert alert-danger">
                   <div *ngIf="mainProject.errors?.required">
                     Main Project can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -237,17 +250,24 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileParcelId">
                 Parcel Id
-                <span *ngIf="isNotMain()">*</span>
+                <span *ngIf="isNotMain()"> *</span>
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [required]="isNotMain()" [items]="landsoptions | async" name="parcelId"
-                  [hideSelected]="true" [(ngModel)]="formData.landId" [typeahead]="landSearchInput$"
-                  bindLabel="value.ar" [minTermLength]="4" bindValue="key" [loading]="landDataOptionsLoading"
+                <!-- <ng-select class="rtl" [required]="isNotMain()" [items]="landsoptions | async" name="landId"
+                  [hideSelected]="true" typeahead-editable="true"
+                  bindLabel="value.ar" bindValue="key" [(ngModel)]="formData.landId"
+                   [minTermLength]="4"  [loading]="landDataOptionsLoading"   [typeahead]="landSearchInput$"
                   notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
-                  #parcelId="ngModel">
-                </ng-select>
-                <div *ngIf="parcelId.invalid && (parcelId.dirty || parcelId.touched)" class="alert alert-danger">
-                  <div *ngIf="parcelId.errors?.required">
+                  #landId="ngModel">
+                </ng-select> -->
+                <ng-select class="rtl"  required="isNotMain()" [items]="landsoptions | async" name="landId"
+                [hideSelected]="true" [(ngModel)]="landNUm" [typeahead]="landSearchInput$"
+                bindLabel="value.ar" [minTermLength]="4" bindValue="key" [loading]="landDataOptionsLoading"
+                notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
+                #formData.landId="ngModel" >
+              </ng-select>
+                <div *ngIf="formData.landId.invalid && (formData.landId.dirty || formData.landId.touched)" class="alert alert-danger">
+                  <div *ngIf="formData.landId.errors?.required">
                     Parcel Id can not be blank
                   </div>
                 </div>
@@ -581,7 +601,7 @@
               </label>
               <div class="col-sm-9">
                 <ng-select class="rtl" [items]="projectStatusOptions" required="false" name="projectStatus"
-                  [(ngModel)]="formData.projectStatusId" bindLabel="value.ar" bindValue="key"
+                  [(ngModel)]="formData.statusId" bindLabel="value.ar" bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث" (change)="setProjectCompletionPercentage()"
                   #projectStatus="ngModel">
                 </ng-select>

@@ -43,6 +43,7 @@ export class ProjectViewComponent implements OnInit {
   searchProjectNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
   projectNameOptionsLoading =  false;
+  mainProjectName:any;
 
   constructor(
     private route: ActivatedRoute,
@@ -69,11 +70,11 @@ export class ProjectViewComponent implements OnInit {
     this.loadProjectNameOptions();
 
     this.isMainOptions = [{
-      key: 1,
+      key: "1",
       value: { en: 'Master Project', ar: 'مشروع رئيسي' }
     },
     {
-      key: 0,
+      key: "0",
       value: { en: 'Sub Project', ar: 'مشروع فرعي' }
     }];
 
@@ -270,6 +271,7 @@ export class ProjectViewComponent implements OnInit {
     if(!!profile.mainProjectId) {
       this.lookupsService.loadAllProjects({ id: profile.mainProjectId })
       .subscribe((option)=> {
+        this.mainProjectName =option.value.ar;
         this.projectsSearchInput$.next(option.value && option.value.ar);
       })
     }

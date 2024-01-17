@@ -69,17 +69,19 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" required="true" [items]="developerOptions | async" name="developer"
+                <ng-select class="rtl" readonly="true" required="true" [items]="developerOptions | async" name="developer"
                   [hideSelected]="true" [(ngModel)]="formData.developerId" [typeahead]="developerSearchInput$"
                   bindLabel="value.ar" [minTermLength]="4" bindValue="key" [loading]="developerDataOptionsLoading"
                   notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
                   #developer="ngModel" disabled="true">
                 </ng-select>
-                <div *ngIf="developer.invalid && (developer.dirty || developer.touched)" class="alert alert-danger">
+                 <!-- <input  readonly="true" [disabled]="true" [(ngModel)]="formData.developerId"
+                  type="text" name="developerId" class="form-control"> -->
+                <!-- <div *ngIf="developer.invalid && (developer.dirty || developer.touched)" class="alert alert-danger">
                   <div *ngIf="developer.errors?.required">
                     Developer can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -145,12 +147,13 @@
                   #isMain="ngModel" disabled="true"
                 >
                 </ng-select> -->
-                <input *ngIf="formData.isMain == 0" [disabled]="true" type="text" name="isMain" class="form-control"
-                  value="فرعي">
-                <input *ngIf="formData.isMain == 1" [disabled]="true" type="text" name="isMain" class="form-control"
-                  value="رئيسي">
-                <input *ngIf="formData.isMain != 1 && formData.isMain != 0 " [disabled]="true" type="text" name="isMain"
+                <input *ngIf="formData.isMain == '0'" readonly="true" [disabled]="true" type="text" name="isMain" class="form-control"
+                  value="مشروع فرعي">
+                <input *ngIf="formData.isMain == '1'" readonly="true" [disabled]="true" type="text" name="isMain" class="form-control"
+                  value="مشروع رئيسي">
+                <input *ngIf="formData.isMain != '1' && formData.isMain != '0'" readonly="true" [disabled]="true" type="text" name="isMain"
                   class="form-control" [(ngModel)]="formData.isMain" #isMain="ngModel">
+                  
                 <!-- <div *ngIf="isMain.invalid && (isMain.dirty || isMain.touched)" class="alert alert-danger">
                   <div *ngIf="isMain.errors?.required">
                     Is Main can not be blank
@@ -174,17 +177,17 @@
                   bindLabel="value.ar" typeToSearchText="Please enter 4 or more characters"
                   bindValue="key" [typeahead]="projectsSearchInput$"
                   notFoundText="لا يوجد نتائج للبحث" [loading]="projectDataOptionsLoading"
-                  #mainProject="ngModel" disabled="true"
+                  #mainProject="ngModel" 
                 >
                 </ng-select> -->
                 <input [disabled]="true" type="text" name="mainProjectId" class="form-control"
-                  [(ngModel)]="formData.mainProjectId" #mainProjectId="ngModel">
-                <div *ngIf="mainProjectId.invalid && (mainProjectId.dirty || mainProjectId.touched)"
+                  [(ngModel)]="mainProjectName" readonly="true" >
+                <!-- <div *ngIf="mainProjectId.invalid && (mainProjectId.dirty || mainProjectId.touched)"
                   class="alert alert-danger">
                   <div *ngIf="mainProjectId.errors?.required">
                     Main Project can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -284,7 +287,7 @@
                   #parcelId="ngModel" disabled="true"
                 >
                 </ng-select> -->
-                <input [disabled]="true" type="text" name="landId" class="form-control" [(ngModel)]="formData.landId"
+                <input [disabled]="true" type="text" readonly="true" name="landId" class="form-control" [(ngModel)]="formData.landId"
                   #landId="ngModel">
                 <!-- <div *ngIf="landId.invalid && (landId.dirty || parcelId.touched)" class="alert alert-danger">
                   <div *ngIf="parcelId.errors?.required">
@@ -318,16 +321,18 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileProjectType">Project Type
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [items]="projectsTypesOptions" name="projectType"
+                <!-- <ng-select class="rtl" [items]="projectsTypesOptions" name="projectType"
                   [(ngModel)]="formData.projectTypeId" bindLabel="value.ar" bindValue="key"
-                  notFoundText="لا يوجد نتائج للبحث" #projectType="ngModel" disabled="true">
-                </ng-select>
-                <div *ngIf="projectType.invalid && (projectType.dirty || projectType.touched)"
+                  notFoundText="لا يوجد نتائج للبحث" #projectType="ngModel" disabled="true" >
+                </ng-select> -->
+                <input type="text" name="projectTypeId" class="form-control" [(ngModel)]="formData.projectTypeId"
+                #devPartNumber="ngModel" readonly="true" disabled="true">
+                <!-- <div *ngIf="projectType.invalid && (projectType.dirty || projectType.touched)"
                   class="alert alert-danger">
                   <div *ngIf="projectType.errors?.required">
                     Project Type can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -814,7 +819,7 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input name="techDescription" type="text" required="true" class="form-control"
+                <input name="techDescription" type="text" readonly="true" required="true" class="form-control"
                   [(ngModel)]="formData.techDescription" #techDescription="ngModel" disabled="true">
                 <div *ngIf="techDescription.invalid && (techDescription.dirty || techDescription.touched)"
                   class="alert alert-danger">
