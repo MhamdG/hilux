@@ -684,7 +684,7 @@
                 <!-- <span>*</span> -->
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [items]="contractorsOptions" name="contractor" required="fols"
+                <ng-select class="rtl" [items]="contractorsOptions" name="contractor" required="false"
                   [(ngModel)]="formData.contractorId" bindLabel="value.ar" bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث" #contractor="ngModel">
                 </ng-select>
@@ -889,7 +889,7 @@
         <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid"
           i18n="@@formSubmitLabel">Submit</button>
         <button type="button" style="margin-left: 5px;margin-right: 5px;" class="btn btn-primary float-left"
-          (click)="clearChanges()" i18n="@@reset">Reset</button>
+          (click)="clearChanges()" i18n="@@CancelEdit">Cancel</button>
       </div>
     </form>
   </div>

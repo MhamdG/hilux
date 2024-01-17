@@ -1,8 +1,14 @@
 <section class="content" *ngIf="profile$ | async as profile">
   
   
-  <div class="container-fluid"style="width: 75%; margin-right: 20%; justify-content:center;">
+  <div class="container-fluid"style=" margin-top: 10px;margin-right 10px; ">
+    <div class="card card-purple" style="">
+      <div class="card-header" style="">
+        <h3 class="card-title">بيانات المشروع</h3>
+    </div>
+    </div>
     <app-alerts [errors]="formErrors"></app-alerts>
+    
     <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
       <button type="button"  (click)="addNewFun()"  style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;"  class="btn btn-primary"   i18n="@@addNew">+ Add New</button>
       </div> 

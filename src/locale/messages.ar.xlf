@@ -6018,9 +6018,9 @@
       <source>Meter Join Actual Area</source>
         <target>المساحة المشتركة الفعلية</target>
       </trans-unit>
-       <trans-unit id="reset" datatype="html">
-      <source>Reset</source>
-        <target>  إعادة البيانات</target>
+       <trans-unit id="CancelEdit" datatype="html">
+      <source>Cancel</source>
+        <target>إلغاء</target>
       </trans-unit>
         <trans-unit id="transactionID" datatype="html">
       <source>Transaction ID</source>
