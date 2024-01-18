@@ -407,8 +407,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileLongitude">Longitude</label>
               <div class="col-sm-9">
-                <input name="longitude" type="text" class="form-control" [(ngModel)]="formData.longitude"
-                  #longitude="ngModel" numbersOnly precision="5">
+                <input name="longitude" required="false" readonly="true" type="text" class="form-control" [(ngModel)]="formData.longitude"
+                  #longitude="ngModel"  precision="5">
                 <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)" class="alert alert-danger">
                   <div *ngIf="longitude.errors?.pattern || longitude.errors?.minlength">
                     Enter valid Longitude
@@ -421,8 +421,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileLatitude">Latitude</label>
               <div class="col-sm-9">
-                <input name="latitude" type="text" class="form-control" [(ngModel)]="formData.latitude"
-                  #latitude="ngModel" numbersOnly precision="5">
+                <input name="latitude" required="false" required="false" readonly="true" type="text" class="form-control" [(ngModel)]="formData.latitude"
+                  #latitude="ngModel"  precision="5">
                 <div *ngIf="latitude.invalid && (latitude.dirty || latitude.touched)" class="alert alert-danger">
                   <div *ngIf="latitude.errors?.pattern || latitude.errors?.minlength">
                     Enter valid Latitude
@@ -621,7 +621,7 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input name="projectCompletionpercentage" type="text" class="form-control" required="true"
+                <input name="projectCompletionpercentage" type="text" class="form-control" required="false" readonly="true"
                   [(ngModel)]="formData.projectCompletionpercentage" #projectCompletionpercentage="ngModel" numbersOnly
                   precision="0" [disabled]="isProjectCompleted()">
                 <div
