@@ -465,10 +465,12 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileAccountTrustee">Account Trustee
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [items]="accountTrusteesOptions" name="accountTrustee"
+                <!-- <ng-select class="rtl" [items]="accountTrusteesOptions" name="accountTrustee"
                   [(ngModel)]="formData.accountTrusteeId" bindLabel="value.ar" bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث" #accountTrustee="ngModel" disabled="true">
-                </ng-select>
+                </ng-select> -->
+                <input name="accountTrusteeId" required="false"  readonly="true" type="text"
+                class="form-control" [(ngModel)]="formData.accountTrusteeId" #accountTrusteeId="ngModel" precision="5">
                 <div *ngIf="accountTrustee.invalid && (accountTrustee.dirty || accountTrustee.touched)"
                   class="alert alert-danger">
                   <div *ngIf="accountTrustee.errors?.required">
