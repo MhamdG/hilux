@@ -114,7 +114,11 @@ export class ProjectDetailsComponent implements OnInit {
     })
   }
   clearChanges(){
-    window.location.reload();
+    // window.location.reload();
+    this.router.navigate(['project/profile/' + this.formData.id + '/view'])
+            .then(() => {
+              window.location.reload();
+            });
   }
 
   loadDeveloperOptions() {

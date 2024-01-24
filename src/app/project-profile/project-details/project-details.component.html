@@ -523,7 +523,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileExpiryDate">Expiry Date
               </label>
               <div class="col-sm-9">
-                <input type="text" name="expiryDate" class="form-control" [(ngModel)]="formData.expiryDate"
+                <input type="text" readonly="true" disabled="true" name="expiryDate" class="form-control" [(ngModel)]="formData.expiryDate"
                   (dateTimeChange)="formatDate('expiryDate')" [owlDateTime]="dt41" [owlDateTimeTrigger]="dt41"
                   #expiryDate="ngModel">
                 <owl-date-time [pickerType]="'calendar'" #dt41></owl-date-time>
@@ -543,7 +543,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileBuildingPermitNumber">Building permit number
               </label>
               <div class="col-sm-9">
-                <input name="buildingPermitNumber" type="text" class="form-control"
+                <input name="buildingPermitNumber" readonly="true" disabled="true" type="text" class="form-control"
                   [(ngModel)]="formData.buildingPermitNumber" #buildingPermitNumber="ngModel">
               </div>
             </div>
@@ -559,7 +559,7 @@
                 issuance date
               </label>
               <div class="col-sm-9">
-                <input type="text" name="buildingPermitIssuanceDate" class="form-control"
+                <input readonly="true" disabled="true" type="text" name="buildingPermitIssuanceDate" class="form-control"
                   (dateTimeChange)="formatDate('buildingPermitIssuanceDate')" [max]="minDate"
                   [(ngModel)]="formData.buildingPermitIssuanceDate" [owlDateTime]="dt10" [owlDateTimeTrigger]="dt10"
                   #buildingPermitIssuanceDate="ngModel">
@@ -581,7 +581,7 @@
                 expiry date
               </label>
               <div class="col-sm-9">
-                <input type="text" name="buildingPermitExpiryDate" class="form-control"
+                <input readonly="true" disabled="true" type="text" name="buildingPermitExpiryDate" class="form-control"
                   [(ngModel)]="formData.buildingPermitExpiryDate"
                   (dateTimeChange)="formatDate('buildingPermitExpiryDate')" [min]="minDate" [owlDateTime]="dt1"
                   [owlDateTimeTrigger]="dt1" #buildingPermitExpiryDate="ngModel">
@@ -650,15 +650,18 @@
                 <!-- <span>*</span> -->
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [items]="consultantsOptions" name="consultant" required="false"
+                <!-- <ng-select class="rtl" [items]="consultantsOptions" name="consultant" required="false"
                   [(ngModel)]="formData.consultantId" bindLabel="value.ar" bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث" #consultant="ngModel">
-                </ng-select>
-                <div *ngIf="consultant.invalid && (consultant.dirty || consultant.touched)" class="alert alert-danger">
+                </ng-select> -->
+                <input name="consultantId" type="text" class="form-control" required="false"
+                readonly="true" [(ngModel)]="formData.consultantId"
+                #consultantId="ngModel" numbersOnly precision="0" disabled="true">
+                <!-- <div *ngIf="consultant.invalid && (consultant.dirty || consultant.touched)" class="alert alert-danger">
                   <div *ngIf="consultant.errors?.required">
                     Consultant can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -668,7 +671,7 @@
                 Value
               </label>
               <div class="col-sm-9">
-                <input name="consultantContractValue" type="text" class="form-control"
+                <input readonly="true" disabled="true" name="consultantContractValue" type="text" class="form-control"
                   [(ngModel)]="formData.consultantContractValue" #consultantContractValue="ngModel" numbersOnly
                   precision="0">
                 <div
@@ -690,15 +693,18 @@
                 <!-- <span>*</span> -->
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [items]="contractorsOptions" name="contractor" required="false"
+                <!-- <ng-select class="rtl" [items]="contractorsOptions" name="contractor" required="false"
                   [(ngModel)]="formData.contractorId" bindLabel="value.ar" bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث" #contractor="ngModel">
-                </ng-select>
-                <div *ngIf="contractor.invalid && (contractor.dirty || contractor.touched)" class="alert alert-danger">
+                </ng-select> -->
+                <input name="contractorId" type="text" class="form-control" required="false"
+                readonly="true" [(ngModel)]="formData.contractorId"
+                #contractorId="ngModel" numbersOnly precision="0" disabled="true">
+                <!-- <div *ngIf="contractor.invalid && (contractor.dirty || contractor.touched)" class="alert alert-danger">
                   <div *ngIf="contractor.errors?.required">
                     Contractor can not be blank
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -708,7 +714,7 @@
                 Value
               </label>
               <div class="col-sm-9">
-                <input name="contractorContractValue" type="text" class="form-control"
+                <input readonly="true" disabled="true" name="contractorContractValue" type="text" class="form-control"
                   [(ngModel)]="formData.contractorContractValue" #contractorContractValue="ngModel" numbersOnly
                   precision="0">
                 <div
@@ -730,7 +736,7 @@
                 Contract start Date
               </label>
               <div class="col-sm-9">
-                <input type="text" name="contractorContractStartDate" class="form-control"
+                <input readonly="true" disabled="true" type="text" name="contractorContractStartDate" class="form-control"
                   (dateTimeChange)="formatDate('contractorContractStartDate')"
                   [(ngModel)]="formData.contractorContractStartDate" [owlDateTime]="dt12" [owlDateTimeTrigger]="dt12"
                   #contractorContractStartDate="ngModel">
@@ -744,7 +750,7 @@
                 Contract End Date
               </label>
               <div class="col-sm-9">
-                <input type="text" name="contractorContractEndDate" class="form-control"
+                <input readonly="true" disabled="true" type="text" name="contractorContractEndDate" class="form-control"
                   [(ngModel)]="formData.contractorContractEndDate"
                   (dateTimeChange)="formatDate('contractorContractEndDate')" [owlDateTime]="dt11"
                   [owlDateTimeTrigger]="dt11" #contractorContractEndDate="ngModel">
@@ -760,7 +766,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileActualStartDate">Actual Start Date
               </label>
               <div class="col-sm-9">
-                <input type="text" name="actualStartDate" class="form-control"
+                <input readonly="true" disabled="true" type="text" name="actualStartDate" class="form-control"
                   (dateTimeChange)="formatDate('actualStartDate')" [(ngModel)]="formData.actualStartDate"
                   [owlDateTime]="dt14" [owlDateTimeTrigger]="dt14" #actualStartDate="ngModel">
                 <owl-date-time [pickerType]="'calendar'" #dt14></owl-date-time>
@@ -772,7 +778,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileTotalProjectCost">Total project cost
               </label>
               <div class="col-sm-9">
-                <input name="totalProjectCost" type="text" class="form-control" [(ngModel)]="formData.totalProjectCost"
+                <input readonly="true" disabled="true" name="totalProjectCost" type="text" class="form-control" [(ngModel)]="formData.totalProjectCost"
                   #totalProjectCost="ngModel" numbersOnly precision="0">
               </div>
             </div>
@@ -785,10 +791,12 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileTypeOfUse">Type of use
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [items]="projectUsageTypesOptions" name="typeOfUse"
+                <!-- <ng-select class="rtl" [items]="projectUsageTypesOptions" name="typeOfUse"
                   [(ngModel)]="formData.typeOfUseId" bindLabel="value.ar" bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث" #typeOfUse="ngModel">
-                </ng-select>
+                </ng-select> -->
+                <input readonly="true" disabled="true" name="typeOfUseId" type="text" class="form-control" [(ngModel)]="formData.typeOfUseId"
+                  #typeOfUseId="ngModel" numbersOnly precision="0">
               </div>
             </div>
           </div>
@@ -817,7 +825,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofElevators">Number of
                 Elevators</label>
               <div class="col-sm-9">
-                <input name="numberofElevators" type="text" class="form-control"
+                <input  readonly="true" disabled="true"  name="numberofElevators" type="text" class="form-control"
                   [(ngModel)]="formData.numberofElevators" #numberofElevators="ngModel" numbersOnly precision="0">
               </div>
             </div>
@@ -827,7 +835,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileNumberofSwimmingPool">Number of Swimming
                 Pool</label>
               <div class="col-sm-9">
-                <input name="numberofSwimmingPool" type="text" class="form-control"
+                <input  readonly="true" disabled="true"  name="numberofSwimmingPool" type="text" class="form-control"
                   [(ngModel)]="formData.numberofSwimmingPool" #numberofSwimmingPool="ngModel" numbersOnly precision="0">
               </div>
             </div>
