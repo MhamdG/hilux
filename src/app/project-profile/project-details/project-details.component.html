@@ -449,9 +449,9 @@
                 </ng-select> -->
                 <input name="accountTrusteeId" required="false"  readonly="true" type="text"
                 class="form-control" [(ngModel)]="formData.accountTrusteeId" #accountTrusteeId="ngModel" precision="5">
-                <div *ngIf="accountTrustee.invalid && (accountTrustee.dirty || accountTrustee.touched)"
+                <div *ngIf="accountTrusteeId.invalid && (accountTrusteeId.dirty || accountTrusteeId.touched)"
                   class="alert alert-danger">
-                  <div *ngIf="accountTrustee.errors?.required">
+                  <div *ngIf="accountTrusteeId.errors?.required">
                     Account Trustee can not be blank
                   </div>
                 </div>
