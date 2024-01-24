@@ -339,7 +339,7 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileTotalBuiltUpArea">Total Built Up Area
               </label>
               <div class="col-sm-9">
-                <input name="totalBuiltUpArea" type="text" class="form-control" [(ngModel)]="formData.totalBuiltUpArea"
+                <input readonly="true" disabled="true" name="totalBuiltUpArea" type="text" class="form-control" [(ngModel)]="formData.totalBuiltUpArea"
                   #totalBuiltUpArea="ngModel" numbersOnly precision="2">
                 <div *ngIf="totalBuiltUpArea.invalid && (totalBuiltUpArea.dirty || totalBuiltUpArea.touched)"
                   class="alert alert-danger">
