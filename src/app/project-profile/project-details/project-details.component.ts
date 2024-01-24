@@ -46,6 +46,7 @@ export class ProjectDetailsComponent implements OnInit {
   landID :any;
   landNUm:any;
   mainProjectName:any;
+  startEdit :any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -69,6 +70,7 @@ export class ProjectDetailsComponent implements OnInit {
     this.loadProjectStatusOptions();
     this.loadDeveloperNameOptions();
     this.loadProjectNameOptions();
+    this.startEdit =false;
 
     this.isMainOptions = [{ 
       key: "1",
@@ -90,6 +92,9 @@ export class ProjectDetailsComponent implements OnInit {
         this.formData = { };
       }
     });
+  }
+  changeFlagEdit (){
+    this.startEdit =true;
   }
 
   updateData(formData: any) {

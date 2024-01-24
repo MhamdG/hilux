@@ -57,9 +57,9 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectRegistrationNumber">Project Registration Number
               </label>
               <div class="col-sm-9">
-                <input type="text" name="id"  class="form-control"
-                  [(ngModel)]="formData.id" #id="ngModel" disabled="true">
-               
+                <input type="text" name="id" class="form-control" [(ngModel)]="formData.id" #id="ngModel"
+                  disabled="true">
+
               </div>
             </div>
           </div>
@@ -133,10 +133,10 @@
                 Is Main
                 <span>*</span>
               </label>
-              <div class="col-sm-9"> 
+              <div class="col-sm-9">
                 <ng-select class="rtl" required="true" [items]="isMainOptions" name="isMain"
                   [(ngModel)]="formData.isMain" bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث"
-                  #isMain="ngModel" disabled="true"  >
+                  #isMain="ngModel" disabled="true">
                 </ng-select>
                 <div *ngIf="isMain.invalid && (isMain.dirty || isMain.touched)" class="alert alert-danger">
                   <div *ngIf="isMain.errors?.required">
@@ -159,7 +159,7 @@
                   [loading]="projectDataOptionsLoading" #mainProject="ngModel" disabled="true">
                 </ng-select> -->
                 <input [disabled]="true" type="text" name="mainProjectId" class="form-control"
-                [(ngModel)]="mainProjectName" readonly="true" >
+                  [(ngModel)]="mainProjectName" readonly="true">
                 <!-- <div *ngIf="mainProject.invalid && (mainProject.dirty || mainProject.touched)"
                   class="alert alert-danger">
                   <div *ngIf="mainProject.errors?.required">
@@ -260,13 +260,17 @@
                   notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
                   #landId="ngModel">
                 </ng-select> -->
-                <ng-select class="rtl"  required="isNotMain()" [items]="landsoptions | async" name="landId"
-                [hideSelected]="true" [(ngModel)]="landNUm" [typeahead]="landSearchInput$"
-                bindLabel="value.ar" [minTermLength]="4" bindValue="key" [loading]="landDataOptionsLoading"
-                notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
-                #formData.landId="ngModel" >
-              </ng-select>
-                <div *ngIf="formData.landId.invalid && (formData.landId.dirty || formData.landId.touched)" class="alert alert-danger">
+                <ng-select *ngIf="startEdit" class="rtl" required="isNotMain()" [items]="landsoptions | async" name="landId"
+                  [hideSelected]="true" [(ngModel)]="formData.landId" [typeahead]="landSearchInput$"
+                  bindLabel="value.ar" [minTermLength]="4" bindValue="value.ar" [loading]="landDataOptionsLoading"
+                  notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 4 or more characters"
+                  #landId="ngModel">
+                </ng-select>
+                <input style="width: 95%;display: inline;" *ngIf="!startEdit"  type="text" name="landId" class="form-control"
+                  [(ngModel)]="formData.landId" #landId="ngModel" (click)="changeFlagEdit()" />
+                  <p *ngIf="!startEdit" style="display: inline;margin-right: 10px;cursor: pointer" (click)="changeFlagEdit()">X</p>
+                  <div *ngIf="formData.landId.invalid && (formData.landId.dirty || formData.landId.touched)"
+                  class="alert alert-danger">
                   <div *ngIf="formData.landId.errors?.required">
                     Parcel Id can not be blank
                   </div>
@@ -407,8 +411,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileLongitude">Longitude</label>
               <div class="col-sm-9">
-                <input name="longitude" required="false" readonly="true" type="text" class="form-control" [(ngModel)]="formData.longitude"
-                  #longitude="ngModel"  precision="5">
+                <input name="longitude" required="false" readonly="true" type="text" class="form-control"
+                  [(ngModel)]="formData.longitude" #longitude="ngModel" precision="5">
                 <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)" class="alert alert-danger">
                   <div *ngIf="longitude.errors?.pattern || longitude.errors?.minlength">
                     Enter valid Longitude
@@ -421,8 +425,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileLatitude">Latitude</label>
               <div class="col-sm-9">
-                <input name="latitude" required="false" required="false" readonly="true" type="text" class="form-control" [(ngModel)]="formData.latitude"
-                  #latitude="ngModel"  precision="5">
+                <input name="latitude" required="false" required="false" readonly="true" type="text"
+                  class="form-control" [(ngModel)]="formData.latitude" #latitude="ngModel" precision="5">
                 <div *ngIf="latitude.invalid && (latitude.dirty || latitude.touched)" class="alert alert-danger">
                   <div *ngIf="latitude.errors?.pattern || latitude.errors?.minlength">
                     Enter valid Latitude
@@ -495,7 +499,7 @@
           <div class="col-sm-6">
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileRegistrationDate">Registration Date
-                <span>*</span>
+                <!-- <span>*</span> -->
               </label>
               <div class="col-sm-9">
                 <input type="text" name="registrationDate" class="form-control"
@@ -621,9 +625,9 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <input name="projectCompletionpercentage" type="text" class="form-control" required="false" readonly="true"
-                  [(ngModel)]="formData.projectCompletionpercentage" #projectCompletionpercentage="ngModel" numbersOnly
-                  precision="0" [disabled]="isProjectCompleted()">
+                <input name="projectCompletionpercentage" type="text" class="form-control" required="false"
+                  readonly="true" [(ngModel)]="formData.projectCompletionpercentage"
+                  #projectCompletionpercentage="ngModel" numbersOnly precision="0" [disabled]="isProjectCompleted()">
                 <div
                   *ngIf="projectCompletionpercentage.invalid && (projectCompletionpercentage.dirty || projectCompletionpercentage.touched)"
                   class="alert alert-danger">
