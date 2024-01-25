@@ -470,7 +470,7 @@
                   notFoundText="لا يوجد نتائج للبحث" #accountTrustee="ngModel" disabled="true">
                 </ng-select> -->
                 <input name="accountTrusteeId" required="false"  readonly="true" type="text"
-                class="form-control" [(ngModel)]="formData.accountTrusteeId" #accountTrusteeId="ngModel" precision="5">
+                class="form-control" [(ngModel)]="formData.accountTrusteeId_displayValue" #accountTrusteeId="ngModel" precision="5">
                 <div *ngIf="accountTrusteeId.invalid && (accountTrusteeId.dirty || accountTrusteeId.touched)"
                   class="alert alert-danger">
                   <div *ngIf="accountTrusteeId.errors?.required">

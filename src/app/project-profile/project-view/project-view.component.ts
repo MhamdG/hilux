@@ -97,7 +97,7 @@ export class ProjectViewComponent implements OnInit {
   updateData(formData: any) {
     let fd = new FormData();
     fd.append('project', JSON.stringify(formData));
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/projects/update/${formData.id}`, fd)
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/projects/updateProject/${formData.id}`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
