@@ -65,7 +65,8 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { RateDetailsComponent } from './rate/rateDetails/rate-details.component';
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
-import { LandCancelViewComponent } from './land-cancel/land-cancel-view.component';
+import { LandCancelViewComponent } from './land-cancel/land-cancel-main/land-cancel-view.component';
+import {  LandCancelDetailsComponent} from './land-cancel/land-cancel-details/land-cancel-details.component';
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
   { path: 'login', component: LoginComponent },
@@ -191,6 +192,15 @@ const routes: Routes = [
   { path: 'application_search/:applicationId', component: SingleApplicationSearchComponent, canActivate: [AuthenticationGuard], resolve: { application_search: ApplicationSearchResolver } },
   { path: 'units_valuation', component: UnitsValuationComponent, canActivate: [AuthenticationGuard] },
   { path: 'landCancel', component: LandCancelViewComponent, canActivate: [AuthenticationGuard] },
+  {
+    path: 'landCancel/profile/:profileId', component: LandProfileComponent,
+    resolve: { profile: LandProfileResolver },
+    canActivate: [AuthenticationGuard],
+    children: [
+      { path: '', redirectTo: 'edit', pathMatch: 'full' },
+      { path: 'view', component: LandCancelDetailsComponent },
+    ]
+  },
 ];
 
 @NgModule({

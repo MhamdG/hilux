@@ -124,7 +124,9 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
-import { LandCancelViewComponent } from './land-cancel/land-cancel-view.component';
+import { LandCancelViewComponent } from './land-cancel/land-cancel-main/land-cancel-view.component';
+import {  LandCancelDetailsComponent} from './land-cancel/land-cancel-details/land-cancel-details.component';
+
 
 const maskConfig: Partial<IConfig> = {
 	  validation: false,
@@ -241,7 +243,8 @@ const maskConfig: Partial<IConfig> = {
     newRateComponent,
     PricingUnitComponent,
     PricingUnitDetailsComponent,
-    LandCancelViewComponent
+    LandCancelViewComponent,
+    LandCancelDetailsComponent
   ],
   imports: [
     FormsModule,
