@@ -321,12 +321,12 @@
               <label class="col-sm-3 col-form-label" i18n="@@projectProfileProjectType">Project Type
               </label>
               <div class="col-sm-9">
-                <!-- <ng-select class="rtl" [items]="projectsTypesOptions" name="projectType"
+                <ng-select class="rtl" [items]="projectsTypesOptions" name="projectType"
                   [(ngModel)]="formData.projectTypeId" bindLabel="value.ar" bindValue="key"
                   notFoundText="لا يوجد نتائج للبحث" #projectType="ngModel" disabled="true" >
-                </ng-select> -->
-                <input type="text" name="projectTypeId" class="form-control" [(ngModel)]="formData.projectTypeId"
-                #devPartNumber="ngModel" readonly="true" disabled="true">
+                </ng-select>
+                <!-- <input type="text" name="projectTypeId" class="form-control" [(ngModel)]="formData.projectTypeId"
+                #devPartNumber="ngModel" readonly="true" disabled="true"> -->
                 <!-- <div *ngIf="projectType.invalid && (projectType.dirty || projectType.touched)"
                   class="alert alert-danger">
                   <div *ngIf="projectType.errors?.required">
