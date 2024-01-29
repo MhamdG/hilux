@@ -1278,10 +1278,10 @@
       </trans-unit>
       <trans-unit id="projectProfileRegistrationDate" datatype="html">
         <source>Registration Date
-                            <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                            <!-- <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> -->
                           </source>
         <target>تاريخ تسجيل المشروع
-                            <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                            <!-- <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> -->
                           </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/project-profile/project-profile.component.html</context>
@@ -1355,21 +1355,21 @@
         <target>حالة المشروع
                             <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
                           </target>
-        <context-group purpose="location">
+        <!-- <context-group purpose="location">
           <context context-type="sourcefile">src/app/project-profile/project-profile.component.html</context>
           <context context-type="linenumber">645</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/project-profile/project-details/project-details.component.html</context>
           <context context-type="linenumber">633</context>
-        </context-group>
+        </context-group> -->
       </trans-unit>
       <trans-unit id="projectProfileProjectCompletionpercentage" datatype="html">
         <source>Project Completion percentage
-                            <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                            <!-- <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> -->
                           </source>
         <target>نسبة انجاز المشروع
-                            <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                            <!-- <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> -->
                           </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/project-profile/project-profile.component.html</context>
@@ -4165,10 +4165,10 @@
       </trans-unit>
       <trans-unit id="developerProfileRegistrationDate" datatype="html">
         <source>Registration date
-                            <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                            <!-- <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> -->
                           </source>
         <target>تاريخ تسجيل المشروع
-                            <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                            <!-- <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> -->
                           </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/developer-profile/developer-profile.component.html</context>
@@ -6018,6 +6018,37 @@
       <source>Meter Join Actual Area</source>
         <target>المساحة المشتركة الفعلية</target>
       </trans-unit>
+       <trans-unit id="CancelEdit" datatype="html">
+      <source>Cancel</source>
+        <target>إلغاء</target>
+      </trans-unit>
+        <trans-unit id="transactionID" datatype="html">
+      <source>Transaction ID</source>
+        <target>الرقم المعاملة</target>
+      </trans-unit>
+       <trans-unit id="expiryDate" datatype="html">
+      <source>Expiry Date</source>
+        <target>تاريخ الانتهاء</target>
+      </trans-unit>
+       <trans-unit id="issueDate" datatype="html">
+      <source>Issue Date</source>
+        <target>تاريخ الإصدار</target>
+      </trans-unit>
+        <trans-unit id="projectCertificates" datatype="html">
+      <source>Project Certificates</source>
+        <target>شهادات المشروع</target>
+      </trans-unit>
+      <trans-unit id="ProjectStatusKey" datatype="html">
+        <source>Project Status
+                          </source>
+        <target>حالة المشروع
+                          </target>
+        </trans-unit>
+       <trans-unit id="projectRegistrationNumber" datatype="html">
+      <source>Project Registration Number</source>
+        <target>رقم تسجيل المشروع</target>
+      </trans-unit>
+
       
       
     </body>

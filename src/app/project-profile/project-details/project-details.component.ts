@@ -43,7 +43,10 @@ export class ProjectDetailsComponent implements OnInit {
   searchProjectNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
   projectNameOptionsLoading =  false;
-
+  landID :any;
+  landNUm:any;
+  mainProjectName:any;
+  startEdit :any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -67,13 +70,14 @@ export class ProjectDetailsComponent implements OnInit {
     this.loadProjectStatusOptions();
     this.loadDeveloperNameOptions();
     this.loadProjectNameOptions();
+    this.startEdit =false;
 
-    this.isMainOptions = [{
-      key: 1,
+    this.isMainOptions = [{ 
+      key: "1",
       value: { en: 'Master Project', ar: 'مشروع رئيسي' }
     },
     {
-      key: 0,
+      key: "0",
       value: { en: 'Sub Project', ar: 'مشروع فرعي' }
     }];
 
@@ -88,6 +92,9 @@ export class ProjectDetailsComponent implements OnInit {
         this.formData = { };
       }
     });
+  }
+  changeFlagEdit (){
+    this.startEdit =true;
   }
 
   updateData(formData: any) {
@@ -105,6 +112,13 @@ export class ProjectDetailsComponent implements OnInit {
       this.toastr.error('Something went Wrong', 'Error')
       this.router.navigate(['error'])
     })
+  }
+  clearChanges(){
+    // window.location.reload();
+    this.router.navigate(['project/profile/' + this.formData.id + '/view'])
+            .then(() => {
+              window.location.reload();
+            });
   }
 
   loadDeveloperOptions() {
@@ -144,6 +158,7 @@ export class ProjectDetailsComponent implements OnInit {
           distinctUntilChanged(),
           tap(() => this.landDataOptionsLoading = true),
           switchMap(term => {
+            if(!term) term =this.landID;
             return this.lookupsService.loadLands({ term }).pipe(
               catchError(() => of([])), // empty list on error
               tap(() => this.landDataOptionsLoading = false)
@@ -267,6 +282,7 @@ export class ProjectDetailsComponent implements OnInit {
     if(!!profile.mainProjectId) {
       this.lookupsService.loadAllProjects({ id: profile.mainProjectId })
       .subscribe((option)=> {
+        this.mainProjectName =option.value.ar;
         this.projectsSearchInput$.next(option.value && option.value.ar);
       })
     }
@@ -283,8 +299,11 @@ export class ProjectDetailsComponent implements OnInit {
 
   prepareLandValueOptions(profile: any) {
     if(!!profile.landId) {
-      this.lookupsService.loadLands({ id: profile.landId })
+      this.landID =profile.landId;
+      this.lookupsService.loadLands({ term: profile.landId })
       .subscribe((option)=> {
+        this.landNUm = profile.landId;
+        console.log(this.landNUm);
         this.landSearchInput$.next(option.value && option.value.ar);
       })
     }
