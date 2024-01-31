@@ -328,7 +328,8 @@
               <div class="col-sm-9">
                 <input type="text" name="completionCertificateDate" class="form-control"
                   (dateTimeChange)="formatDate('completionCertificateDate')"
-                  [(ngModel)]="formData.completionCertificateDate" [owlDateTime]="dt6" [owlDateTimeTrigger]="dt6"
+                  [(ngModel)]="formData.completionCertificateDate" 
+                  [owlDateTime]="dt6" [owlDateTimeTrigger]="dt6"
                   #completionCertificateDate="ngModel">
                 <owl-date-time [pickerType]="'calendar'" #dt6></owl-date-time>
               </div>

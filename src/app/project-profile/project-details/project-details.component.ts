@@ -99,11 +99,16 @@ export class ProjectDetailsComponent implements OnInit {
 
   updateData(formData: any) {
     let fd = new FormData();
+    console.log(formData.completionCertificateDate);
     fd.append('project', JSON.stringify(formData));
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/projects/update/${formData.id}`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
+          this.router.navigate(['project/profile/' + this.formData.id + '/view'])
+          .then(() => {
+            window.location.reload();
+          });
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
