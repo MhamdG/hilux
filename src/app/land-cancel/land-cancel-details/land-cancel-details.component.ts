@@ -7,6 +7,7 @@ import { concat, Observable, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, pluck, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LookupsService } from '../../shared/lookups.service';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-land-details',
@@ -37,6 +38,19 @@ export class LandCancelDetailsComponent implements OnInit {
   searchOldLandOptionsLoading = false;
   distructsTypesOptions: any;
   flagwithdrawData :any;
+  sectiorVal :any;
+  sectionVal :any;
+  response:any;
+  roles$: object;
+  userRole: any;
+  addBlockData: any = {};
+  hideAttachmentsControl;
+  currentlyOwnedPropertiesByOwner: any = [];
+  flagUpload: any;
+
+
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +58,8 @@ export class LandCancelDetailsComponent implements OnInit {
     private http: HttpClient,
     private toastr: ToastrService,
     private fieldsService: FieldsService,
-    private lookupsService: LookupsService
+    private lookupsService: LookupsService,
+    private ngxSmartModalService: NgxSmartModalService
   ) { }
 
   ngOnInit(): void {
@@ -60,12 +75,18 @@ export class LandCancelDetailsComponent implements OnInit {
     this.loadSearchOldLandIdOptions();
     this.loadDistructsTypesOptions();
     this.flagwithdrawData =true;
+    this.flagUpload = true;
+    this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
+    .subscribe((res) => {
+      this.userRole = res;
+    });
 
 
     this.profile$ = this.route.data.pipe(pluck('profile'));
     this.profile$.subscribe((profile: any) => {
       if (profile && profile.id) {
         this.formData = profile as any;
+        this.searchDataFun(this.formData);
         if (!this.formData.buildingDetails) {
           this.formData.buildingDetails = {}
         }
@@ -98,7 +119,80 @@ export class LandCancelDetailsComponent implements OnInit {
     this.lookupsService.loadSectionsOptions()
       .subscribe((data) => {
         this.distructsTypesOptions = data;
+        for (let index = 0; index < data.length; index++) {
+          if (data[index].key == this.formData.sectionId) {
+            this.sectionVal = data[index].value.ar; 
+          }
+        }
       })
+  }
+  getCurrentOwnedLands(deeds: any) {
+    console.log(".............");
+    console.log(deeds);
+    return this.filterLandsWithStatus(deeds, '1');
+  }
+ 
+  getRole(data: any, permission: string) {
+    return Object.keys(data).includes(permission,);
+  }
+  getViewEngineeringBlocks(propertyId: any, resourceType: any = 'propertyId') {
+    return `/engineering_blocks?${resourceType}=${propertyId}`;
+  }
+  getViewResourceUrl(resourceId: any, resourceType: any) {
+    if (resourceType == "owner") {
+      return `/${resourceType}/profile/${resourceId}/edit`;
+    } else {
+      return `/${resourceType}/profile/${resourceId}/view`;
+    }
+  }
+  getViewLegalBlocks(propertyId: any, resourceType: any = 'propertyId') {
+    return `/legal_blocks?${resourceType}=${propertyId}`;
+  }
+  getOwnerHeader(item: any) {
+    return `نوع الملكية: ${this.getFieldNameorId(item.childDeed, 'ownershipType')}, Created At: ${item.deed?.createdAt}, طريقة انتقال الملكية: ${item.childDeed?.transferServiceNameAr}`
+  }
+  getFieldNameorId(item: any, field_name: any) {
+    return item && (item[`${field_name}NameAr`] || item[`${field_name}Id`])
+  }
+  searchDataFun(formData :any) {
+    console.log(formData);
+    let obj = {
+      'type':1,
+      'landId':formData.id,
+      'value':formData.id
+    }
+    let prepapedData = obj;
+    let fd = new FormData();
+    fd.append('data', JSON.stringify(prepapedData));
+
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/properties/search`, fd)
+      .subscribe((data: any) => {
+        if (data.status == 'success') {
+          this.response = data.data.deeds[0];
+          console.log(" searchDataFun ... res");
+          console.log(this.response);
+        } else {
+          this.formErrors = data.data;
+          this.toastr.error(JSON.stringify(data.message), 'Error');
+        }
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error');
+        this.router.navigate(['error']);
+      });
+  }
+  prepareEstablishmentContractFileField() {
+    return {
+      fieldID: "attachments",
+      fieldType: "fileupload",
+      required: this.flagUpload,
+      fieldName: {
+        "ar": "attachments",
+        "en": "attachments"
+      },
+      auxInfo: {
+        multiple: true
+      }
+    }
   }
 
   updateData(formData: any) {
@@ -126,13 +220,39 @@ export class LandCancelDetailsComponent implements OnInit {
     this.lookupsService.loadSectorsOptions()
       .subscribe((data) => {
         this.sectorsOptions = data;
+        for (let index = 0; index < data.length; index++) {
+          if (data[index].key == this.formData.sectorId) {
+            this.sectiorVal = data[index].value.ar; 
+          }
+        }
       })
+  }
+  toggleControl(value?: boolean) {
+    this.hideAttachmentsControl = (!!value ? value : !this.hideAttachmentsControl)
+    return this.hideAttachmentsControl;
   }
 
   loadSectionsOptions() {
     this.lookupsService.loadSectionsOptions()
       .subscribe((data) => {
         this.sectionsOptions = data;
+      })
+  }
+  getCurrentlyOwnedPropertiesFor(ownerId: any) {
+    let fd = new FormData();
+    fd.append('data', JSON.stringify({ "ownerId": ownerId }));
+
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/properties/ownerActiveProperties`, fd)
+      .subscribe((data: any) => {
+        if (data.status == 'success') {
+          this.currentlyOwnedPropertiesByOwner = data.data;
+        } else {
+          this.formErrors = data.data;
+          this.toastr.error(JSON.stringify(data.message), 'Error')
+        }
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
       })
   }
 
@@ -298,10 +418,43 @@ export class LandCancelDetailsComponent implements OnInit {
 
   searchResourceData(data: any) {
     let value = !!data.term ? data.term : data.searchOldLandId;
-    this.router.navigate(['land/profile/', value, 'view'])
-    .then(() => {
+    this.router.navigate(['landCancel/profile/', value, 'view']).then(() => {
       window.location.reload();
     });
+  }
+  getOwnerClass(item: any) {
+    return (item.deed.status == '1') ? 'bg-seagreen' : 'bg-light-red'
+  }
+  getType(param_name: string) {
+    return this.getSearchByandTypeValues(param_name);
+  }
+  getSearchByandTypeValues(field_name: any) {
+    let type = '3'
+    if (['developerId', 'projectId', 'unitId'].includes(field_name)) {
+      type = '2'
+    } else if (['landId', 'oldLandId'].includes(field_name)) {
+      type = '1'
+    } else {
+      type = '3'
+    }
+    return type;
+  }
+  getSearchLink(resourceId: any, name: any) {
+    let type = this.getType(name);
+    return `/search?type=${type}&${name}=${resourceId}`
+  }
+
+  async openAddBlockToOwnerPropertiesModal(ownerId: string) {
+    this.addBlockData.ownerId = ownerId;
+    this.toggleControl(false);
+    await this.getCurrentlyOwnedPropertiesFor(ownerId);
+    this.ngxSmartModalService.getModal('addBlockToOwnerPropertiesModal').open();
+  }
+  getPreviouslyOwnedLands(deeds: any) {
+    return this.filterLandsWithStatus(deeds, '0');
+  }
+  filterLandsWithStatus(deeds: any, status: any) {
+    return deeds && deeds.filter(d => d.land && d.deed?.status == status);
   }
 
   loadLandNameOptions() {

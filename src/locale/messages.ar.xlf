@@ -6022,6 +6022,42 @@
       <source>Land Cancel</source>
         <target>إلغاء الأرض</target>
       </trans-unit>
+        <trans-unit id="landNumberCalncelLand" datatype="html">
+      <source>Land Number</source>
+        <target>رقم الأرض</target>
+      </trans-unit>
+       <trans-unit id="previousLandNumberCalncelLand" datatype="html">
+      <source>Previous Land Number</source>
+        <target>رقم الأرض القديم</target>
+      </trans-unit>
+        <trans-unit id="sectorCalncelLand" datatype="html">
+      <source>Sector</source>
+        <target> القطاع</target>
+      </trans-unit>
+       <trans-unit id="DistrictCalncelLand" datatype="html">
+      <source>District</source>
+        <target> الحس</target>
+      </trans-unit>
+       <trans-unit id="ReservationsCalncelLand" datatype="html">
+      <source>Reservations</source>
+        <target> الحجوزات</target>
+      </trans-unit>
+        <trans-unit id="ationsCalncelLand" datatype="html">
+      <source>Actions</source>
+        <target> إجراءات</target>
+      </trans-unit>
+        <trans-unit id="reasonOfCancel" datatype="html">
+      <source>Reason Of Cancel *</source>
+        <target> سبب الإلغاء *</target>
+      </trans-unit>
+       <trans-unit id="attachments" datatype="html">
+      <source>attachments *</source>
+        <target> المرفقات *</target>
+      </trans-unit>
+       <trans-unit id="Acknowledgmentofthecancellation" datatype="html">
+      <source>Acknowledgment of the cancellation *</source>
+        <target> إقرار بإعتماد الإلغاء *</target>
+      </trans-unit>
       
       
     </body>
