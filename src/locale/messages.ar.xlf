@@ -6047,16 +6047,29 @@
         <target> إجراءات</target>
       </trans-unit>
         <trans-unit id="reasonOfCancel" datatype="html">
-      <source>Reason Of Cancel *</source>
-        <target> سبب الإلغاء *</target>
+      <source>Reason Of Cancel 
+          <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+      </source>
+        <target> سبب الإلغاء 
+        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+        </target>
       </trans-unit>
        <trans-unit id="attachments" datatype="html">
-      <source>attachments *</source>
-        <target> المرفقات *</target>
+      <source>attachments 
+        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+      </source>
+        <target> المرفقات 
+        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+        </target>
       </trans-unit>
        <trans-unit id="Acknowledgmentofthecancellation" datatype="html">
-      <source>Acknowledgment of the cancellation *</source>
-        <target> إقرار بإعتماد الإلغاء *</target>
+      <source>Acknowledgment of the cancellation 
+          <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+
+      </source>
+        <target> إقرار بإعتماد الإلغاء 
+        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+        </target>
       </trans-unit>
       
       

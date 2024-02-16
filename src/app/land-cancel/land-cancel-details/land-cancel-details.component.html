@@ -37,31 +37,33 @@
 
       <div *ngIf="flagwithdrawData" class="card-body">
 
-        <div class="form-group row" *ngIf="formData.landIdConversionsHistory.length > 0">
+        <div class="form-group row" >
           <div class="col-sm-12">
             <!-- <label class="col-form-label" style="text-align: center;width: 100%;" i18n="@@historyOfConversionOfLandId">
               History Of Conversion Of Land Id
             </label> -->
-            <table style="border: 1px solid black;width: 100%;">
-              <thead style="border: 1px solid black;">
-                <th style="border: 1px solid black; text-align: center;">
+            <table class="table table-bordered landTable table-responsive d-table">
+              <thead >
+                <tr class="bg-grey">
+                <th style=" text-align: center;">
                   <label class="col-form-label" i18n="@@landNumberCalncelLand"> Land Id</label>
                 </th>
-                <th style="border: 1px solid black; text-align: center;">
+                <th style=" text-align: center;">
                   <label class="col-form-label" i18n="@@previousLandNumberCalncelLand">Previous Land Id</label>
                 </th>
-                <th style="border: 1px solid black; text-align: center;">
+                <th style=" text-align: center;">
                   <label class="col-form-label" i18n="@@sectorCalncelLand">Sector</label>
                 </th>
-                <th style="border: 1px solid black; text-align: center;">
+                <th style="text-align: center;">
                   <label class="col-form-label" i18n="@@DistrictCalncelLand">District</label>
                 </th>
-                <th style="border: 1px solid black; text-align: center;">
+                <th style=" text-align: center;">
                   <label class="col-form-label" i18n="@@ReservationsCalncelLand">ReservationsCalncelLand</label>
                 </th>
-                <th style="border: 1px solid black; text-align: center;">
+                <th style=" text-align: center;">
                   <label class="col-form-label" i18n="@@ationsCalncelLand">Actions</label>
                 </th>
+                </tr>
               </thead>
               <tbody style="border: 1px solid black;">
                 <!-- <tr *ngFor="let item of formData.landIdConversionsHistory let j = index"> -->
@@ -101,21 +103,19 @@
                           <i class="fas fa-eye"></i>
                         </a>
                       </ng-container>
-                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
                         <a [href]="getViewLegalBlocks(response.land.propertyId , 'propertyId')" target="_blank"
                           class="fs-30 p-1">
                           <i class="fas fa-balance-scale"></i>
                         </a>
                       </ng-container>
-                      <!-- <a [href]="getViewLegalBlocks(land_detail.land.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1" *ngIf="!land_detail.land.landId">
-                        <i class="fas fa-balance-scale"></i>
-                      </a> -->
+                      
                       <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
                         <a [href]="getViewEngineeringBlocks(response.land.propertyId , 'propertyId')" target="_blank"
                           class="fs-30 p-1">
                           <i class="fas fa-drafting-compass"></i>
                         </a>
-                      </ng-container>
+                      </ng-container> -->
                     </div>
                   </td>
                 </tr>
@@ -153,11 +153,9 @@
                 <tr [ngClass]="getOwnerClass(response) == 'bg-seagreen' ? 'bg-white' : getOwnerClass(response)"
                   *ngFor="let deed_detail_item of response.deedDetails; let i = index">
                   <td>{{deed_detail_item.profile?.id}}</td>
-                  <td><a
-                      [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameAr}}</a>
+                  <td>{{deed_detail_item.profile?.nameAr}}
                   </td>
-                  <td><a
-                      [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameEn}}</a>
+                  <td>{{deed_detail_item.profile?.nameEn}}
                   </td>
                   <td>{{deed_detail_item.details?.mainIdentityNumber}}</td>
                   <td>{{deed_detail_item.details?.share}}</td>
@@ -171,12 +169,12 @@
                           <i class="fas fa-eye"></i>
                         </a>
                       </ng-container>
-                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
                         <a href="javascript:void(0);" class="fs-30 p-1 icon-pointer"
                           (click)="openAddBlockToOwnerPropertiesModal(deed_detail_item.profile?.ownerId)">
                           <i class="fas fa-gavel fa-rotate-270"></i>
                         </a>
-                      </ng-container>
+                      </ng-container> -->
                     </div>
                   </td>
                 </tr>
@@ -212,11 +210,9 @@
                 <tr [ngClass]="getOwnerClass(response) == 'bg-seagreen' ? 'bg-white' : getOwnerClass(response)"
                   *ngFor="let deed_detail_item of item.deedDetails; let i = index">
                   <td>{{deed_detail_item.profile?.id}}</td>
-                  <td><a
-                      [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameAr}}</a>
+                  <td>{{deed_detail_item.profile?.nameAr}}
                   </td>
-                  <td><a
-                      [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameEn}}</a>
+                  <td>{{deed_detail_item.profile?.nameEn}}
                   </td>
                   <td>{{deed_detail_item.details?.mainIdentityNumber}}</td>
                   <td>{{deed_detail_item.details?.share}}</td>
@@ -230,12 +226,12 @@
                           <i class="fas fa-eye"></i>
                         </a>
                       </ng-container>
-                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
                         <a href="javascript:void(0);" class="fs-30 p-1 icon-pointer"
                           (click)="openAddBlockToOwnerPropertiesModal(deed_detail_item.profile?.ownerId)">
                           <i class="fas fa-gavel fa-rotate-270"></i>
                         </a>
-                      </ng-container>
+                      </ng-container> -->
                     </div>
                   </td>
                 </tr>
@@ -246,14 +242,18 @@
 
         <div class="form-group row">
           <div class="col-sm-12">
-            <label class="" i18n="@@reasonOfCancel">Reason Of Cancel</label>
+            <label class="" i18n="@@reasonOfCancel">Reason Of Cancel
+              <span>*</span>
+            </label>
             <div class="col-sm-6">
               <textarea name="reasonOfCancel" class="form-control" rows="3"
                 [(ngModel)]="formData.reasonOfCancel"></textarea>
             </div>
           </div>
           <div class="col-sm-12">
-            <label class="" i18n="@@attachments">Attachments</label>
+            <label class="" i18n="@@attachments">Attachments 
+              <span>*</span>
+            </label>
             <div class="col-sm-6">
               <app-file-upload [field]="prepareEstablishmentContractFileField()" [formData]="formData"
                 [defaultValues]="formData"></app-file-upload>
@@ -264,7 +264,9 @@
             <div class="form-group row" style="padding-right: 25px;margin-top: 25px;">
               <input name="agreeCancel"   [(ngModel)]="formData.agreeCancel"  type="checkbox"
                 class="form-check-input">
-              <label class="" i18n="@@Acknowledgmentofthecancellation">Acknowledgment of the cancellation</label>
+              <label class="" i18n="@@Acknowledgmentofthecancellation">Acknowledgment of the cancellation
+                <span>*</span>
+              </label>
             </div>
           </div>
         </div>
@@ -274,7 +276,7 @@
         <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid" i18n="@@formSubmitLabel">Submit</button>
       </div> -->
       <div *ngIf="flagwithdrawData" class="card-footer">
-        <button type="button" (click)="editFun()" class="btn btn-primary float-left" i18n="@@edit">Edit</button>
+        <button type="button" (click)="editFun()" class="btn btn-primary float-left" i18n="@@submit">submit</button>
       </div>
       <div *ngIf="!flagwithdrawData" class="loader">
       </div>
