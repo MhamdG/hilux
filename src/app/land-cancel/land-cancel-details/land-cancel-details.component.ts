@@ -168,7 +168,17 @@ export class LandCancelDetailsComponent implements OnInit {
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/properties/search`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
-          this.response = data.data.deeds[0];
+          if (data.data.deeds.length > 0) {
+            for (let index = 0; index < data.data.deeds.length; index++) {
+             if (data.data.deeds[index].deed.status == 1) {
+              this.response = data.data.deeds[index];
+            break; 
+            } 
+            }
+          }else{
+            this.response = data.data.deeds[0];
+          }
+         
           console.log(" searchDataFun ... res");
           console.log(this.response);
         } else {
