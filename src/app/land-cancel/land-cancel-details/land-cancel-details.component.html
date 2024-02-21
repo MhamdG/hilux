@@ -42,60 +42,61 @@
             <!-- <label class="col-form-label" style="text-align: center;width: 100%;" i18n="@@historyOfConversionOfLandId">
               History Of Conversion Of Land Id
             </label> -->
+            <label i18n="@@searchPageTableLand">Land:</label>
             <table class="table table-bordered landTable table-responsive d-table">
               <thead >
                 <tr class="bg-grey">
-                <th style=" text-align: center;">
+                <th >
                   <label class="col-form-label" i18n="@@landNumberCalncelLand"> Land Id</label>
                 </th>
-                <th style=" text-align: center;">
+                <th >
                   <label class="col-form-label" i18n="@@previousLandNumberCalncelLand">Previous Land Id</label>
                 </th>
-                <th style=" text-align: center;">
+                <th >
                   <label class="col-form-label" i18n="@@sectorCalncelLand">Sector</label>
                 </th>
-                <th style="text-align: center;">
+                <th>
                   <label class="col-form-label" i18n="@@DistrictCalncelLand">District</label>
                 </th>
-                <th style=" text-align: center;">
+                <th >
                   <label class="col-form-label" i18n="@@ReservationsCalncelLand">ReservationsCalncelLand</label>
                 </th>
-                <th style=" text-align: center;">
+                <th >
                   <label class="col-form-label" i18n="@@ationsCalncelLand">Actions</label>
                 </th>
                 </tr>
               </thead>
-              <tbody style="border: 1px solid black;">
+              <tbody style="">
                 <!-- <tr *ngFor="let item of formData.landIdConversionsHistory let j = index"> -->
                 <tr>
-                  <td style="border: 1px solid black; text-align: center;">
+                  <td >
                     <label class="col-form-label">
                       {{response.land.land.landId}}
                     </label>
                   </td>
-                  <td style="border: 1px solid black; text-align: center;">
+                  <td >
                     <label class="col-form-label">
                       {{response.land.land.oldLandId}}
                     </label>
                   </td>
-                  <td style="border: 1px solid black; text-align: center;">
+                  <td >
                     <label class="col-form-label">
                       {{sectiorVal}}
                     </label>
                   </td>
-                  <td style="border: 1px solid black; text-align: center;">
+                  <td >
                     <label class="col-form-label">
                       {{sectionVal}}
                     </label>
                   </td>
-                  <td style="border: 1px solid black; text-align: center;">
+                  <td >
                     <ng-container *ngFor="let blockage of response.land.blockages">
                       <li class="text-danger" *ngIf="blockage.remarks">
                         {{blockage.remarks}}
                       </li>
                     </ng-container>
                   </td>
-                  <td style="border: 1px solid black; text-align: center;">
+                  <td >
                     <div class="d-flex">
                       <ng-container
                         *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
