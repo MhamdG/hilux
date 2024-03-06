@@ -6019,8 +6019,12 @@
         <target>المساحة المشتركة الفعلية</target>
       </trans-unit>
        <trans-unit id="landCancel" datatype="html">
-      <source>Land Cancel</source>
-        <target>إلغاء الأرض</target>
+      <source>Land Cancel
+                          <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/>
+      </source>
+        <target>إلغاء الأرض
+        <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/>
+        </target>
       </trans-unit>
         <trans-unit id="landNumberCalncelLand" datatype="html">
       <source>Land Number</source>
