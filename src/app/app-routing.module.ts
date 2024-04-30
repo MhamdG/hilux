@@ -65,6 +65,7 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { RateDetailsComponent } from './rate/rateDetails/rate-details.component';
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
+import { HandingPropertyMainViewComponent } from './handing-property/handing-property-main-view/handingProperty-mainView.component';
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
   { path: 'login', component: LoginComponent },
@@ -162,6 +163,7 @@ const routes: Routes = [
       { path: 'landNumber', component: LandnumberComponent }
     ]
   },
+  { path: 'handingProperty/view', component: HandingPropertyMainViewComponent, resolve: { profile: LandProfileResolver }, canActivate: [AuthenticationGuard] },
   { path: 'developer/new', component: DeveloperProfileComponent, resolve: { profile: DeveloperProfileResolver }, canActivate: [AuthenticationGuard] },
   {
     path: 'developer/profile/:profileId', component: DeveloperProfileComponent,

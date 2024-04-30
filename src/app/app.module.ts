@@ -123,6 +123,7 @@ import { SingleApplicationSearchComponent } from './single-application-search/si
 import { UnitsValuationComponent } from './units-valuation/units-valuation.component';
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
+import { HandingPropertyMainViewComponent } from './handing-property/handing-property-main-view/handingProperty-mainView.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 const maskConfig: Partial<IConfig> = {
@@ -239,7 +240,8 @@ const maskConfig: Partial<IConfig> = {
     RateViewComponent,
     newRateComponent,
     PricingUnitComponent,
-    PricingUnitDetailsComponent
+    PricingUnitDetailsComponent,
+    HandingPropertyMainViewComponent
   ],
   imports: [
     FormsModule,

@@ -1,0 +1,101 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <!-- <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+            </ol>
+          </div> -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12" *ngIf="profile$ | async as profile">
+          <div class="card card-purple">
+            <div class="card-header">
+              <h3 class="card-title">بيانات المشروع</h3>
+            </div>
+            <router-outlet></router-outlet>
+            <!-- <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
+
+              <button type="button" (click)="addNewFun()"
+                style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
+                i18n="@@addNew">+ Add New</button>
+            </div> -->
+            <section class="content" *ngIf="formData && !formData.id">
+              <div class="container-fluid">
+                <app-alerts [errors]="formErrors"></app-alerts>
+                <form class="form-horizontal" (ngSubmit)="searchResourceData(searchData)" #sf="ngForm"
+                  enctype='multipart/form-data' novalidate>
+                  <div class="card-body">
+                    <div class="form-group row">
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@projectProfileSearchDeveloperName">Developer
+                            Name
+                            <span>*</span>
+                          </label>
+                          <div class="col-sm-9">
+                            <ng-select class="rtl" [items]="developerNameOptions | async" name="developerNameSearch"
+                              [hideSelected]="true" [minTermLength]="1" required="true"
+                              [(ngModel)]="searchData.searchDeveloperId" [loading]="developerNameOptionsLoading"
+                              bindLabel="value.ar" bindValue="key" typeToSearchText="Please enter 1 or more characters"
+                              notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchDeveloperNameInput$"
+                              #developerNameSearch="ngModel" (change)="resetSearchProject()">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@projectProfileSearchProjectName">Project Name
+                            <span>*</span>
+                          </label>
+                          <div class="col-sm-9">
+                            <ng-select class="rtl" [items]="projectNameOptions | async" name="projectNameSearch"
+                              [hideSelected]="true" [minTermLength]="1" required="true"
+                              [(ngModel)]="searchData.searchProjectId" [loading]="projectNameOptionsLoading"
+                              bindLabel="value.ar" bindValue="key" typeToSearchText="Please enter 1 or more characters"
+                              notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchProjectNameInput$"
+                              #projectNameSearch="ngModel">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@searchPageUnitID">Unit ID
+                            <span>*</span>
+                          </label>
+                          <div class="col-sm-9">
+                            <ng-select [items]="unitsOptions" name="units" [(ngModel)]="formData.unitId"
+                              bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث" #unitId="ngModel"
+                              (open)="loadUnitsOptions()">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
+                      i18n="@@landProfileSearchButton">Search</button>
+                  </div>
+                </form>
+
+                <hr />
+
+
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

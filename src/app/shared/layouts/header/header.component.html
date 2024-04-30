@@ -151,6 +151,14 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'Archives')">
+                    <a class="dropdown-item" href="/handingProperty/view">
+                        <i class="fas fa-plus float-left"></i>
+                         تسليم الملكيات
+
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </ng-container>
 
                 <!-- <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
                 <a
