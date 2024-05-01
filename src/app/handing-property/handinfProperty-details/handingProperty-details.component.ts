@@ -10,11 +10,11 @@ import { environment } from '../../../environments/environment';
 import { LookupsService } from '../../shared/lookups.service';
 
 @Component({
-  selector: 'app-customer-profile',
-  templateUrl: './handingProperty-mainView.component.html',
-  styleUrls: ['./handingProperty-mainView.component.css']
+  selector: 'app-customer-details',
+  templateUrl: './handingProperty-details.component.html',
+  styleUrls: ['./handingProperty-details.component.css']
 })
-export class HandingPropertyMainViewComponent implements OnInit {
+export class HandingPropertyDetailsComponent implements OnInit {
   formData: any;
   searchData: any = {};
   formErrors:any = {};
@@ -43,6 +43,7 @@ export class HandingPropertyMainViewComponent implements OnInit {
   searchProjectNameInput$ = new Subject<string>();
   developerNameOptionsLoading = false;
   projectNameOptionsLoading =  false;
+  mainProjectName:any;
   unitsOptions: any;
 
 
@@ -69,15 +70,15 @@ export class HandingPropertyMainViewComponent implements OnInit {
     this.loadProjectStatusOptions();
     this.loadDeveloperNameOptions();
     this.loadProjectNameOptions();
-    // this.loadUnitsOptions();
+    this.loadUnitsOptions();
 
 
     this.isMainOptions = [{
-      key: 1,
+      key: "1",
       value: { en: 'Master Project', ar: 'مشروع رئيسي' }
     },
     {
-      key: 0,
+      key: "0",
       value: { en: 'Sub Project', ar: 'مشروع فرعي' }
     }];
 
@@ -93,11 +94,12 @@ export class HandingPropertyMainViewComponent implements OnInit {
       }
     });
   }
-  addNewFun(){
-    this.router.navigate(['project/new']);
-  } 
+  editFun(){
+    this.router.navigate(['project/profile/', this.formData.id, 'edit']);
+
+  }
   loadUnitsOptions() {
-    this.lookupsService.loadUnitsOptions({ projectId: this.searchData.searchProjectId })
+    this.lookupsService.loadUnitsOptions({ projectId: this.formData.projectId })
       .subscribe((data) => {
         this.unitsOptions = data;
       })
@@ -105,7 +107,7 @@ export class HandingPropertyMainViewComponent implements OnInit {
   updateData(formData: any) {
     let fd = new FormData();
     fd.append('project', JSON.stringify(formData));
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/projects/update/${formData.id}`, fd)
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/projects/updateProject/${formData.id}`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
@@ -279,6 +281,7 @@ export class HandingPropertyMainViewComponent implements OnInit {
     if(!!profile.mainProjectId) {
       this.lookupsService.loadAllProjects({ id: profile.mainProjectId })
       .subscribe((option)=> {
+        this.mainProjectName =option.value.ar;
         this.projectsSearchInput$.next(option.value && option.value.ar);
       })
     }
@@ -315,8 +318,10 @@ export class HandingPropertyMainViewComponent implements OnInit {
 
   searchResourceData(data: any) {
     if (!!data.searchProjectId) {
-      this.router.navigate(['handingProperty/profile/', "98", 'view']);
-      // this.router.navigate(['handingProperty/profile/', data.searchProjectId, 'view']);
+      this.router.navigate(['project/profile/', data.searchProjectId, 'view'])
+      .then(() => {
+        window.location.reload();
+      });
     }
   }
 

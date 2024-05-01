@@ -66,6 +66,7 @@ import { RateDetailsComponent } from './rate/rateDetails/rate-details.component'
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
 import { HandingPropertyMainViewComponent } from './handing-property/handing-property-main-view/handingProperty-mainView.component';
+import { HandingPropertyDetailsComponent } from './handing-property/handinfProperty-details/handingProperty-details.component';
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
   { path: 'login', component: LoginComponent },
@@ -164,6 +165,15 @@ const routes: Routes = [
     ]
   },
   { path: 'handingProperty/view', component: HandingPropertyMainViewComponent, resolve: { profile: LandProfileResolver }, canActivate: [AuthenticationGuard] },
+  // { path: 'handingProperty/profile/:profileId', component: HandingPropertyMainViewComponent, resolve: { profile: LandProfileResolver }, canActivate: [AuthenticationGuard] },
+  {
+    path: 'handingProperty/profile/:profileId', component: HandingPropertyMainViewComponent,
+    resolve: { profile: ProjectProfileResolver }, canActivate: [AuthenticationGuard],
+    children: [
+      { path: '', redirectTo: 'edit', pathMatch: 'full' },
+      { path: 'view', component: HandingPropertyDetailsComponent }
+    ]
+  },
   { path: 'developer/new', component: DeveloperProfileComponent, resolve: { profile: DeveloperProfileResolver }, canActivate: [AuthenticationGuard] },
   {
     path: 'developer/profile/:profileId', component: DeveloperProfileComponent,

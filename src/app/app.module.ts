@@ -124,6 +124,8 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
 import { HandingPropertyMainViewComponent } from './handing-property/handing-property-main-view/handingProperty-mainView.component';
+import { HandingPropertyDetailsComponent } from './handing-property/handinfProperty-details/handingProperty-details.component';
+
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 const maskConfig: Partial<IConfig> = {
@@ -241,7 +243,8 @@ const maskConfig: Partial<IConfig> = {
     newRateComponent,
     PricingUnitComponent,
     PricingUnitDetailsComponent,
-    HandingPropertyMainViewComponent
+    HandingPropertyMainViewComponent,
+    HandingPropertyDetailsComponent
   ],
   imports: [
     FormsModule,
