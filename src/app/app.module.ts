@@ -124,6 +124,7 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { AdministrativeBlocksComponent } from './Administrative-blocks/Administrative-blocks.component';
 
 const maskConfig: Partial<IConfig> = {
 	  validation: false,
@@ -239,7 +240,8 @@ const maskConfig: Partial<IConfig> = {
     RateViewComponent,
     newRateComponent,
     PricingUnitComponent,
-    PricingUnitDetailsComponent
+    PricingUnitDetailsComponent,
+    AdministrativeBlocksComponent
   ],
   imports: [
     FormsModule,

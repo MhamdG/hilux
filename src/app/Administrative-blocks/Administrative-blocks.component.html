@@ -1,0 +1,737 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="m-2 text-dark">
+          <h1>الحجوزات الإدارية</h1>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-purple">
+        <div class="card-header">
+          <h3 class="card-title">قائمة البحث</h3>
+        </div>
+        <app-alerts [errors]="formErrors"></app-alerts>
+
+        <div class="col-sm-12">
+          <div class="mt-4">
+            <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm" enctype='multipart/form-data' novalidate>
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@legalBlockssearchDeveloperName">Developer Name
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          [items]="developerOptions | async"
+                          required="isSearchByUnit()"
+                          name="developerId"
+                          [hideSelected]="true"
+                          [(ngModel)]="formData.developerId"
+                          [typeahead]="developerSearchInput$"
+                          bindLabel="value.ar"
+                          [minTermLength]="1"
+                          bindValue="key"
+                          [loading]="developerDataOptionsLoading"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          typeToSearchText="Please enter 1 or more characters"
+                          #developer="ngModel"
+                          [disabled]="isNotSearchTypeUnit()"
+                          (keyup)="setSearchType('developerId', $event)"
+                          (blur)="checkTypeAndValues('developerId')"
+                          (change)="resetProjectAndUnit()"
+                        >
+                        </ng-select>
+                      </div>
+                    </div> 
+
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@legalBlockssearchProjectName">Project Name
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          required="isSearchByUnit()"
+                          [items]="projectsOptions | async"
+                          name="project"
+                          [hideSelected]="true"
+                          [(ngModel)]="formData.projectId"
+                          [minTermLength]="1"
+                          bindLabel="value.ar"
+                          typeToSearchText="Please enter 1 or more characters"
+                          bindValue="key"
+                          [typeahead]="projectsSearchInput$"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          [loading]="projectDataOptionsLoading"
+                          #project="ngModel"
+                          [disabled]="isNotSearchTypeUnit() || isEmpty('developerId')"
+                          (keyup)="setSearchType('unitId', $event)"
+                          (blur)="checkTypeAndValues('projectId')"
+                          (change)="resetUnit()"
+                        >
+                        </ng-select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@legalBlockssearchUnitId">Unit ID
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          required="isSearchByUnit()"
+                          [items]="unitsOptions"
+                          name="units"
+                          [(ngModel)]="formData.unitId"
+                          bindLabel="value.ar"
+                          bindValue="key"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          #unitId="ngModel"
+                          [disabled]="isNotSearchTypeUnit() || isEmpty('projectId')"
+                          (open)="loadUnitsOptions()"
+                        >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@legalBlockssearchLandId">Land ID
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          required="true"
+                          [items]="landsOptions | async"
+                          name="land"
+                          [hideSelected]="true"
+                          [(ngModel)]="formData.landId"
+                          [typeahead]="landSearchInput$"
+                          bindLabel="value.ar"
+                          [minTermLength]="1"
+                          bindValue="key"
+                          [loading]="landDataOptionsLoading"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          typeToSearchText="Please enter 1 or more characters"
+                          #land="ngModel"
+                          [disabled]="isNotSearchTypeLand() || isNotSearchBy('landId')"
+                          (blur)="checkTypeAndValues('landId')"
+                          (keyup)="setSearchType('landId', $event)">
+                        </ng-select>
+                      </div>
+                    </div>
+                  
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@legalBlockssearchOldLandID">Old Land ID
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          required="true"
+                          [items]="oldLandsOptions | async"
+                          name="oldLand"
+                          [hideSelected]="true"
+                          [(ngModel)]="formData.oldLandId"
+                          [typeahead]="oldLandSearchInput$"
+                          bindLabel="value.ar"
+                          [minTermLength]="1"
+                          bindValue="key"
+                          [loading]="oldLandDataOptionsLoading"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          typeToSearchText="Please enter 1 or more characters"
+                          #oldLand="ngModel"
+                          [disabled]="isNotSearchTypeLand() || isNotSearchBy('oldLandId')"
+                          (blur)="checkTypeAndValues('oldLandId')"
+                          (keyup)="setSearchType('oldLandId', $event)">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="row ">
+                  <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" i18n="@@legalBlockssearchSearchButton">Search</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <hr/>
+
+          <div class="resultsWrapper rtl" *ngIf="response">
+            <div class="searchBlockages">
+              <div class="row">
+                <div class="col-sm-6">
+                  <label i18n="@@legalBlocksResultsLegalBlockages">Legal Blockages:</label>
+                </div>
+                <div class="col-sm-6">
+                  <button class="btn btn-primary float-left" (click)="openAddBlockModal()" i18n="@@legalBlocksResultsAddBlock">Add Block</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6" *ngIf="isLandBlockage(response)">
+                  <label i18n="@@legalBlocksResultsLandId">Land ID: </label><span>{{ getfirstLand(response)?.landId }}</span>
+                </div>
+                <div class="col-sm-6" *ngIf="!isLandBlockage(response)">
+                  <label i18n="@@legalBlocksResultsDeveloperName">Developer Name: </label><span>{{ getDeveloperName(response) }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6" *ngIf="!isLandBlockage(response)">
+                  <label i18n="@@legalBlocksResultsUnitNumber">Unit Number: </label><span>{{ getUnitNumber(response) }}</span>
+                </div>
+                <div class="col-sm-6" *ngIf="!isLandBlockage(response)">
+                  <label i18n="@@legalBlocksResultsProjectName">Project Name: </label><span>{{ getProjectName(response) }}</span>
+                </div>
+              </div>
+              <div class="card bg-seagreen">
+                <div class="card-header border-0">
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                  </div>
+                  <h3 class="card-title float-right font-weight-bold" i18n="@@legalBlocksResultsCurrentLegalBlockages">Current Legal Blockages</h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>#</th>
+                        <th i18n="@@legalBlocksResultsTableBlockageType">Blockage Type</th>
+                        <th i18n="@@legalBlocksResultsTableBlockEntityNameAr">Block Entity Name Ar</th>
+                        <th i18n="@@legalBlocksResultsTableRemarks">Remarks</th>
+                        <th i18n="@@legalBlocksResultsTableAttachments">Attachments</th>
+                        <th i18n="@@legalBlocksResultsTableCreatedAtModifiedAt">Created At / Modified At</th>
+                        <th i18n="@@legalBlocksResultsTableCreatedByModifiedBy">Created By / Modified By</th>
+                        <th i18n="@@legalBlocksResultsTableUnblockRemarks">Unblock Remarks</th>
+                        <th i18n="@@legalBlocksResultsTableEndedAt">Ended At</th>
+                        <th i18n="@@legalBlocksResultsTableEndedBy">Ended By</th>
+                        <th i18n="@@legalBlocksResultsTableActions">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let current_block_detail of getCurrentOwnedBlocks(response); let i = index">
+                        <td>{{ i + 1}}</td>
+                        <td>{{ current_block_detail?.typeAr }}</td>
+                        <td>{{ current_block_detail?.blockEntityNameAr }}</td>
+                        <td>{{ current_block_detail?.remarks }}</td>
+                        <td>
+                          <ng-container *ngFor="let attachment of getAttachments(current_block_detail?.attachments)">
+                            <li class="no-style-attachment" *ngIf="attachment.link">
+                              <a [href]="attachment.link" target="_blank">
+                                {{attachment.name}}
+                              </a>
+                            </li>
+                          </ng-container>
+                        </td>
+
+                        <td class="line-break-class">{{ getCreatesAtModifiedAt(current_block_detail) }}</td>
+                        <td class="line-break-class">{{ getCreatesByModifiedBy(current_block_detail) }}</td>
+
+                        <td>{{ current_block_detail?.endRemarks }}</td>
+
+                        <td>{{ current_block_detail?.endedAt }}</td>
+                        <td>{{ current_block_detail?.endedByNameAr }}</td>
+                        <td>
+                          <div class="d-flex">
+                            <span class="fs-30 p-1 icon-pointer" (click)="deleteBlockage(current_block_detail)">
+                              <i class="fas fa-times red"></i>
+                            </span>
+                            <a href="javascript:void(0);" class="fs-30 p-1 icon-pointer" (click)="editBlockage(current_block_detail)">
+                              <i class="fas fa-pen"></i>
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header border-0">
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                  </div>
+                  <h3 class="card-title float-right font-weight-bold" i18n="@@legalBlocksResultsPreviousLegalBlockages">Previous Legal Blockages</h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>#</th>
+                        <th i18n="@@legalBlocksResultsTableBlockageType" >Blockage Type</th>
+                        <th i18n="@@legalBlocksResultsTableBlockEntityNameAr" >Block Entity Name Ar</th>
+                        <th i18n="@@legalBlocksResultsTableRemarks" >Remarks</th>
+                        <th i18n="@@legalBlocksResultsTableAttachments" >Attachments</th>
+                        <th i18n="@@legalBlocksResultsTableCreatedAtModifiedAt" >Created At / Modified At</th>
+                        <th i18n="@@legalBlocksResultsTableCreatedByModifiedBy" >Created By / Modified By</th>
+                        <th i18n="@@legalBlocksResultsTableUnblockRemarks" >Unblock Remarks</th>
+                        <th i18n="@@legalBlocksResultsTableEndedAt" >Ended At</th>
+                        <th i18n="@@legalBlocksResultsTableEndedBy" >Ended By</th>
+                        <!-- <th i18n="@@legalBlocksResultsTableActions" >Actions</th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let previous_block_detail of getPreviouslyOwnedBlocks(response); let i = index">
+                        <td>{{ i + 1}}</td>
+                        <td>{{ previous_block_detail?.typeAr }}</td>
+                        <td>{{ previous_block_detail?.blockEntityNameAr }}</td>
+                        <td>{{ previous_block_detail?.remarks  }}</td>
+                        <td>
+                          <ng-container *ngFor="let attachment of getAttachments(previous_block_detail?.attachments)">
+                            <li class="no-style-attachment" *ngIf="attachment.link">
+                              <a [href]="attachment.link" target="_blank">
+                                {{attachment.name}}
+                              </a>
+                            </li>
+                          </ng-container>
+                        </td>
+
+                        <td class="line-break-class">{{ getCreatesAtModifiedAt(previous_block_detail) }}</td>
+                        <td class="line-break-class">{{ getCreatesByModifiedBy(previous_block_detail) }}</td>
+
+                        <td>{{ previous_block_detail?.endRemarks }}</td>
+                        <td>{{ previous_block_detail?.endedAt }}</td>
+                        <td>{{ previous_block_detail?.endedByNameAr }}</td>
+                        <!-- <td>
+                          <div class="d-flex">
+                            <span class="fs-30 p-1 icon-pointer" (click)="deleteBlockage(previous_block_detail)">
+                              <i class="fas fa-times red"></i>
+                            </span>
+                            <span class="fs-30 p-1 icon-pointer" (click)="editBlockage(previous_block_detail)">
+                              <i class="fas fa-pen"></i>
+                            </span>
+                          </div>
+                        </td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="!response">
+            <div class="col-sm-12 text-center">
+              <h4>لا توجد بيانات لهذا البحث ، حاول مرة أخرى عن طريق تغيير معايير البحث</h4>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+<ngx-smart-modal #addBlockModal identifier="addBlockModal" [escapable]="true" escapable="true" (onAnyCloseEvent)="resetAddBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupAddNewBlockHeader">Add New Block</h4>
+    </div>
+  </div>
+  <form #addBlockForm="ngForm" (ngSubmit)="addNewBlock(addBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select
+                  required="true"
+                  [items]="blockageTypesOptions"
+                  name="typeId"
+                  [(ngModel)]="addBlockData.typeId"
+                  bindLabel="value.ar"
+                  bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث"
+                  #typeId="ngModel"
+                  (open)="loadBlockageTypesOptions()"
+                >
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select
+                  required="true"
+                  [items]="blockageEntitiesOptions | async"
+                  name="blockEntityId"
+                  [hideSelected]="true"
+                  [(ngModel)]="addBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$"
+                  bindLabel="value.ar"
+                  [minTermLength]="1"
+                  bindValue="key"
+                  [loading]="blockageEntityOptionsLoading"
+                  notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters"
+                  #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)" class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarks">Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea
+                  name="remarks"
+                  class="form-control"
+                  rows="3"
+                  required="true"
+                  [(ngModel)]="addBlockData.remarks"
+                  #remarks="ngModel"
+                ></textarea>
+                <div *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)" class="alert alert-danger">
+                  <div *ngIf="remarks.errors?.required">
+                    Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupAttachments">Attachments
+                <span>*</span>
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="addBlockModal.close()" i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="addBlockForm.invalid" class="btn btn-primary float-left" i18n="@@legalBlocksPopupSubmit">Submit</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>
+
+
+<ngx-smart-modal #updateBlockModal identifier="updateBlockModal" [escapable]="true" escapable="true" (onAnyCloseEvent)="resetUpdateBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupHeaderUpdateBlock">Update Block</h4>
+    </div>
+  </div>
+  <form #updateBlockForm="ngForm" (ngSubmit)="updateBlock(updateBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select
+                  required="true"
+                  [items]="blockageTypesOptions"
+                  name="typeId"
+                  [(ngModel)]="updateBlockData.typeId"
+                  bindLabel="value.ar"
+                  bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث"
+                  #typeId="ngModel"
+                  disabled="false"
+                  (open)="loadBlockageTypesOptions()"
+                >
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select
+                  required="true"
+                  [items]="blockageEntitiesOptions | async"
+                  name="blockEntityId"
+                  [hideSelected]="true"
+                  [(ngModel)]="updateBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$"
+                  bindLabel="value.ar"
+                  [minTermLength]="1"
+                  bindValue="key"
+                  [loading]="blockageEntityOptionsLoading"
+                  notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters"
+                  disabled="false"
+                  #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)" class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupCreatedAt">Created At</label>
+              <div class="col-sm-9">
+                <input name="createdAt" type="text" class="form-control" [(ngModel)]="updateBlockData.createdAt" #createdAt="ngModel" disabled="true">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarks">Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea
+                  name="remarks"
+                  class="form-control"
+                  rows="3"
+                  required="true"
+                  [(ngModel)]="updateBlockData.remarks"
+                  #remarks="ngModel"
+                ></textarea>
+                <div *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)" class="alert alert-danger">
+                  <div *ngIf="remarks.errors?.required">
+                    Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksUpdatePopupAttachments">Attachments
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareUpdateAttachments()" [formData]="updateBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="updateBlockModal.close()" i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="updateBlockForm.invalid" class="btn btn-primary float-left" i18n="@@legalBlocksPopupUpdate">Update</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>
+
+<ngx-smart-modal #removeBlockModal identifier="removeBlockModal" [escapable]="true" escapable="true" (onAnyCloseEvent)="resetRemoveBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupHeaderRemoveBlock">Remove Block</h4>
+    </div>
+  </div>
+  <form #removeBlockForm="ngForm" (ngSubmit)="removeBlock(removeBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select
+                  required="true"
+                  [items]="blockageTypesOptions"
+                  name="typeId"
+                  [(ngModel)]="removeBlockData.typeId"
+                  bindLabel="value.ar"
+                  bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث"
+                  #typeId="ngModel"
+                  disabled="true"
+                  (open)="loadBlockageTypesOptions()"
+                >
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select
+                  required="true"
+                  [items]="blockageEntitiesOptions | async"
+                  name="blockEntityId"
+                  [hideSelected]="true"
+                  [(ngModel)]="removeBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$"
+                  bindLabel="value.ar"
+                  [minTermLength]="1"
+                  bindValue="key"
+                  [loading]="blockageEntityOptionsLoading"
+                  notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters"
+                  disabled="true"
+                  #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)" class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupCreatedAt">Created At</label>
+              <div class="col-sm-9">
+                <input name="createdAt" type="text" class="form-control" [(ngModel)]="removeBlockData.createdAt" #createdAt="ngModel" disabled="true">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarksReadOnly">Remarks</label>
+              <div class="col-sm-9">
+                <ng-container>
+                  <li class="no-style-attachment rtl">
+                    {{removeBlockData.remarks}}
+                  </li>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupAttachments">Attachments
+                <span>*</span>
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareAttachments()" [formData]="removeBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupUnblockRemarks">Unblock Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea
+                  name="endRemarks"
+                  class="form-control"
+                  rows="3"
+                  required="true"
+                  [(ngModel)]="removeBlockData.endRemarks"
+                  #endRemarks="ngModel"
+                ></textarea>
+                <div *ngIf="endRemarks.invalid && (endRemarks.dirty || endRemarks.touched)" class="alert alert-danger">
+                  <div *ngIf="endRemarks.errors?.required">
+                    End Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="removeBlockModal.close()" i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="removeBlockForm.invalid" class="btn btn-primary float-left" i18n="@@legalBlocksPopupRemove">Remove</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>

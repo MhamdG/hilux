@@ -56,6 +56,7 @@ import { DeveloperProfileComponent } from './developer-profile/developer-profile
 import { DeveloperProfileResolver } from './shared/developer-profile.resolver';
 import { DeveloperDetailsComponent } from './developer-profile/developer-details/developer-details.component';
 import { LegalBlocksComponent } from './legal-blocks/legal-blocks.component';
+import { AdministrativeBlocksComponent } from './Administrative-blocks/Administrative-blocks.component';
 import { EngineeringBlocksComponent } from './engineering-blocks/engineering-blocks.component';
 import { ApplicationSearchComponent } from './application-search/application-search.component';
 import { UnitsExcelUploadComponent } from './units-excel-upload/units-excel-upload.component';
@@ -184,6 +185,7 @@ const routes: Routes = [
   },
   { path: 'search', component: SearchPageComponent, canActivate: [AuthenticationGuard] },
   { path: 'legal_blocks', component: LegalBlocksComponent, canActivate: [AuthenticationGuard] },
+  { path: 'administrative_blocks', component: AdministrativeBlocksComponent, canActivate: [AuthenticationGuard] },
   { path: 'engineering_blocks', component: EngineeringBlocksComponent, canActivate: [AuthenticationGuard] },
   { path: 'application_search', component: ApplicationSearchComponent, canActivate: [AuthenticationGuard] },
   { path: 'units_excel_upload', component: UnitsExcelUploadComponent, canActivate: [AuthenticationGuard] },
