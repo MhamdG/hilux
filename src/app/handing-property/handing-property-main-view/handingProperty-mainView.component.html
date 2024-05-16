@@ -9,90 +9,790 @@
       </div>
     </div><!-- /.container-fluid -->
   </section>
-
+ 
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12" *ngIf="profile$ | async as profile">
-          <div class="card card-purple">
-            <div class="card-header">
-              <h3 class="card-title">بيانات المشروع</h3>
-            </div>
-            <router-outlet></router-outlet>
-            <!-- <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
-
-              <button type="button" (click)="addNewFun()"
-                style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
-                i18n="@@addNew">+ Add New</button>
-            </div> -->
-            <section class="content" *ngIf="formData && !formData.id">
-              <div class="container-fluid">
-                <app-alerts [errors]="formErrors"></app-alerts>
-                <form class="form-horizontal" (ngSubmit)="searchResourceData(searchData)" #sf="ngForm"
-                  enctype='multipart/form-data' novalidate>
-                  <div class="card-body">
+      <div class="card card-purple">
+        <div class="card-header">
+          <h3 class="card-title">قائمة البحث</h3>
+        </div>
+        <app-alerts [errors]="formErrors"></app-alerts>
+        <div class="col-sm-12">
+          <div class="mt-4">
+            <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm" enctype='multipart/form-data' novalidate>
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-4">
                     <div class="form-group row">
-                      <div class="col-sm-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@projectProfileSearchDeveloperName">Developer
-                            Name
-                            <span>*</span>
-                          </label>
-                          <div class="col-sm-9">
-                            <ng-select class="rtl" [items]="developerNameOptions | async" name="developerNameSearch"
-                              [hideSelected]="true" [minTermLength]="1" required="true"
-                              [(ngModel)]="searchData.searchDeveloperId" [loading]="developerNameOptionsLoading"
-                              bindLabel="value.ar" bindValue="key" typeToSearchText="Please enter 1 or more characters"
-                              notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchDeveloperNameInput$"
-                              #developerNameSearch="ngModel" (change)="resetSearchProject()">
-                            </ng-select>
-                          </div>
-                        </div>
+                      <label class="col-sm-3 col-form-label" i18n="@@searchPageDeveloperName">Developer Name
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          [items]="developerOptions | async"
+                          required="isSearchByUnit()"
+                          name="developerId"
+                          [hideSelected]="true"
+                          [(ngModel)]="formData.developerId"
+                          [typeahead]="developerSearchInput$"
+                          bindLabel="value.ar"
+                          [minTermLength]="1"
+                          bindValue="key"
+                          [loading]="developerDataOptionsLoading"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          typeToSearchText="Please enter 1 or more characters"
+                          #developer="ngModel"
+                          [disabled]="isNotSearchTypeUnit()"
+                          (keyup)="setSearchType('developerId', $event)"
+                          (blur)="checkTypeAndValues('developerId')"
+                          (keyup.enter)="testEnter('developerId',formData.developerId)">
+                        </ng-select>
                       </div>
+                    </div>
 
-                      <div class="col-sm-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@projectProfileSearchProjectName">Project Name
-                            <span>*</span>
-                          </label>
-                          <div class="col-sm-9">
-                            <ng-select class="rtl" [items]="projectNameOptions | async" name="projectNameSearch"
-                              [hideSelected]="true" [minTermLength]="1" required="true"
-                              [(ngModel)]="searchData.searchProjectId" [loading]="projectNameOptionsLoading"
-                              bindLabel="value.ar" bindValue="key" typeToSearchText="Please enter 1 or more characters"
-                              notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchProjectNameInput$"
-                              #projectNameSearch="ngModel">
-                            </ng-select>
-                          </div>
-                        </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@searchPageProjectName">Project Name
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          required="isSearchByUnit()"
+                          [items]="projectsOptions | async"
+                          name="project"
+                          [hideSelected]="true"
+                          [(ngModel)]="formData.projectId"
+                          [minTermLength]="1"
+                          bindLabel="value.ar"
+                          typeToSearchText="Please enter 1 or more characters"
+                          bindValue="key"
+                          [typeahead]="projectsSearchInput$"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          [loading]="projectDataOptionsLoading"
+                          #project="ngModel"
+                          [disabled]="isNotSearchTypeUnit() || isEmpty('developerId')"
+                          (keyup)="setSearchType('unitId', $event)"
+                          (blur)="checkTypeAndValues('projectId')"
+                          (change)="resetUnit()"
+                          (keyup.enter)="testEnter('projectId',formData.projectId)">
+                        
+                        </ng-select>
                       </div>
-                      <div class="col-sm-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@searchPageUnitID">Unit ID
-                            <span>*</span>
-                          </label>
-                          <div class="col-sm-9">
-                            <ng-select [items]="unitsOptions" name="units" [(ngModel)]="formData.unitId"
-                              bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث" #unitId="ngModel"
-                              (open)="loadUnitsOptions()">
-                            </ng-select>
-                          </div>
-                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@searchPageUnitID">Unit ID
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          required="isSearchByUnit()"
+                          [items]="unitsOptions"
+                          name="units"
+                          [(ngModel)]="formData.unitId"
+                          bindLabel="value.ar"
+                          bindValue="key"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          #unitId="ngModel"
+                          [disabled]="isNotSearchTypeUnit() || isEmpty('projectId')"
+                          (open)="loadUnitsOptions()"
+                          (keyup.enter)="testEnter('projectId',formData.projectId)">
+                        
+                        </ng-select>
                       </div>
                     </div>
                   </div>
 
-                  <div class="card-footer text-center">
-                    <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
-                      i18n="@@landProfileSearchButton">Search</button>
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@searchPageLandID">Land ID
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select
+                          
+                          required="true"
+                          [items]="landsOptions | async"
+                          name="land"
+                          [hideSelected]="true"
+                          [(ngModel)]="formData.landId"
+                          [typeahead]="landSearchInput$"
+                          bindLabel="value.ar"
+                          [minTermLength]="1"
+                          bindValue="key"
+                          [loading]="landDataOptionsLoading"
+                          notFoundText="لا يوجد نتائج للبحث"
+                          typeToSearchText="Please enter 1 or more characters"
+                          #land="ngModel"
+                          [disabled]="isNotSearchTypeLand() || isNotSearchBy('landId')"
+                          (blur)="checkTypeAndValues('landId')"
+                          (keyup)="setSearchType('landId', $event)"
+                          (keyup.enter)="testEnter('landId',formData.landId)">
+                        </ng-select>
+                      </div>
+                    </div>
+                  
+                   
                   </div>
-                </form>
-
-                <hr />
-
-
+                  <!-- // hashem search owner auto complete  -->
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@searchPageOwner">Owner
+                      </label>
+                      <div class="col-sm-9">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@applicationSearchApplicationId">Application ID
+                          </label>
+                          <div class="col-sm-9">
+                            <input name="applicationID"
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="formData.applicationID"
+                              #applicationID="ngModel"
+                              (keyup)="setSearchType('applicationID', $event)"
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                  </div>
+                </div>
               </div>
-            </section>
+              <div class="col-sm-12">
+                <div class="row ">
+                  <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" i18n="@@searchPageSearchButton">Search</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+         
+        </div>
+        <!-- /.card-body -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <section class="content" *ngIf="response">
+    <div class="resultsWrapper rtl" *ngIf="response">
+      <div class="searchbyOwner" *ngIf="isOwnerResponse()">
+        <label i18n="@@searchPageTableOwner">Owner:</label>
+        <table class="table table-bordered ownerTable table-responsive d-table">
+          <thead>
+            <tr class="bg-grey">
+              <th i18n="@@searchPageTableHeaderCustomerID">Customer ID</th>
+              <th i18n="@@searchPageTableHeaderNameArabic">Name Arabic</th>
+              <th i18n="@@searchPageTableHeaderNameEnglish">Name English</th>
+              <th i18n="@@searchPageTableHeaderOwnerID">Owner ID</th>
+              <th i18n="@@searchPageTableHeaderPhoneNumber">Phone Number</th>
+              <th i18n="@@searchPageTableHeaderNationality">Nationality</th>
+              <th i18n="@@searchPageTableActions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="getfirstOwner(response.deeds) as owner_detail">
+              <td>{{owner_detail?.profile?.id}}</td>
+              <td><a [href]="getSearchLink(owner_detail?.profile?.ownerId, 'ownerId')">{{owner_detail?.profile?.nameAr}}</a></td>
+              <td><a [href]="getSearchLink(owner_detail?.profile?.ownerId, 'ownerId')">{{owner_detail?.profile?.nameEn}}</a></td>
+              <td>{{owner_detail?.profile?.mainIdentityNumber}}</td>
+              <td>{{owner_detail?.profile?.phone}}</td>
+              <td>{{ owner_detail?.profile?.nationalityAr }}</td>
+              <td>
+                <div class="d-flex">
+                  <ng-container >
+                  <a [href]="getViewResourceUrl(owner_detail?.profile?.ownerId, 'owner')" target="_blank" class="fs-30 p-1">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  </ng-container>
+                  <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                  <a href="javascript:void(0);" (click)="openAddBlockToOwnerPropertiesModal(owner_detail?.profile?.ownerId)" class="fs-30 p-1 icon-pointer">
+                    <i class="fas fa-gavel fa-rotate-270"></i>
+                  </a>
+                  </ng-container>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <label i18n="@@searchPageTableLands">Lands:</label>
+        <div class="card bg-seagreen">
+          <div class="card-header border-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+              </button>
+            </div>
+            <h3 class="card-title float-right font-weight-bold" i18n="@@searchPageTableCurrentlyOwnedLands">Currently Owned Lands</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered landTable bg-white table-responsive d-table">
+              <thead>
+                <tr class="bg-grey">
+                  <th>#</th>
+                  <th i18n="@@searchPageTableHeaderLandID">Land ID</th>
+                  <th i18n="@@searchPageTableHeaderOldLandID">Old Land ID</th>
+                  <th i18n="@@searchPageTableHeaderSector">Sector</th>
+                  <th i18n="@@searchPageTableHeaderDistrict">District</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipTransferMethod">Ownership Transfer Method</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipPercentage">Ownership Percentage</th>
+                  <th i18n="@@searchPageTableHeaderDate">Date</th>
+                  <th i18n="@@searchPageTableHeaderBans">Bans</th>
+                  <th i18n="@@searchPageTableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let current_land_detail of getCurrentOwnedLands(response.deeds); let i = index">
+                  <td>{{ i + 1}}</td>
+                  <td><a [href]="getSearchLink(current_land_detail?.land?.land?.propertyId, 'landId')">{{ current_land_detail?.land?.land?.landId }}</a></td>
+                  <td><a [href]="getSearchLink(current_land_detail?.land?.land?.propertyId, 'oldLandId')">{{ current_land_detail?.land?.land?.oldLandId }}</a></td>
+                  <td>{{ getFieldNameorId(current_land_detail?.land?.land, 'sector') }}</td>
+                  <td>{{ getFieldNameorId(current_land_detail?.land?.land, 'section') }}</td>
+                  <td>{{ getFieldNameorId(current_land_detail?.childDeed, 'ownershipType') }}</td>
+                  <td>{{ getItemShare(current_land_detail) }}</td>
+                  <td>{{ current_land_detail?.deed?.createdAt }}</td>
+                  <td>
+                    <ng-container *ngFor="let blockage of current_land_detail.land.blockages">
+                      <li class="text-danger" *ngIf="blockage.remarks">
+                        {{blockage.remarks}}
+                      </li>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                      <a [href]="getViewResourceUrl(current_land_detail?.land?.land?.id, 'land')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a [href]="getViewLegalBlocks(current_land_detail?.land?.land?.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-balance-scale"></i>
+                      </a>
+                      </ng-container>
+                      <!-- <a [href]="getViewLegalBlocks(current_land_detail?.land?.land?.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1" *ngIf="!current_land_detail?.land?.land?.landId">
+                        <i class="fas fa-balance-scale"></i>
+                      </a> -->
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
+                      <a [href]="getViewEngineeringBlocks(current_land_detail?.land?.land?.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-drafting-compass"></i>
+                      </a>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header border-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+              </button>
+            </div>
+            <h3 class="card-title float-right font-weight-bold" i18n="@@searchPageTablePreviouslyOwnedLands">Previously Owned Lands</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+              <thead>
+                <tr class="bg-grey">
+                  <th>#</th>
+                  <th i18n="@@searchPageTableHeaderLandID">Land ID</th>
+                  <th i18n="@@searchPageTableHeaderOldLandID">Old Land ID</th>
+                  <th i18n="@@searchPageTableHeaderSector">Sector</th>
+                  <th i18n="@@searchPageTableHeaderDistrict">District</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipTransferMethod">Ownership Transfer Method</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipPercentage">Ownership Percentage</th>
+                  <th i18n="@@searchPageTableHeaderDate">Date</th>
+                  <th i18n="@@searchPageTableHeaderBans">Bans</th>
+                  <th i18n="@@searchPageTableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let previous_land_detail of getPreviouslyOwnedLands(response.deeds); let i = index">
+                  <td>{{ i + 1}}</td>
+                  <td><a [href]="getSearchLink(previous_land_detail?.land?.land?.propertyId, 'landId')">{{ previous_land_detail?.land?.land?.landId }}</a></td>
+                  <td><a [href]="getSearchLink(previous_land_detail?.land?.land?.propertyId, 'oldLandId')">{{ previous_land_detail?.land?.land?.oldLandId }}</a></td>
+                  <td>{{ getFieldNameorId(previous_land_detail?.land?.land, 'sector') }}</td>
+                  <td>{{ getFieldNameorId(previous_land_detail?.land?.land, 'section') }}</td>
+                  <td>{{ getFieldNameorId(previous_land_detail?.childDeed, 'ownershipType') }}</td>
+                  <td>{{ getItemShare(previous_land_detail) }}</td>
+                  <td>{{ previous_land_detail?.deed?.createdAt }}</td>
+                  <td>
+                    <ng-container *ngFor="let blockage of previous_land_detail.land.blockages">
+                      <li class="text-danger" *ngIf="blockage.remarks">
+                        {{blockage.remarks}}
+                      </li>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                      <a [href]="getViewResourceUrl(previous_land_detail?.land?.land?.id, 'land')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a [href]="getViewLegalBlocks(previous_land_detail?.land?.land?.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-balance-scale"></i>
+                      </a>
+                      </ng-container>
+                      <!-- <a [href]="getViewLegalBlocks(previous_land_detail?.land?.land?.landId , 'propertyId')" target="_blank" class="fs-30 p-1" *ngIf="!previous_land_detail?.land?.land?.landId">
+                        <i class="fas fa-balance-scale"></i>
+                      </a> -->
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
+                      <a [href]="getViewEngineeringBlocks(previous_land_detail?.land?.land?.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-drafting-compass"></i>
+                      </a>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <label i18n="@@searchPageTableRealEstateUnits">Real Estate Units:</label>
+        <div class="card bg-seagreen">
+          <div class="card-header border-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+              </button>
+            </div>
+            <h3 class="card-title float-right font-weight-bold" i18n="@@searchPageTableCurrentlyOwnedUnits">Currently Owned Units</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered unitTable bg-white table-responsive d-table">
+              <thead>
+                <tr class="bg-grey">
+                  <th>#</th>
+                  <th i18n="@@searchPageTableHeaderUnitID">Unit ID</th>
+                  <th i18n="@@searchPageTableHeaderProjectName">Project Name</th>
+                  <th i18n="@@searchPageTableHeaderDeveloperName">Developer Name</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipPercentage">Ownership Percentage</th>
+                  <th i18n="@@searchPageTableHeaderDate">Date</th>
+                  <th i18n="@@searchPageTableHeaderBans">Bans</th>
+                  <th i18n="@@searchPageTableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let current_unit_detail of getCurrentOwnedUnits(response.deeds); let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td><a [href]="getSearchLink(current_unit_detail?.unitData?.unit?.propertyId, 'unitId')">{{current_unit_detail?.unitData?.unit?.unitNumber}}</a></td>
+                  <td>{{current_unit_detail?.unitData?.project?.nameAr}}</td>
+                  <td>{{current_unit_detail?.unitData?.developer?.nameAr}}</td>
+                  <td>{{ getItemShare(current_unit_detail) }}</td>
+                  <td>{{current_unit_detail?.deed?.createdAt}}</td>
+                  <td>
+                    <ul class="bans-wrapper">
+                      <ng-container *ngFor="let blockage of current_unit_detail.unitData.blockages">
+                        <li class="text-danger" *ngIf="blockage.remarks">
+                          {{blockage.remarks}}
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                      <a [href]="getViewResourceUrl(current_unit_detail?.unitData?.unit?.id, 'unit')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a [href]="getViewLegalBlocks(current_unit_detail?.unitData?.unit?.propertyId, 'propertyId')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-balance-scale"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
+                      <a [href]="getViewEngineeringBlocks(current_unit_detail?.unitData?.unit?.propertyId, 'propertyId')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-drafting-compass"></i>
+                      </a>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header border-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+              </button>
+            </div>
+            <h3 class="card-title float-right font-weight-bold" i18n="@@searchPageTablePreviouslyOwnedUnits">Previously Owned Units</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered unitTable bg-light-red table-responsive d-table">
+              <thead>
+                <tr class="bg-grey">
+                  <th>#</th>
+                  <th i18n="@@searchPageTableHeaderUnitID">Unit ID</th>
+                  <th i18n="@@searchPageTableHeaderProjectName">Project Name</th>
+                  <th i18n="@@searchPageTableHeaderDeveloperName">Developer Name</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipPercentage">Ownership Percentage</th>
+                  <th i18n="@@searchPageTableHeaderDate">Date</th>
+                  <th i18n="@@searchPageTableHeaderBans">Bans</th>
+                  <th i18n="@@searchPageTableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let previous_unit_detail of getPreviouslyOwnedUnits(response.deeds); let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td><a [href]="getSearchLink(previous_unit_detail?.unitData?.unit?.propertyId, 'unitId')">{{previous_unit_detail?.unitData?.unit?.unitNumber}}</a></td>
+                  <td>{{previous_unit_detail?.unitData?.project?.nameAr}}</td>
+                  <td>{{previous_unit_detail?.unitData?.developer?.nameAr}}</td>
+                  <td>{{ getItemShare(previous_unit_detail) }}</td>
+                  <td>{{previous_unit_detail?.deed?.createdAt}}</td>
+                  <td>
+                    <ul class="bans-wrapper">
+                      <ng-container *ngFor="let blockage of previous_unit_detail.unitData.blockages">
+                        <li class="text-danger" *ngIf="blockage.remarks">
+                          {{blockage.remarks}}
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                      <a [href]="getViewResourceUrl(previous_unit_detail?.unitData?.unit?.id, 'unit')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a [href]="getViewLegalBlocks(previous_unit_detail?.unitData?.unit?.propertyId, 'propertyId')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-balance-scale"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a [href]="getViewEngineeringBlocks(previous_unit_detail?.unitData?.unit?.propertyId, 'propertyId')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-drafting-compass"></i>
+                      </a>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="searchbyLand" *ngIf="isLandResponse()">
+        <label i18n="@@searchPageTableLand">Land:</label>
+        <table class="table table-bordered landTable table-responsive d-table">
+          <thead>
+            <tr class="bg-grey">
+              <th i18n="@@searchPageTableHeaderLandID">Land ID</th>
+              <th i18n="@@searchPageTableHeaderOldLandID">Old Land ID</th>
+              <th i18n="@@searchPageTableHeaderSector">Sector</th>
+              <th i18n="@@searchPageTableHeaderDistrict">District</th>
+              <th i18n="@@searchPageTableHeaderBans">Bans</th>
+              <th i18n="@@searchPageTableActions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="getfirstLand(response.deeds) as land_detail">
+              <td><a [href]="getSearchLink(land_detail.land.propertyId, 'landId')">{{land_detail.land.landId}}</a></td>
+              <td><a [href]="getSearchLink(land_detail.land.propertyId, 'oldLandId')">{{land_detail.land.oldLandId}}</a></td>
+              <td>{{ getFieldNameorId(land_detail.land, 'sector') }}</td>
+              <td>{{ getFieldNameorId(land_detail.land, 'section') }}</td>
+              <td>
+                <ng-container *ngFor="let blockage of land_detail.blockages">
+                  <li class="text-danger" *ngIf="blockage.remarks">
+                    {{blockage.remarks}}
+                  </li>
+                </ng-container>
+              </td>
+              <td>
+                <div class="d-flex">
+                  <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                  <a [href]="getViewResourceUrl(land_detail.land.id, 'land')" target="_blank" class="fs-30 p-1">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  </ng-container>
+                  <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                  <a [href]="getViewLegalBlocks(land_detail.land.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1">
+                    <i class="fas fa-balance-scale"></i>
+                  </a>
+                  </ng-container>
+                  <!-- <a [href]="getViewLegalBlocks(land_detail.land.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1" *ngIf="!land_detail.land.landId">
+                    <i class="fas fa-balance-scale"></i>
+                  </a> -->
+                  <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
+                  <a [href]="getViewEngineeringBlocks(land_detail.land.propertyId , 'propertyId')" target="_blank" class="fs-30 p-1">
+                    <i class="fas fa-drafting-compass"></i>
+                  </a>
+                  </ng-container>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <label i18n="@@searchPageTableOwners">Owners:</label>
+        <div class="card" [ngClass]="getOwnerClass(item) == 'bg-seagreen' ? 'bg-seagreen' : ''" *ngFor="let item of getCurrentOwnedLands(response.deeds); let i = index">
+          <div class="card-header border-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+              </button>
+            </div>
+            <h3 class="card-title float-right font-weight-bold">{{getOwnerHeader(item)}}</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered ownerTable table-responsive d-table">
+              <thead>
+                <tr class="bg-grey">
+                  <th i18n="@@searchPageTableHeaderCustomerID">Customer ID</th>
+                  <th i18n="@@searchPageTableHeaderNameArabic">Name Arabic</th>
+                  <th i18n="@@searchPageTableHeaderNameEnglish">Name English</th>
+                  <th i18n="@@searchPageTableHeaderOwnerID">Owner ID</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipPercentage">Ownership Percentage</th>
+                  <th i18n="@@searchPageTableHeaderNationality">Nationality</th>
+                  <th i18n="@@searchPageTableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr [ngClass]="getOwnerClass(item) == 'bg-seagreen' ? 'bg-white' : getOwnerClass(item)" *ngFor="let deed_detail_item of item.deedDetails; let i = index">
+                  <td>{{deed_detail_item.profile?.id}}</td>
+                  <td><a [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameAr}}</a></td>
+                  <td><a [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameEn}}</a></td>
+                  <td>{{deed_detail_item.details?.mainIdentityNumber}}</td>
+                  <td>{{deed_detail_item.details?.share}}</td>
+                  <td>{{ deed_detail_item.profile?.nationalityAr }}</td>
+                  <td>
+                    <div class="d-flex">
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                      <a [href]="getViewResourceUrl(deed_detail_item.profile?.ownerId, 'owner')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a href="javascript:void(0);" class="fs-30 p-1 icon-pointer" (click)="openAddBlockToOwnerPropertiesModal(deed_detail_item.profile?.ownerId)">
+                        <i class="fas fa-gavel fa-rotate-270"></i>
+                      </a>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" [ngClass]="getOwnerClass(item) == 'bg-seagreen' ? 'bg-seagreen' : ''" *ngFor="let item of getPreviouslyOwnedLands(response.deeds); let i = index">
+          <div class="card-header border-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+              </button>
+            </div>
+            <h3 class="card-title float-right font-weight-bold">{{getOwnerHeader(item)}}</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered ownerTable table-responsive d-table">
+              <thead>
+                <tr class="bg-grey">
+                  <th i18n="@@searchPageTableHeaderCustomerID">Customer ID</th>
+                  <th i18n="@@searchPageTableHeaderNameArabic">Name Arabic</th>
+                  <th i18n="@@searchPageTableHeaderNameEnglish">Name English</th>
+                  <th i18n="@@searchPageTableHeaderOwnerID">Owner ID</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipPercentage">Ownership Percentage</th>
+                  <th i18n="@@searchPageTableHeaderNationality">Nationality</th>
+                  <th i18n="@@searchPageTableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr [ngClass]="getOwnerClass(item) == 'bg-seagreen' ? 'bg-white' : getOwnerClass(item)" *ngFor="let deed_detail_item of item.deedDetails; let i = index">
+                  <td>{{deed_detail_item.profile?.id}}</td>
+                  <td><a [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameAr}}</a></td>
+                  <td><a [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameEn}}</a></td>
+                  <td>{{deed_detail_item.details?.mainIdentityNumber}}</td>
+                  <td>{{deed_detail_item.details?.share}}</td>
+                  <td>{{ deed_detail_item.profile?.nationalityAr }}</td>
+                  <td>
+                    <div class="d-flex">
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                      <a [href]="getViewResourceUrl(deed_detail_item.profile?.ownerId, 'owner')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a href="javascript:void(0);" class="fs-30 p-1 icon-pointer" (click)="openAddBlockToOwnerPropertiesModal(deed_detail_item.profile?.ownerId)">
+                        <i class="fas fa-gavel fa-rotate-270"></i>
+                      </a>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="searchbyUnit" *ngIf="isUnitResponse()">
+        <label i18n="@@searchPageTableRealEstateUnit">Real Estate Unit:</label>
+        <table class="table table-bordered unitTable table-responsive d-table">
+          <thead>
+            <tr class="bg-grey">
+              <th i18n="@@searchPageTableHeaderUnitID">Unit ID</th>
+              <th i18n="@@searchPageTableHeaderProjectName">Project Name</th>
+              <th i18n="@@searchPageTableHeaderDeveloperName">Developer Name</th>
+              <th i18n="@@searchPageTableHeaderBans">Bans</th>
+              <th i18n="@@searchPageTableActions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="getfirstUnit(response.deeds) as unit_detail">
+              <td><a [href]="getSearchLink(unit_detail?.unit?.propertyId, 'unitId')">{{unit_detail?.unit?.unitNumber}}</a></td>
+              <td>{{unit_detail?.project?.nameAr}}</td>
+              <td>{{unit_detail?.developer?.nameAr}}</td>
+              <td>
+                <ul class="bans-wrapper">
+                  <ng-container *ngFor="let blockage of unit_detail.blockages">
+                    <li class="text-danger" *ngIf="blockage.remarks">
+                      {{blockage.remarks}}
+                    </li>
+                  </ng-container>
+                </ul>
+              </td>
+              <td>
+                <div class="d-flex">
+                  <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                  <a [href]="getViewResourceUrl(unit_detail?.unit?.id, 'unit')" target="_blank" class="fs-30 p-1">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  </ng-container>
+                  <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                  <a [href]="getViewLegalBlocks(unit_detail?.unit?.propertyId, 'propertyId')" target="_blank" class="fs-30 p-1">
+                    <i class="fas fa-balance-scale"></i>
+                  </a>
+                  </ng-container>
+                  <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
+                  <a [href]="getViewEngineeringBlocks(unit_detail?.unit?.propertyId, 'propertyId')" target="_blank" class="fs-30 p-1">
+                    <i class="fas fa-drafting-compass"></i>
+                  </a>
+                  </ng-container>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <label i18n="@@searchPageTableOwners">Owners:</label>
+        <div class="card" [ngClass]="getOwnerClass(item) == 'bg-seagreen' ? 'bg-seagreen' : ''" *ngFor="let item of getCurrentOwnedUnits(response.deeds); let i = index">
+          <div class="card-header border-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+              </button>
+            </div>
+            <h3 class="card-title float-right font-weight-bold">{{getUnitOwnerHeader(item)}}</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered ownerTable table-responsive d-table">
+              <thead>
+                <tr class="bg-grey">
+                  <th i18n="@@searchPageTableHeaderCustomerID">Customer ID</th>
+                  <th i18n="@@searchPageTableHeaderNameArabic">Name Arabic</th>
+                  <th i18n="@@searchPageTableHeaderNameEnglish">Name English</th>
+                  <th i18n="@@searchPageTableHeaderOwnerID">Owner ID</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipPercentage">Ownership Percentage</th>
+                  <th i18n="@@searchPageTableHeaderNationality">Nationality</th>
+                  <th i18n="@@searchPageTableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr [ngClass]="getOwnerClass(item) == 'bg-seagreen' ? 'bg-white' : getOwnerClass(item)" *ngFor="let deed_detail_item of item.deedDetails; let i = index">
+                  <td>{{deed_detail_item.profile?.id}}</td>
+                  <td><a [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameAr}}</a></td>
+                  <td><a [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameEn}}</a></td>
+                  <td>{{deed_detail_item.details?.mainIdentityNumber}}</td>
+                  <td>{{deed_detail_item.details?.share}}</td>
+                  <td>{{ deed_detail_item.profile?.nationalityAr }}</td>
+                  <td>
+                    <div class="d-flex">
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                      <a [href]="getViewResourceUrl(deed_detail_item.profile?.ownerId, 'owner')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a href="javascript:void(0);" class="fs-30 p-1 icon-pointer" (click)="openAddBlockToOwnerPropertiesModal(deed_detail_item.profile?.ownerId)">
+                        <i class="fas fa-gavel fa-rotate-270"></i>
+                      </a>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" [ngClass]="getOwnerClass(item) == 'bg-seagreen' ? 'bg-seagreen' : ''" *ngFor="let item of getPreviouslyOwnedUnits(response.deeds); let i = index">
+          <div class="card-header border-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+              </button>
+            </div>
+            <h3 class="card-title float-right font-weight-bold">{{getUnitOwnerHeader(item)}}</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered ownerTable table-responsive d-table">
+              <thead>
+                <tr class="bg-grey">
+                  <th i18n="@@searchPageTableHeaderCustomerID">Customer ID</th>
+                  <th i18n="@@searchPageTableHeaderNameArabic">Name Arabic</th>
+                  <th i18n="@@searchPageTableHeaderNameEnglish">Name English</th>
+                  <th i18n="@@searchPageTableHeaderOwnerID">Owner ID</th>
+                  <th i18n="@@searchPageTableHeaderOwnershipPercentage">Ownership Percentage</th>
+                  <th i18n="@@searchPageTableHeaderNationality">Nationality</th>
+                  <th i18n="@@searchPageTableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr [ngClass]="getOwnerClass(item) == 'bg-seagreen' ? 'bg-white' : getOwnerClass(item)" *ngFor="let deed_detail_item of item.deedDetails; let i = index">
+                  <td>{{deed_detail_item.profile?.id}}</td>
+                  <td><a [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameAr}}</a></td>
+                  <td><a [href]="getSearchLink(deed_detail_item.details?.ownerId, 'ownerId')">{{deed_detail_item.profile?.nameEn}}</a></td>
+                  <td>{{deed_detail_item.details?.mainIdentityNumber}}</td>
+                  <td>{{deed_detail_item.details?.share}}</td>
+                  <td>{{ deed_detail_item.profile?.nationalityAr }}</td>
+                  <td>
+                    <div class="d-flex">
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'customerservices')|| getRole (userRole,'Engineering') || getRole(userRole,'Archives')">
+                      <a [href]="getViewResourceUrl(deed_detail_item.profile?.ownerId, 'owner')" target="_blank" class="fs-30 p-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      </ng-container>
+                      <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                      <a href="javascript:void(0);" class="fs-30 p-1 icon-pointer" (click)="openAddBlockToOwnerPropertiesModal(deed_detail_item.profile?.ownerId)">
+                        <i class="fas fa-gavel fa-rotate-270"></i>
+                      </a>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
