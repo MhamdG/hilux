@@ -81,7 +81,7 @@ export class AdministrativeBlocksComponent implements OnInit {
   }
 
   searchData(formData: any) {
-    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/getByPropertyId/${this.getPropertyId(formData)}`)
+    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/AdministrativeBlockages/getByPropertyId/${this.getPropertyId(formData)}`)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.response = data.data;
@@ -487,7 +487,7 @@ export class AdministrativeBlocksComponent implements OnInit {
     let fd = new FormData();
     fd.append('data', JSON.stringify(formData));
 
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/create`, fd)
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/AdministrativeBlockages/create`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
@@ -580,7 +580,7 @@ export class AdministrativeBlocksComponent implements OnInit {
     let fd = new FormData();
     fd.append('data', JSON.stringify(formData));
 
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/update/${formData.id}`, fd)
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/AdministrativeBlockages/update/${formData.id}`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
@@ -600,7 +600,7 @@ export class AdministrativeBlocksComponent implements OnInit {
     let fd = new FormData();
     fd.append('data', JSON.stringify(formData));
 
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/deactivate/${formData.id}`, fd)
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/AdministrativeBlockages/deactivate/${formData.id}`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
@@ -617,7 +617,7 @@ export class AdministrativeBlocksComponent implements OnInit {
   }
 
   getBlockage(blockageId: any) {
-    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/get/${blockageId}`);
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/AdministrativeBlockages/get/${blockageId}`);
   }
 
   toggleControl(value?: boolean) {
