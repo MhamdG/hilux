@@ -12,7 +12,7 @@
         <td *ngFor="let item of field_detail.rowFields | keyvalue">{{item.value}}</td>
         <td class="text-center">
           <div class="form-group">
-            <a *ngIf="field_detail?.entityType == 'ownerDetails'" class="btn btn-primary" href="https://portal.ajmanre.gov.ae/owner/profile/{{field_detail.entityID}}/edit" role="button">عرض</a>
+            <a *ngIf="field_detail?.entityType == 'ownerDetails'" target="_blank" class="btn btn-primary" href="https://portal.ajmanre.gov.ae/owner/profile/{{field_detail.entityID}}/edit" role="button">عرض</a>
             <div *ngIf="!field_detail.entityType" class="form-check">
               <input class="form-check-input m-0"
                 type="checkbox"
