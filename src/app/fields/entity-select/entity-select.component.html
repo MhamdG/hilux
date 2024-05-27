@@ -3,7 +3,8 @@
     <thead>
       <tr *ngFor="let dataOption of dataOptions | slice:0:1">
         <th *ngFor="let pair of dataOption.rowFields | keyvalue">{{pair.key}}</th>
-        <th class="text-center">Selected</th>
+        <th *ngIf="dataOption?.entityType == 'ownerDetails'" class="text-center">صفحة متعامل</th>
+        <th *ngIf="!dataOption.entityType" class="text-center">Selected</th>
       </tr>
     </thead>
     <tbody>
@@ -11,7 +12,8 @@
         <td *ngFor="let item of field_detail.rowFields | keyvalue">{{item.value}}</td>
         <td class="text-center">
           <div class="form-group">
-            <div class="form-check">
+            <a *ngIf="field_detail?.entityType == 'ownerDetails'" class="btn btn-primary" href="https://portal.ajmanre.gov.ae/owner/profile/{{field_detail.entityID}}/edit" role="button">عرض</a>
+            <div *ngIf="!field_detail.entityType" class="form-check">
               <input class="form-check-input m-0"
                 type="checkbox"
                 [class]="customClass"
