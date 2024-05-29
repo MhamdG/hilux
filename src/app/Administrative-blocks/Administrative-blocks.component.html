@@ -178,10 +178,10 @@
             <div class="searchBlockages">
               <div class="row">
                 <div class="col-sm-6">
-                  <label i18n="@@legalBlocksResultsLegalBlockages">Legal Blockages:</label>
+                  <label i18n="@@AdministrativeBlocksResultsLegalBlockages">Administrative Blockages:</label>
                 </div>
                 <div class="col-sm-6">
-                  <button class="btn btn-primary float-left" (click)="openAddBlockModal()" i18n="@@legalBlocksResultsAddBlock">Add Block</button>
+                  <button class="btn btn-primary float-left" (click)="openAddBlockModal()" i18n="@@AdministrativeBlocksResultsAddBlock">Add Administrative </button>
                 </div>
               </div>
               <div class="row">
@@ -207,7 +207,7 @@
                         <i class="fas fa-minus"></i>
                     </button>
                   </div>
-                  <h3 class="card-title float-right font-weight-bold" i18n="@@legalBlocksResultsCurrentLegalBlockages">Current Legal Blockages</h3>
+                  <h3 class="card-title float-right font-weight-bold" i18n="@@AdministrativeBlocksResultsCurrentLegalBlockages">Current Administrative Blockages</h3>
                 </div>
                 <div class="card-body custom-table-class">
                   <table class="table table-bordered landTable bg-white table-responsive d-table">
@@ -346,7 +346,7 @@
 <ngx-smart-modal #addBlockModal identifier="addBlockModal" [escapable]="true" escapable="true" (onAnyCloseEvent)="resetAddBlockModal()">
   <div class="modal-header pt-0">
     <div class="modal-title">
-      <h4 i18n="@@legalBlocksPopupAddNewBlockHeader">Add New Block</h4>
+      <h4 i18n="@@AdministrativeBlocksPopupAddNewBlockHeader">Add New Administrative Block</h4>
     </div>
   </div>
   <form #addBlockForm="ngForm" (ngSubmit)="addNewBlock(addBlockData);" novalidate>

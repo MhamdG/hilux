@@ -534,7 +534,7 @@ export class AdministrativeBlocksComponent implements OnInit {
   }
 
   loadBlockageTypesOptions() {
-    this.lookupsService.loadBlockageTypesOptions()
+    this.lookupsService.loadAdministrativeBlockageTypesOptions()
       .subscribe((data) => {
         this.blockageTypesOptions = data;
       })

@@ -121,9 +121,15 @@ export class LookupsService {
   loadBlockageTypesOptions(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/blockagesTypes`, params);
   }
-
+  loadAdministrativeBlockageTypesOptions(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/AdministrativeBlockagesTypes`, params);
+  }
+  
   loadBlockageEntities(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/blockagesEntities`, params);
+  }
+  loadAdministrativeBlockageEntities(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/AdministrativeBlockagesEntities`, params);
   }
 
   loadSectorsOptions(params: any = {}) {
