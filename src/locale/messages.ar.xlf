@@ -4315,11 +4315,19 @@
       </trans-unit>
       <trans-unit id="legalBlocksResultsLegalBlockages" datatype="html">
         <source>Legal Blockages:</source>
-        <target>الحجوزاتالقانونية:</target>
+        <target>الحجوزات القانونية:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/legal-blocks/legal-blocks.component.html</context>
           <context context-type="linenumber">181</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="AdministrativeBlocksResultsLegalBlockages" datatype="html">
+        <source>Administrative Blockages:</source>
+        <target>الحجوزات الإدارية:</target>
+        <!-- <context-group purpose="location">
+          <context context-type="sourcefile">src/app/legal-blocks/legal-blocks.component.html</context>
+          <context context-type="linenumber">181</context>
+        </context-group> -->
       </trans-unit>
       <trans-unit id="legalBlocksResultsAddBlock" datatype="html">
         <source>Add Block</source>
@@ -4328,6 +4336,14 @@
           <context context-type="sourcefile">src/app/legal-blocks/legal-blocks.component.html</context>
           <context context-type="linenumber">184</context>
         </context-group>
+      </trans-unit>
+       <trans-unit id="AdministrativeBlocksResultsAddBlock" datatype="html">
+        <source>Add Administrative</source>
+        <target>اضافة حجز إداري</target>
+        <!-- <context-group purpose="location">
+          <context context-type="sourcefile">src/app/legal-blocks/legal-blocks.component.html</context>
+          <context context-type="linenumber">184</context>
+        </context-group> -->
       </trans-unit>
       <trans-unit id="legalBlocksResultsLandId" datatype="html">
         <source>Land ID: </source>
@@ -4384,6 +4400,11 @@
           <context context-type="sourcefile">src/app/legal-blocks/legal-blocks.component.html</context>
           <context context-type="linenumber">210</context>
         </context-group>
+      </trans-unit>
+       <trans-unit id="AdministrativeBlocksResultsCurrentLegalBlockages" datatype="html">
+        <source>Current Administrative Blockages</source>
+        <target>الحجوازت الحالية</target>
+       
       </trans-unit>
       <trans-unit id="legalBlocksResultsTableBlockageType" datatype="html">
         <source>Blockage Type</source>
@@ -4578,6 +4599,14 @@
           <context context-type="sourcefile">src/app/legal-blocks/legal-blocks.component.html</context>
           <context context-type="linenumber">349</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="AdministrativeBlocksPopupAddNewBlockHeader" datatype="html">
+        <source>Add New Administrative Block</source>
+        <target>إضافة حجز إداري</target>
+        <!-- <context-group purpose="location">
+          <context context-type="sourcefile">src/app/legal-blocks/legal-blocks.component.html</context>
+          <context context-type="linenumber">349</context>
+        </context-group> -->
       </trans-unit>
       <trans-unit id="legalBlocksPopupBlockageType" datatype="html">
         <source>Blockage Type
