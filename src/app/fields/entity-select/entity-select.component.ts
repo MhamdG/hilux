@@ -3,6 +3,7 @@ import { Field } from '../fields';
 import { FieldsService } from 'src/app/shared/fields.service';
 import { ControlContainer, NgForm } from '@angular/forms';
 import * as _ from 'lodash';
+import {  Router } from '@angular/router';
 
 @Component({
   selector: 'app-entity-select',
@@ -29,7 +30,7 @@ export class EntitySelectComponent implements OnInit {
 
   @Input() defaultValues: any;
 
-  constructor(private service: FieldsService) { }
+  constructor(private service: FieldsService, private router: Router,) { }
 
   ngOnInit(): void {
     this.service.getFieldData(this.field, this.fullFormData).subscribe((data)=> {
@@ -100,5 +101,15 @@ export class EntitySelectComponent implements OnInit {
 
   isActiveRejectStep() {
     return this.service.isRejectStep && (this.service.rejectReasonField != this.field.fieldID);
+  }
+  // navigateFun(id:any){
+  //   console.log(id);
+  //   let url ='owner/profile/'+id+'/edit';
+  //   console.log(url);
+  //   this.router.navigate(['owner/profile/', id, 'edit']);
+  //   // window.open(url, '_blank');
+  // }
+  navigateFun(routeId: any, routeName: any) {
+      return `/${routeName}/profile/${routeId}/edit`;
   }
 }
