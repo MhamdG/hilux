@@ -102,13 +102,6 @@ export class EntitySelectComponent implements OnInit {
   isActiveRejectStep() {
     return this.service.isRejectStep && (this.service.rejectReasonField != this.field.fieldID);
   }
-  // navigateFun(id:any){
-  //   console.log(id);
-  //   let url ='owner/profile/'+id+'/edit';
-  //   console.log(url);
-  //   this.router.navigate(['owner/profile/', id, 'edit']);
-  //   // window.open(url, '_blank');
-  // }
   navigateFun(routeId: any, routeName: any) {
       return `/${routeName}/profile/${routeId}/edit`;
   }
