@@ -112,6 +112,10 @@ export class CustomerDetailsComponent implements OnInit {
         if (data.status == 'success') {
           this.formData = this.prepareProfile(data.data);
           this.toastr.success(data.message, 'Success');
+          this.router.navigate(['customer/profile/' + formData.id + '/view'])
+          .then(() => {
+            window.location.reload();
+          });
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
