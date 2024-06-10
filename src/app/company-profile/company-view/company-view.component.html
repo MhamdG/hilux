@@ -434,6 +434,15 @@
           <div class="col-sm-6">
           </div>
         </div>
+            <!-- online id -->
+            <div class="col-sm-6" *ngIf="formData.AJROnlineID">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" i18n="@@customerOnlineId">Job Title</label>
+                <div class="col-sm-9">
+                  <input name="AJROnlineID" type="text" class="form-control" [(ngModel)]="formData.AJROnlineID" disabled>
+                </div>
+              </div>
+            </div>
       </div>
       <!-- <div class="card-footer">
         <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid" i18n="@@formSubmitLabel">Submit</button>

@@ -102,10 +102,10 @@ export class CompanyDetailsComponent implements OnInit {
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
         
-          // this.router.navigate(['company/profile/' + formData.id + '/view'])
-          //   .then(() => {
-          //     window.location.reload();
-          //   });
+          this.router.navigate(['company/profile/' + formData.id + '/view'])
+            .then(() => {
+              window.location.reload();
+            });
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')

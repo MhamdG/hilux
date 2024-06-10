@@ -6048,6 +6048,10 @@
       <source>Project Registration Number</source>
         <target>رقم تسجيل المشروع</target>
       </trans-unit>
+       <trans-unit id="customerOnlineId" datatype="html">
+      <source>Customer Online ID</source>
+        <target>رقم المتعامل اونلاين </target>
+      </trans-unit>
 
       
       
