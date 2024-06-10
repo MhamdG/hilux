@@ -63,7 +63,7 @@ export class CompanyProfileComponent implements OnInit {
       }
     });
   }
-
+ 
   saveData(formData: any) {
     let fd = new FormData();
     fd.append('company', JSON.stringify(formData));
@@ -71,12 +71,10 @@ export class CompanyProfileComponent implements OnInit {
       .subscribe((data: any) => {
        if (data.status == 'success') {
         this.toastr.success(data.message, 'Success');
-        this.router.navigate(['company/view'])
-        .then(() => {
-          window.location.reload();
-        });
-        if (data.data.id)
-          this.router.navigate(['company/profile', data.data.id, 'edit']);
+        this.router.navigate(['/company/view']);
+        
+        // if (data.data.id)
+        //   this.router.navigate(['company/profile', data.data.id, 'edit']);
       } else {
         this.formErrors = data.data;
         this.toastr.error(JSON.stringify(data.message), 'Error')

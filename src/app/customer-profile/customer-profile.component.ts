@@ -95,12 +95,9 @@ export class CustomerProfileComponent implements OnInit {
        if (data.status == 'success') {
         this.toastr.success(data.message, 'Success');
         this.toastr.success('Customer Created Successfully!.', 'Success');
-        this.router.navigate(['customer/view'])
-        .then(() => {
-          window.location.reload();
-        });
-        if (data.data.id)
-          this.router.navigate(['customer/profile', data.data.id, 'edit']);
+        this.router.navigate(['customer/view']);
+        // if (data.data.id)
+        //   this.router.navigate(['customer/profile', data.data.id, 'edit']);
       } else {
         this.formErrors = data.data;
         this.toastr.error(JSON.stringify(data.message), 'Error')
