@@ -71,6 +71,10 @@ export class CompanyProfileComponent implements OnInit {
       .subscribe((data: any) => {
        if (data.status == 'success') {
         this.toastr.success(data.message, 'Success');
+        this.router.navigate(['company/view'])
+        .then(() => {
+          window.location.reload();
+        });
         if (data.data.id)
           this.router.navigate(['company/profile', data.data.id, 'edit']);
       } else {
