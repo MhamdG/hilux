@@ -418,8 +418,10 @@
           </div>
 
           <hr/>
+          <div *ngIf="flagCallTasks" class="loader"></div>
 
-          <div class="resultsWrapper rtl" *ngIf="response">
+
+          <div class="resultsWrapper rtl" *ngIf="response && !flagCallTasks">
             <div class="searchApplications">
               <div class="card">
                 <div class="card-header border-0">
