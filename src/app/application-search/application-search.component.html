@@ -450,7 +450,9 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="icon-pointer" (click)="goToApplicationPage(item_detail)" *ngFor="let item_detail of response; let i = index">
+                      <tr class="icon-pointer" (click)="goToApplicationPage(item_detail)" 
+                      *ngFor="let item_detail of response 
+                      | paginate: {itemsPerPage: 5, currentPage:page, id: '1'} ; let i = index">
                         <td>{{ i + 1}}</td>
                         <td>
                           <div class="d-flex">
@@ -487,6 +489,10 @@
                       </tr>
                     </tbody>
                   </table>
+                  <app-custom-pagination (pageChange)="page = $event" id="1"
+                  maxSize="5"
+                  directionLinks="true"
+                  autoHide="true">   </app-custom-pagination>
                 </div>
               </div>
 

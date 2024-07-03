@@ -46,6 +46,7 @@ export class ApplicationSearchComponent implements OnInit {
   minDate:any;
   applicationSourceOptions: any;
   serviceNameOptions: any;
+  flagCallTasks :any;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +58,7 @@ export class ApplicationSearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.flagCallTasks =false;
     this.minDate = new Date();
     this.loadUnitsOptions();
     this.loadDeveloperOptions();
@@ -82,7 +84,8 @@ export class ApplicationSearchComponent implements OnInit {
     ]
   }
 
-  searchData(formData: any) {
+  searchData(formData: any) { 
+    this.flagCallTasks =true;
     let fd = new FormData();
     fd.append('data', JSON.stringify(formData));
 
@@ -90,6 +93,7 @@ export class ApplicationSearchComponent implements OnInit {
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.response = data.data;
+            this.flagCallTasks =false;
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error');
