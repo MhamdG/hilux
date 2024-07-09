@@ -433,7 +433,8 @@
                   <h3 class="card-title float-right font-weight-bold" i18n="@@applicationSearchSearchResults">Search Results:</h3>
                 </div>
                 <div class="card-body custom-table-class">
-                  <table class="table table-bordered landTable bg-white table-responsive d-table">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table"
+                  datatable [dtOptions]="dtOptions">
                     <thead>
                       <tr class="bg-grey">
                         <th>#</th>
@@ -450,9 +451,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="icon-pointer" (click)="goToApplicationPage(item_detail)" 
-                      *ngFor="let item_detail of response 
-                      | paginate: {itemsPerPage: 5, currentPage:page, id: '1'} ; let i = index">
+                      <tr class="icon-pointer" (click)="goToApplicationPage(item_detail)" *ngFor="let item_detail of response; let i = index">
                         <td>{{ i + 1}}</td>
                         <td>
                           <div class="d-flex">
@@ -489,10 +488,6 @@
                       </tr>
                     </tbody>
                   </table>
-                  <app-custom-pagination (pageChange)="page = $event" id="1"
-                  maxSize="5"
-                  directionLinks="true"
-                  autoHide="true">   </app-custom-pagination>
                 </div>
               </div>
 
