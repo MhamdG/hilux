@@ -85,6 +85,25 @@ export class FormComponent implements OnInit {
       })
     // this.authenticationService.signin();
   }
+  backStepFun() {
+    let form = new FormData();
+    form.append('data', JSON.stringify(Object.assign({backStepID: this.response.backStepID})));
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/applications/backStep`, form)
+      .subscribe((data: any)=> {
+        if (data.status == 'success') {
+          this.toastr.success(data.message, 'Success')
+          if (!!data.data.stepID) {
+            this.router.navigate(['notifications', data.data.stepID]);
+          } else {
+            this.router.navigate(['my_tasks']);
+          }
+        } else {
+          this.toastr.error(data.message, 'Error')
+          this.formErrors = data.data;
+        }
+      })
+    // this.authenticationService.signin();
+  }
 
   private prepareJson(formData: any) {
     let preparedData = {}
