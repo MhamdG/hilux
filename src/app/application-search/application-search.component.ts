@@ -46,6 +46,9 @@ export class ApplicationSearchComponent implements OnInit {
   minDate:any;
   applicationSourceOptions: any;
   serviceNameOptions: any;
+  flagCallTasks :any;
+  dtOptions = {};
+
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +60,7 @@ export class ApplicationSearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.flagCallTasks =false;
     this.minDate = new Date();
     this.loadUnitsOptions();
     this.loadDeveloperOptions();
@@ -65,6 +69,7 @@ export class ApplicationSearchComponent implements OnInit {
     this.loadOldLandsoptions();
     this.loadOwnersOptions();
     this.loadServiceNamesOptionsByUser()
+    this.tableOption();
 
     this.applicationSourceOptions = [
       {
@@ -81,8 +86,35 @@ export class ApplicationSearchComponent implements OnInit {
       }
     ]
   }
-
-  searchData(formData: any) {
+  tableOption (){
+  this.dtOptions = {
+    language: {
+      sEmptyTable: 'ليست هناك بيانات متاحة في الجدل',
+      sLoadingRecords: 'جارٍ التحميل...',
+      sProcessing: 'جارٍ التحميل...',
+      sLengthMenu: 'أظهر _MENU_ مدخلات',
+      sZeroRecords: 'لم يعثر على أية سجلات',
+      sInfo: 'إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل',
+      sInfoEmpty: 'يعرض 0 إلى 0 من أصل 0 سجل',
+      sInfoFiltered: '(منتقاة من مجموع _MAX_ مُدخل)',
+      sInfoPostFix: '',
+      sSearch: 'ابحث:',
+      sUrl: '',
+      oPaginate: {
+        sFirst: 'الأول',
+        sPrevious: 'السابق',
+        sNext: 'التالي',
+        sLast: 'الأخير'
+      },
+      oAria: {
+        sSortAscending: ': تفعيل لترتيب العمود تصاعدياً',
+        sSortDescending: ': تفعيل لترتيب العمود تنازلياً'
+      }
+    }
+  };
+}
+  searchData(formData: any) { 
+    this.flagCallTasks =true;
     let fd = new FormData();
     fd.append('data', JSON.stringify(formData));
 
@@ -90,6 +122,7 @@ export class ApplicationSearchComponent implements OnInit {
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.response = data.data;
+            this.flagCallTasks =false;
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error');
