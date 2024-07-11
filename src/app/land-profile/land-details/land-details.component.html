@@ -67,7 +67,7 @@
             <div class="offset-sm-2 col-sm-10 placeholder">
               <div class="form-check float-right">
                 <!-- <input name="freeHold" type="checkbox" class="form-check-input" [(ngModel)]="formData.freeHold"> -->
-                <input name="freeHold" [checked]="formData.freeHold == 1 ? true :false" type="checkbox" class="form-check-input" >
+                <input name="freeHold" [checked]="formData.freeHold == 1 ? true :false" type="checkbox"  (change)="onCheckboxChange($event)" class="form-check-input" >
                 <label class="form-check-label" i18n="@@landProfileFreeHold">Free Hold</label>
               </div>
             </div>
