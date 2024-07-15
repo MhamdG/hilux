@@ -10,3 +10,7 @@
 <div *ngIf="showErrors(field.fieldID)" class="alert alert-danger">
   {{getErrors(field.fieldID)}}
 </div>
+
+<div *ngIf="isLoading" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>

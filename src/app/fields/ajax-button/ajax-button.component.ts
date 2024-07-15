@@ -29,17 +29,22 @@ export class AjaxButtonComponent implements OnInit {
   @Input() formErrors: any;
 
   @Input() defaultValues: any;
+  isLoading:any;
 
   constructor(private service: FieldsService) { }
 
   ngOnInit(): void {
     this.getDefaultValue(this.field.fieldID);
+    this.isLoading =false;
   }
 
   loadData() {
+    console.log(this.field.auxInfo.sourceDetails);
+    this.isLoading =true;
     this.service.getFieldData(this.field, this.fullFormData).subscribe((data) => {
       this.ajaxData = data;
       this.formData[this.field.fieldID] = data;
+      this.isLoading =false;
     })
   }
 
