@@ -1,0 +1,358 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="m-2 text-dark">
+          <h1 i18n="@@searchPageHeaderLabel">Search</h1>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+
+
+
+
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-purple">
+        <div class="card-header">
+          <h3 class="card-title">قائمة البحث</h3>
+        </div>
+
+
+
+
+
+        <app-alerts [errors]="formErrors"></app-alerts>
+
+
+
+
+
+
+
+        <div class="col-sm-12">
+          <div class="mt-4">
+            <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm" enctype='multipart/form-data'
+              novalidate>
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-4">
+
+
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@searchPageProjectName">Project Name
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select required="isSearchByUnit()" [items]="projectsOptions | async" name="project"
+                          [hideSelected]="true" [(ngModel)]="formData.projectId" [minTermLength]="1"
+                          bindLabel="value.ar" typeToSearchText="Please enter 1 or more characters" bindValue="key"
+                          [typeahead]="projectsSearchInput$" notFoundText="لا يوجد نتائج للبحث"
+                          [loading]="projectDataOptionsLoading" #project="ngModel"
+                          [disabled]="isNotSearchTypeUnit() || isEmpty('developerId')"
+                          (keyup)="setSearchType('unitId', $event)" (blur)="checkTypeAndValues('projectId')"
+                          (change)="resetUnit()" (keyup.enter)="testEnter('projectId',formData.projectId)">
+
+                        </ng-select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@searchPageUnitID">Unit ID
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select required="isSearchByUnit()" [items]="unitsOptions" name="units"
+                          [(ngModel)]="formData.unitId" bindLabel="value.ar" bindValue="key"
+                          notFoundText="لا يوجد نتائج للبحث" #unitId="ngModel"
+                          [disabled]="isNotSearchTypeUnit() || isEmpty('projectId')" (open)="loadUnitsOptions()"
+                          (keyup.enter)="testEnter('projectId',formData.projectId)">
+
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@searchPageLandID">Land ID
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select required="true" [items]="landsOptions | async" name="land" [hideSelected]="true"
+                          [(ngModel)]="formData.landId" [typeahead]="landSearchInput$" bindLabel="value.ar"
+                          [minTermLength]="1" bindValue="key" [loading]="landDataOptionsLoading"
+                          notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
+                          #land="ngModel" [disabled]="isNotSearchTypeLand() || isNotSearchBy('landId')"
+                          (blur)="checkTypeAndValues('landId')" (keyup)="setSearchType('landId', $event)"
+                          (keyup.enter)="testEnter('landId',formData.landId)">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- // hashem search owner auto complete  -->
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" i18n="@@applicationSearchApplicationId">Application ID
+                      </label>
+                      <div class="col-sm-9">
+                        <input name="applicationID" type="text" class="form-control"
+                          [(ngModel)]="formData.applicationID" #applicationID="ngModel"
+                          (keyup)="setSearchType('applicationID', $event)">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="row ">
+                  <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
+                      i18n="@@searchPageSearchButton">Search</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <hr />
+          <div *ngIf="flagCallTasks" class="loader"></div>
+          <div class="resultsWrapper rtl" *ngIf="response && !flagCallTasks">
+            <div class="searchApplications">
+              <div class="card">
+                <div class="card-header border-0">
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div>
+                  <h3 class="card-title float-right font-weight-bold" i18n="@@applicationSearchSearchResults">Search
+                    Results:</h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table" datatable
+                    [dtOptions]="dtOptions">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>رقم الأرض</th>
+                        <th i18n="@@applicationSearchTableApplicationId">Application Id</th>
+                        <th>أسم المالك باللغة العربية</th>
+                        <th>أسم المالك باللغة الإنجليزية</th>
+                        <th>نوع المعاملة</th>
+                        <th> تاريخ إنشاء الملكية</th>
+                        <th>أسم منشا الملكية</th>
+                        <th>ملف الملكية</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="icon-pointer" *ngFor="let item_detail of response; let i = index">
+                        <td>{{ i + 1}}</td>
+                        <td>
+                          <div class="d-flex">
+                            <span class="fs-30 p-1 icon-pointer">
+                              <!-- <i [class]="getIconClass(item_detail.channel)"> -->
+                              {{ item_detail?.channel }}
+                              <!-- </i> -->
+                            </span>
+                          </div>
+                        </td>
+                        <td>{{ item_detail?.applicationID }}</td>
+                        <td>{{ item_detail?.serviceName }}</td>
+                        <td>
+                          <p *ngFor="let applicationDetail of item_detail?.applicationDetails">{{applicationDetail}}</p>
+                        </td>
+
+                        <td>{{ item_detail?.applicationDate }}</td>
+                        <td class="text-center align-middle">
+                          <span class="badge">
+
+                          </span>
+                        </td>
+                        <!-- <td>{{ item_detail?.applicationDetails }}</td> -->
+                        <td>
+                          <!-- <div class="d-flex">
+                            <span class="fs-30 p-1 icon-pointer">
+                              <i [class]="getStatusClass(item_detail?.applicationStatus)"></i>
+                            </span>
+                          </div> -->
+                          {{ item_detail?.applicationStatus }}
+                        </td>
+                        <td>{{ item_detail?.reservedBy }}</td>
+                        <!-- <td>{{ item_detail?.pendingWith }}</td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="card-header border-0 form-group row">
+                  <label class="form-label">سبب الطباعة
+                  </label>
+                </div>
+                <div class="card-header border-0 form-group row">
+                  <div class="col-sm-9">
+                    <input name="receiptID" type="text" class="form-control" [(ngModel)]="formData.receiptID"
+                      #receiptID="ngModel">
+                  </div>
+                </div>
+
+                <div class="card-header border-0 form-group row">
+                  <label class="form-label">ملاحظات الطباعة
+                  </label>
+                </div>
+                <div class="card-header border-0 form-group row">
+                  <div class="col-sm-9">
+                    <textarea name="address" class="form-control" rows="3" [(ngModel)]="formData.address"></textarea>
+                  </div>
+                </div>
+
+                <div class="card-header border-0" style="margin-top: 50;">
+                  <div class="row" style="margin-top: 50;">
+                    <div class="col-sm-12 text-center" style="margin-top: 50;">
+                      <button type="submit" style="margin-top: 50;" class="btn btn-primary" 
+                       >إعادة الطباعة</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row" *ngIf="!response">
+            <div class="col-sm-12 text-center">
+              <h4>لا توجد بيانات لهذا البحث ، حاول مرة أخرى عن طريق تغيير معايير البحث</h4>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+<ngx-smart-modal customClass="msg-modal" #addBlockToOwnerPropertiesModal [ngStyle]="{width:'500px;'}"
+  identifier="addBlockToOwnerPropertiesModal" [escapable]="true" escapable="true"
+  (onAnyCloseEvent)="resetAddBlockToOwnerPropertiesModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@searchPageAddNewBlockHeader">Add New Block</h4>
+    </div>
+  </div>
+  <form #addBlockToOwnerPropertiesForm="ngForm" (ngSubmit)="addBlockTocurrentlyOwnedOwnerProperties(addBlockData);"
+    novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@searchPageBlockType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageTypesOptions" name="typeId"
+                  [(ngModel)]="addBlockData.typeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #typeId="ngModel" (open)="loadBlockageTypesOptions()">
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@searchPageBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageEntitiesOptions | async" name="blockEntityId"
+                  [hideSelected]="true" [(ngModel)]="addBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                  [loading]="blockageEntityOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters" #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@searchPageRemarks">Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea name="remarks" class="form-control" rows="3" required="true"
+                  [(ngModel)]="addBlockData.remarks" #remarks="ngModel"></textarea>
+                <div *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)" class="alert alert-danger">
+                  <div *ngIf="remarks.errors?.required">
+                    Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@searchPageAttachments">Attachments
+                <span>*</span>
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+              <label class="col-sm-3 col-form-label" i18n="@@searchPageCurrentlyOwnedProperties">Currently Owned
+                Properties</label>
+            </div>
+            <div class="col-sm-9">
+              <ul class="bans-wrapper">
+                <ng-container *ngFor="let land of getCurrentOwnedLands(currentlyOwnedPropertiesByOwner.deeds)">
+                  <li class="text-danger">
+                    {{ getActiveLandDetails(land) }}
+                  </li>
+                </ng-container>
+                <ng-container *ngFor="let unit of getCurrentOwnedUnits(currentlyOwnedPropertiesByOwner.deeds)">
+                  <li class="text-danger">
+                    {{ getActiveUnitDetails(unit) }}
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" i18n="@@searchPageBlockCancel"
+          (click)="addBlockToOwnerPropertiesModal.close()">Close</button>
+        <button type="submit" [disabled]="addBlockToOwnerPropertiesForm.invalid" i18n="@@searchPageBlockSubmit"
+          class="btn btn-primary float-left">Submit</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>

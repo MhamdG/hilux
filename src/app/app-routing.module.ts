@@ -65,6 +65,7 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { RateDetailsComponent } from './rate/rateDetails/rate-details.component';
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
+import { ReprintPropertiesComponent } from './reprint-properties/reprint-properties.component';
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
   { path: 'login', component: LoginComponent },
@@ -115,6 +116,7 @@ const routes: Routes = [
       { path: 'view', component: UnitViewComponent }
     ]
   },
+  { path: 'reprintProperties/view', component: ReprintPropertiesComponent, resolve: { profile: UnitProfileResolver }, canActivate: [AuthenticationGuard] },
   { path: 'company/new', component: CompanyProfileComponent, resolve: { profile: CompanyProfileResolver }, canActivate: [AuthenticationGuard] },
   { path: 'company/edit', component: CompanyEditComponent, resolve: { profile: CompanyProfileResolver }, canActivate: [AuthenticationGuard] },
   { path: 'company/view', component: CompanyMainViewComponent, resolve: { profile: CompanyProfileResolver }, canActivate: [AuthenticationGuard] },
