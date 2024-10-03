@@ -83,9 +83,23 @@
                         <tr *ngFor="let field of application_step.dataIn | keyvalue; let j = index">
                           <td>{{ j + 1}}</td>
                           <td>{{ field.value.key }}</td>
-                          <td>
+                          <!-- <td>
                             <pre class="custom-direction"
                               [innerHtml]="renderFieldValue(field.value.value) | prettyjson:4"></pre>
+                          </td> -->
+                          <td>
+                            <!-- Only render the pre element if field.value.value exists and it's not a link -->
+                            <pre *ngIf="field?.value?.value && !isLink(field.value.key, field?.value?.value)"
+                                 class="custom-direction"
+                                 [innerHtml]="field?.value?.value ? renderFieldValue(field.value.value) : '' | prettyjson: 4">
+                            </pre>
+                          
+                            <!-- Render the anchor tag if field.value.value exists and it is a link -->
+                            <a *ngIf="field?.value?.value && isLink(field.value.key, field?.value?.value)" 
+                               [href]="field.value.value" target="_blank"
+                               [attr.disabled]="true">
+                              {{ field.value.value }} 
+                            </a>
                           </td>
                         </tr>
                       </tbody>
@@ -106,9 +120,23 @@
                         <tr *ngFor="let field of application_step.displayData | keyvalue; let j = index">
                           <td>{{ j + 1}}</td>
                           <td>{{ field.value.key }}</td>
-                          <td>
+                          <!-- <td>
                             <pre class="custom-direction"
                               [innerHtml]="renderFieldValue(field.value.value) | prettyjson:4"></pre>
+                          </td> -->
+                          <td>
+                            <!-- Only render the pre element if field.value.value exists and it's not a link -->
+                            <pre *ngIf="field?.value?.value && !isLink(field.value.key, field?.value?.value)"
+                                 class="custom-direction"
+                                 [innerHtml]="field?.value?.value ? renderFieldValue(field.value.value) : '' | prettyjson: 4">
+                            </pre>
+                          
+                            <!-- Render the anchor tag if field.value.value exists and it is a link -->
+                            <a *ngIf="field?.value?.value && isLink(field.value.key, field?.value?.value)" 
+                               [href]="field.value.value" target="_blank"
+                               [attr.disabled]="true">
+                              {{ field.value.value }} 
+                            </a>
                           </td>
                         </tr>
                       </tbody>

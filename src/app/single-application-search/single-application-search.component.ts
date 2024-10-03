@@ -74,6 +74,28 @@ export class SingleApplicationSearchComponent implements OnInit {
         this.router.navigate(['error']);
     });
   }
+  sanitizeLink(text: any): string {
+    if (typeof text !== 'string') {
+      return ''; // Return an empty string if text is not a string
+    }
+    
+    return text.replace(/^[\[\]"']+|[\[\]"']+$/g, ''); // Remove special characters from the start and end
+  }
+  isLink(ka :string, text: string | null | undefined): boolean {
+    if (!text) return false; // Return false if text is null or undefined
+    const sanitizedText = this.sanitizeLink(text);
+    const urlPattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+      '((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-zA-Z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-zA-Z\\d_]*)?$',
+      'i'
+    );
+    console.log(ka + " " +  text +  " " + urlPattern.test(text))
+    return urlPattern.test(text);
+  }
 
   loadUnitsOptions() {
     this.lookupsService.loadUnitsOptions({ projectId: this.formData.projectId })
