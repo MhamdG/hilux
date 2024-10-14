@@ -28,22 +28,11 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select 
-                class="rtl" 
-                [items]="projectNameOptions | async" 
-                name="projectNameSearch"
-                [hideSelected]="true" 
-                [minTermLength]="1" 
-                required="true" 
-                [(ngModel)]="searchData.searchProjectId"
-                [loading]="projectNameOptionsLoading" 
-                bindLabel="value.ar" 
-                bindValue="key"
-                typeToSearchText="Please enter 1 or more characters"
-                notFoundText="لا يوجد نتائج للبحث"
-                [typeahead]="searchProjectNameInput$"
-                #projectNameSearch="ngModel" 
-                (change)="resetUnitNumber()">
+                <ng-select class="rtl" [items]="projectNameOptions | async" name="projectNameSearch"
+                  [hideSelected]="true" [minTermLength]="1" required="true" [(ngModel)]="searchData.searchProjectId"
+                  [loading]="projectNameOptionsLoading" bindLabel="value.ar" bindValue="key"
+                  typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                  [typeahead]="searchProjectNameInput$" #projectNameSearch="ngModel" (change)="resetUnitNumber()">
                 </ng-select>
               </div>
             </div>
@@ -57,18 +46,10 @@
                 <span>*</span>
               </label>
               <div class="col-sm-9">
-                <ng-select
-                required="true"
-                [items]="unitNumberOptions"
-                name="unitNumberSearch"
-                [(ngModel)]="searchData.searchUnitNumber"
-                bindLabel="value.ar"
-                bindValue="key"
-                notFoundText="لا يوجد نتائج للبحث"
-                #unitNumberSearch="ngModel"
-                (open)="loadUnitNumberOptions()"
-              >
-              </ng-select>
+                <ng-select required="true" [items]="unitNumberOptions" name="unitNumberSearch"
+                  [(ngModel)]="searchData.searchUnitNumber" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #unitNumberSearch="ngModel" (open)="loadUnitNumberOptions()">
+                </ng-select>
               </div>
             </div>
           </div>
@@ -183,9 +164,9 @@
               <label class="col-sm-3 col-form-label" i18n="@@unitProfileUnitUse">Unit Use
               </label>
               <div class="col-sm-9">
-                <ng-select class="rtl" [items]="unitsUsageTypesOptions" name="unitUseId" [(ngModel)]="formData.unitUseId"
-                  bindLabel="value.ar" bindValue="key" notFoundText="لا يوجد نتائج للبحث" #unitUseId="ngModel"
-                  disabled="true">
+                <ng-select class="rtl" [items]="unitsUsageTypesOptions" name="unitUseId"
+                  [(ngModel)]="formData.unitUseId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #unitUseId="ngModel" disabled="true">
                 </ng-select>
                 <div *ngIf="unitUseId.invalid && (unitUseId.dirty || unitUseId.touched)" class="alert alert-danger">
                   <div *ngIf="unitUseId.errors?.required">
@@ -544,7 +525,8 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label">الملاحظات</label>
               <div class="text-center col-sm-9">
-                <textarea name="others" class="form-control" rows="3" disabled="true" [(ngModel)]="formData.notes"></textarea>
+                <textarea name="notes" class="form-control" rows="3" disabled="true"
+                  [(ngModel)]="formData.notes"></textarea>
               </div>
             </div>
           </div>
