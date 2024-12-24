@@ -1,0 +1,111 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <!-- <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+          </ol>
+        </div> -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12" *ngIf="profile$ | async as profile">
+          <div class="card card-purple">
+            <div class="card-header">
+              <h3 class="card-title"> تقييم الأراضي </h3>
+            </div>
+            <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
+              <button type="button" (click)="addNewFun()"
+                style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
+                i18n="@@addNew">+ Add New</button>
+
+              <button type="button" (click)="unitPricingFun()"
+                style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
+                i18n="@@unitPricingSearch">Unit Pricing Search</button>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-12">
+                <div class="small-box bg-info">
+                  <div class="inner">
+                    <h4 style="text-align: center;" i18n="@@totalEvaluatedUnits">
+                      total Evaluated Units
+                    </h4>
+
+                    <h5 style="color: black;text-align: center;">{{kpiObj.data.totalEvaluatedUnits}}</h5>
+                  </div>
+                  <div class="icon">
+                    <!-- <i class="ion ion-podium"></i> -->
+                    <!-- <i class="fa-thin fa-star"></i> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-12">
+                <div class="small-box bg-info">
+                  <div class="inner">
+                    <h4 style="text-align: center;" i18n="@@totalNonEvaluatedUnits">
+                      total Non Evaluated Units
+                    </h4>
+
+                    <h5 style="color: black;text-align: center;">{{kpiObj.data.totalNonEvaluatedUnits}}</h5>
+                  </div>
+                  <div class="icon">
+                    <!-- <i class="star-rate-outline"></i> -->
+                    <!-- <i class="fa-thin fa-star"></i> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <router-outlet></router-outlet>
+            <section class="content" *ngIf="formData && !formData.id">
+              <div class="container-fluid">
+                <app-alerts [errors]="formErrors"></app-alerts>
+                <form class="form-horizontal" (ngSubmit)="saveData(searchData)" #sf="ngForm"
+                  enctype='multipart/form-data' novalidate>
+                  <div class="card-body">
+                    <div class="form-group row">
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchLandId">Land Id</label>
+                          <div class="col-sm-9">
+                            <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
+                              [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.term"
+                              [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
+                              typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                              [typeahead]="searchLandNameInput$" (keyup)="setSearchType('term', $event)"
+                              [disabled]="isSearchBy('searchOldLandId')" (blur)="checkTypeAndValues('term')"
+                              #LandNameSearch="ngModel">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@ratingLabel">Land Id</label>
+                          <div class="col-sm-9">
+                            <input type="number" name="rating" required="true" class="form-control"
+                            [(ngModel)]="searchData.rating" #rating="ngModel">
+                          </div>
+                        </div>
+                      </div>
+                      
+                     
+                    </div>
+                  </div>
+                  <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
+                      i18n="@@generalSubmit">Submit</button>
+                  </div>
+                </form>
+                <hr />
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -105,6 +105,7 @@ import { PropertiesProfileComponent } from './properties-profile/properties-prof
 import { LandProfileComponent } from './land-profile/land-profile.component';
 import { LandEditComponent } from './land-profile/land-edit/land-edit.component';
 import { RateViewComponent } from './rate/rateView/rate-view.component';
+import { RateLandViewComponent } from './rate-land/rateView/rateLand-view.component';
 import { newRateComponent } from './rate/newRate/rate-new.component';
 import { RateDetailsComponent } from './rate/rateDetails/rate-details.component';
 import { LandMainViewComponent } from './land-profile/land-mainView/land-mainView.component';
@@ -237,6 +238,7 @@ const maskConfig: Partial<IConfig> = {
     SingleApplicationSearchComponent,
     UnitsValuationComponent,
     RateViewComponent,
+    RateLandViewComponent,
     newRateComponent,
     PricingUnitComponent,
     PricingUnitDetailsComponent
