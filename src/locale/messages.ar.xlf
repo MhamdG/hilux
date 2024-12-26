@@ -6074,6 +6074,27 @@
       <source>Submit</source>
         <target>إرسال</target>
       </trans-unit>
+        <trans-unit id="generalSearch" datatype="html">
+      <source>Search</source>
+        <target>بحث</target>
+      </trans-unit>
+       <trans-unit id="addLandRateExcel" datatype="html">
+      <source>Add new By Excel</source>
+        <target>أضافة بواسطة الأكسل</target>
+      </trans-unit>
+       <trans-unit id="downloadTemplate" datatype="html">
+      <source>Download Template</source>
+        <target>تحميل النموذج</target>
+      </trans-unit>
+         <trans-unit id="generalDownload" datatype="html">
+      <source>Download</source>
+        <target>تحميل </target>
+      </trans-unit>
+        <trans-unit id="generalUpload" datatype="html">
+      <source>Upload</source>
+        <target>رفع الملف</target>
+      </trans-unit>
+
 
       
       

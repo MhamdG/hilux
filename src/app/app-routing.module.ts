@@ -47,6 +47,8 @@ import { LandMainViewComponent } from './land-profile/land-mainView/land-mainVie
 import { LandViewComponent } from './land-profile/land-view/land-view.component';
 import { RateViewComponent } from './rate/rateView/rate-view.component';
 import { RateLandViewComponent } from './rate-land/rateView/rateLand-view.component';
+import { AddRateLandComponent } from './rate-land/addRateLand/addRateLand.component';
+import { AddRateLandExcelComponent } from './rate-land/addRateLandExcel/addRateLandExcel.component';
 import { newRateComponent } from './rate/newRate/rate-new.component';
 import { LandChangeNumberComponent } from './land-profile/landChangeNumber/land-changeNumber.component';
 import { LandnumberComponent } from './land-profile/landNumber/land-number.component';
@@ -141,6 +143,8 @@ const routes: Routes = [
     ]
   },
   { path: 'rateLand', component: RateLandViewComponent, resolve: { profile: LandProfileResolver }, canActivate: [AuthenticationGuard] },
+  { path: 'addRateLand', component: AddRateLandComponent, resolve: { profile: LandProfileResolver }, canActivate: [AuthenticationGuard] },
+  { path: 'AddRateLandExcel', component: AddRateLandExcelComponent, resolve: { profile: LandProfileResolver }, canActivate: [AuthenticationGuard] },
 
   {
     path: 'pricingUnit/profile/:profileId/:profileId2', component: RateViewComponent,

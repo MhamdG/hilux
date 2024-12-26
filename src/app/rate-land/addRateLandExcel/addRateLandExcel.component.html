@@ -1,0 +1,78 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <!-- <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+          </ol>
+        </div> -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12" *ngIf="profile$ | async as profile">
+          <div class="card card-purple">
+            <div class="card-header">
+              <h3 class="card-title"> تقييم الأراضي </h3>
+            </div>
+          
+           
+
+            <router-outlet></router-outlet>
+            <section class="content" *ngIf="formData && !formData.id">
+              <div class="container-fluid">
+                <app-alerts [errors]="formErrors"></app-alerts>
+                <form class="form-horizontal" (ngSubmit)="saveData(searchData)" #sf="ngForm"
+                  enctype='multipart/form-data' novalidate>
+                  <div class="card-body">
+                    <div class="form-group row">
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <!-- <label class="col-sm-3 col-form-label" i18n="@@downloadTemplate">Download Template</label> -->
+                          <div class="col-sm-9">
+                            <button type="button"  (click)="downloadTempleteFun()" class="btn btn-primary" [disabled]="sf.invalid"
+                            i18n="@@downloadTemplate">download </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <!-- <div class="col-sm-9">
+                            <app-file-upload [field]="prepareEstablishmentContractFileField()" [formData]="formData"
+                              [defaultValues]="formData"></app-file-upload>
+                          </div>   -->
+                          <label class="col-sm-3 col-form-label" i18n="@@generalUpload">Upload</label>
+                          <input type="file" id="file" #fileInput (change)="handleFileInput($event,fileInput)" />
+
+                        </div>
+                      </div>
+                      
+                     
+                    </div>
+                  </div>
+                  <div class="card-footer text-center">
+                    <label *ngIf="resMsg" class="col-sm-3 col-form-label">{{resMsg}}</label>
+                  </div>
+                  <div class="card-footer text-center">
+                    <a 
+                    [href]="resUrl" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    *ngIf="resUrl" 
+                    class="col-sm-3 col-form-label">
+                    <button type="button"  class="btn btn-primary" [disabled]="sf.invalid"
+                    i18n="@@generalDownload">download </button>
+                  </a>
+                  </div>
+                </form>
+                <hr />
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

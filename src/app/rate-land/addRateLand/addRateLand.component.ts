@@ -10,10 +10,10 @@ import { LookupsService } from '../../shared/lookups.service';
 
 @Component({
   // selector: 'app-land-profile',
-  templateUrl: './rateLand-view.component.html',
-  styleUrls: ['./rateLand-view.component.css']
+  templateUrl: './addRateLand.component.html',
+  styleUrls: ['./addRateLand.component.css']
 })
-export class RateLandViewComponent implements OnInit {
+export class AddRateLandComponent implements OnInit {
   formData: any = { buildingDetails: {}, buildingFinishes: {} };
   searchData: any = {};
   formErrors: any = {};
@@ -90,24 +90,24 @@ export class RateLandViewComponent implements OnInit {
   }
 
 
-  saveData(formData: any) {
-    let fd = new FormData();
-    fd.append('land', JSON.stringify(formData));
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/lands/create`, fd)
-      .subscribe((data: any) => {
-        if (data.status == 'success') {
-          this.toastr.success(data.message, 'Success');
-          if (data.data.id)
-            this.router.navigate(['company/profile', data.data.id, 'edit']);
-        } else {
-          this.formErrors = data.data;
-          this.toastr.error(JSON.stringify(data.message), 'Error')
-        }
-      }, (error) => {
-        this.toastr.error('Something went Wrong', 'Error')
-        this.router.navigate(['error'])
-      })
-  }
+  // saveData(formData: any) {
+  //   let fd = new FormData();
+  //   fd.append('land', JSON.stringify(formData));
+  //   this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/lands/create`, fd)
+  //     .subscribe((data: any) => {
+  //       if (data.status == 'success') {
+  //         this.toastr.success(data.message, 'Success');
+  //         if (data.data.id)
+  //           this.router.navigate(['company/profile', data.data.id, 'edit']);
+  //       } else {
+  //         this.formErrors = data.data;
+  //         this.toastr.error(JSON.stringify(data.message), 'Error')
+  //       }
+  //     }, (error) => {
+  //       this.toastr.error('Something went Wrong', 'Error')
+  //       this.router.navigate(['error'])
+  //     })
+  // }
   unitPricingFun (){
     this.router.navigate(['pricingUnit']);
   }
@@ -166,12 +166,8 @@ export class RateLandViewComponent implements OnInit {
       })
   }
   addNewFun() {
-    this.router.navigate(['addRateLand']);
+    this.router.navigate(['rate/new']);
   }
-  addRatelandExcel() {
-    this.router.navigate(['AddRateLandExcel']);
-  }
-  
 
   loadSectionsOptions() {
     this.lookupsService.loadSectionsOptions()
@@ -341,31 +337,31 @@ export class RateLandViewComponent implements OnInit {
     //   this.router.navigate(['rate/profile/' + data.searchProjectId + "/view"]);
     // }
   }
-  // saveData(formData: any) {
-  //   if (formData.term && formData.rating ) {
-  //     let fd = new FormData();
-  //     let obj = {
-  //       propertyId: formData.term,
-  //       amount: formData.rating
-  //     }
-  //     fd.append('data', JSON.stringify(obj));
-  //     this.http.post(`http://192.168.18.129/AjmanLandProperty/index.php/tathmeenLands/addSingleTathmeen`, fd)
-  //       .subscribe((data: any) => {
-  //         if (data.status == 'success') {
-  //           this.toastr.success(data.message, 'Success');
-  //           this.searchData.term = null;
-  //           this.searchData.rating = null;
-  //         } else {
-  //           this.formErrors = data.data;
-  //           this.toastr.error(JSON.stringify(data.message), 'Error')
-  //         }
-  //       }, (error) => {
-  //         this.toastr.error('Something went Wrong', 'Error')
-  //         this.router.navigate(['error'])
-  //       })
-  //   }
-  //   else return;
-  // }
+  saveData(formData: any) {
+    if (formData.term && formData.rating ) {
+      let fd = new FormData();
+      let obj = {
+        propertyId: formData.term,
+        amount: formData.rating
+      }
+      fd.append('data', JSON.stringify(obj));
+      this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/addSingleTathmeen`, fd)
+        .subscribe((data: any) => {
+          if (data.status == 'success') {
+            this.toastr.success(data.message, 'Success');
+            this.searchData.term = null;
+            this.searchData.rating = null;
+          } else {
+            this.formErrors = data.data;
+            this.toastr.error(JSON.stringify(data.message), 'Error')
+          }
+        }, (error) => {
+          this.toastr.error('Something went Wrong', 'Error')
+          this.router.navigate(['error'])
+        })
+    }
+    else return;
+  }
 
   loadLandNameOptions() {
     this.landNameOptions = concat(
