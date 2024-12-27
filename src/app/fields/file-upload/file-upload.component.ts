@@ -98,12 +98,12 @@ export class FileUploadComponent implements OnInit {
     form.append(`${fieldId}`, file);
     let parts = file.name.split('.');
     let ex =parts[parts.length - 1];
-    // if (ex.toLowerCase() != "png" && ex.toLowerCase()!= "jpg" && ex.toLowerCase() != "pdf" && ex.toLowerCase() != "jpeg") {
-    //   this.progressBar.nativeElement.style.width = `${percentage}%`;
-    //   alert( ex +  "  صيغة الملف غير مدعومة \n الصيغ المدعومة هي  " + " Jpj , Png and Pdf ");
-    //   return;
-    // }
-    // else{
+    if (ex.toLowerCase() != "png" && ex.toLowerCase()!= "jpg" && ex.toLowerCase() != "pdf" && ex.toLowerCase() != "jpeg") {
+      this.progressBar.nativeElement.style.width = `${percentage}%`;
+      alert( ex +  "  صيغة الملف غير مدعومة \n الصيغ المدعومة هي  " + " Jpj , Png and Pdf ");
+      return;
+    }
+    else{
       return this.http.post<any>(`https://wfe.ajre.gov.ae/ajaxupload.php`, form).subscribe((data: any) => {
         if (data.status == 'success') {
           // Add value to formData
@@ -118,7 +118,7 @@ export class FileUploadComponent implements OnInit {
       }, (error) => {
         this.progressBar.nativeElement.style.width = `${percentage}%`;
       })
-    // }
+    }
   }
 
   private appendIfValid(data: any, fieldId: string) {

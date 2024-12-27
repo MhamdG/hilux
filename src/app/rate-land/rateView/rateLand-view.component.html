@@ -27,43 +27,85 @@
                 i18n="@@addLandRateExcel">ِAdd new By excel</button>
             </div>
             <div class="row">
-              <div class="col-lg-6 col-12">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <h4 style="text-align: center;" i18n="@@totalEvaluatedUnits">
-                      total Evaluated Units
-                    </h4>
-
-                    <h5 style="color: black;text-align: center;">{{kpiObj.data.totalEvaluatedUnits}}</h5>
+              <div class="container mt-3">
+                <div class="row">
+                  <!-- First Card (Total Tathmeen and Total Lands) -->
+                  <div class="col-md-12 mb-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <!-- Total Tathmeen Card -->
+                          <div class="col-md-6 mb-3">
+                            <div class="card">
+                              <div class="card-body text-center">
+                                <h5 style="width: 100%;" class="card-title text-center">إجمالي التقييمات</h5>
+                                <p class="card-text">{{kpiObj.totalTathmeen}}</p>
+                              </div>
+                            </div>
+                          </div>
+              
+                          <!-- Total Lands Card -->
+                          <div class="col-md-6 mb-3">
+                            <div class="card">
+                              <div class="card-body text-center">
+                                <h5 style="width: 100%;" class="card-title text-center">إجمالي الأراضي</h5>
+                                <p class="card-text">{{kpiObj.totalLands}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="icon">
-                    <!-- <i class="ion ion-podium"></i> -->
-                    <!-- <i class="fa-thin fa-star"></i> -->
+              
+                  <!-- Second Card (Section Cards) -->
+                  <div class="col-md-12 mb-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <!-- Section Title with Toggle -->
+                        <h5 style="width: 100%;" class="card-title  text-center" (click)="toggleSection()" style="cursor: pointer;">
+                          التقييمات حسب القسم
+                        </h5>
+              
+                        <!-- Conditional Display of Section Items -->
+                        <div *ngIf="isSectionExpanded">
+                          <div class="section-cards">
+                            <div *ngFor="let item of kpiObj.tathmeenBySection" class="section-item">
+                              <div class="section-card">
+                                <h6>{{item.SectorName}}</h6>
+                                <p>{{item.sectionName || 'غير محدد'}}</p>
+                                <span class="badge bg-primary">{{item.Count}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+              
+                        <!-- Toggle text when section is collapsed -->
+                        <div *ngIf="!isSectionExpanded" class="text-center" style="cursor: pointer;" (click)="toggleSection()">
+                          <small>عرض المزيد</small>
+                        </div>
+                        <div *ngIf="isSectionExpanded" class="text-center" style="cursor: pointer;" (click)="toggleSection()">
+                          <small>إخفاء</small>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6 col-12">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <h4 style="text-align: center;" i18n="@@totalNonEvaluatedUnits">
-                      total Non Evaluated Units
-                    </h4>
+              
+              
+              
 
-                    <h5 style="color: black;text-align: center;">{{kpiObj.data.totalNonEvaluatedUnits}}</h5>
-                  </div>
-                  <div class="icon">
-                    <!-- <i class="star-rate-outline"></i> -->
-                    <!-- <i class="fa-thin fa-star"></i> -->
-                  </div>
-                </div>
-              </div>
+
+
+
             </div>
 
             <router-outlet></router-outlet>
             <section class="content" *ngIf="formData && !formData.id">
               <div class="container-fluid">
                 <app-alerts [errors]="formErrors"></app-alerts>
-                <form class="form-horizontal" (ngSubmit)="saveData(searchData)" #sf="ngForm"
+                <form class="form-horizontal" (ngSubmit)="getData(searchData)" #sf="ngForm"
                   enctype='multipart/form-data' novalidate>
                   <div class="card-body">
                     <div class="form-group row">
@@ -91,8 +133,8 @@
                           </div>
                         </div>
                       </div> -->
-                      
-                     
+
+
                     </div>
                   </div>
                   <div class="card-footer text-center">
@@ -100,7 +142,300 @@
                       i18n="@@generalSearch">Submit</button>
                   </div>
                 </form>
-                <hr />
+                <form *ngIf="resData" class="form-horizontal" #f="ngForm" enctype="multipart/form-data" novalidate>
+                  <div class="container">
+                    <div class="card card-right" style="width: 40%; float: right; margin-left: 10px;"
+                      *ngIf="landInfo || activeTathmeen">
+                      <!-- activeTathmeen -->
+                      <div class="card-body" *ngIf="activeTathmeen">
+                        <div class="card card-purple">
+                          <div class="card-header">
+                            <h3 class="card-title">التقييم الفعلي</h3>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <ul
+                            style="list-style-type: none; padding: 0; border: 1px solid black; border-radius: 5px; width: 100%;">
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>تاريخ الأضافة : </strong>
+                              <span *ngIf="activeTathmeen.addedAt">{{activeTathmeen.addedAt}}</span>
+                              <span *ngIf="!activeTathmeen.addedAt"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>بواسطة : </strong>
+                              <span *ngIf="activeTathmeen.addedBy">{{activeTathmeen.addedBy}}</span>
+                              <span *ngIf="!activeTathmeen.addedBy"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>القيمة : </strong>
+                              <strong *ngIf="activeTathmeen.amount">{{activeTathmeen.amount}}</strong>
+                              <strong *ngIf="!activeTathmeen.amount"> --- </strong>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>تاريخ الأنتهاء : </strong>
+                              <span *ngIf="activeTathmeen.validTill">{{activeTathmeen.validTill}}</span>
+                              <span *ngIf="!activeTathmeen.validTill"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>المصدر : </strong>
+                              <span *ngIf="activeTathmeen.source">{{activeTathmeen.source}}</span>
+                              <span *ngIf="!activeTathmeen.source"> --- </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <!-- landInfo -->
+                      <div class="card-body" *ngIf="landInfo">
+                        <div class="card card-purple">
+                          <div class="card-header">
+                            <h3 class="card-title">بيانات الأرض</h3>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <ul
+                            style="list-style-type: none; padding: 0; border: 1px solid black; border-radius: 5px;width: 100%;">
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>رقم المعرف : </strong>
+                              <span *ngIf="landInfo.landId">{{landInfo.landId}}</span>
+                              <span *ngIf="!landInfo.landId"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>المنطقة : </strong>
+                              <span *ngIf="landInfo.area">{{landInfo.area}}</span>
+                              <span *ngIf="!landInfo.area"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>النوع : </strong>
+                              <span *ngIf="landInfo.landType">{{landInfo.landType}}</span>
+                              <span *ngIf="!landInfo.landType"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>إلأستعمال الرئيسي : </strong>
+                              <span *ngIf="landInfo.mainUsage">{{landInfo.mainUsage}}</span>
+                              <span *ngIf="!landInfo.mainUsage"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>إلأستعمال الفرعي : </strong>
+                              <span *ngIf="landInfo.subUsage">{{landInfo.subUsage}}</span>
+                              <span *ngIf="!landInfo.subUsage"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>الحي : </strong>
+                              <span *ngIf="landInfo.sector">{{landInfo.sector}}</span>
+                              <span *ngIf="!landInfo.sector"> --- </span>
+                            </li>
+                            <li style="border-bottom: 1px solid black; padding: 8px;">
+                              <strong>القسم : </strong>
+                              <span *ngIf="landInfo.section">{{landInfo.section}}</span>
+                              <span *ngIf="!landInfo.section"> --- </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                    <div *ngIf="resData" class="card card-left" style="width: 60%;">
+                      <!-- previousTathmeens -->
+                      <div class="card-body" *ngIf="previousTathmeens.length > 0">
+                        <div class="card card-purple">
+                          <div class="card-header">
+                            <h3 class="card-title">التقييمات السابقة</h3>
+                          </div>
+                        </div>
+                        <table style="border: 1px solid black;width: 100%;">
+                          <thead style="border: 1px solid black;">
+                            <th style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label"> تاريخ الأضافة</label>
+                            </th>
+                            <th style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label">بواسطة</label>
+                            </th>
+                            <th style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label">القيمة</label>
+                            </th>
+                            <th style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label">تاريخ الأنتهاء</label>
+                            </th>
+                            <th style="border: 1px solid black; text-align: center;">
+                              <label class="col-form-label"> المصدر</label>
+                            </th>
+                          </thead>
+                          <tbody style="border: 1px solid black;">
+                            <tr *ngFor="let item of previousTathmeens let j = index">
+                              <td style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label" *ngIf="item.addedAt">{{item.addedAt}}</label>
+                                <label class="col-form-label" *ngIf="!item.addedAt"> --- </label>
+                              </td>
+                              <td style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label" *ngIf="item.addedBy">
+                                  {{item.addedBy}}
+                                </label>
+                                <label class="col-form-label" *ngIf="! item.addedBy">
+                                  ---
+                                </label>
+                              </td>
+                              <td style="border: 1px solid black; text-align: center;">
+                                <strong class="col-form-label" *ngIf="item.amount">
+                                  {{item.amount}}
+                                </strong>
+                                <strong class="col-form-label" *ngIf="! item.amount">
+                                  ---
+                                </strong>
+                              </td>
+                              <td style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label" *ngIf="item.validTill">
+                                  {{item.validTill}}
+                                </label>
+                                <label class="col-form-label" *ngIf="! item.validTill">
+                                  ---
+                                </label>
+                              </td>
+                              <td style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label" *ngIf="item.source">
+                                  {{item.source}}
+                                </label>
+                                <label class="col-form-label" *ngIf="! item.source">
+                                  ---
+                                </label>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- valuationTranasctions -->
+                      <div class="card-body">
+                        <div class="form-group row" *ngIf="valuationTranasctions.length > 0">
+                          <div class="card card-purple">
+                            <div class="card-header">
+                              <h3 class="card-title">معاملات التقييم</h3>
+                            </div>
+                          </div>
+                          <table style="border: 1px solid black;width: 100%;">
+                            <thead style="border: 1px solid black;">
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">رفم الطلب</label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">القيمة</label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">تاريخ الأضافة</label>
+                              </th>
+
+                            </thead>
+                            <tbody style="border: 1px solid black;">
+                              <!-- <tr *ngFor="let item of formData.landTreeHistory let j = index"> -->
+                              <!-- <tr *ngFor="let item of pageData let j = index"> -->
+                              <tr *ngFor="let item of valuationTranasctions let j = index">
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.applicationID">
+                                    {{item.applicationID}}
+                                  </label>
+                                  <label class="col-form-label" *ngIf="! item.applicationID">
+                                    ---
+                                  </label>
+                                </td>
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <strong class="col-form-label" *ngIf="item.amount">
+                                    {{item.amount}}
+                                  </strong>
+                                  <strong class="col-form-label" *ngIf="! item.amount">
+                                    ---
+                                  </strong>
+                                </td>
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.createdAt">
+                                    {{item.createdAt}}
+                                  </label>
+                                  <label class="col-form-label" *ngIf="! item.createdAt">
+                                    ---
+                                  </label>
+                                </td>
+
+
+
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <!-- transferTransactions -->
+                      <div class="card-body">
+                        <div class="form-group row" *ngIf="transferTransactions.length > 0">
+                          <div class="card card-purple">
+                            <div class="card-header">
+                              <h3 class="card-title">معاملات البيع</h3>
+                            </div>
+                          </div>
+                          <table style="border: 1px solid black;width: 100%;">
+                            <thead style="border: 1px solid black;">
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">رفم الطلب</label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">القيمة</label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">تاريخ الأضافة</label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">نوع المعاملة</label>
+                              </th>
+
+                            </thead>
+                            <tbody style="border: 1px solid black;">
+                              <!-- <tr *ngFor="let item of formData.landTreeHistory let j = index"> -->
+                              <!-- <tr *ngFor="let item of pageData let j = index"> -->
+                              <tr *ngFor="let item of transferTransactions let j = index">
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.applicationID">
+                                    {{item.applicationID}}
+                                  </label>
+                                  <label class="col-form-label" *ngIf="! item.applicationID">
+                                    ---
+                                  </label>
+                                </td>
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <strong class="col-form-label" *ngIf="item.amount">
+                                    {{item.amount}}
+                                  </strong>
+                                  <strong class="col-form-label" *ngIf="! item.amount">
+                                    ---
+                                  </strong>
+                                </td>
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.createdAt">
+                                    {{item.createdAt}}
+                                  </label>
+                                  <label class="col-form-label" *ngIf="! item.createdAt">
+                                    ---
+                                  </label>
+                                </td>
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.TransactionType">
+                                    {{item.TransactionType}}
+                                  </label>
+                                  <label class="col-form-label" *ngIf="! item.TransactionType">
+                                    ---
+                                  </label>
+                                </td>
+
+
+
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </form>
+
+
+
               </div>
             </section>
           </div>

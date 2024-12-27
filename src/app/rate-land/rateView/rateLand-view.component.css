@@ -1,0 +1,127 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .card-left {
+    width: 45%; /* Adjust this value based on your layout */
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .card-right {
+    width: 45%; /* Adjust this value based on your layout */
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  .card-right ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .card-right li {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+ 
+  
+  .card-right li strong {
+    margin-right: 10px;
+    margin-left: 10px;  /* Adds space before the label */
+
+  }
+  
+  .card-right li span {
+    font-weight: normal;
+  }
+  .card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1.5rem;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Section Title - Centered */
+.section-title {
+  display: block;
+  font-size: 1rem; /* Smaller font size */
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Section Cards Container - Full Width */
+.section-cards {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px; /* Space between items */
+  width: 100%; /* Ensure it fills the entire container */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  flex-wrap: wrap; /* Allows items to wrap if necessary */
+}
+
+/* Section Item */
+.section-item {
+  flex: 1 1 20%; /* Make the items flexible but restrict their min width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  text-align: center;
+  margin-bottom: 10px;
+  min-width: 150px; /* Set a min-width to avoid too narrow items */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+/* Section Item Badge */
+.section-item .badge {
+  margin-top: 10px;
+}
+
+/* Optional: Adjust card text style */
+.section-item h6 {
+  font-size: 0.8rem; /* Smaller font size for item title */
+  font-weight: bold;
+}
+
+.section-item p {
+  font-size: 0.7rem; /* Smaller font size for description */
+}
+
+.section-item span {
+  font-size: 0.8rem; /* Smaller font size for count */
+}
+
+
+  

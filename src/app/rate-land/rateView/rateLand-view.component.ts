@@ -44,6 +44,13 @@ export class RateLandViewComponent implements OnInit {
   kpiObj: any;
   roles$: object;
   userRole: any;
+  landInfo :any;
+  activeTathmeen:any;
+  previousTathmeens:any;
+  valuationTranasctions:any;
+  transferTransactions:any;
+  resData :any;
+  isSectionExpanded = false;
 
 
   constructor(
@@ -63,6 +70,9 @@ export class RateLandViewComponent implements OnInit {
         if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Tathmeen")) {
           this.router.navigate(['/']);
         } else {
+          this.previousTathmeens =[];
+          this.valuationTranasctions =[];
+          this.transferTransactions =[];
           this.loadSectorsOptions();
           this.loadSectionsOptions();
           this.loadStreetNamesOptions();
@@ -90,15 +100,35 @@ export class RateLandViewComponent implements OnInit {
   }
 
 
-  saveData(formData: any) {
+  getData(formData: any) {
     let fd = new FormData();
-    fd.append('land', JSON.stringify(formData));
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/lands/create`, fd)
+    let obj ={
+      propertyId:formData.term
+    }
+    fd.append('data', JSON.stringify(obj));
+   
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/getTathmeenByLandId`, fd)
       .subscribe((data: any) => {
+        console.log(data);
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
-          if (data.data.id)
-            this.router.navigate(['company/profile', data.data.id, 'edit']);
+          this.resData =data.data;
+          if (data.data && data.data.landInfo) {
+            this.landInfo =data.data.landInfo;
+          }
+          if (data.data && data.data.activeTathmeen) {
+            this.activeTathmeen =data.data.activeTathmeen;
+          }
+          if (data.data && data.data.previousTathmeens) {
+            this.previousTathmeens =data.data.previousTathmeens;
+          }
+          if (data.data && data.data.valuationTranasctions) {
+            this.valuationTranasctions =data.data.valuationTranasctions;
+          }
+          if (data.data && data.data.transferTransactions) {
+            this.transferTransactions =data.data.transferTransactions;
+          }
+       
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
@@ -111,14 +141,16 @@ export class RateLandViewComponent implements OnInit {
   unitPricingFun (){
     this.router.navigate(['pricingUnit']);
   }
-
+  toggleSection() {
+    this.isSectionExpanded = !this.isSectionExpanded;
+  }
   getKpiFun() {
     // let fd = new FormData();
     // fd.append('land', JSON.stringify(formData));
-    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/Tathmeen/unitsEvaluationKpi`)
+    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/getStatistics`)
       .subscribe((data: any) => {
         if (data.status == 'success') {
-          this.kpiObj = data;
+          this.kpiObj = data.data;
         } else {
         }
       }, (error) => {

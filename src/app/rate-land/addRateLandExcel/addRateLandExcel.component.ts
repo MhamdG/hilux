@@ -91,7 +91,7 @@ export class AddRateLandExcelComponent implements OnInit {
       });
   }
   downloadTempleteFun() {
-    this.http.get(`http://192.168.18.129/AjmanLandProperty/index.php/tathmeenLands/getExcelFile`)
+    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/getExcelFile`)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           if (data.data.file) {
@@ -144,7 +144,7 @@ export class AddRateLandExcelComponent implements OnInit {
       Cookie: 'your_cookie_value_here' // Replace with actual cookie if needed
     });
 
-    const uploadUrl = 'http://192.168.18.129/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel';
+    const uploadUrl = '${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel';
 
     this.http.post<any>(uploadUrl, formData).subscribe({
       next: (response) => {
