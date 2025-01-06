@@ -144,9 +144,9 @@ export class AddRateLandExcelComponent implements OnInit {
       Cookie: 'your_cookie_value_here' // Replace with actual cookie if needed
     });
 
-    const uploadUrl = '${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel';
+    // const uploadUrl = '${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel';
 
-    this.http.post<any>(uploadUrl, formData).subscribe({
+    this.http.post<any>(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel`, formData).subscribe({
       next: (response) => {
         if (response && response.status == "error") {
           this.resMsg = "حدث خطا يرجي تحميل الملف لمعرفة التفاصيل ";
