@@ -32,63 +32,61 @@
                 <div class="col-12 mb-3">
                   <div class="row">
                     <!-- Total Tathmeen Card -->
-                    <div class="col-6 mb-2">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <h5 style="width: 100%;"  class="card-title d-block text-center">إجمالي التقييمات</h5>
+                    <div class="col-6 mb-2" style="background-color: #dcfbde; border: 0 !important;">
+                      <div class="card" style="background-color: #dcfbde; border: 0 !important; box-shadow: none;">
+                        <div class="card-body text-center" style="background-color: #dcfbde; border: 0 !important;">
+                          <h5 style="width: 100%;" class="card-title d-block text-center">إجمالي التقييمات</h5>
                           <p class="card-text">{{kpiObj.totalTathmeen}}</p>
                         </div>
                       </div>
                     </div>
-
-                    <!-- Total Lands Card -->
-                    <div class="col-6 mb-2">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <!-- Make the h5 a block-level element and center it -->
+                                        <!-- Total Lands Card -->
+                    <div class="col-6 mb-2" style="background-color: #caeef9; border: 0 !important;">
+                      <div class="card" style="background-color: #caeef9; border: 0 !important; box-shadow: none;">
+                        <div class="card-body text-center" style="background-color: #caeef9; border: 0 !important;">
                           <h5 style="width: 100%;" class="card-title d-block text-center">إجمالي الأراضي</h5>
                           <p class="card-text">{{kpiObj.totalLands}}</p>
                         </div>
                       </div>
                     </div>
-                    
+                                      
                   </div>
                 </div>
 
                 <!-- Second Card (Dynamic Section Cards) -->
-                <div class="col-12 mb-3">
-                  <div class="card">
-                    <div class="card-body">
-                      <!-- Section Title -->
-                      <h5 class="card-title text-center" style="cursor: pointer;" (click)="toggleSection()">
+                <div class="col-12 mb-3" style="background-color: #f2f2f2;">
+                  <div class="card" style="background-color: #f2f2f2;">
+                    <h5 class="card-title text-center"
+                      
+                       style=" display: block;text-align: right !important;padding-top: 10px;"  
+                       >
                         التقييمات حسب القسم
                       </h5>
-
+                    <div class="card-body" style="background-color: #f2f2f2;">
+                      <!-- Section Title -->
+                     
+                
                       <!-- Dynamic Section Items -->
-                      <div class="row mt-3">
-                        <div *ngFor="let item of kpiObj.tathmeenBySection" class="col-12 col-md-6 col-lg-4 mb-3">
-                          <div class="card h-100">
-                            <div class="card-body text-center">
-                              <h6>{{item.SectorName}}</h6>
-                              <p>{{item.sectionName || 'غير محدد'}}</p>
-                              <span class="card-text">{{item.Count}}</span>
+                      <div class="row mt-3" style="direction: rtl;">
+                        <div 
+                          *ngFor="let item of kpiObj.tathmeenBySection" 
+                          class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2">
+                          <div class="card h-70 p-2" 
+                               style="font-size: 0.85rem; line-height: 1.2;width: 150px; padding: 10px; display: block;">
+                            <div class="card-body text-center p-1" style="text-align: right;">
+                              <h6 style="font-size: 0.9rem; margin-bottom: 5px;">{{item.SectorName}}</h6>
+                              <p style="font-size: 0.8rem; margin-bottom: 5px;">{{item.sectionName || 'غير محدد'}}</p>
+                              <span class="card-text" style="font-size: 0.85rem;">{{item.Count}}</span>
                             </div>
                           </div>
                         </div>
                       </div>
-
-                      <!-- Optional toggle buttons -->
-                      <!-- Uncomment to use:
-                      <div *ngIf="!isSectionExpanded" class="text-center" style="cursor: pointer;" (click)="toggleSection()">
-                        <small>عرض المزيد</small>
-                      </div>
-                      <div *ngIf="isSectionExpanded" class="text-center" style="cursor: pointer;" (click)="toggleSection()">
-                        <small>إخفاء</small>
-                      </div>
-                      -->
+                      
+                      
                     </div>
                   </div>
                 </div>
+                
               </div>
             </div>
 
@@ -126,7 +124,7 @@
 
                 <form *ngIf="resData" class="form-horizontal" #f="ngForm" enctype="multipart/form-data" novalidate>
                   <div class="container">
-                    <div class="card card-right" style="width: 40%; float: right; margin-left: 10px;"
+                    <div class="card card-right" style="width: 30%; float: right; margin-left: 10px;"
                       *ngIf="landInfo || activeTathmeen">
                       <!-- activeTathmeen -->
                       <div class="card-body" *ngIf="activeTathmeen">
@@ -218,7 +216,7 @@
                     </div>
 
 
-                    <div *ngIf="resData" class="card card-left" style="width: 60%;">
+                    <div *ngIf="resData" class="card card-left" style="width: 70%;">
                       <!-- previousTathmeens -->
                       <div class="card-body" *ngIf="previousTathmeens.length > 0">
                         <div class="card card-purple">
