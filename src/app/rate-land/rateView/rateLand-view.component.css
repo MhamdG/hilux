@@ -122,6 +122,10 @@
 .section-item span {
   font-size: 0.8rem; /* Smaller font size for count */
 }
+.margin-between {
+  margin-inline-end: 10px; /* Adjust for RTL layouts */
+}
+
 
 
   

@@ -17,12 +17,12 @@
             <div class="card-header">
               <h3 class="card-title"> تقييم الأراضي </h3>
             </div>
-            <div style="width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
+            <div style=" width: 100%;justify-content: center;background-color: #f7f7f7;height: 20%;">
               <button type="button" (click)="addNewFun()"
                 style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
                 i18n="@@addNew">+ Add New</button>
 
-              <button type="button" (click)="addRatelandExcel()"
+              <button type="button"  (click)="addRatelandExcel()"
                 style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
                 i18n="@@addLandRateExcel">ِAdd new By excel</button>
             </div>
@@ -32,8 +32,10 @@
                 <div class="col-12 mb-3">
                   <div class="row">
                     <!-- Total Tathmeen Card -->
-                    <div class="col-6 mb-2" style="background-color: #dcfbde; border: 0 !important;">
-                      <div class="card" style="background-color: #dcfbde; border: 0 !important; box-shadow: none;">
+                    <div class="col-6 mb-2" style=" 
+                    border: 0 !important;">
+                      <div class="card mr-2" style="background-color: #dcfbde; 
+                      border: 0 !important; box-shadow: none;">
                         <div class="card-body text-center" style="background-color: #dcfbde; border: 0 !important;">
                           <h5 style="width: 100%;" class="card-title d-block text-center">إجمالي التقييمات</h5>
                           <p class="card-text">{{kpiObj.totalTathmeen}}</p>
@@ -41,8 +43,8 @@
                       </div>
                     </div>
                                         <!-- Total Lands Card -->
-                    <div class="col-6 mb-2" style="background-color: #caeef9; border: 0 !important;">
-                      <div class="card" style="background-color: #caeef9; border: 0 !important; box-shadow: none;">
+                    <div class="col-6 mb-2" style=" border: 0 !important;">
+                      <div class="card mr-2" style="background-color: #caeef9; border: 0 !important; box-shadow: none;">
                         <div class="card-body text-center" style="background-color: #caeef9; border: 0 !important;">
                           <h5 style="width: 100%;" class="card-title d-block text-center">إجمالي الأراضي</h5>
                           <p class="card-text">{{kpiObj.totalLands}}</p>
@@ -57,74 +59,67 @@
                 <div class="col-12 mb-3" style="background-color: #f2f2f2;">
                   <div class="card" style="background-color: #f2f2f2;">
                     <h5 class="card-title text-center"
-                      
-                       style=" display: block;text-align: right !important;padding-top: 10px;"  
-                       >
+                      style=" display: block;text-align: center !important;padding-top: 10px;">
                         التقييمات حسب القسم
                       </h5>
-                    <div class="card-body" style="background-color: #f2f2f2;">
-                      <!-- Section Title -->
-                     
-                
-                      <!-- Dynamic Section Items -->
-                      <div class="row mt-3" style="direction: rtl;">
-                        <div 
-                          *ngFor="let item of kpiObj.tathmeenBySection" 
-                          class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2">
-                          <div class="card h-70 p-2" 
-                               style="font-size: 0.85rem; line-height: 1.2;width: 150px; padding: 10px; display: block;">
-                            <div class="card-body text-center p-1" style="text-align: right;">
-                              <h6 style="font-size: 0.9rem; margin-bottom: 5px;">{{item.SectorName}}</h6>
-                              <p style="font-size: 0.8rem; margin-bottom: 5px;">{{item.sectionName || 'غير محدد'}}</p>
-                              <span class="card-text" style="font-size: 0.85rem;">{{item.Count}}</span>
+                      <div class="card-body" style="background-color: #f2f2f2;">
+                        <!-- Dynamic Section Items -->
+                        <div class="row justify-content-center mt-3">
+                          <div *ngFor="let item of kpiObj.tathmeenBySection" 
+                            class="col-auto mb-2" 
+                            style="display: flex; justify-content: center;">
+                            <div class="card h-70 p-2" 
+                                 style="font-size: 0.85rem; line-height: 1.2; width: 150px; padding: 10px; display: block;">
+                              <div class="card-body text-center p-1">
+                                <h6 style="font-size: 0.9rem; margin-bottom: 5px;">{{item.SectorName}}</h6>
+                                <p style="font-size: 0.8rem; margin-bottom: 5px;">{{item.sectionName || 'غير محدد'}}</p>
+                                <span class="card-text" style="font-size: 0.85rem;">{{item.Count}}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      
-                      
-                    </div>
+                      </div>                      
                   </div>
                 </div>
-                
               </div>
             </div>
-
-
-
             <router-outlet></router-outlet>
             <section class="content" *ngIf="formData && !formData.id">
               <div class="container-fluid">
                 <app-alerts [errors]="formErrors"></app-alerts>
-                <form class="form-horizontal d-flex justify-content-center" (ngSubmit)="getData(searchData)"
-                  #sf="ngForm" enctype="multipart/form-data" novalidate>
-                  <div class="w-50">
-                    <div class="card-body">
-                      <div class="form-group text-center">
-                        <label class="d-block mb-3" i18n="@@landProfileSearchLandId">Land Id</label>
-                        <div>
-                          <ng-select class="rtl w-100" [items]="landNameOptions | async" name="LandNameSearch"
-                            [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.term"
-                            [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
-                            typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
-                            [typeahead]="searchLandNameInput$" (keyup)="setSearchType('term', $event)"
-                            [disabled]="isSearchBy('searchOldLandId')" (blur)="checkTypeAndValues('term')"
-                            #LandNameSearch="ngModel">
-                          </ng-select>
+                <form class="form-horizontal" (ngSubmit)="getData(searchData)" #sf="ngForm"
+                enctype='multipart/form-data' novalidate>
+                <div class="card-body">
+                  <div class="form-group row" style="justify-content: center;">
+                    <div class="col-sm-6">
+                      <div class="form-group row" >
+                        <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchLandId">Land Id</label>
+                        <div class="col-sm-6">
+                          <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
+                          [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.term"
+                          [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
+                          typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                          [typeahead]="searchLandNameInput$" (keyup)="setSearchType('term', $event)"
+                          [disabled]="isSearchBy('searchOldLandId')" (blur)="checkTypeAndValues('term')"
+                          #LandNameSearch="ngModel">
+                        </ng-select>
+
                         </div>
                       </div>
                     </div>
-                    <div class="card-footer text-center">
-                      <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
-                        i18n="@@generalSearch">Submit</button>
-                    </div>
+                  
                   </div>
-                </form>
+                </div>
+                <div class="card-footer text-center">
+                  <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
+                    i18n="@@landProfileSearchButton">Search</button>
+                </div>
+              </form>
 
 
                 <form *ngIf="resData" class="form-horizontal" #f="ngForm" enctype="multipart/form-data" novalidate>
-                  <div class="container">
-                    <div class="card card-right" style="width: 30%; float: right; margin-left: 10px;"
+                  <div class="container" style="min-width:100%">
+                    <div class="card card-right" style="width: 30%;  margin-left: 10px;"
                       *ngIf="landInfo || activeTathmeen">
                       <!-- activeTathmeen -->
                       <div class="card-body" *ngIf="activeTathmeen">
