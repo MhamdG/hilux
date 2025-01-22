@@ -22,7 +22,7 @@
                 style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
                 i18n="@@addNew">+ Add New</button>
 
-              <button type="button"  (click)="addRatelandExcel()"
+              <button type="button" (click)="addRatelandExcel()"
                 style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
                 i18n="@@addLandRateExcel">ِAdd new By excel</button>
             </div>
@@ -42,7 +42,7 @@
                         </div>
                       </div>
                     </div>
-                                        <!-- Total Lands Card -->
+                    <!-- Total Lands Card -->
                     <div class="col-6 mb-2" style=" border: 0 !important;">
                       <div class="card mr-2" style="background-color: #caeef9; border: 0 !important; box-shadow: none;">
                         <div class="card-body text-center" style="background-color: #caeef9; border: 0 !important;">
@@ -51,7 +51,7 @@
                         </div>
                       </div>
                     </div>
-                                      
+
                   </div>
                 </div>
 
@@ -60,25 +60,24 @@
                   <div class="card" style="background-color: #f2f2f2;">
                     <h5 class="card-title text-center"
                       style=" display: block;text-align: center !important;padding-top: 10px;">
-                        التقييمات حسب القسم
-                      </h5>
-                      <div class="card-body" style="background-color: #f2f2f2;">
-                        <!-- Dynamic Section Items -->
-                        <div class="row justify-content-center mt-3">
-                          <div *ngFor="let item of kpiObj.tathmeenBySection" 
-                            class="col-auto mb-2" 
-                            style="display: flex; justify-content: center;">
-                            <div class="card h-70 p-2" 
-                                 style="font-size: 0.85rem; line-height: 1.2; width: 150px; padding: 10px; display: block;">
-                              <div class="card-body text-center p-1">
-                                <h6 style="font-size: 0.9rem; margin-bottom: 5px;">{{item.SectorName}}</h6>
-                                <p style="font-size: 0.8rem; margin-bottom: 5px;">{{item.sectionName || 'غير محدد'}}</p>
-                                <span class="card-text" style="font-size: 0.85rem;">{{item.Count}}</span>
-                              </div>
+                      التقييمات حسب القسم
+                    </h5>
+                    <div class="card-body" style="background-color: #f2f2f2;">
+                      <!-- Dynamic Section Items -->
+                      <div class="row justify-content-center mt-3">
+                        <div *ngFor="let item of kpiObj.tathmeenBySection" class="col-auto mb-2"
+                          style="display: flex; justify-content: center;">
+                          <div class="card h-70 p-2"
+                            style="font-size: 0.85rem; line-height: 1.2; width: 150px; padding: 10px; display: block;">
+                            <div class="card-body text-center p-1">
+                              <h6 style="font-size: 0.9rem; margin-bottom: 5px;">{{item.SectorName}}</h6>
+                              <p style="font-size: 0.8rem; margin-bottom: 5px;">{{item.sectionName || 'غير محدد'}}</p>
+                              <span class="card-text" style="font-size: 0.85rem;">{{item.Count}}</span>
                             </div>
                           </div>
                         </div>
-                      </div>                      
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -88,33 +87,33 @@
               <div class="container-fluid">
                 <app-alerts [errors]="formErrors"></app-alerts>
                 <form class="form-horizontal" (ngSubmit)="getData(searchData)" #sf="ngForm"
-                enctype='multipart/form-data' novalidate>
-                <div class="card-body">
-                  <div class="form-group row" style="justify-content: center;">
-                    <div class="col-sm-6">
-                      <div class="form-group row" >
-                        <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchLandId">Land Id</label>
-                        <div class="col-sm-6">
-                          <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
-                          [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.term"
-                          [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
-                          typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
-                          [typeahead]="searchLandNameInput$" (keyup)="setSearchType('term', $event)"
-                          [disabled]="isSearchBy('searchOldLandId')" (blur)="checkTypeAndValues('term')"
-                          #LandNameSearch="ngModel">
-                        </ng-select>
+                  enctype='multipart/form-data' novalidate>
+                  <div class="card-body">
+                    <div class="form-group row" style="justify-content: center;">
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchLandId">Land Id</label>
+                          <div class="col-sm-6">
+                            <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
+                              [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.term"
+                              [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
+                              typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
+                              [typeahead]="searchLandNameInput$" (keyup)="setSearchType('term', $event)"
+                              [disabled]="isSearchBy('searchOldLandId')" (blur)="checkTypeAndValues('term')"
+                              #LandNameSearch="ngModel">
+                            </ng-select>
 
+                          </div>
                         </div>
                       </div>
+
                     </div>
-                  
                   </div>
-                </div>
-                <div class="card-footer text-center">
-                  <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
-                    i18n="@@landProfileSearchButton">Search</button>
-                </div>
-              </form>
+                  <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
+                      i18n="@@landProfileSearchButton">Search</button>
+                  </div>
+                </form>
 
 
                 <form *ngIf="resData" class="form-horizontal" #f="ngForm" enctype="multipart/form-data" novalidate>
@@ -418,4 +417,146 @@
       </div>
     </div>
   </section>
+
+  <!-- add new rate  -->
+  <div class="modal" *ngIf="isPopupOpenAddNew">
+    <div class="modal-content">
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12" *ngIf="profile$ | async as profile">
+              <div class="card card-purple">
+                <div class="card-header">
+                  <h3 class="card-title"> تقييم الأراضي </h3>
+                </div>
+
+
+
+                <router-outlet></router-outlet>
+                <section class="content" *ngIf="formData && !formData.id">
+                  <div class="container-fluid">
+                    <app-alerts [errors]="formErrors"></app-alerts>
+                    <form class="form-horizontal" (ngSubmit)="saveData(searchData)" #sf="ngForm"
+                      enctype='multipart/form-data' novalidate>
+                      <div class="card-body">
+                        <div class="form-group row">
+                          <div class="col-sm-6">
+                            <div class="form-group row">
+                              <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchLandId">Land Id</label>
+                              <div class="col-sm-9">
+                                <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
+                                  [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.term"
+                                  [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
+                                  typeToSearchText="Please enter 1 or more characters"
+                                  notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchLandNameInput$"
+                                  (keyup)="setSearchType('term', $event)" [disabled]="isSearchBy('searchOldLandId')"
+                                  (blur)="checkTypeAndValues('term')" #LandNameSearch="ngModel">
+                                </ng-select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group row">
+                              <label class="col-sm-3 col-form-label" i18n="@@ratingLabel">Land Id</label>
+                              <div class="col-sm-9">
+                                <input type="number" name="rating" required="true" class="form-control"
+                                  [(ngModel)]="searchData.rating" #rating="ngModel">
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </div>
+                      <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
+                          i18n="@@generalSubmit">Submit</button>
+                        <button type="button" class="btn btn-primary" style="margin-left: 10px;margin-right: 10px;"
+                          (click)="closePopup()">إلغاء</button>
+                      </div>
+                    </form>
+                    <hr />
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <!-- add new rate by excel  -->
+  <div class="modal" *ngIf="isPopupOpenAddNewByExcel">
+    <div class="modal-content">
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12" *ngIf="profile$ | async as profile">
+              <div class="card card-purple">
+                <div class="card-header">
+                  <h3 class="card-title"> تقييم الأراضي </h3>
+                </div>
+
+
+
+                <router-outlet></router-outlet>
+                <section class="content" *ngIf="formData && !formData.id">
+                  <div class="container-fluid">
+                    <app-alerts [errors]="formErrors"></app-alerts>
+                    <form class="form-horizontal" (ngSubmit)="uploadFile()" #sf="ngForm"
+                      enctype='multipart/form-data' novalidate>
+                      <div class="card-body">
+                        <div class="form-group row">
+                          <div class="col-sm-6">
+                            <div class="form-group row">
+                              <!-- <label class="col-sm-3 col-form-label" i18n="@@downloadTemplate">Download Template</label> -->
+                              <div class="col-sm-9">
+                                <button type="button" (click)="downloadTempleteFun()" class="btn btn-primary"
+                                  [disabled]="sf.invalid" i18n="@@downloadTemplate">download </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group row">
+                              <!-- <div class="col-sm-9">
+                              <app-file-upload [field]="prepareEstablishmentContractFileField()" [formData]="formData"
+                                [defaultValues]="formData"></app-file-upload>
+                            </div>   -->
+                              <label class="col-sm-3 col-form-label" i18n="@@generalUpload">Upload</label>
+                              <input type="file" id="file" #fileInput (change)="handleFileInput($event,fileInput)" />
+
+                            </div>
+                          </div>
+                          <div class="card-footer text-center" style="width: 100%;">
+                            <button type="submit" class="btn btn-primary" [disabled]="!file"
+                              i18n="@@generalSubmit">Submit</button>
+                            <button type="button" class="btn btn-primary" style="margin-left: 10px;margin-right: 10px;"
+                              (click)="closePopup()">إلغاء</button>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="card-footer text-center">
+                        <label *ngIf="resMsg" class="col-sm-3 col-form-label">{{resMsg}}</label>
+                      </div>
+                      <div class="card-footer text-center">
+                        <a [href]="resUrl" target="_blank" rel="noopener noreferrer" *ngIf="resUrl"
+                          class="col-sm-3 col-form-label">
+                          <button type="button" class="btn btn-primary" [disabled]="sf.invalid"
+                            i18n="@@generalDownload">download </button>
+                        </a>
+                      </div>
+                    </form>
+                    <hr />
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+
 </div>
