@@ -109,6 +109,11 @@ export class RateLandViewComponent implements OnInit {
 
 
   getData(formData: any) {
+    this.landInfo ={};
+    this.activeTathmeen ={};
+    this.previousTathmeens =[];
+    this.valuationTranasctions =[];
+    this.transferTransactions =[];
     let fd = new FormData();
     let obj ={
       propertyId:formData.term
