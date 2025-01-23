@@ -6094,6 +6094,10 @@
       <source>Upload</source>
         <target>رفع الملف</target>
       </trans-unit>
+       <trans-unit id="myPrevRating" datatype="html">
+      <source>Previous Raiting</source>
+        <target>تقييماتي السابقة</target>
+      </trans-unit>
 
 
       

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient , HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { FieldsService } from '../../shared/fields.service';
 import { concat, Observable, of, Subject } from 'rxjs';
@@ -45,19 +45,22 @@ export class RateLandViewComponent implements OnInit {
   kpiObj: any;
   roles$: object;
   userRole: any;
-  landInfo :any;
-  activeTathmeen:any;
-  previousTathmeens:any;
-  valuationTranasctions:any;
-  transferTransactions:any;
-  resData :any;
+  landInfo: any;
+  activeTathmeen: any;
+  previousTathmeens: any;
+  valuationTranasctions: any;
+  transferTransactions: any;
+  resData: any;
   isSectionExpanded = false;
   isPopupOpenAddNew = false;
-  isPopupOpenAddNewByExcel =false;
-  resMsg:any;
-  resUrl:any;
-  file :any;
-  fileInput :any;
+  isPopupOpenAddNewByExcel = false;
+  isPopupOpenMyPrevRaiting = false;
+  resMsg: any;
+  resUrl: any;
+  file: any;
+  fileInput: any;
+  visibleItems = 6;
+  MyPrevRaitingData: any;
 
 
 
@@ -78,9 +81,9 @@ export class RateLandViewComponent implements OnInit {
         if (!Object.keys(this.userRole).includes("Admin") && !Object.keys(this.userRole).includes("Tathmeen")) {
           this.router.navigate(['/']);
         } else {
-          this.previousTathmeens =[];
-          this.valuationTranasctions =[];
-          this.transferTransactions =[];
+          this.previousTathmeens = [];
+          this.valuationTranasctions = [];
+          this.transferTransactions = [];
           this.loadSectorsOptions();
           this.loadSectionsOptions();
           this.loadStreetNamesOptions();
@@ -107,41 +110,46 @@ export class RateLandViewComponent implements OnInit {
       });
   }
 
-
+  toggleItems() {
+    this.visibleItems =
+      this.visibleItems < this.kpiObj.tathmeenBySection.length
+        ? this.kpiObj.tathmeenBySection.length
+        : 6;
+  }
   getData(formData: any) {
-    this.landInfo ={};
-    this.activeTathmeen ={};
-    this.previousTathmeens =[];
-    this.valuationTranasctions =[];
-    this.transferTransactions =[];
+    this.landInfo = {};
+    this.activeTathmeen = {};
+    this.previousTathmeens = [];
+    this.valuationTranasctions = [];
+    this.transferTransactions = [];
     let fd = new FormData();
-    let obj ={
-      propertyId:formData.term
+    let obj = {
+      propertyId: formData.term
     }
     fd.append('data', JSON.stringify(obj));
-   
+
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/getTathmeenByLandId`, fd)
       .subscribe((data: any) => {
         console.log(data);
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success');
-          this.resData =data.data;
+          this.resData = data.data;
           if (data.data && data.data.landInfo) {
-            this.landInfo =data.data.landInfo;
+            this.landInfo = data.data.landInfo;
           }
           if (data.data && data.data.activeTathmeen) {
-            this.activeTathmeen =data.data.activeTathmeen;
+            this.activeTathmeen = data.data.activeTathmeen;
           }
           if (data.data && data.data.previousTathmeens) {
-            this.previousTathmeens =data.data.previousTathmeens;
+            this.previousTathmeens = data.data.previousTathmeens;
           }
           if (data.data && data.data.valuationTranasctions) {
-            this.valuationTranasctions =data.data.valuationTranasctions;
+            this.valuationTranasctions = data.data.valuationTranasctions;
           }
           if (data.data && data.data.transferTransactions) {
-            this.transferTransactions =data.data.transferTransactions;
+            this.transferTransactions = data.data.transferTransactions;
           }
-       
+
         } else {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
@@ -151,7 +159,7 @@ export class RateLandViewComponent implements OnInit {
         this.router.navigate(['error'])
       })
   }
-  unitPricingFun (){
+  unitPricingFun() {
     this.router.navigate(['pricingUnit']);
   }
   toggleSection() {
@@ -169,6 +177,49 @@ export class RateLandViewComponent implements OnInit {
       }, (error) => {
       })
   }
+  getMyPrevraitingFun() {
+    let fd = new FormData();
+    let obj = { data: { count: "10" } }
+
+    fd.append('data', JSON.stringify(obj));
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/getMyTathmeenHistory`, fd)
+      .subscribe((data: any) => {
+        console.log(data);
+        this.MyPrevRaitingData =data.data;
+
+      }, (error) => {
+      })
+
+
+  }
+  allowNumberOnly(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+
+    // Allow numbers (0–9), Backspace, Delete, Arrow keys, and Tab
+    if (
+      (charCode >= 48 && charCode <= 57) || // Numbers (0–9)
+      charCode === 8 || // Backspace
+      charCode === 46 || // Delete
+      charCode === 37 || // Left Arrow
+      charCode === 39 || // Right Arrow
+      charCode === 9 // Tab
+    ) {
+      return; // Allow input
+    }
+
+    // Prevent all other inputs
+    event.preventDefault();
+  }
+
+  allowPasteNumberOnly(event: ClipboardEvent): void {
+    const pastedData = event.clipboardData?.getData('text');
+
+    // Allow paste if the content is numeric
+    if (pastedData && !/^\d+$/.test(pastedData)) {
+      event.preventDefault();
+    }
+  }
+
   loadProjectNameOptions() {
     this.projectNameOptions = concat(
       of([]), // default items
@@ -216,13 +267,19 @@ export class RateLandViewComponent implements OnInit {
   }
   addRatelandExcel() {
     // this.router.navigate(['AddRateLandExcel']);
-    this.isPopupOpenAddNewByExcel =true;
+    this.isPopupOpenAddNewByExcel = true;
+  }
+  MyprrevRaiting() {
+    this.isPopupOpenMyPrevRaiting = true;
+    this.getMyPrevraitingFun();
   }
   closePopup() {
     this.isPopupOpenAddNew = false;
-    this.isPopupOpenAddNewByExcel =false;
-    this.resMsg =null;
-    this.resUrl =null;
+    this.isPopupOpenAddNewByExcel = false;
+    this.isPopupOpenMyPrevRaiting =false;
+    this.resMsg = null;
+    this.resUrl = null;
+    this.getKpiFun();
   }
   downloadTempleteFun() {
     this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/getExcelFile`)
@@ -236,9 +293,9 @@ export class RateLandViewComponent implements OnInit {
       }, (error) => {
       })
   }
-  handleFileInput(event: Event ,fileInput: HTMLInputElement): void {
-    this.resMsg =null;
-    this.resUrl =null;
+  handleFileInput(event: Event, fileInput: HTMLInputElement): void {
+    this.resMsg = null;
+    this.resUrl = null;
     const input = event.target as HTMLInputElement;
 
     if (input.files && input.files.length > 0) {
@@ -250,37 +307,37 @@ export class RateLandViewComponent implements OnInit {
     }
   }
   //  uploadFile(file: File,fileInput: HTMLInputElement): void {
-    uploadFile(): void {
-      if (this.file  && this.fileInput) {
-        const formData = new FormData();
-        formData.append('excelFile', this.file);
-    
-        const headers = new HttpHeaders({
-          Cookie: 'your_cookie_value_here' // Replace with actual cookie if needed
-        });
-    
-        // const uploadUrl = '${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel';
-    
-        this.http.post<any>(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel`, formData).subscribe({
-          next: (response) => {
-            if (response && response.status == "error") {
-              this.resMsg = "حدث خطا يرجي تحميل الملف لمعرفة التفاصيل ";
-              this.resUrl =response.message;
-            }else if (response && response.status ==  "success") {
-              this.resMsg ="تم تحميل الملف بنجاح ";
-              this.fileInput.value = '';
-            }else {
-              this.resMsg ="حدث خطا ما من غضلك حاول لاحقا";
-              this.fileInput.value = '';
-            }
-            console.log('File uploaded successfully:', response);
-          },
-          error: (err) => {
-            console.error('File upload failed:', err);
+  uploadFile(): void {
+    if (this.file && this.fileInput) {
+      const formData = new FormData();
+      formData.append('excelFile', this.file);
+
+      const headers = new HttpHeaders({
+        Cookie: 'your_cookie_value_here' // Replace with actual cookie if needed
+      });
+
+      // const uploadUrl = '${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel';
+
+      this.http.post<any>(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel`, formData).subscribe({
+        next: (response) => {
+          if (response && response.status == "error") {
+            this.resMsg = "حدث خطا يرجي تحميل الملف لمعرفة التفاصيل ";
+            this.resUrl = response.message;
+          } else if (response && response.status == "success") {
+            this.resMsg = "تم تحميل الملف بنجاح ";
+            this.fileInput.value = '';
+          } else {
+            this.resMsg = "حدث خطا ما من غضلك حاول لاحقا";
+            this.fileInput.value = '';
           }
-        }); 
-      }
+          console.log('File uploaded successfully:', response);
+        },
+        error: (err) => {
+          console.error('File upload failed:', err);
+        }
+      });
     }
+  }
 
   loadSectionsOptions() {
     this.lookupsService.loadSectionsOptions()
@@ -451,10 +508,10 @@ export class RateLandViewComponent implements OnInit {
     // }
   }
   saveData(formData: any) {
-    if (formData.term && formData.rating ) {
+    if (formData.key && formData.rating) {
       let fd = new FormData();
       let obj = {
-        propertyId: formData.term,
+        propertyId: formData.key,
         amount: formData.rating
       }
       fd.append('data', JSON.stringify(obj));
@@ -464,6 +521,9 @@ export class RateLandViewComponent implements OnInit {
             this.toastr.success(data.message, 'Success');
             this.searchData.term = null;
             this.searchData.rating = null;
+
+
+
           } else {
             this.formErrors = data.data;
             this.toastr.error(JSON.stringify(data.message), 'Error')

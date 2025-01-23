@@ -25,6 +25,9 @@
               <button type="button" (click)="addRatelandExcel()"
                 style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
                 i18n="@@addLandRateExcel">ِAdd new By excel</button>
+                <button type="button" (click)="MyprrevRaiting()"
+                style="float: left;margin-left: 3%;margin-top: 1%;margin-bottom: 1%;" class="btn btn-primary"
+                i18n="@@myPrevRating">ِMy Previous Raiting</button>
             </div>
             <div class="container-fluid mt-2">
               <div class="row">
@@ -58,27 +61,41 @@
                 <!-- Second Card (Dynamic Section Cards) -->
                 <div class="col-12 mb-3" style="background-color: #f2f2f2;">
                   <div class="card" style="background-color: #f2f2f2;">
-                    <h5 class="card-title text-center"
-                      style=" display: block;text-align: center !important;padding-top: 10px;">
-                      التقييمات حسب الحي                    </h5>
+                    <h5 class="card-title text-center" style="display: block; text-align: center !important; padding-top: 10px;">
+                      التقييمات حسب الحي
+                    </h5>
                     <div class="card-body" style="background-color: #f2f2f2;">
                       <!-- Dynamic Section Items -->
                       <div class="row justify-content-center mt-3">
-                        <div *ngFor="let item of kpiObj.tathmeenBySection" class="col-auto mb-2"
-                          style="display: flex; justify-content: center;">
-                          <div class="card h-70 p-2"
-                            style="font-size: 0.85rem; line-height: 1.2; width: 150px; padding: 10px; display: block;">
+                        <div
+                          *ngFor="let item of kpiObj.tathmeenBySection | slice: 0:visibleItems"
+                          class="col-auto mb-2"
+                          style="display: flex; justify-content: center;"
+                        >
+                          <div
+                            class="card h-70 p-2"
+                            style="font-size: 0.85rem; line-height: 1.2; width: 150px; padding: 10px; display: block;"
+                          >
                             <div class="card-body text-center p-1">
-                              <h6 style="font-size: 0.9rem; margin-bottom: 5px;">{{item.SectorName}}</h6>
-                              <p style="font-size: 0.8rem; margin-bottom: 5px;">{{item.sectionName || 'غير محدد'}}</p>
-                              <span class="card-text" style="font-size: 0.85rem;">{{item.Count}}</span>
+                              <h6 style="font-size: 0.9rem; margin-bottom: 5px;">{{ item.SectorName }}</h6>
+                              <p style="font-size: 0.8rem; margin-bottom: 5px;">
+                                {{ item.sectionName || 'غير محدد' }}
+                              </p>
+                              <span class="card-text" style="font-size: 0.85rem;">{{ item.Count }}</span>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <!-- Show More / Hide Button -->
+                      <div class="text-center mt-3">
+                        <button class="btn btn-primary btn-sm" (click)="toggleItems()">
+                          {{ visibleItems < kpiObj.tathmeenBySection.length ? 'عرض المزيد' : 'إخفاء' }}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+                
               </div>
             </div>
             <router-outlet></router-outlet>
@@ -168,12 +185,12 @@
                           <ul
                             style="list-style-type: none; padding: 0; border: 1px solid black; border-radius: 5px;width: 100%;">
                             <li style="border-bottom: 1px solid black; padding: 8px;">
-                              <strong>رقم المعرف : </strong>
+                              <strong>رقم الأرض : </strong>
                               <span *ngIf="landInfo.landId">{{landInfo.landId}}</span>
                               <span *ngIf="!landInfo.landId"> --- </span>
                             </li>
                             <li style="border-bottom: 1px solid black; padding: 8px;">
-                              <strong>المنطقة : </strong>
+                              <strong>المساحة : </strong>
                               <span *ngIf="landInfo.area">{{landInfo.area}}</span>
                               <span *ngIf="!landInfo.area"> --- </span>
                             </li>
@@ -198,7 +215,7 @@
                               <span *ngIf="!landInfo.sector"> --- </span>
                             </li>
                             <li style="border-bottom: 1px solid black; padding: 8px;">
-                              <strong>القسم : </strong>
+                              <strong>المنطقة : </strong>
                               <span *ngIf="landInfo.section">{{landInfo.section}}</span>
                               <span *ngIf="!landInfo.section"> --- </span>
                             </li>
@@ -339,7 +356,7 @@
                         <div class="form-group row" *ngIf="transferTransactions.length > 0">
                           <div class="card card-purple">
                             <div class="card-header">
-                              <h3 class="card-title">معاملات البيع</h3>
+                              <h3 class="card-title">معاملات التصرفات</h3>
                             </div>
                           </div>
                           <table style="border: 1px solid black;width: 100%;">
@@ -444,7 +461,7 @@
                               <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchLandId">Land Id</label>
                               <div class="col-sm-9">
                                 <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
-                                  [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.term"
+                                  [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.key"
                                   [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
                                   typeToSearchText="Please enter 1 or more characters"
                                   notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchLandNameInput$"
@@ -458,8 +475,16 @@
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label" i18n="@@ratingLabel">Land Id</label>
                               <div class="col-sm-9">
-                                <input type="number" name="rating" required="true" class="form-control"
-                                  [(ngModel)]="searchData.rating" #rating="ngModel">
+                                <input 
+                                type="number" 
+                                name="rating" 
+                                required="true" 
+                                class="form-control" 
+                                [(ngModel)]="searchData.rating" 
+                                #rating="ngModel" 
+                                (keypress)="allowNumberOnly($event)" 
+                                (paste)="allowPasteNumberOnly($event)">
+                              
                               </div>
                             </div>
                           </div>
@@ -544,6 +569,108 @@
                           <button type="button" class="btn btn-primary" [disabled]="sf.invalid"
                             i18n="@@generalDownload">download </button>
                         </a>
+                      </div>
+                    </form>
+                    <hr />
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="modal" *ngIf="isPopupOpenMyPrevRaiting">
+    <div class="modal-content">
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12" *ngIf="profile$ | async as profile">
+              <div class="card card-purple">
+                <div class="card-header">
+                  <h3 class="card-title">تقييماتي السابقة</h3>
+                </div>
+
+
+
+                <router-outlet></router-outlet>
+                <section class="content" *ngIf="formData && !formData.id">
+                  <div class="container-fluid">
+                    <app-alerts [errors]="formErrors"></app-alerts>
+                    <form class="form-horizontal" (ngSubmit)="saveData(searchData)" #sf="ngForm"
+                      enctype='multipart/form-data' novalidate>
+                      <div class="card-body">
+                        <div class="form-group row">
+                          <table style="border: 1px solid black;width: 100%;">
+                            <thead style="border: 1px solid black;">
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">رقم الأرض</label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">القيمة</label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">مصدر التقييم</label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label">تاريخ الإضافة </label>
+                              </th>
+                              <th style="border: 1px solid black; text-align: center;">
+                                <label class="col-form-label"> حالة التقييم</label>
+                              </th>
+                            </thead>
+                            <tbody style="border: 1px solid black;">
+                              <tr *ngFor="let item of MyPrevRaitingData let j = index">
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.landId">{{item.landId	}}</label>
+                                  <label class="col-form-label" *ngIf="!item.landId"> --- </label>
+                                </td>
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.amount">
+                                    {{item.amount}}
+                                  </label>
+                                  <label class="col-form-label" *ngIf="! item.amount">
+                                    ---
+                                  </label>
+                                </td>
+                              
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.sourceName">
+                                    {{item.sourceName}}
+                                  </label>
+                                  <label class="col-form-label" *ngIf="! item.sourceName">
+                                    ---
+                                  </label>
+                                </td>
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <label class="col-form-label" *ngIf="item.createdAt">
+                                    {{item.createdAt}}
+                                  </label>
+                                  <label class="col-form-label" *ngIf="! item.createdAt">
+                                    ---
+                                  </label>
+                                </td>
+                                <td style="border: 1px solid black; text-align: center;">
+                                  <strong class="col-form-label" *ngIf="item.tathmeenStatus">
+                                    {{item.tathmeenStatus}}
+                                  </strong>
+                                  <strong class="col-form-label" *ngIf="! item.tathmeenStatus">
+                                    ---
+                                  </strong>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+
+                        </div>
+                      </div>
+                      <div class="card-footer text-center">
+                        <!-- <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
+                          i18n="@@generalSubmit">Submit</button> -->
+                        <button type="button" class="btn btn-primary" style="margin-left: 10px;margin-right: 10px;"
+                          (click)="closePopup()">إغلاق</button>
                       </div>
                     </form>
                     <hr />
