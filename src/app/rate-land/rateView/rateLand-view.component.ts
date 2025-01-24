@@ -508,7 +508,6 @@ export class RateLandViewComponent implements OnInit {
     // }
   }
   saveData(formData: any) {
-    console.log(formData);
     if (formData.key && formData.rating) {
       let fd = new FormData();
       let obj = {

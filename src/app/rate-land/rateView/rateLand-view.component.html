@@ -112,10 +112,10 @@
                           <div class="col-sm-6">
                             <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
                               [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.key"
-                              [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
+                              [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="key"
                               typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
-                              [typeahead]="searchLandNameInput$" (keyup)="setSearchType('term', $event)"
-                              [disabled]="isSearchBy('searchOldLandId')" (blur)="checkTypeAndValues('term')"
+                              [typeahead]="searchLandNameInput$" (keyup)="setSearchType('key', $event)"
+                              [disabled]="isSearchBy('searchOldLandId')" (blur)="checkTypeAndValues('key')"
                               #LandNameSearch="ngModel">
                             </ng-select>
 
@@ -420,7 +420,7 @@
                         </div>
                       </div>
                       <div style="width: 100%;text-align: center;" class="card-header" 
-                      *ngIf="previousTathmeens.length == 0 && valuationTranasctions.length == 0">
+                      *ngIf="previousTathmeens.length == 0 && valuationTranasctions.length == 0 && transferTransactions.length == 0">
                         <h3 >لا توجد تقييمات أو معاملات سابقة على الأرض</h3>
                       </div>
                     </div>
@@ -468,11 +468,11 @@
                               <div class="col-sm-9">
                                 <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
                                   [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.key"
-                                  [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
+                                  [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="key"
                                   typeToSearchText="Please enter 1 or more characters"
                                   notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchLandNameInput$"
-                                  (keyup)="setSearchType('term', $event)" [disabled]="isSearchBy('searchOldLandId')"
-                                  (blur)="checkTypeAndValues('term')" #LandNameSearch="ngModel">
+                                  (keyup)="setSearchType('key', $event)" [disabled]="isSearchBy('searchOldLandId')"
+                                  (blur)="checkTypeAndValues('key')" #LandNameSearch="ngModel">
                                 </ng-select>
                               </div>
                             </div>
@@ -482,7 +482,7 @@
                               <label class="col-sm-3 col-form-label" i18n="@@ratingLabel">Land Id</label>
                               <div class="col-sm-9">
                                 <input 
-                                type="number" 
+                                type="text" 
                                 name="rating" 
                                 required="true" 
                                 class="form-control" 

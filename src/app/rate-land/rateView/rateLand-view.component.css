@@ -159,24 +159,7 @@
   cursor: pointer;
 }
 /* Apply to all number inputs with the 'no-arrows' class */
-input[type="number"].no-arrows {
-  -moz-appearance: textfield; /* Firefox */
-  -webkit-appearance: none;  /* Chrome, Safari, Edge */
-  appearance: none;          /* Standard */
-}
 
-/* Specifically target Firefox for additional styling */
-input[type="number"].no-arrows::-moz-inner-spin-button,
-input[type="number"].no-arrows::-moz-outer-spin-button {
-  display: none; /* Completely hide spinners in Firefox */
-}
-
-/* For WebKit-based browsers like Chrome, Safari */
-input[type="number"].no-arrows::-webkit-inner-spin-button,
-input[type="number"].no-arrows::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0; /* Remove extra space */
-}
 
 
 
