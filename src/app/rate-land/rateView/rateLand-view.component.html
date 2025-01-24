@@ -111,7 +111,7 @@
                           <label class="col-sm-3 col-form-label" i18n="@@landProfileSearchLandId">Land Id</label>
                           <div class="col-sm-6">
                             <ng-select class="rtl" [items]="landNameOptions | async" name="LandNameSearch"
-                              [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.term"
+                              [hideSelected]="true" [minTermLength]="1" [(ngModel)]="searchData.key"
                               [loading]="landNameOptionsLoading" bindLabel="value.ar" bindValue="value.entityId"
                               typeToSearchText="Please enter 1 or more characters" notFoundText="لا يوجد نتائج للبحث"
                               [typeahead]="searchLandNameInput$" (keyup)="setSearchType('term', $event)"
@@ -295,7 +295,7 @@
                         </table>
                       </div>
                       <!-- valuationTranasctions -->
-                      <div class="card-body">
+                      <div class="card-body" *ngIf="valuationTranasctions.length > 0">
                         <div class="form-group row" *ngIf="valuationTranasctions.length > 0">
                           <div class="card card-purple">
                             <div class="card-header">
@@ -352,7 +352,7 @@
                         </div>
                       </div>
                       <!-- transferTransactions -->
-                      <div class="card-body">
+                      <div class="card-body" *ngIf="transferTransactions.length > 0">
                         <div class="form-group row" *ngIf="transferTransactions.length > 0">
                           <div class="card card-purple">
                             <div class="card-header">
@@ -419,10 +419,16 @@
                           </table>
                         </div>
                       </div>
+                      <div style="width: 100%;text-align: center;" class="card-header" 
+                      *ngIf="previousTathmeens.length == 0 && valuationTranasctions.length == 0">
+                        <h3 >لا توجد تقييمات أو معاملات سابقة على الأرض</h3>
+                      </div>
                     </div>
+                   
                   </div>
 
                 </form>
+               
 
 
 
@@ -496,7 +502,7 @@
                         <button type="submit" class="btn btn-primary" [disabled]="sf.invalid"
                           i18n="@@generalSubmit">Submit</button>
                         <button type="button" class="btn btn-primary" style="margin-left: 10px;margin-right: 10px;"
-                          (click)="closePopup()">إلغاء</button>
+                          (click)="closePopup()">إغلاق</button>
                       </div>
                     </form>
                     <hr />
@@ -555,7 +561,7 @@
                             <button type="submit" class="btn btn-primary" [disabled]="!file"
                               i18n="@@generalSubmit">Submit</button>
                             <button type="button" class="btn btn-primary" style="margin-left: 10px;margin-right: 10px;"
-                              (click)="closePopup()">إلغاء</button>
+                              (click)="closePopup()">إغلاق</button>
                           </div>
 
                         </div>

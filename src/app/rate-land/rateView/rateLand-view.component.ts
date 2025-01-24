@@ -124,7 +124,7 @@ export class RateLandViewComponent implements OnInit {
     this.transferTransactions = [];
     let fd = new FormData();
     let obj = {
-      propertyId: formData.term
+      propertyId: formData.key
     }
     fd.append('data', JSON.stringify(obj));
 
@@ -508,6 +508,7 @@ export class RateLandViewComponent implements OnInit {
     // }
   }
   saveData(formData: any) {
+    console.log(formData);
     if (formData.key && formData.rating) {
       let fd = new FormData();
       let obj = {

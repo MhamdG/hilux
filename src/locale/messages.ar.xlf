@@ -6079,8 +6079,8 @@
         <target>بحث</target>
       </trans-unit>
        <trans-unit id="addLandRateExcel" datatype="html">
-      <source>Add new By Excel</source>
-        <target>أضافة بواسطة الأكسل</target>
+      <source> + Add new By Excel</source>
+        <target> + أضافة بواسطة الأكسل</target>
       </trans-unit>
        <trans-unit id="downloadTemplate" datatype="html">
       <source>Download Template</source>

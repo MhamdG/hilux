@@ -128,26 +128,27 @@
 
 
 .modal {
-  display: block;
-  position: fixed;
+  position: fixed; /* Position the modal relative to the viewport */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 1050; /* Ensure it is above other elements */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
+  background: #fff; /* Modal's inner content background */
   border-radius: 8px;
-  width: 1000px;
-  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 900px;
+  width: 90%;
+  max-height: 90%;
+  overflow-y: auto; /* Allow scrolling if the content is too long */
+  padding: 20px;
 }
 
 .close {
@@ -157,6 +158,26 @@
   font-size: 18px;
   cursor: pointer;
 }
+/* Apply to all number inputs with the 'no-arrows' class */
+input[type="number"].no-arrows {
+  -moz-appearance: textfield; /* Firefox */
+  -webkit-appearance: none;  /* Chrome, Safari, Edge */
+  appearance: none;          /* Standard */
+}
+
+/* Specifically target Firefox for additional styling */
+input[type="number"].no-arrows::-moz-inner-spin-button,
+input[type="number"].no-arrows::-moz-outer-spin-button {
+  display: none; /* Completely hide spinners in Firefox */
+}
+
+/* For WebKit-based browsers like Chrome, Safari */
+input[type="number"].no-arrows::-webkit-inner-spin-button,
+input[type="number"].no-arrows::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Remove extra space */
+}
+
 
 
 
