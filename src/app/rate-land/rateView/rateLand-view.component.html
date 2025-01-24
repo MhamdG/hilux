@@ -419,10 +419,14 @@
                           </table>
                         </div>
                       </div>
-                      <div style="width: 100%;text-align: center;" class="card-header" 
-                      *ngIf="previousTathmeens.length == 0 && valuationTranasctions.length == 0 && transferTransactions.length == 0">
-                        <h3 >لا توجد تقييمات أو معاملات سابقة على الأرض</h3>
-                      </div>
+                      <div 
+                      style="display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; text-align: center;" 
+                      class="card-header" 
+                      *ngIf="previousTathmeens.length == 0 && valuationTranasctions.length == 0 && transferTransactions.length == 0"
+                    >
+                      <h3 style="text-align: center;">لا توجد تقييمات أو معاملات سابقة على الأرض</h3>
+                    </div>
+                    
                     </div>
                    
                   </div>
