@@ -602,7 +602,7 @@
                       enctype='multipart/form-data' novalidate>
                       <div class="card-body">
                         <div class="form-group row">
-                          <table style="border: 1px solid black;width: 100%;">
+                          <table *ngIf="MyPrevRaitingData && MyPrevRaitingData.length > 0" style="border: 1px solid black;width: 100%;">
                             <thead style="border: 1px solid black;">
                               <th style="border: 1px solid black; text-align: center;">
                                 <label class="col-form-label">رقم الأرض</label>
@@ -662,7 +662,9 @@
                               </tr>
                             </tbody>
                           </table>
-
+                          <div style="width: 100%;text-align: center;" class="card-header" *ngIf="!MyPrevRaitingData ||  MyPrevRaitingData.length == 0">
+                            <h3 >لا توجد تقييمات</h3>
+                          </div>
 
                         </div>
                       </div>
