@@ -9,7 +9,18 @@
     </thead>
     <tbody>
       <tr *ngFor="let field_detail of dataOptions; let i = index">
-        <td *ngFor="let item of field_detail.rowFields | keyvalue">{{item.value}}</td>
+        <!-- <td *ngFor="let item of field_detail.rowFields | keyvalue">{{item.value}}</td> -->
+        <td *ngFor="let item of field_detail.rowFields | keyvalue">
+          <span  *ngIf="item.value && item.value.toString().startsWith('http');">
+            <a href="{{item.value}}" target="_blank">
+              <i class="fa fa-file fs-30"></i>
+            </a>
+          </span>
+          <span  *ngIf="item.value && !item.value.toString().startsWith('http');">
+            {{item.value}}
+          </span>
+        </td>
+        <!-- <td *ngIf="!item.value.startsWith('http');" *ngFor="let item of field_detail.rowFields | keyvalue">Text</td> -->
         <td class="text-center">
           <div class="form-group">
             <a *ngIf="field_detail?.entityType == 'ownerDetails'" target="_blank" class="btn btn-primary" 
