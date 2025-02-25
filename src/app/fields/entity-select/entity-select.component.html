@@ -13,7 +13,7 @@
         <td *ngFor="let item of field_detail.rowFields | keyvalue">
           <span  *ngIf="item.value && item.value.toString().startsWith('http');">
             <a href="{{item.value}}" target="_blank">
-              <i class="fa fa-file fs-30"></i>
+              <i class="fa fa-file-pdf"></i>
             </a>
           </span>
           <span  *ngIf="item.value && !item.value.toString().startsWith('http');">
