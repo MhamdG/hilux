@@ -452,13 +452,42 @@ export class SingleApplicationSearchComponent implements OnInit {
     }
   }
 
-  renderFieldValue(value: any) {
-    if (typeof(value) == 'object') {
-      return JSON.stringify(value);
-    } else {
-      return value;
+  // renderFieldValue(value: any) {
+  //   if (typeof(value) == 'object') {
+  //     return JSON.stringify(value);
+  //   } else {
+  //     return value;
+  //   }
+  // }
+  renderFieldValue(value: any): any {
+    if (!value) return { isLink: false, value: '' };
+  
+    if (Array.isArray(value)) {
+      // If it's an array, process each element
+      return value.map(v => {
+        const valueStr = v.toString();
+        return {
+          isLink: this.isValidUrl(valueStr),
+          value: valueStr,
+        };
+      });
     }
+  
+    const valueStr = value.toString();
+    return {
+      isLink: this.isValidUrl(valueStr),
+      value: valueStr,
+    };
   }
+  
+  isValidUrl(value: string): boolean {
+    // Simple check for valid URL (starts with http:// or https://)
+    const urlRegex = /^(http:\/\/|https:\/\/)/;
+    return urlRegex.test(value);
+  }
+  isArray(value: any): boolean {
+    return Array.isArray(value);
+  }  
 
   getStepStatusClass(item: any) {
     switch (item.toLowerCase()) {
