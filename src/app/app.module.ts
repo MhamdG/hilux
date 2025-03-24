@@ -71,6 +71,7 @@ import { AuthInterceptor } from './AuthInterceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { AjaxButtonComponent } from './fields/ajax-button/ajax-button.component';
+import { AjaxButtonUrlComponent } from './fields/ajax-button-url/ajax-button-url.component';
 import { DisplayLinkComponent } from './tags/display-link/display-link.component';
 import { DisplayButtonComponent } from './tags/display-button/display-button.component';
 import { DisplayButtonGroupComponent } from './tags/display-button-group/display-button-group.component';
@@ -192,6 +193,7 @@ const maskConfig: Partial<IConfig> = {
     NotificationPageComponent,
     MyTasksComponent,
     AjaxButtonComponent,
+    AjaxButtonUrlComponent,
     DisplayLinkComponent,
     DisplayButtonComponent,
     DisplayButtonGroupComponent,
