@@ -72,7 +72,7 @@
                   <div *ngIf="application_step.dataIn.length > 0">
                     <h4>البيانات المدخلة في المعاملة</h4>
                     <table class="table table-bordered landTable bg-white table-responsive d-table">
-                      <thead>
+                      <thead> 
                         <tr class="bg-grey">
                           <th>#</th>
                           <th i18n="@@singleApplicationSearchFieldname">Field name</th>
@@ -82,11 +82,39 @@
                       <tbody>
                         <tr *ngFor="let field of application_step.dataIn | keyvalue; let j = index">
                           <td>{{ j + 1}}</td>
-                          <td>{{ field.value.key }}</td>
                           <td>
+                            {{ field.value.key }}</td>
+                          <!-- <td>
                             <pre class="custom-direction"
                               [innerHtml]="renderFieldValue(field.value.value) | prettyjson:4"></pre>
+                          </td> -->
+                          <td>
+                            <!-- If the value is an array of strings or links -->
+                            <span *ngIf="isArray(renderFieldValue(field.value.value))">
+                              <span *ngFor="let linkObj of renderFieldValue(field.value.value)">
+                                <!-- Display link if it's a valid URL -->
+                                <a *ngIf="linkObj.isLink" [href]="linkObj.value" target="_blank">
+                                  <i class="fa fa-file-pdf"></i>
+                                </a>
+                                <!-- Display as text if not a valid URL -->
+                                <span *ngIf="!linkObj.isLink && linkObj.value ">{{ linkObj.value }}</span>
+                                <span *ngIf="!linkObj.isLink && !linkObj.value ">---</span>
+
+                              </span>
+                            </span>
+                          
+                            <!-- If the value is a single string -->
+                            <span *ngIf="!isArray(renderFieldValue(field.value.value))">
+                              <!-- Display link if it's a valid URL -->
+                              <a *ngIf="renderFieldValue(field.value.value).isLink" [href]="renderFieldValue(field.value.value).value" target="_blank">
+                                <i class="fa fa-file-pdf"></i>
+                              </a>
+                              <!-- Display as text if not a valid URL -->
+   <span *ngIf="!renderFieldValue(field.value.value).isLink && renderFieldValue(field.value.value).value ">{{ renderFieldValue(field.value.value).value }}</span>
+                              <span *ngIf="!renderFieldValue(field.value.value).isLink && ! renderFieldValue(field.value.value).value ">---</span>                            </span>
                           </td>
+                          
+                          
                         </tr>
                       </tbody>
                     </table>
@@ -106,9 +134,36 @@
                         <tr *ngFor="let field of application_step.displayData | keyvalue; let j = index">
                           <td>{{ j + 1}}</td>
                           <td>{{ field.value.key }}</td>
-                          <td>
+                          <!-- <td>
                             <pre class="custom-direction"
                               [innerHtml]="renderFieldValue(field.value.value) | prettyjson:4"></pre>
+                          </td> -->
+                          <td>
+                            <!-- If the value is an array of strings or links -->
+                            <span *ngIf="isArray(renderFieldValue(field.value.value))">
+                              <span *ngFor="let linkObj of renderFieldValue(field.value.value)">
+                                <!-- Display link if it's a valid URL -->
+                                <a *ngIf="linkObj.isLink" [href]="linkObj.value" target="_blank">
+                                  <i class="fa fa-file-pdf"></i>
+                                </a>
+                                <!-- Display as text if not a valid URL -->
+                                <span *ngIf="!linkObj.isLink && linkObj.value ">{{ linkObj.value }}</span>
+                                <span *ngIf="!linkObj.isLink && !linkObj.value ">---</span>
+
+                              </span>
+                            </span>
+                          
+                            <!-- If the value is a single string -->
+                            <span *ngIf="!isArray(renderFieldValue(field.value.value))">
+                              <!-- Display link if it's a valid URL -->
+                              <a *ngIf="renderFieldValue(field.value.value).isLink" [href]="renderFieldValue(field.value.value).value" target="_blank">
+                                <i class="fa fa-file-pdf"></i>
+                              </a>
+                              <!-- Display as text if not a valid URL -->
+                              <span *ngIf="!renderFieldValue(field.value.value).isLink && renderFieldValue(field.value.value).value ">{{ renderFieldValue(field.value.value).value }}</span>
+                              <span *ngIf="!renderFieldValue(field.value.value).isLink && ! renderFieldValue(field.value.value).value ">---</span>
+
+                            </span>
                           </td>
                         </tr>
                       </tbody>
