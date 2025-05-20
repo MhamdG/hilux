@@ -136,12 +136,20 @@
                 </ng-container>
                 <ng-container
                     *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') ">
-                    <a class="dropdown-item" href="/rate" i18n="@@Rating">
+                    <a class="dropdown-item" href="/rate" i18n="@@EvaluationOfRealEstateUnits">
                         <i class="fas fa-plus float-left"></i>
                         Rating
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
+                <ng-container
+                *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') ">
+                <a class="dropdown-item" href="/rateLand" i18n="@@LandEvaluation">
+                    <i class="fas fa-plus float-left"></i>
+                    Rating
+                </a>
+                <div class="dropdown-divider"></div>
+            </ng-container>
                 <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'Archives')">
                     <a class="dropdown-item" href="https://wfe.ajre.gov.ae/AjmanLandProperty/index.php/DMS/index"
                         target="_blank">
