@@ -161,6 +161,14 @@ export class LookupsService {
   loadProjectsTypesOptions(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/projectstypes`, params);
   }
+  loadOwnershipLandTypes() {
+   return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/DashboardStatsApi/landTypes/`);
+    //  return this.fieldsService.getUrl("http://192.168.18.250/AjmanLandProperty/index.php/DashboardStatsApi/landTypes/");
+  }
+  loadOwnershipLandData(params:any) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/DashboardStatsApi/report/`,params);
+      // return this.fieldsService.getUrl("http://192.168.18.250/AjmanLandProperty/index.php/DashboardStatsApi/report/");
+   }
 
   loadProjectStatusOptions(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/projectsStatuses`, params);

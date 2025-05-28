@@ -107,14 +107,11 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') || getRole (userRole,'customerservices') || getRole(userRole,'Archives') || getRole(userRole,'Real Estate Offices') || getRole (userRole,'Legal') || getRole (userRole,'ApplicationsSearch') ">
-                <a
-                        class="dropdown-item"
-                        href="/application_search"
-
-                >
-                    <i class="fas fa-plus float-left"></i>
-                    البحث بالمعاملات
+                <ng-container
+                    *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') || getRole (userRole,'customerservices') || getRole(userRole,'Archives') || getRole(userRole,'Real Estate Offices') || getRole (userRole,'Legal') || getRole (userRole,'ApplicationsSearch') ">
+                    <a class="dropdown-item" href="/application_search">
+                        <i class="fas fa-plus float-left"></i>
+                        البحث بالمعاملات
 
                     </a>
                     <div class="dropdown-divider"></div>
@@ -134,28 +131,33 @@
                         Search
                     </a>
                 </ng-container>
-                <ng-container
-                    *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') ">
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') ">
                     <a class="dropdown-item" href="/rate" i18n="@@EvaluationOfRealEstateUnits">
                         <i class="fas fa-plus float-left"></i>
                         Rating
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container
-                *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') ">
-                <a class="dropdown-item" href="/rateLand" i18n="@@LandEvaluation">
-                    <i class="fas fa-plus float-left"></i>
-                    Rating
-                </a>
-                <div class="dropdown-divider"></div>
-            </ng-container>
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') ">
+                    <a class="dropdown-item" href="/rateLand" i18n="@@LandEvaluation">
+                        <i class="fas fa-plus float-left"></i>
+                        Rating
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </ng-container>
                 <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'Archives')">
                     <a class="dropdown-item" href="https://wfe.ajre.gov.ae/AjmanLandProperty/index.php/DMS/index"
                         target="_blank">
                         <i class="fas fa-plus float-left"></i>
                         شاشة تسليم الملفات
 
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </ng-container>
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Tathmeen') ">
+                    <a class="dropdown-item" href="/ownershipStatistics" i18n="@@OwnershipStatistics">
+                        <i class="fas fa-plus float-left"></i>
+                        Ownership statistics
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>

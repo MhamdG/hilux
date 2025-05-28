@@ -1,0 +1,131 @@
+<div class="ownership-container" dir="rtl">
+  <!-- Header -->
+  <div class="header-section">
+    <h1>{{ headerTitle }}</h1>
+  </div>
+
+  <!-- Realtime / Monthly buttons -->
+  <div class="buttons-container">
+    <button type="button" (click)="filterData('daily')">
+      <h3>لحظيا</h3>
+    </button>
+    <button type="button" (click)="filterData('monthly')">
+      <h3>شهريا</h3>
+    </button>
+  </div>
+
+  
+  
+  <div class="footer-section inside-card">
+      <!-- From Date -->
+      <div class="input-group">
+        <label for="fromDate">من تاريخ</label>
+        <input type="date" id="fromDate" [(ngModel)]="fromDate" />
+      </div>
+  
+      <!-- To Date -->
+      <div class="input-group">
+        <label for="toDate">إلى تاريخ</label>
+        <input type="date" id="toDate" [(ngModel)]="toDate" />
+      </div>
+    <h2>{{ footerTitle }}</h2>
+    <div class="property-types">
+      <select  class="property-dropdown" [(ngModel)]="selectedPropertyType">
+        <option *ngFor="let type of propertyTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+    <button class="filter-btn" (click)="applyFilter()">تحميل</button>
+  </div>
+
+
+  <div class="stats-cards">
+    <div class="stat-card">
+      <div class="custom-card">
+        <h3 class="card-title">{{ cardEtisalat.title }}</h3>
+        <p class="card-count">{{ cardEtisalat.count }}</p>
+        <p class="card-subtitle">عدد المستفيدين</p>
+        <img [src]="cardEtisalat.logo" alt="logo" class="card-logo" />
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="custom-card">
+        <h3 class="card-title">{{ cardSewerage.title }}</h3>
+        <p class="card-count">{{ cardSewerage.count }}</p>
+        <p class="card-subtitle">عدد المستفيدين</p>
+        <img [src]="cardSewerage.logo" alt="logo" class="card-logo" />
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="custom-card">
+        <h3 class="card-title">{{ cardEtihad.title }}</h3>
+        <p class="card-count">{{ cardEtihad.count }}</p>
+        <p class="card-subtitle">عدد المستفيدين</p>
+        <img [src]="cardEtihad.logo" alt="logo" class="card-logo" />
+      </div>
+    </div>
+  </div>
+
+ 
+  
+  <!-- =================== Stat cards grid (no loop) =================== -->
+  <div class="stats-cards">
+
+    <!-- Card 1  (with footer) -->
+    <div class="stat-card">
+      <div class="custom-card">
+        <h3 class="card-title">{{ cardEtisalat.title }}</h3>
+
+
+        <div class="chart-container">
+          <canvas baseChart [data]="cardEtisalat.chartData" [labels]="cardEtisalat.chartLabels" [chartType]="chartType"
+            [options]="chartOptions" [colors]="[{ backgroundColor: cardEtisalat.chartColors }]"></canvas>
+        </div>
+
+        <div class="chart-legend">
+          <div *ngFor="let label of cardEtisalat.chartLabels; let i = index" class="legend-item">
+            <span class="color-dot" [style.background]="cardEtisalat.chartColors[i]"></span>
+            <span class="legend-label">{{ label }} ({{ cardEtisalat.chartData[i] }}%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="stat-card">
+      <div class="custom-card">
+        <h3 class="card-title">{{ cardSewerage.title }}</h3>
+        <div class="chart-container">
+          <canvas baseChart [data]="cardSewerage.chartData" [labels]="cardSewerage.chartLabels" [chartType]="chartType"
+            [options]="chartOptions" [colors]="[{ backgroundColor: cardSewerage.chartColors }]"></canvas>
+        </div>
+
+        <div class="chart-legend">
+          <div *ngFor="let label of cardSewerage.chartLabels; let i = index" class="legend-item">
+            <span class="color-dot" [style.background]="cardSewerage.chartColors[i]"></span>
+            <span class="legend-label">{{ label }} ({{ cardSewerage.chartData[i] }}%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="stat-card">
+      <div class="custom-card">
+        <h3 class="card-title">{{ cardEtihad.title }}</h3>
+
+        <div class="chart-container">
+          <canvas baseChart [data]="cardEtihad.chartData" [labels]="cardEtihad.chartLabels" [chartType]="chartType"
+            [options]="chartOptions" [colors]="[{ backgroundColor: cardEtihad.chartColors }]"></canvas>
+        </div>
+
+        <div class="chart-legend">
+          <div *ngFor="let label of cardEtihad.chartLabels; let i = index" class="legend-item">
+            <span class="color-dot" [style.background]="cardEtihad.chartColors[i]"></span>
+            <span class="legend-label">{{ label }} ({{ cardEtihad.chartData[i] }}%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
