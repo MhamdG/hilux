@@ -181,7 +181,8 @@ const routes: Routes = [
       { path: 'edit', component: DeveloperDetailsComponent }
     ]
   },
-  { path: 'ownershipStatistics', component: OwnershipStatisticsComponent, resolve: { profile: DeveloperProfileResolver }, canActivate: [AuthenticationGuard] },
+  // { path: 'ownershipStatistics', component: OwnershipStatisticsComponent, resolve: { profile: DeveloperProfileResolver }, canActivate: [AuthenticationGuard] },
+  { path: 'ownershipStatistics', component: OwnershipStatisticsComponent },
   {
     path: 'owner/profile/:profileId/edit', component: OwnerProfileComponent,
     resolve: { profile: OwnerProfileResolver },

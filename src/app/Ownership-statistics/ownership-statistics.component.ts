@@ -42,52 +42,56 @@ export class OwnershipStatisticsComponent implements OnInit {
   };
 
   /* Three separate cards (no array, no loop) */
-  card1: StatCard = {
-    title: 'الاتحاد للكهرباء والماء',
-    count: '125,000',
-    unit: 'عدد المستفيدين',
-    logo: 'assets/we.png',
-    chartData: [47.6, 19, 9.5, 23.9],
-    chartLabels: ['تجاري', 'فيلا', 'أراضي', 'أخرى'],
-    chartColors: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-  };
-
-  card2: StatCard = {
-    title: 'عجمان للصرف الصحي',
-    count: '125,000',
-    unit: 'عدد المستفيدين',
-    logo: 'assets/etisalat.png',
-    chartData: [47.6, 19, 9.5, 23.9],
-    chartLabels: ['تجاري', 'فيلا', 'أراضي', 'أخرى'],
-    chartColors: ['#9966FF', '#34D399', '#FBBF24', '#60A5FA'],
-  };
-
-  card3: StatCard = {
-    title: 'اتصالات والمزيد',
-    count: '125,000',
-    unit: 'عدد المستفيدين',
-    logo: 'assets/etisalat.png',
-    chartData: [23.8, 47.0, 3.9, 2.3, 4.0, 1.9],
-    chartLabels: ['تجاري', 'فيلا', 'أراضي', 'سكني', 'تجاري 2', 'أخرى'],
-    chartColors: ['#FF9F40', '#4D96FF', '#6BCB77', '#FF6B6B', '#845EC2', '#FFC154'],
-  };
-  colors: string[] = [
-    '#fb8500', '#ffb703', '#023047', '#219ebc', '#8ecae6', '#a2d2ff', '#bde0fe',
-    '#ffafcc', '#ffc8dd', '#cdb4db', '#03045e', '#023e8a', '#0077b6', '#0096c7',
-    '#ade8f4', '#caf0f8', '#ef476f', '#ffd166', '#06d6a0', '#118ab2', '#073b4c',
-    '#780000', '#fdf0d5', '#f72585', '#4361ee', '#edf2fb', '#d7e3fc', '#c1d3fe',
-    '#c1121f', '#003049', '#7209b7', '#4cc9f0', '#e2eafc', '#ccdbfd', '#abc4ff',
-  ];
   
+  colorsSewerage: string[] = [
+    "#10451D", "#155D27", "#1A7431", "#20883A", "#25A244", "#2DC653", "#4AD66D",
+    "#6EDE8A", "#92E6A7", "#87EDC5",
+    "#10451D", "#155D27", "#1A7431", "#20883A", "#25A244", "#2DC653", "#4AD66D",
+    "#6EDE8A", "#92E6A7", "#87EDC5",
+    "#10451D", "#155D27", "#1A7431", "#20883A", "#25A244", "#2DC653", "#4AD66D",
+    "#6EDE8A", "#92E6A7", "#87EDC5",
+    "#10451D", "#155D27", "#1A7431", "#20883A", "#25A244", "#2DC653", "#4AD66D",
+    "#6EDE8A", "#92E6A7", "#87EDC5",
+    "#10451D", "#155D27", "#1A7431", "#20883A", "#25A244", "#2DC653", "#4AD66D",
+    "#6EDE8A", "#92E6A7", "#87EDC5",
+  ];
+  colorsEtisalat: string[] = [
+    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
+    "#C71F37", "#DA1E37",
+    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
+    "#C71F37", "#DA1E37",
+    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
+    "#C71F37", "#DA1E37",
+    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
+    "#C71F37", "#DA1E37",
+    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
+    "#C71F37", "#DA1E37",
+  ];
+  colorsEtihad: string[] = [
+    "#03045E", "#023E8A", "#0077B6", "#0096C7", "#00B4D8", "#48CAE4", "#90E0EF",
+    "#CAF0F8", "00B4D8",
+    "#03045E", "#023E8A", "#0077B6", "#0096C7", "#00B4D8", "#48CAE4", "#90E0EF",
+    "#CAF0F8", "00B4D8",
+    "#03045E", "#023E8A", "#0077B6", "#0096C7", "#00B4D8", "#48CAE4", "#90E0EF",
+    "#CAF0F8", "00B4D8",
+    "#03045E", "#023E8A", "#0077B6", "#0096C7", "#00B4D8", "#48CAE4", "#90E0EF",
+    "#CAF0F8", "00B4D8",
+    "#03045E", "#023E8A", "#0077B6", "#0096C7", "#00B4D8", "#48CAE4", "#90E0EF",
+    "#CAF0F8", "00B4D8",
+  ];
+  btnLoading :string = '../../assets/images/loadingBtn.jpg';
+
 
   /* Footer-section (dropdown) */
-  footerTitle = 'إحصائيات حسب نوع العقار';
-  selectedPropertyType = 'تجاري';
-  propertyTypes:any;
-  responsData:any;
-  cardEtisalat :any;
-  cardSewerage :any;
-  cardEtihad :any;
+  footerTitle = 'نوع العقار';
+  selectedPropertyType = '';
+  propertyTypes: any;
+  responsData: any;
+  cardEtisalat: any;
+  cardSewerage: any;
+  cardEtihad: any;
+  dailyBtnCOlor: String = "#695f58";
+  monthlyBtnCOlor: String = "#bfb3a7";
   ngOnInit(): void {
     this.loadOwnershipLandTypes();
     this.loadOwnershipLandData({});
@@ -127,7 +131,7 @@ export class OwnershipStatisticsComponent implements OnInit {
       chartLabels: [],
       chartColors: []
     };
-  
+
     this.lookupsService.loadOwnershipLandData(params).subscribe((data) => {
       this.responsData = data.data;
       if (data.data && data.data.etisalat) {
@@ -140,10 +144,13 @@ export class OwnershipStatisticsComponent implements OnInit {
           if (etisalat[index].count) {
             totalCount = totalCount + parseInt(etisalat[index].count);
             chartData.push(etisalat[index].count);
-            chartColors.push(this.colors[index]);
+            chartColors.push(this.colorsEtihad[index]);
             if (etisalat[index].landType) {
               chartLabels.push(etisalat[index].landType);
 
+            }
+            else{
+              chartLabels.push("غير معروف");
             }
           }
           if ((index + 1) == etisalat.length) {
@@ -166,17 +173,20 @@ export class OwnershipStatisticsComponent implements OnInit {
           if (sewerage[index].count) {
             totalCount = totalCount + parseInt(sewerage[index].count);
             chartData.push(sewerage[index].count);
-            chartColors.push(this.colors[index]);
+            chartColors.push(this.colorsSewerage[index]);
             if (sewerage[index].landType) {
               chartLabels.push(sewerage[index].landType);
+            }
+            else{
+              chartLabels.push("غير معروف");
             }
           }
           if ((index + 1) == sewerage.length) {
             this.cardSewerage.count = totalCount;
             this.cardSewerage.title = "عجمان للصرف الصحي";
-            this.cardEtisalat.chartLabels = chartLabels;
-            this.cardEtisalat.chartColors = chartColors;
-            this.cardEtisalat.chartData = chartData;
+            this.cardSewerage.chartLabels = chartLabels;
+            this.cardSewerage.chartColors = chartColors;
+            this.cardSewerage.chartData = chartData;
           }
 
         }
@@ -191,17 +201,19 @@ export class OwnershipStatisticsComponent implements OnInit {
           if (etihad[index].count) {
             totalCount = totalCount + parseInt(etihad[index].count);
             chartData.push(etihad[index].count);
-            chartColors.push(this.colors[index]);
+            chartColors.push(this.colorsEtihad[index]);
             if (etihad[index].landType) {
               chartLabels.push(etihad[index].landType);
+            }else{
+              chartLabels.push("غير معروف");
             }
           }
           if ((index + 1) == etihad.length) {
             this.cardEtihad.count = totalCount;
             this.cardEtihad.title = "الاتحاد للكهرباء والماء";
-            this.cardEtisalat.chartLabels = chartLabels;
-            this.cardEtisalat.chartColors = chartColors;
-            this.cardEtisalat.chartData = chartData;
+            this.cardEtihad.chartLabels = chartLabels;
+            this.cardEtihad.chartColors = chartColors;
+            this.cardEtihad.chartData = chartData;
           }
 
         }
@@ -209,18 +221,39 @@ export class OwnershipStatisticsComponent implements OnInit {
     });
   }
   filterData(key: any): void {
+    if (key == "daily") {
+      this.dailyBtnCOlor = "#695f58";
+      this.monthlyBtnCOlor = "#bfb3a7";
+    } else if (key == "monthly") {
+      this.dailyBtnCOlor = "#bfb3a7";
+      this.monthlyBtnCOlor = "#695f58";
+    }
     let obj = { type: key };
     this.loadOwnershipLandData(obj);
   }
   applyFilter(): void {
     console.log(this.fromDate);
     console.log(this.fromDate + " " + this.toDate + " " + this.selectedPropertyType);
-    let obj = {
-      type: "period",
-      from: this.fromDate,
-      to: this.toDate,
-      landType: this.selectedPropertyType.trim()
-    };
+    let obj ={};
+    if (this.fromDate || this.toDate) {
+      obj["type"]="period";
+      if (this.fromDate) {
+        obj["from"] =this.fromDate;
+      }
+      if (this.toDate) {
+        obj["to"] =this.toDate;
+      }
+    }
+    // let obj = {
+    //   type: "period",
+    //   from: this.fromDate,
+    //   to: this.toDate,
+    //   landType: this.selectedPropertyType.trim()
+    // };
+    // if (this.selectedPropertyType) {
+    //   obj["landType"] = this.selectedPropertyType.trim();
+    // }
+    
     this.loadOwnershipLandData(obj);
 
   }

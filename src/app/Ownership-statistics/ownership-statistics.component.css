@@ -32,7 +32,7 @@
 /* Date filter */
 .date-filter-container { width:100%; margin:20px 0; padding:0 15px; }
 .date-inputs { display:flex; align-items:flex-end; gap:15px; width:100%; }
-.input-group { display:flex; flex-direction:column; flex:0 0 180px; }
+.input-group { display:flex; flex-direction:column; flex:0 0 0px; }
 .input-group label { margin-bottom:5px; font-weight:bold; text-align:right; }
 .input-group input {
   padding:8px 12px; border:1px solid #ddd; border-radius:4px; font-size:14px; width:100%;
@@ -160,7 +160,7 @@
 
 .input-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .input-group label {
