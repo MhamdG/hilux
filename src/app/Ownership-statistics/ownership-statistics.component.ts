@@ -108,7 +108,7 @@ export class OwnershipStatisticsComponent implements OnInit {
   loadOwnershipLandData(params: any): void {
     console.log("Loading Ownership Land Data...");
     this.cardEtisalat = {
-      title: "",
+      title: "اتصالات والمزيد",
       logo: '../../assets/ownershipLand/etisalat.jpg',
       count: 0,
       chartData: [],
@@ -116,7 +116,7 @@ export class OwnershipStatisticsComponent implements OnInit {
       chartColors: []
     };
     this.cardSewerage = {
-      title: "",
+      title: "عجمان للصرف الصحي",
       logo: '../../assets/ownershipLand/sewerage.jpg',
       count: 0,
       chartData: [],
@@ -124,7 +124,7 @@ export class OwnershipStatisticsComponent implements OnInit {
       chartColors: []
     };
     this.cardEtihad = {
-      title: "",
+      title: "الاتحاد للكهرباء والماء",
       logo: '../../assets/ownershipLand/etihad.jpg',
       count: 0,
       chartData: [],
@@ -158,7 +158,6 @@ export class OwnershipStatisticsComponent implements OnInit {
             this.cardEtisalat.chartLabels = chartLabels;
             this.cardEtisalat.chartColors = chartColors;
             this.cardEtisalat.chartData = chartData;
-            this.cardEtisalat.title = "اتصالات والمزيد";
           }
 
         }
@@ -183,7 +182,6 @@ export class OwnershipStatisticsComponent implements OnInit {
           }
           if ((index + 1) == sewerage.length) {
             this.cardSewerage.count = totalCount;
-            this.cardSewerage.title = "عجمان للصرف الصحي";
             this.cardSewerage.chartLabels = chartLabels;
             this.cardSewerage.chartColors = chartColors;
             this.cardSewerage.chartData = chartData;
@@ -210,7 +208,6 @@ export class OwnershipStatisticsComponent implements OnInit {
           }
           if ((index + 1) == etihad.length) {
             this.cardEtihad.count = totalCount;
-            this.cardEtihad.title = "الاتحاد للكهرباء والماء";
             this.cardEtihad.chartLabels = chartLabels;
             this.cardEtihad.chartColors = chartColors;
             this.cardEtihad.chartData = chartData;

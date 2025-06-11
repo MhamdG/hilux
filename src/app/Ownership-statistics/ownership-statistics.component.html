@@ -30,12 +30,12 @@
 
     <!-- Left side: Select and button -->
     <div style="display: flex; gap: 10px; flex: 1; justify-content: flex-end; align-items: center;">
-      <!-- <label for="propertyType" style="margin-top: 15px;">نوع العقار</label>
+      <label for="propertyType" style="margin-top: 15px;">نوع العقار</label>
       <div class="property-types">
         <select id="propertyType" class="property-dropdown" [(ngModel)]="selectedPropertyType">
           <option *ngFor="let type of propertyTypes" [value]="type">{{ type }}</option>
         </select>
-      </div> -->
+      </div>
       <!-- <button 
       style="background-color: hsl(25.71deg 33.33% 95.88%); color: #000; display: flex; align-items: center;"
       (click)="applyFilter()">
@@ -54,12 +54,14 @@
   <!-- Stat Cards Section 1 -->
   <div class="stats-cards">
     <div class="stat-card" *ngFor="let card of [cardEtisalat, cardSewerage, cardEtihad]">
-      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, #000 0%, #000 10%, transparent 10%, transparent 90%, #000 90%, #000 100%);"></div>
+      <div style=" height: 3px; background: linear-gradient(to right, #ccc 0%, #ccc 10%, #fff 10%, #fff 90%, #ccc 90%, #ccc 100%);">
+      </div>
+      
       <div class="custom-card">
-        <h4 style="color: #000; margin-top: -32px; margin-bottom: 44px;">{{ card.title }}</h4>
+        <h4 style="color: #000; margin-top: -20px; margin-bottom: 44px;">{{ card.title }}</h4>
         <p class="card-count" style="font-size: 40px;">{{ card.count }}</p>
         <p class="card-subtitle">عدد المستفيدين</p>
-        <div style="width: 100%;">
+        <div style="width: 100%;padding: 10px;">
           <img [src]="card.logo" alt="logo" class="card-logo" style="float: left;" />
         </div>
       </div>
@@ -73,9 +75,10 @@
   <!-- Stat Cards Section 2 with Charts -->
   <div class="stats-cards">
     <div class="stat-card" *ngFor="let card of [cardEtisalat, cardSewerage, cardEtihad]">
-      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, #000 0%, #000 10%, transparent 10%, transparent 90%, #000 90%, #000 100%);"></div>
+      <div style=" height: 3px; background: linear-gradient(to right, #ccc 0%, #ccc 10%, #fff 10%, #fff 90%, #ccc 90%, #ccc 100%);">
+      </div>
       <div class="custom-card">
-        <h4 style="color: #000; margin-top: -32px; margin-bottom: 44px;">{{ card.title }}</h4>
+        <h4 style="color: #000; margin-top: -20px; margin-bottom: 44px;">{{ card.title }}</h4>
         <div class="chart-container">
           <canvas baseChart [data]="card.chartData" [labels]="card.chartLabels" [chartType]="chartType" [options]="chartOptions" [colors]="[{ backgroundColor: card.chartColors }]"></canvas>
         </div>
