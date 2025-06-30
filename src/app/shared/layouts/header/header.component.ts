@@ -61,6 +61,9 @@ export class HeaderComponent implements OnInit {
 
     log(val) {
     }
+    isOwnershipStatisticsPage(): boolean {
+        return this.router.url === '/ownershipStatistics';
+      }
 
     logout() {
         this.authenticationService.signout().subscribe((data) => {

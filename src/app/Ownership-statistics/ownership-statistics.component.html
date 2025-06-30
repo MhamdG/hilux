@@ -1,4 +1,5 @@
-<div class="ownership-container content-wrapper" dir="rtl">
+<div class="ownership-container content-wrapper" dir="rtl" 
+style="margin-right: 150px;background-color: #fff;">
   <!-- Header -->
   <div class="header-section">
     <h1>{{ headerTitle }}</h1>
@@ -15,9 +16,9 @@
   </div>
 
   <!-- Filter Section -->
-  <div class="footer-section inside-card" style="background-color: hsl(25.71deg 33.33% 95.88%); padding: 10px; display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <div class="footer-section inside-card" style="background-color: #fff; padding: 10px; display: flex; justify-content: space-between; flex-wrap: wrap;">
     <!-- Right side: From and To date inputs -->
-    <div style="display: flex; gap: 10px; flex: 1; justify-content: flex-start; align-items: center;">
+    <div style="background-color: #fff; display: flex; gap: 10px; flex: 1; justify-content: flex-start; align-items: center;">
       <label for="fromDate" style="margin-top: 15px;">من</label>
       <div class="input-group">
         <input type="date" id="fromDate" [(ngModel)]="fromDate" />
@@ -29,7 +30,7 @@
     </div>
 
     <!-- Left side: Select and button -->
-    <div style="display: flex; gap: 10px; flex: 1; justify-content: flex-end; align-items: center;">
+    <div style="background-color: #fff; display: flex; gap: 10px; flex: 1; justify-content: flex-end; align-items: center;">
       <label for="propertyType" style="margin-top: 15px;">نوع العقار</label>
       <div class="property-types">
         <select id="propertyType" class="property-dropdown" [(ngModel)]="selectedPropertyType">
@@ -43,7 +44,7 @@
         <img [src]="btnLoading" alt="logo" style="width: 25px; height: 15px; margin-right: 2px;" />
       </button> -->
       <button 
-      style="background-color: #695f58; color: #000; display: flex; align-items: center;"
+      style="width: 70px;height: 30px; justify-content: center; background-color: #695f58; color: #000; display: flex; align-items: center;"
       (click)="applyFilter()">
         <p class="card-subtitle" style="color: #fff;  margin: 0;">بحث</p>
         <!-- <img [src]="btnLoading" alt="logo" style="width: 25px; height: 15px; margin-right: 2px;" /> -->
@@ -54,8 +55,8 @@
   <!-- Stat Cards Section 1 -->
   <div class="stats-cards">
     <div class="stat-card" *ngFor="let card of [cardEtisalat, cardSewerage, cardEtihad]">
-      <div style=" height: 3px; background: linear-gradient(to right, #ccc 0%, #ccc 10%, #fff 10%, #fff 90%, #ccc 90%, #ccc 100%);">
-      </div>
+      <!-- <div style=" height: 3px; background: linear-gradient(to right, #ccc 0%, #ccc 10%, #fff 10%, #fff 90%, #ccc 90%, #ccc 100%);">
+      </div> -->
       
       <div class="custom-card">
         <h4 style="color: #000; margin-top: -20px; margin-bottom: 44px;">{{ card.title }}</h4>
@@ -75,8 +76,8 @@
   <!-- Stat Cards Section 2 with Charts -->
   <div class="stats-cards">
     <div class="stat-card" *ngFor="let card of [cardEtisalat, cardSewerage, cardEtihad]">
-      <div style=" height: 3px; background: linear-gradient(to right, #ccc 0%, #ccc 10%, #fff 10%, #fff 90%, #ccc 90%, #ccc 100%);">
-      </div>
+      <!-- <div style=" height: 3px; background: linear-gradient(to right, #ccc 0%, #ccc 10%, #fff 10%, #fff 90%, #ccc 90%, #ccc 100%);">
+      </div> -->
       <div class="custom-card">
         <h4 style="color: #000; margin-top: -20px; margin-bottom: 44px;">{{ card.title }}</h4>
         <div class="chart-container">

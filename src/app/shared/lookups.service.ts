@@ -167,7 +167,7 @@ export class LookupsService {
   }
   loadOwnershipLandData(params:any) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/DashboardStatsApi/report/`,params);
-      // return this.fieldsService.getUrl("http://192.168.18.250/AjmanLandProperty/index.php/DashboardStatsApi/report/");
+    //return this.fieldsService.getUrl("http://192.168.18.250/AjmanLandProperty/index.php/DashboardStatsApi/report/",params);
    }
 
   loadProjectStatusOptions(params: any = {}) {

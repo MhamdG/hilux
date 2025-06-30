@@ -182,7 +182,8 @@ const routes: Routes = [
     ]
   },
   // { path: 'ownershipStatistics', component: OwnershipStatisticsComponent, resolve: { profile: DeveloperProfileResolver }, canActivate: [AuthenticationGuard] },
-  { path: 'ownershipStatistics', component: OwnershipStatisticsComponent },
+    { path: 'ownershipStatistics', component: OwnershipStatisticsComponent, resolve: { profile: DeveloperProfileResolver }, canActivate: [AuthenticationGuard] },
+  // { path: 'ownershipStatistics', component: OwnershipStatisticsComponent },
   {
     path: 'owner/profile/:profileId/edit', component: OwnerProfileComponent,
     resolve: { profile: OwnerProfileResolver },

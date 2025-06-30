@@ -42,7 +42,7 @@ export class OwnershipStatisticsComponent implements OnInit {
   };
 
   /* Three separate cards (no array, no loop) */
-  
+
   colorsSewerage: string[] = [
     "#10451D", "#155D27", "#1A7431", "#20883A", "#25A244", "#2DC653", "#4AD66D",
     "#6EDE8A", "#92E6A7", "#87EDC5",
@@ -79,7 +79,7 @@ export class OwnershipStatisticsComponent implements OnInit {
     "#03045E", "#023E8A", "#0077B6", "#0096C7", "#00B4D8", "#48CAE4", "#90E0EF",
     "#CAF0F8", "00B4D8",
   ];
-  btnLoading :string = '../../assets/images/loadingBtn.jpg';
+  btnLoading: string = '../../assets/images/loadingBtn.jpg';
 
 
   /* Footer-section (dropdown) */
@@ -126,30 +126,33 @@ export class OwnershipStatisticsComponent implements OnInit {
     this.cardEtihad = {
       title: "الاتحاد للكهرباء والماء",
       logo: '../../assets/ownershipLand/etihad.jpg',
-      count: 0,
-      chartData: [],
-      chartLabels: [],
-      chartColors: []
+      count: 0, // total count
+      chartData: [], //  % 
+      chartLabels: [], // landType
+      chartColors: [] // list of color #
     };
 
     this.lookupsService.loadOwnershipLandData(params).subscribe((data) => {
       this.responsData = data.data;
       if (data.data && data.data.etisalat) {
+
         let etisalat = data.data.etisalat;
-        let totalCount = 0;
+        let totalCount = etisalat.reduce((sum: any, item: any) => sum + item.count, 0);
+        // let totalCount = 0;
         let chartLabels = [];
         let chartData = [];
         let chartColors = [];
         for (let index = 0; index < etisalat.length; index++) {
           if (etisalat[index].count) {
-            totalCount = totalCount + parseInt(etisalat[index].count);
-            chartData.push(etisalat[index].count);
+            // totalCount = totalCount + parseInt(etisalat[index].count);
+            let count = ((etisalat[index].count / totalCount) * 100).toFixed(0);
+            chartData.push(count);
             chartColors.push(this.colorsEtihad[index]);
             if (etisalat[index].landType) {
               chartLabels.push(etisalat[index].landType);
 
             }
-            else{
+            else {
               chartLabels.push("غير معروف");
             }
           }
@@ -164,19 +167,20 @@ export class OwnershipStatisticsComponent implements OnInit {
       }
       if (data.data && data.data.sewerage) {
         let sewerage = data.data.sewerage;
-        let totalCount = 0;
+        let totalCount = sewerage.reduce((sum: any, item: any) => sum + item.count, 0);
         let chartLabels = [];
         let chartData = [];
         let chartColors = [];
         for (let index = 0; index < sewerage.length; index++) {
           if (sewerage[index].count) {
-            totalCount = totalCount + parseInt(sewerage[index].count);
-            chartData.push(sewerage[index].count);
+            // totalCount = totalCount + parseInt(sewerage[index].count);
+            let count = ((sewerage[index].count / totalCount) * 100).toFixed(0);
+            chartData.push(count);
             chartColors.push(this.colorsSewerage[index]);
             if (sewerage[index].landType) {
               chartLabels.push(sewerage[index].landType);
             }
-            else{
+            else {
               chartLabels.push("غير معروف");
             }
           }
@@ -191,18 +195,19 @@ export class OwnershipStatisticsComponent implements OnInit {
       }
       if (data.data && data.data.etihad) {
         let etihad = data.data.etihad;
-        let totalCount = 0;
+        let totalCount = etihad.reduce((sum: any, item: any) => sum + item.count, 0);
+        console.log("totalCount " + totalCount);
         let chartLabels = [];
         let chartData = [];
         let chartColors = [];
         for (let index = 0; index < etihad.length; index++) {
           if (etihad[index].count) {
-            totalCount = totalCount + parseInt(etihad[index].count);
-            chartData.push(etihad[index].count);
+            let count = ((etihad[index].count / totalCount) * 100).toFixed(0);
+            chartData.push(count);
             chartColors.push(this.colorsEtihad[index]);
             if (etihad[index].landType) {
               chartLabels.push(etihad[index].landType);
-            }else{
+            } else {
               chartLabels.push("غير معروف");
             }
           }
@@ -231,14 +236,14 @@ export class OwnershipStatisticsComponent implements OnInit {
   applyFilter(): void {
     console.log(this.fromDate);
     console.log(this.fromDate + " " + this.toDate + " " + this.selectedPropertyType);
-    let obj ={};
+    let obj = {};
     if (this.fromDate || this.toDate) {
-      obj["type"]="period";
+      obj["type"] = "period";
       if (this.fromDate) {
-        obj["from"] =this.fromDate;
+        obj["from"] = this.fromDate;
       }
       if (this.toDate) {
-        obj["to"] =this.toDate;
+        obj["to"] = this.toDate;
       }
     }
     // let obj = {
@@ -250,7 +255,7 @@ export class OwnershipStatisticsComponent implements OnInit {
     // if (this.selectedPropertyType) {
     //   obj["landType"] = this.selectedPropertyType.trim();
     // }
-    
+
     this.loadOwnershipLandData(obj);
 
   }

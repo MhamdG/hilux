@@ -23,10 +23,10 @@
   display: flex; justify-content: center; gap: 16px; margin: 20px 0;
 }
 .buttons-container button {
-  padding: 8px 16px; background:#f0f0f0; border:1px solid #ddd;
+  padding: 8px 16px; background:#fff; border:1px solid #ddd;
   border-radius:4px; cursor:pointer;
 }
-.buttons-container button:hover { background:#e0e0e0; }
+.buttons-container button:hover { background:#fff; }
 .buttons-container h3 { margin:0; }
 
 /* Date filter */
@@ -71,7 +71,7 @@
 
 /* Footer (inside first card) */
 .footer-section {
-  padding:15px; margin:15px 0; background:#f5f5f5; border-radius:8px; text-align:center;
+  padding:15px; margin:15px 0; background:#fff; border-radius:8px; text-align:center;
 }
 .footer-section h2 { margin-bottom:15px; color:#333; }
 .property-types { display:flex; justify-content:center; }
