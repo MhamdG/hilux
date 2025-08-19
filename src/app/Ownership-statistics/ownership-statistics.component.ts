@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,HostListener } from '@angular/core';
 import { ChartType, ChartOptions } from 'chart.js';
 import { LookupsService } from '../shared/lookups.service';
 // import { LookupsService } from '../../assets/ownershipLand/';
+import { HttpParams } from '@angular/common/http';
 
 interface StatCard {
   title: string;
@@ -56,16 +57,14 @@ export class OwnershipStatisticsComponent implements OnInit {
     "#6EDE8A", "#92E6A7", "#87EDC5",
   ];
   colorsEtisalat: string[] = [
-    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
-    "#C71F37", "#DA1E37",
-    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
-    "#C71F37", "#DA1E37",
-    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
-    "#C71F37", "#DA1E37",
-    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
-    "#C71F37", "#DA1E37",
-    "#641220", "#6E1423", "#85182A", "#A11D33", "#A71E34", "#B21E35", "#BD1F36",
-    "#C71F37", "#DA1E37",
+    "#641220", "#6E1423", "#6E1423", "#A11D33", "#A11D33", "#A11D33", "#A71E34",
+    "#B21E35", "#BD1F36","#C71F37", "#DA1E37", "#E01E37", 
+    "#641220", "#6E1423", "#6E1423", "#A11D33", "#A11D33", "#A11D33", "#A71E34",
+    "#B21E35", "#BD1F36","#C71F37", "#DA1E37", "#E01E37", 
+    "#641220", "#6E1423", "#6E1423", "#A11D33", "#A11D33", "#A11D33", "#A71E34",
+    "#B21E35", "#BD1F36","#C71F37", "#DA1E37", "#E01E37", 
+    "#641220", "#6E1423", "#6E1423", "#A11D33", "#A11D33", "#A11D33", "#A71E34",
+    "#B21E35", "#BD1F36","#C71F37", "#DA1E37", "#E01E37", 
   ];
   colorsEtihad: string[] = [
     "#03045E", "#023E8A", "#0077B6", "#0096C7", "#00B4D8", "#48CAE4", "#90E0EF",
@@ -84,7 +83,9 @@ export class OwnershipStatisticsComponent implements OnInit {
 
   /* Footer-section (dropdown) */
   footerTitle = 'نوع العقار';
-  selectedPropertyType = '';
+  // selectedPropertyType = '';
+  selectedPropertyType: string[] = [];
+  dropdownOpen = false;
   propertyTypes: any;
   responsData: any;
   cardEtisalat: any;
@@ -96,8 +97,40 @@ export class OwnershipStatisticsComponent implements OnInit {
     this.loadOwnershipLandTypes();
     this.loadOwnershipLandData({});
   }
+ 
+  // @HostListener('document:click', ['$event'])
+  // toggleDropdown(event: Event) {
+  //   this.dropdownOpen = false;
+  // }
+  toggleDropdown(event?: Event) {
+    if (event) {
+      event.stopPropagation(); // prevent bubbling to document
+    }
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.custom-multiselect')) {
+      this.dropdownOpen = false;
+    }
+  }
 
+  onCheckboxChange(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    const value = checkbox.value;
 
+    if (checkbox.checked) {
+      if (!this.selectedPropertyType.includes(value)) {
+        this.selectedPropertyType.push(value);
+      }
+    } else {
+      this.selectedPropertyType = this.selectedPropertyType.filter(v => v !== value);
+    }
+  }
+  // onClickOutside(event: Event) {
+  //   this.dropdownOpen = false;
+  // }
 
   loadOwnershipLandTypes(): void {
     this.lookupsService.loadOwnershipLandTypes().subscribe((data) => {
@@ -234,29 +267,25 @@ export class OwnershipStatisticsComponent implements OnInit {
     this.loadOwnershipLandData(obj);
   }
   applyFilter(): void {
-    console.log(this.fromDate);
-    console.log(this.fromDate + " " + this.toDate + " " + this.selectedPropertyType);
-    let obj = {};
+    let httpParams = new HttpParams();
+  
     if (this.fromDate || this.toDate) {
-      obj["type"] = "period";
+      httpParams = httpParams.set('type', 'period');
       if (this.fromDate) {
-        obj["from"] = this.fromDate;
+        httpParams = httpParams.set('from', this.fromDate);
       }
       if (this.toDate) {
-        obj["to"] = this.toDate;
+        httpParams = httpParams.set('to', this.toDate);
       }
     }
-    // let obj = {
-    //   type: "period",
-    //   from: this.fromDate,
-    //   to: this.toDate,
-    //   landType: this.selectedPropertyType.trim()
-    // };
-    // if (this.selectedPropertyType) {
-    //   obj["landType"] = this.selectedPropertyType.trim();
-    // }
-
-    this.loadOwnershipLandData(obj);
-
+  
+    if (this.selectedPropertyType?.length) {
+      this.selectedPropertyType.map(type => type.trim()).forEach(type => {
+        httpParams = httpParams.append('landType', type);
+      });
+    }
+  
+    this.loadOwnershipLandData(httpParams); // ✅ now it’s correct
   }
+  
 }

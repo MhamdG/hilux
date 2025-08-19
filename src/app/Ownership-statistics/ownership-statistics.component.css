@@ -20,7 +20,7 @@
 
 /* Top buttons */
 .buttons-container {
-  display: flex; justify-content: center; gap: 16px; margin: 20px 0;
+  display: flex; justify-content: center; gap: 16px; 
 }
 .buttons-container button {
   padding: 8px 16px; background:#fff; border:1px solid #ddd;
@@ -71,7 +71,7 @@
 
 /* Footer (inside first card) */
 .footer-section {
-  padding:15px; margin:15px 0; background:#fff; border-radius:8px; text-align:center;
+  padding:15px;  background:#fff; border-radius:8px; text-align:center;
 }
 .footer-section h2 { margin-bottom:15px; color:#333; }
 .property-types { display:flex; justify-content:center; }
@@ -127,16 +127,16 @@
 }
 
 .card-logo {
-  width: 50px;
+  width: 70px;
   height: auto;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .footer-section.inside-card {
   display: flex;
   align-items: center;
   justify-content: space-between; /* or flex-start if you want tight alignment */
   gap: 12px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   flex-wrap: wrap; /* Optional: prevents overflow on smaller screens */
 }
 
@@ -216,4 +216,43 @@
   white-space: nowrap;
   font-size: 14px;
 }
+
+
+
+
+.custom-multiselect {
+  position: relative;
+  width: 250px;
+  font-family: Arial;
+}
+
+.select-box {
+  border: 1px solid #ccc;
+  padding: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ccc;
+  background: white;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
 
