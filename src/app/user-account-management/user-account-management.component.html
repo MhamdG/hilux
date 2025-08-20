@@ -89,9 +89,9 @@
 
           <hr />
 
-          <div class="resultsWrapper rtl" *ngIf="response">
+          <div class="resultsWrapper rtl">
             <div class="searchBlockages">
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-sm-6">
                   <label i18n="@@legalBlocksResultsLegalBlockages">Legal Blockages:</label>
                 </div>
@@ -185,33 +185,29 @@
                     </tbody>
                   </table>
                 </div>
-              </div>
+              </div> -->
 
               <div class="card">
                 <div class="card-header border-0">
-                  <div class="card-tools">
+                  <!-- <div class="card-tools">
                     <button type="button" class="btn btn-sm" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
                     </button>
-                  </div>
-                  <h3 class="card-title float-right font-weight-bold" i18n="@@legalBlocksResultsPreviousLegalBlockages">
-                    Previous Legal Blockages</h3>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold" >
+                    بيانات المستخم </h3>
                 </div>
                 <div class="card-body custom-table-class">
                   <table class="table table-bordered landTable bg-light-red table-responsive d-table">
                     <thead>
                       <tr class="bg-grey">
-                        <th>#</th>
-                        <th i18n="@@legalBlocksResultsTableBlockageType">Blockage Type</th>
-                        <th i18n="@@legalBlocksResultsTableBlockEntityNameAr">Block Entity Name Ar</th>
-                        <th i18n="@@legalBlocksResultsTableRemarks">Remarks</th>
-                        <th i18n="@@legalBlocksResultsTableAttachments">Attachments</th>
-                        <th i18n="@@legalBlocksResultsTableCreatedAtModifiedAt">Created At / Modified At</th>
-                        <th i18n="@@legalBlocksResultsTableCreatedByModifiedBy">Created By / Modified By</th>
-                        <th i18n="@@legalBlocksResultsTableUnblockRemarks">Unblock Remarks</th>
-                        <th i18n="@@legalBlocksResultsTableEndedAt">Ended At</th>
-                        <th i18n="@@legalBlocksResultsTableEndedBy">Ended By</th>
-                        <!-- <th i18n="@@legalBlocksResultsTableActions" >Actions</th> -->
+                        <th>أسم المستخدم</th>
+                        <th >الرقم المعرف</th>
+                        <th >البريد الألكتروني</th>
+                        <th >رقم الهاتف</th>
+                        <th >الجنسية</th>
+                        <th >حالة المستخدم</th>
+                      
                       </tr>
                     </thead>
                     <tbody>
@@ -220,22 +216,11 @@
                         <td>{{ previous_block_detail?.typeAr }}</td>
                         <td>{{ previous_block_detail?.blockEntityNameAr }}</td>
                         <td>{{ previous_block_detail?.remarks }}</td>
-                        <td>
-                          <ng-container *ngFor="let attachment of getAttachments(previous_block_detail?.attachments)">
-                            <li class="no-style-attachment" *ngIf="attachment.link">
-                              <a [href]="attachment.link" target="_blank">
-                                {{attachment.name}}
-                              </a>
-                            </li>
-                          </ng-container>
-                        </td>
-
+                      
                         <td class="line-break-class">{{ getCreatesAtModifiedAt(previous_block_detail) }}</td>
                         <td class="line-break-class">{{ getCreatesByModifiedBy(previous_block_detail) }}</td>
 
-                        <td>{{ previous_block_detail?.endRemarks }}</td>
-                        <td>{{ previous_block_detail?.endedAt }}</td>
-                        <td>{{ previous_block_detail?.endedByNameAr }}</td>
+                     
                         <!-- <td>
                           <div class="d-flex">
                             <span class="fs-30 p-1 icon-pointer" (click)="deleteBlockage(previous_block_detail)">
@@ -246,6 +231,77 @@
                             </span>
                           </div>
                         </td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+
+              <div class="card">
+                <div class="card-header border-0">
+                  <div class="card-tools">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
+                   >أضافة مستخدم</button>
+                  </div>
+                  <h3 class="card-title float-right font-weight-bold" >
+                    حالة المستخدم الفعالة  </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>نوع المستخدم</th>
+                        <th >أسم الجهة</th>
+                        <th >إجراءات</th>
+                      
+                      
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let previous_block_detail of getPreviouslyOwnedBlocks(response); let i = index">
+                        <td>{{ i + 1}}</td>
+                        <td>{{ previous_block_detail?.typeAr }}</td>
+                        <td>{{ previous_block_detail?.blockEntityNameAr }}</td>
+                      
+                     
+                      
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+
+              <div class="card">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
+                   >أضافة مستخدم</button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold" >
+                    حالة المستخدم الغير الفعالة  </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>نوع المستخدم</th>
+                        <th >أسم الجهة</th>
+                        <th >تاريخ أنشاء الملف</th>
+                        <th >تاريخ إالغاء الملف</th>
+                      
+                      
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let previous_block_detail of getPreviouslyOwnedBlocks(response); let i = index">
+                        <td>{{ i + 1}}</td>
+                        <td>{{ previous_block_detail?.typeAr }}</td>
+                        <td>{{ previous_block_detail?.blockEntityNameAr }}</td>
+                      
+                     
+                      
                       </tr>
                     </tbody>
                   </table>
