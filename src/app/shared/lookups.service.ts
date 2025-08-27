@@ -66,6 +66,12 @@ export class LookupsService {
   loadusersname(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/userscustomers`, params);
   }
+  loaduserTypes(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/listOfProfiles`, params);
+  }
+  loadEntityName(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/companies`, params);
+  }
   loaddevelopersStatusTypes(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/developersStatusTypes`, params);
   }

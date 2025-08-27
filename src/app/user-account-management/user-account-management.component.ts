@@ -9,6 +9,7 @@ import { FieldsService } from '../shared/fields.service';
 import * as _ from 'lodash';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { LookupsService } from '../shared/lookups.service';
+import {  HttpHeaders, HttpParams } from '@angular/common/http';
 
 interface SearchParams {
   query?: string;
@@ -46,12 +47,28 @@ export class UserAccountManagementComponent implements OnInit {
   unitsOptions: any;
   ownersOptions: Observable<any>;
   response: any;
+  response2: any;
   blockageTypesOptions: any;
   blockageEntitiesOptions: Observable<any>;
   blockageEntitySearchInput$ = new Subject<string>();
   blockageEntityOptionsLoading = false;
   searchby: any;
   hideAttachmentsControl;
+  showModal = false;
+  userType = '';
+  entityName = '';
+  userTypeOptions: Observable<any>;
+  entityNamesOptions: Observable<any>;
+  userTypeSearchInput$ = new Subject<string>();
+  entutyNameSearchInput$ = new Subject<string>();
+  userTypeDataOptionsLoading = false;
+  entutyNameDataOptionsLoading = false;
+  resMsg: any;
+  resUrl: any;
+  attachment :any;
+  remarksValue :any;
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -71,30 +88,126 @@ export class UserAccountManagementComponent implements OnInit {
     this.loadLandsoptions();
     this.loadOldLandsoptions();
     this.loadBlockageEntities();
+    this.loaduserTypesOptions();
+    this.loadentityNameOptions();
 
-    this.route.queryParams.subscribe(async (params) => {
-      if (!_.isEqual(params, {})) {
-        this.formData.propertyId = params.propertyId;
-        await this.searchData(this.formData);
+    // this.route.queryParams.subscribe(async (params) => {
+    //   if (!_.isEqual(params, {})) {
+    //     this.formData.propertyId = params.propertyId;
+    //     await this.searchData(this.formData);
+    //   }
+    // });
+  }
+  openModal() {
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
+  handleFileInput(event: Event, fileInput: HTMLInputElement): void {
+    this.resMsg = null;
+    this.resUrl = null;
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.uploadFile(file, fileInput);
+    } else {
+      console.error('No file selected!');
+    }
+  }
+  uploadFile(file: File, fileInput: HTMLInputElement): void {
+    const formData = new FormData();
+    formData.append('excelFile', file);
+
+    const headers = new HttpHeaders({
+      Cookie: 'your_cookie_value_here' // Replace with actual cookie if needed
+    });
+
+    // const uploadUrl = '${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel';
+
+    this.http.post<any>(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel`, formData).subscribe({
+      next: (response) => {
+        if (response && response.status == "error") {
+          this.resMsg = "حدث خطا يرجي تحميل الملف لمعرفة التفاصيل ";
+          this.resUrl = response.message;
+        } else if (response && response.status == "success") {
+          this.resMsg = "تم تحميل الملف بنجاح ";
+          fileInput.value = '';
+          this.attachment =response;
+       } else {
+          this.resMsg = "حدث خطا ما من غضلك حاول لاحقا";
+          fileInput.value = '';
+        }
+        console.log('File uploaded successfully:', response);
+      },
+      error: (err) => {
+        console.error('File upload failed:', err);
       }
     });
   }
 
-  searchData(formData: any) {
-    console.log(formData);
-    // this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/getByPropertyId/${this.getPropertyId(formData)}`)
-    //   .subscribe((data: any) => {
-    //     if (data.status == 'success') {
-    //       this.response = data.data;
-    //     } else {
-    //       this.formErrors = data.data;
-    //       this.toastr.error(JSON.stringify(data.message), 'Error');
-    //     }
-    //   }, (error) => {
-    //     this.toastr.error('Something went Wrong', 'Error');
-    //     this.router.navigate(['error']);
-    //   });
+  submitForm() {
+    console.log('User Type:', this.userType);
+    console.log('Entity Name:', this.entityName);
+    // 👉 here you can send values to API
+    let obj = {
+      userId: this.response.userId,
+      profileId: this.userType,
+      ownerId: this.entityName,
+      remarks:this.remarksValue,
+      attachment:this.attachment
+    }
+    const body = new URLSearchParams();
+    body.set('data', JSON.stringify(obj));
+    this.http.post(
+      `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/ApiAddUserProfile`,
+      body.toString(),
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }
+    ).subscribe((data: any) => {
+      console.log(".................");
+      console.log(data.data);
+      if (data.status === 'success') {
+        this.response2 = data.data;
+        this.searchData(this.formData);
+      }
+    });
+    this.closeModal();
   }
+
+  searchData(formData: any) {
+    let obj: any = {};
+
+    if (formData.email) {
+      obj.email = formData.email;
+    } else if (formData.customerId) {
+      obj.customerId = formData.customerId;
+    }
+    if (formData.emiratesId) {
+      obj.emiratesId = formData.emiratesId;
+    }
+
+    const body = new URLSearchParams();
+    body.set('data', JSON.stringify(obj));
+
+    this.http.post(
+      `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/Search`,
+      body.toString(),
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }
+    ).subscribe((data: any) => {
+      console.log(".................");
+      console.log(data.data);
+      if (data.status === 'success') {
+        this.response = data.data;
+      }
+    });
+  }
+
 
   loadUnitsOptions() {
     this.lookupsService.loadUnitsOptions({ projectId: this.formData.projectId })
@@ -113,6 +226,36 @@ export class UserAccountManagementComponent implements OnInit {
           return this.lookupsService.loadusersname({ term }).pipe(
             catchError(() => of([])), // empty list on error
             tap(() => this.developerDataOptionsLoading = false)
+          )
+        })
+      )
+    );
+  }
+  loaduserTypesOptions() {
+    this.userTypeOptions = concat(
+      of([]), // default items
+      this.userTypeSearchInput$.pipe(
+        distinctUntilChanged(),
+        tap(() => this.userTypeDataOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loaduserTypes({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.userTypeDataOptionsLoading = false)
+          )
+        })
+      )
+    );
+  }
+  loadentityNameOptions() {
+    this.entityNamesOptions = concat(
+      of([]), // default items
+      this.entutyNameSearchInput$.pipe(
+        distinctUntilChanged(),
+        tap(() => this.entutyNameDataOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.loadEntityName({ term }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.entutyNameDataOptionsLoading = false)
           )
         })
       )
@@ -203,6 +346,14 @@ export class UserAccountManagementComponent implements OnInit {
   onUsernameTyping(term: string) {
     // temporarily assign search term so disable logic works
     this.formData.customerId = term?.trim() || null;
+  }
+  onUserTypeTyping(term: string) {
+    // temporarily assign search term so disable logic works
+    this.userType = term?.trim() || null;
+  }
+  onEntityNameTyping(term: string) {
+    // temporarily assign search term so disable logic works
+    this.entityName = term?.trim() || null;
   }
 
 
@@ -513,7 +664,7 @@ export class UserAccountManagementComponent implements OnInit {
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
-          this.searchData(formData);
+          // this.searchData(formData);
           this.addBlockData = {};
         } else {
           this.formErrors = data.data;
@@ -606,7 +757,7 @@ export class UserAccountManagementComponent implements OnInit {
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
-          this.searchData(formData);
+          // this.searchData(formData);
           this.addBlockData = {};
         } else {
           this.formErrors = data.data;
@@ -626,7 +777,7 @@ export class UserAccountManagementComponent implements OnInit {
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
-          this.searchData(formData);
+          // this.searchData(formData);
           this.addBlockData = {};
         } else {
           this.formErrors = data.data;

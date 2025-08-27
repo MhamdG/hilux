@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-12 text-center text-dark">
-          <h1>إدارة حساب المستخدميين</h1>
+          <h1>إدارة حسابات المستخدمين</h1>
         </div>
       </div>
     </div><!-- /.container-fluid -->
@@ -38,8 +38,8 @@
                           [loading]="developerDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
                           typeToSearchText="Please enter 1 or more characters" #developer="ngModel"
                           [disabled]="isDisabled('customerId')" (keyup)="setSearchType('developerId', $event)"
-                          (search)="onUsernameTyping($event)"
-                          (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
+                          (search)="onUsernameTyping($event)" (blur)="checkTypeAndValues('developerId')"
+                          (change)="resetProjectAndUnit()">
                         </ng-select>
                       </div>
                     </div>
@@ -47,13 +47,12 @@
 
                   <div class="col-sm-4">
                     <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">البريد الإلكتؤوني
+                      <label class="col-sm-3 col-form-label">البريد الإلكتروني
                       </label>
                       <div class="col-sm-9">
                         <input type="text" class="form-control" name="email" [(ngModel)]="formData.email"
-                           [disabled]="isDisabled('email')"
-                          placeholder="أكتب البريد الألطنروني" (blur)="checkTypeAndValues('landId')"
-                          (keyup)="setSearchType('landId', $event)">
+                          [disabled]="isDisabled('email')" placeholder=" البريد الإلكتروني                          "
+                          (blur)="checkTypeAndValues('landId')" (keyup)="setSearchType('landId', $event)">
 
                       </div>
                     </div>
@@ -66,7 +65,7 @@
                       </label>
                       <div class="col-sm-9">
                         <input type="text" class="form-control" name="emiratesId" [(ngModel)]="formData.emiratesId"
-                          [disabled]="isDisabled('emiratesId')" placeholder="أكتب رقم الهوية "
+                          [disabled]="isDisabled('emiratesId')" placeholder=" رقم الهوية "
                           (blur)="checkTypeAndValues('landId')" (keyup)="setSearchType('landId', $event)">
                       </div>
                     </div>
@@ -89,7 +88,7 @@
 
           <hr />
 
-          <div class="resultsWrapper rtl">
+          <div class="resultsWrapper rtl" *ngIf="response">
             <div class="searchBlockages">
               <!-- <div class="row">
                 <div class="col-sm-6">
@@ -194,33 +193,33 @@
                       <i class="fas fa-minus"></i>
                     </button>
                   </div> -->
-                  <h3 class="card-title float-right font-weight-bold" >
-                    بيانات المستخم </h3>
+                  <h3 class="card-title float-right font-weight-bold">
+                    بيانات المستخدم </h3>
                 </div>
                 <div class="card-body custom-table-class">
                   <table class="table table-bordered landTable bg-light-red table-responsive d-table">
                     <thead>
                       <tr class="bg-grey">
                         <th>أسم المستخدم</th>
-                        <th >الرقم المعرف</th>
-                        <th >البريد الألكتروني</th>
-                        <th >رقم الهاتف</th>
-                        <th >الجنسية</th>
-                        <th >حالة المستخدم</th>
-                      
+                        <th>الرقم المعرف</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>رقم الهاتف</th>
+                        <th>الجنسية</th>
+                        <th>حالة المستخدم</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr *ngFor="let previous_block_detail of getPreviouslyOwnedBlocks(response); let i = index">
-                        <td>{{ i + 1}}</td>
-                        <td>{{ previous_block_detail?.typeAr }}</td>
-                        <td>{{ previous_block_detail?.blockEntityNameAr }}</td>
-                        <td>{{ previous_block_detail?.remarks }}</td>
-                      
-                        <td class="line-break-class">{{ getCreatesAtModifiedAt(previous_block_detail) }}</td>
-                        <td class="line-break-class">{{ getCreatesByModifiedBy(previous_block_detail) }}</td>
+                    <tbody style="background-color: #fff;">
+                      <tr>
+                        <td>{{response.customerNameAr}}</td>
+                        <td>{{response.emiratesId }}</td>
+                        <td>{{response.email}}</td>
+                        <td>{{response.phoneNumber}}</td>
+                        <td>{{response.nationality}}</td>
+                        <td><span *ngIf="response.status == 1">فعال </span>
+                          <span *ngIf="response.status == 0">غير فعال </span>
+                        </td>
 
-                     
+
                         <!-- <td>
                           <div class="d-flex">
                             <span class="fs-30 p-1 icon-pointer" (click)="deleteBlockage(previous_block_detail)">
@@ -241,33 +240,45 @@
               <div class="card">
                 <div class="card-header border-0">
                   <div class="card-tools">
-                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
-                   >أضافة مستخدم</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="openModal()">أضافة
+                      مستخدم</button>
                   </div>
-                  <h3 class="card-title float-right font-weight-bold" >
-                    حالة المستخدم الفعالة  </h3>
+                  <h3 class="card-title float-right font-weight-bold">
+                    ملفات المستخدم الفعالة </h3>
                 </div>
                 <div class="card-body custom-table-class">
                   <table class="table table-bordered landTable bg-light-red table-responsive d-table">
                     <thead>
                       <tr class="bg-grey">
                         <th>نوع المستخدم</th>
-                        <th >أسم الجهة</th>
-                        <th >إجراءات</th>
-                      
-                      
+                        <th>أسم الجهة</th>
+                        <th>الملاحظات</th>
+                        <th>المرفقات</th>
+                        <th>إجراءات</th>
+
+
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr *ngFor="let previous_block_detail of getPreviouslyOwnedBlocks(response); let i = index">
-                        <td>{{ i + 1}}</td>
-                        <td>{{ previous_block_detail?.typeAr }}</td>
-                        <td>{{ previous_block_detail?.blockEntityNameAr }}</td>
-                      
-                     
-                      
-                      </tr>
+                    <tbody style="background-color: #fff;">
+                      <ng-container *ngFor="let item of response.profiles; let i = index">
+                        <tr *ngIf="item.status == 1">
+                          <td>{{ item.nameAr}}</td>
+                          <td>{{ item.companyNameAr}}</td>
+                          <td>{{ item?.remarks }}</td>
+                          <td>
+                            <li class="no-style-attachment" *ngIf="item.attachments">
+                              <a [href]="item.attachments" target="_blank">
+                                <span class="fas fa-paperclip"></span>
+                              </a>
+                            </li>
+                          </td>
+                          <td>
+                            <h5 style="font-weight: bold;color: red;">X</h5>
+                          </td>
+                        </tr>
+                      </ng-container>
                     </tbody>
+
                   </table>
                 </div>
               </div>
@@ -279,30 +290,42 @@
                     <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
                    >أضافة مستخدم</button>
                   </div> -->
-                  <h3 class="card-title float-right font-weight-bold" >
-                    حالة المستخدم الغير الفعالة  </h3>
+                  <h3 class="card-title float-right font-weight-bold">
+                    ملفات المستخدم الغير الفعالة </h3>
                 </div>
                 <div class="card-body custom-table-class">
-                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table text-center">
                     <thead>
                       <tr class="bg-grey">
                         <th>نوع المستخدم</th>
-                        <th >أسم الجهة</th>
-                        <th >تاريخ أنشاء الملف</th>
-                        <th >تاريخ إالغاء الملف</th>
-                      
-                      
+                        <th>أسم الجهة</th>
+                        <th>الملاحظات</th>
+                        <th>المرفقات</th>
+                        <th>تاريخ أنشاء الملف</th>
+                        <th>تاريخ إالغاء الملف</th>
+
+
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr *ngFor="let previous_block_detail of getPreviouslyOwnedBlocks(response); let i = index">
-                        <td>{{ i + 1}}</td>
-                        <td>{{ previous_block_detail?.typeAr }}</td>
-                        <td>{{ previous_block_detail?.blockEntityNameAr }}</td>
-                      
-                     
-                      
-                      </tr>
+                    <tbody style="background-color: #fff;">
+                      <ng-container *ngFor="let item of response.profiles; let i = index">
+                        <tr *ngIf="item.status == 0">
+                          <td>{{ item.nameAr}}</td>
+                          <td>{{ item.companyNameAr}}</td>
+                          <td>{{ item?.remarks}}</td>
+                          <td>
+                            <li class="no-style-attachment" *ngIf="item.attachments">
+                              <a [href]="item.attachments" target="_blank">
+                                <span class="fas fa-paperclip"></span>
+                              </a>
+                            </li>
+                          </td>
+                          <td>{{ item.createdAt}}</td>
+                          <td>{{ item.modifiedAt}}</td>
+
+
+                        </tr>
+                      </ng-container>
                     </tbody>
                   </table>
                 </div>
@@ -312,6 +335,91 @@
           <div class="row" *ngIf="!response">
             <div class="col-sm-12 text-center">
               <h4>لا توجد بيانات لهذا البحث ، حاول مرة أخرى عن طريق تغيير معايير البحث</h4>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show d-block': showModal}">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header bg-purple text-white">
+                <h5 class="modal-title">إضافة ملف مستخدم</h5>
+                <button type="button" class="close text-white" (click)="closeModal()">
+                  <span>&times;</span>
+                </button>
+              </div>
+
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <form #userForm="ngForm">
+
+                  <div class="form-row align-items-center">
+
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">نوع المستخدم *</label>
+                      <!-- <select class="form-control w-75" [(ngModel)]="userType" name="userType">
+                        <option value="">اختر</option>
+                        <option value="admin">مدير</option>
+                        <option value="user">مستخدم</option>
+                      </select> -->
+                      <ng-select class="form-control w-75" [items]="userTypeOptions | async" required="true"
+                        name="userType" [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
+                        bindLabel="value.ar" [minTermLength]="1" bindValue="key" [loading]="userTypeDataOptionsLoading"
+                        notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
+                        (search)="onUserTypeTyping($event)" (blur)="checkTypeAndValues('developerId')"
+                        (change)="resetProjectAndUnit()">
+                      </ng-select>
+                    </div>
+
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">اسم الجهة *</label>
+                      <!-- <input type="text" class="form-control w-75" [(ngModel)]="entityName" name="entityName"
+                        placeholder="ادخل اسم الجهة">
+                      </select> --> -->
+                      <ng-select class="form-control w-75" [items]="entityNamesOptions | async" required="true"
+                        name="entityName" [hideSelected]="true" [(ngModel)]="entityName"
+                        [typeahead]="entutyNameSearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                        [loading]="entutyNameDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                        typeToSearchText="Please enter 1 or more characters" (search)="onEntityNameTyping($event)"
+                        (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
+                      </ng-select>
+                    </div>
+
+                  </div>
+                  <div class="form-row align-items-center">
+
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">ملاحظات</label>
+                        <input type="text" class="form-control w-75" 
+                        [(ngModel)]="remarksValue" name="remarksValue"
+                        placeholder="ادخل اسم الجهة" />
+                     
+                    </div>
+
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">المرفقات</label>
+                      
+                      <input type="file" id="file" #fileInput (change)="handleFileInput($event,fileInput)" />
+                    
+                    </div>
+
+                  </div>
+
+                </form>
+              </div>
+
+              <!-- Modal Footer -->
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">إغلاق</button>
+                <button type="button" class="btn btn-primary" (click)="submitForm()">إرسال</button>
+              </div>
+
             </div>
           </div>
         </div>
