@@ -262,18 +262,49 @@
                     <tbody style="background-color: #fff;">
                       <ng-container *ngFor="let item of response.profiles; let i = index">
                         <tr *ngIf="item.status == 1">
-                          <td>{{ item.nameAr}}</td>
-                          <td>{{ item.companyNameAr}}</td>
-                          <td>{{ item?.remarks }}</td>
                           <td>
-                            <li class="no-style-attachment" *ngIf="item.attachments">
-                              <a [href]="item.attachments" target="_blank">
-                                <span class="fas fa-paperclip"></span>
-                              </a>
-                            </li>
+                            <span *ngIf="item.nameAr">
+                              {{ item.nameAr}}
+                            </span>
+                            <span *ngIf="! item.nameAr">
+                              لا توجد بيانات
+                            </span>
                           </td>
                           <td>
-                            <h5 style="font-weight: bold;color: red;">X</h5>
+
+                            <span *ngIf="item.companyNameAr">
+                              {{ item.companyNameAr}}
+                            </span>
+                            <span *ngIf="! item.companyNameAr">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.remarks">
+                              {{ item.remarks}}
+                            </span>
+                            <span *ngIf="! item.remarks">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.attachments">
+                              <a [href]="item.attachments" target="_blank">
+                                <span style="color: gray;" class="fas fa-paperclip"></span>
+                              </a>
+                            </span>
+                            <span *ngIf="! item.attachments">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <!-- <span (click)="deleteBlockage(current_block_detail)">
+                              <h5 style="font-weight: bold;color: red;">X</h5>
+                            </span> -->
+                            <span class="fs-30 p-1 icon-pointer" (click)="openDeleteModal(item)">
+                              <!-- (click)="deleteBlockage(item)"> -->
+                              <a> <i class="fas fa-times red"></i> </a>
+                            </span>
                           </td>
                         </tr>
                       </ng-container>
@@ -310,18 +341,56 @@
                     <tbody style="background-color: #fff;">
                       <ng-container *ngFor="let item of response.profiles; let i = index">
                         <tr *ngIf="item.status == 0">
-                          <td>{{ item.nameAr}}</td>
-                          <td>{{ item.companyNameAr}}</td>
-                          <td>{{ item?.remarks}}</td>
                           <td>
-                            <li class="no-style-attachment" *ngIf="item.attachments">
-                              <a [href]="item.attachments" target="_blank">
-                                <span class="fas fa-paperclip"></span>
-                              </a>
-                            </li>
+                            <span *ngIf="item.nameAr">
+                              {{ item.nameAr}}
+                            </span>
+                            <span *ngIf="! item.nameAr">
+                              لا توجد بيانات
+                            </span>
                           </td>
-                          <td>{{ item.createdAt}}</td>
-                          <td>{{ item.modifiedAt}}</td>
+                          <td>
+                            <span *ngIf="item.companyNameAr">
+                              {{ item.companyNameAr}}
+                            </span>
+                            <span *ngIf="! item.companyNameAr">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.remarks">
+                              {{ item.remarks}}
+                            </span>
+                            <span *ngIf="! item.remarks">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.attachments">
+                              <a [href]="item.attachments" target="_blank">
+                                <span style="color: gray;" class="fas fa-paperclip"></span>
+                              </a>
+                            </span>
+                            <span *ngIf="! item.attachments">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.createdAt">
+                              {{ item.createdAt}}
+                            </span>
+                            <span *ngIf="! item.createdAt">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.modifiedAt">
+                              {{ item.modifiedAt}}
+                            </span>
+                            <span *ngIf="! item.modifiedAt">
+                              لا توجد بيانات
+                            </span>
+                          </td>
 
 
                         </tr>
@@ -395,18 +464,15 @@
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">ملاحظات</label>
-                        <input type="text" class="form-control w-75" 
-                        [(ngModel)]="remarksValue" name="remarksValue"
+                      <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
                         placeholder="ادخل اسم الجهة" />
-                     
+
                     </div>
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">المرفقات</label>
-                      
-                      <input type="file" id="file" #fileInput (change)="handleFileInput($event,fileInput)" />
-                    
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
                     </div>
 
                   </div>
@@ -418,6 +484,90 @@
               <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">إغلاق</button>
                 <button type="button" class="btn btn-primary" (click)="submitForm()">إرسال</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- delete Modal -->
+        <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show d-block': showDeleteModal}">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header bg-purple text-white">
+                <h5 class="modal-title">حذف ملف مستخدم</h5>
+                <button type="button" class="close text-white" (click)="closeModal()">
+                  <span>&times;</span>
+                </button>
+              </div>
+
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <form #userForm="ngForm">
+
+                  <div class="form-row align-items-center">
+
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">نوع المستخدم *</label>
+
+                      <!-- <ng-select class="form-control w-75" [items]="userTypeOptions | async" required="true"
+                        name="userType" [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
+                        bindLabel="value.ar" [minTermLength]="1" bindValue="key" [loading]="userTypeDataOptionsLoading"
+                        notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
+                        (search)="onUserTypeTyping($event)" (blur)="checkTypeAndValues('developerId')"
+                        (change)="resetProjectAndUnit()">
+                      </ng-select> -->
+                      <input type="text" class="form-control w-75" 
+                      [(ngModel)]="currectItem.nameAr"
+                      name="userType"
+                        placeholder="لا يوجد نتائج للبحث" readonly />
+                    </div>
+
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">اسم الجهة *</label>
+
+                      <!-- <ng-select class="form-control w-75" [items]="entityNamesOptions | async" required="true"
+                        name="entityName" [hideSelected]="true" [(ngModel)]="entityName"
+                        [typeahead]="entutyNameSearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                        [loading]="entutyNameDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                        typeToSearchText="Please enter 1 or more characters" (search)="onEntityNameTyping($event)"
+                        (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
+                      </ng-select> -->
+                      <input type="text" class="form-control w-75" 
+                      [(ngModel)]="currectItem.companyNameAr"
+                      name="companyNameAr"
+                        placeholder="لا يوجد نتائج للبحث" readonly />
+                    </div>
+
+                  </div>
+                  <div class="form-row align-items-center">
+
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">ملاحظات</label>
+                      <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
+                        placeholder="ادخل اسم الجهة" />
+
+                    </div>
+
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">المرفقات</label>
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+                    </div>
+
+                  </div>
+
+                </form>
+              </div>
+
+              <!-- Modal Footer -->
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">إغلاق</button>
+                <button type="button" class="btn btn-primary" (click)="submitDeleteForm()">إرسال</button>
               </div>
 
             </div>

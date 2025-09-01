@@ -9,7 +9,7 @@ import { FieldsService } from '../shared/fields.service';
 import * as _ from 'lodash';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { LookupsService } from '../shared/lookups.service';
-import {  HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 
 interface SearchParams {
   query?: string;
@@ -55,6 +55,7 @@ export class UserAccountManagementComponent implements OnInit {
   searchby: any;
   hideAttachmentsControl;
   showModal = false;
+  showDeleteModal = false;
   userType = '';
   entityName = '';
   userTypeOptions: Observable<any>;
@@ -65,8 +66,11 @@ export class UserAccountManagementComponent implements OnInit {
   entutyNameDataOptionsLoading = false;
   resMsg: any;
   resUrl: any;
-  attachment :any;
-  remarksValue :any;
+  attachments: any;
+  remarksValue: any;
+  // currectItem:any;
+  currectItem: any = {}; // so it’s never undefined
+  
 
 
 
@@ -101,63 +105,77 @@ export class UserAccountManagementComponent implements OnInit {
   openModal() {
     this.showModal = true;
   }
+  openDeleteModal(item :any) {
+    this.showDeleteModal = true;
+    this.currectItem= item;
+  }
 
   closeModal() {
     this.showModal = false;
   }
-  handleFileInput(event: Event, fileInput: HTMLInputElement): void {
-    this.resMsg = null;
-    this.resUrl = null;
-    const input = event.target as HTMLInputElement;
-
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.uploadFile(file, fileInput);
-    } else {
-      console.error('No file selected!');
-    }
+  closeDeleteModal() {
+    this.showDeleteModal = false;
   }
-  uploadFile(file: File, fileInput: HTMLInputElement): void {
-    const formData = new FormData();
-    formData.append('excelFile', file);
+  //   handleFileInput(event: Event, fileInput: HTMLInputElement): void {
+  //     this.resMsg = null;
+  //     this.resUrl = null;
+  //     const input = event.target as HTMLInputElement;
 
-    const headers = new HttpHeaders({
-      Cookie: 'your_cookie_value_here' // Replace with actual cookie if needed
-    });
+  //     if (input.files && input.files.length > 0) {
+  //       const file = input.files[0];
+  //       this.uploadFile(file, fileInput);
+  //     } else {
+  //       console.error('No file selected!');
+  //     }
+  //   }
+  //   uploadFile(file: File, fileInput: HTMLInputElement): void {
+  //     const formData = new FormData();
+  //     formData.append('attachments', file);
 
-    // const uploadUrl = '${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel';
+  //   const headers = new HttpHeaders({
+  //   'Authorization': 'Bearer ' + environment.token,
+  //   // 'Cookie': 'your_cookie_value_here' // only if backend really requires it
+  // });
 
-    this.http.post<any>(`${environment.apiHost}/AjmanLandProperty/index.php/tathmeenLands/AddTathmeenByExcel`, formData).subscribe({
-      next: (response) => {
-        if (response && response.status == "error") {
-          this.resMsg = "حدث خطا يرجي تحميل الملف لمعرفة التفاصيل ";
-          this.resUrl = response.message;
-        } else if (response && response.status == "success") {
-          this.resMsg = "تم تحميل الملف بنجاح ";
-          fileInput.value = '';
-          this.attachment =response;
-       } else {
-          this.resMsg = "حدث خطا ما من غضلك حاول لاحقا";
-          fileInput.value = '';
-        }
-        console.log('File uploaded successfully:', response);
-      },
-      error: (err) => {
-        console.error('File upload failed:', err);
-      }
-    });
-  }
+  // this.http.post<any>(
+  //   `${environment.apiHost}/ajaxupload.php`,
+  //   formData,
+  //   { headers }   // ✅ attach headers here
+  // ).subscribe({
+  //   next: (response) => {
+  //     if (response && response.status === "error") {
+  //       this.resMsg = "حدث خطأ يرجى تحميل الملف لمعرفة التفاصيل";
+  //       this.resUrl = response.message;
+  //     } else if (response && response.status === "success") {
+  //       this.resMsg = "تم تحميل الملف بنجاح";
+  //       fileInput.value = '';
+  //       this.attachment = response;
+  //     } else {
+  //       this.resMsg = "حدث خطأ ما من فضلك حاول لاحقاً";
+  //       fileInput.value = '';
+  //     }
+  //     console.log('File uploaded successfully:', response);
+  //   },
+  //   error: (err) => {
+  //     console.error('File upload failed:', err);
+  //   }
+  // });
+
+  //   }
 
   submitForm() {
-    console.log('User Type:', this.userType);
-    console.log('Entity Name:', this.entityName);
+    // const uploadedUrl = this.addBlockData['attachments'];
+    // const uploadedUrl = this.addBlockData?.attachments; // ✅ safe access
+     console.log('Uploaded URL:', this.addBlockData.attachments[0]);
+     let attachments =this.addBlockData?.attachments[0];
+
     // 👉 here you can send values to API
     let obj = {
       userId: this.response.userId,
       profileId: this.userType,
       ownerId: this.entityName,
-      remarks:this.remarksValue,
-      attachment:this.attachment
+      remarks: this.remarksValue,
+      attachments: attachments
     }
     const body = new URLSearchParams();
     body.set('data', JSON.stringify(obj));
@@ -176,6 +194,38 @@ export class UserAccountManagementComponent implements OnInit {
       }
     });
     this.closeModal();
+  }
+  submitDeleteForm() {
+    // const uploadedUrl = this.addBlockData['attachments'];
+    // const uploadedUrl = this.addBlockData?.attachments; // ✅ safe access
+     console.log('Uploaded URL:', this.addBlockData.attachments[0]);
+     let attachments =this.addBlockData?.attachments[0];
+
+    // 👉 here you can send values to API
+    let obj = {
+      // userId: this.response.userId,
+      profileId: this.currectItem.profileId,
+      // ownerId: this.entityName,
+      remarks: this.remarksValue,
+      attachments: attachments
+    }
+    const body = new URLSearchParams();
+    body.set('data', JSON.stringify(obj));
+    this.http.post(
+      `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/ApiDeleteUserProfile`,
+      body.toString(),
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }
+    ).subscribe((data: any) => {
+      console.log(".................");
+      console.log(data.data);
+      if (data.status === 'success') {
+        this.response2 = data.data;
+        this.searchData(this.formData);
+      }
+    });
+    this.closeDeleteModal();
   }
 
   searchData(formData: any) {
