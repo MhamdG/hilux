@@ -48,6 +48,7 @@ export class UserAccountManagementComponent implements OnInit {
   ownersOptions: Observable<any>;
   response: any;
   response2: any;
+    resError: any;
   blockageTypesOptions: any;
   blockageEntitiesOptions: Observable<any>;
   blockageEntitySearchInput$ = new Subject<string>();
@@ -259,6 +260,11 @@ export class UserAccountManagementComponent implements OnInit {
       console.log(data.data);
       if (data.status === 'success') {
         this.response = data.data;
+        this.resError =null;
+      }
+      else if (data.status == "error"){
+        this.resError =data;
+        this.response = null;
       }
     });
   }
