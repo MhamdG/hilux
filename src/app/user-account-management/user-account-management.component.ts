@@ -70,7 +70,7 @@ export class UserAccountManagementComponent implements OnInit {
   remarksValue: any;
   // currectItem:any;
   currectItem: any = {}; // so it’s never undefined
-  
+
 
 
 
@@ -105,9 +105,9 @@ export class UserAccountManagementComponent implements OnInit {
   openModal() {
     this.showModal = true;
   }
-  openDeleteModal(item :any) {
+  openDeleteModal(item: any) {
     this.showDeleteModal = true;
-    this.currectItem= item;
+    this.currectItem = item;
   }
 
   closeModal() {
@@ -166,8 +166,8 @@ export class UserAccountManagementComponent implements OnInit {
   submitForm() {
     // const uploadedUrl = this.addBlockData['attachments'];
     // const uploadedUrl = this.addBlockData?.attachments; // ✅ safe access
-     console.log('Uploaded URL:', this.addBlockData.attachments[0]);
-     let attachments =this.addBlockData?.attachments[0];
+    console.log('Uploaded URL:', this.addBlockData.attachments[0]);
+    let attachments = this.addBlockData?.attachments[0];
 
     // 👉 here you can send values to API
     let obj = {
@@ -191,6 +191,11 @@ export class UserAccountManagementComponent implements OnInit {
       if (data.status === 'success') {
         this.response2 = data.data;
         this.searchData(this.formData);
+        this.userType = "";
+        this.entityName = "";
+        this.remarksValue = "";
+        attachments = "";
+        this.addBlockData.attachments = [];
       }
     });
     this.closeModal();
@@ -198,8 +203,8 @@ export class UserAccountManagementComponent implements OnInit {
   submitDeleteForm() {
     // const uploadedUrl = this.addBlockData['attachments'];
     // const uploadedUrl = this.addBlockData?.attachments; // ✅ safe access
-     console.log('Uploaded URL:', this.addBlockData.attachments[0]);
-     let attachments =this.addBlockData?.attachments[0];
+    console.log('Uploaded URL:', this.addBlockData.attachments[0]);
+    let attachments = this.addBlockData?.attachments[0];
 
     // 👉 here you can send values to API
     let obj = {

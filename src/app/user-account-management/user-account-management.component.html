@@ -428,7 +428,7 @@
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">نوع المستخدم *</label>
+                      <label class="ml-2 mb-0">نوع المستخدم <span style="color: red;">*</span></label>
 
                       <ng-select class=" w-75" [items]="userTypeOptions | async" required="true"
                         name="userType" [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
@@ -441,7 +441,7 @@
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">اسم الجهة *</label>
+                      <label class="ml-2 mb-0">اسم الجهة <span style="color: red;">*</span></label>
                 
                       <ng-select class=" w-75" [items]="entityNamesOptions | async" required="true"
                         name="entityName" [hideSelected]="true" [(ngModel)]="entityName"
@@ -457,16 +457,16 @@
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0"> ملاحظات *</label>
+                      <label class="ml-2 mb-0"> ملاحظات </label>
                       <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
-                        placeholder=" ملاحظات " required="true"/>
+                        placeholder=" ملاحظات " />
 
                     </div>
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">المرفقات *</label>
-                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData" required="true"></app-file-upload>
+                      <label class="ml-2 mb-0">المرفقات </label>
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData" ></app-file-upload>
                     </div>
 
                   </div>
@@ -529,16 +529,16 @@
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">ملاحظات *</label>
+                      <label class="ml-2 mb-0">ملاحظات  </label>
                       <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
-                        placeholder=" ملاحظات " required="true" />
+                        placeholder=" ملاحظات "  />
 
                     </div>
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">المرفقات *</label>
-                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData" required="true"></app-file-upload>
+                      <label class="ml-2 mb-0">المرفقات </label>
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData" ></app-file-upload>
                     </div>
 
                   </div>
