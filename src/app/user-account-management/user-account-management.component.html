@@ -237,7 +237,7 @@
               </div>
 
 
-              <div class="card">
+              <div class="card bg-seagreen">
                 <div class="card-header border-0">
                   <div class="card-tools">
                     <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="openModal()">أضافة
@@ -247,7 +247,7 @@
                     ملفات المستخدم الفعالة </h3>
                 </div>
                 <div class="card-body custom-table-class">
-                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table">
                     <thead>
                       <tr class="bg-grey">
                         <th>نوع المستخدم</th>
@@ -259,7 +259,7 @@
 
                       </tr>
                     </thead>
-                    <tbody style="background-color: #fff;">
+                    <tbody >
                       <ng-container *ngFor="let item of response.profiles; let i = index">
                         <tr *ngIf="item.status == 1">
                           <td>
@@ -338,7 +338,7 @@
 
                       </tr>
                     </thead>
-                    <tbody style="background-color: #fff;">
+                    <tbody >
                       <ng-container *ngFor="let item of response.profiles; let i = index">
                         <tr *ngIf="item.status == 0">
                           <td>
@@ -429,12 +429,8 @@
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">نوع المستخدم *</label>
-                      <!-- <select class="form-control w-75" [(ngModel)]="userType" name="userType">
-                        <option value="">اختر</option>
-                        <option value="admin">مدير</option>
-                        <option value="user">مستخدم</option>
-                      </select> -->
-                      <ng-select class="form-control w-75" [items]="userTypeOptions | async" required="true"
+
+                      <ng-select class=" w-75" [items]="userTypeOptions | async" required="true"
                         name="userType" [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
                         bindLabel="value.ar" [minTermLength]="1" bindValue="key" [loading]="userTypeDataOptionsLoading"
                         notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
@@ -446,10 +442,8 @@
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">اسم الجهة *</label>
-                      <!-- <input type="text" class="form-control w-75" [(ngModel)]="entityName" name="entityName"
-                        placeholder="ادخل اسم الجهة">
-                      </select> --> -->
-                      <ng-select class="form-control w-75" [items]="entityNamesOptions | async" required="true"
+                
+                      <ng-select class=" w-75" [items]="entityNamesOptions | async" required="true"
                         name="entityName" [hideSelected]="true" [(ngModel)]="entityName"
                         [typeahead]="entutyNameSearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
                         [loading]="entutyNameDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
@@ -463,16 +457,16 @@
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">ملاحظات</label>
+                      <label class="ml-2 mb-0"> ملاحظات *</label>
                       <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
-                        placeholder="ادخل اسم الجهة" />
+                        placeholder=" ملاحظات " required="true"/>
 
                     </div>
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">المرفقات</label>
-                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+                      <label class="ml-2 mb-0">المرفقات *</label>
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData" required="true"></app-file-upload>
                     </div>
 
                   </div>
@@ -510,15 +504,9 @@
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">نوع المستخدم *</label>
+                      <label class="ml-2 mb-0">نوع المستخدم </label>
 
-                      <!-- <ng-select class="form-control w-75" [items]="userTypeOptions | async" required="true"
-                        name="userType" [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
-                        bindLabel="value.ar" [minTermLength]="1" bindValue="key" [loading]="userTypeDataOptionsLoading"
-                        notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
-                        (search)="onUserTypeTyping($event)" (blur)="checkTypeAndValues('developerId')"
-                        (change)="resetProjectAndUnit()">
-                      </ng-select> -->
+
                       <input type="text" class="form-control w-75" 
                       [(ngModel)]="currectItem.nameAr"
                       name="userType"
@@ -527,15 +515,9 @@
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">اسم الجهة *</label>
+                      <label class="ml-2 mb-0">اسم الجهة </label>
 
-                      <!-- <ng-select class="form-control w-75" [items]="entityNamesOptions | async" required="true"
-                        name="entityName" [hideSelected]="true" [(ngModel)]="entityName"
-                        [typeahead]="entutyNameSearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
-                        [loading]="entutyNameDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
-                        typeToSearchText="Please enter 1 or more characters" (search)="onEntityNameTyping($event)"
-                        (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
-                      </ng-select> -->
+  
                       <input type="text" class="form-control w-75" 
                       [(ngModel)]="currectItem.companyNameAr"
                       name="companyNameAr"
@@ -547,16 +529,16 @@
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">ملاحظات</label>
+                      <label class="ml-2 mb-0">ملاحظات *</label>
                       <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
-                        placeholder="ادخل اسم الجهة" />
+                        placeholder=" ملاحظات " required="true" />
 
                     </div>
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">المرفقات</label>
-                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+                      <label class="ml-2 mb-0">المرفقات *</label>
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData" required="true"></app-file-upload>
                     </div>
 
                   </div>
