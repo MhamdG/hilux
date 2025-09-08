@@ -48,7 +48,7 @@ export class UserAccountManagementComponent implements OnInit {
   ownersOptions: Observable<any>;
   response: any;
   response2: any;
-    resError: any;
+  resError: any;
   blockageTypesOptions: any;
   blockageEntitiesOptions: Observable<any>;
   blockageEntitySearchInput$ = new Subject<string>();
@@ -113,9 +113,17 @@ export class UserAccountManagementComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+    this.userType = "";
+    this.entityName = "";
+    this.remarksValue = "";
+    this.addBlockData.attachments = [];
   }
   closeDeleteModal() {
     this.showDeleteModal = false;
+    this.userType = "";
+    this.entityName = "";
+    this.remarksValue = "";
+    this.addBlockData.attachments = [];
   }
   //   handleFileInput(event: Event, fileInput: HTMLInputElement): void {
   //     this.resMsg = null;
@@ -167,8 +175,8 @@ export class UserAccountManagementComponent implements OnInit {
   submitForm() {
     // const uploadedUrl = this.addBlockData['attachments'];
     // const uploadedUrl = this.addBlockData?.attachments; // ✅ safe access
-    console.log('Uploaded URL:', this.addBlockData.attachments[0]);
-    let attachments = this.addBlockData?.attachments[0];
+    let attachments = this?.addBlockData?.attachments?.[0];
+
 
     // 👉 here you can send values to API
     let obj = {
@@ -197,6 +205,8 @@ export class UserAccountManagementComponent implements OnInit {
         this.remarksValue = "";
         attachments = "";
         this.addBlockData.attachments = [];
+      } else {
+        this.toastr.error(JSON.stringify(data.message), 'Error')
       }
     });
     this.closeModal();
@@ -204,12 +214,14 @@ export class UserAccountManagementComponent implements OnInit {
   submitDeleteForm() {
     // const uploadedUrl = this.addBlockData['attachments'];
     // const uploadedUrl = this.addBlockData?.attachments; // ✅ safe access
-    console.log('Uploaded URL:', this.addBlockData.attachments[0]);
-    let attachments = this.addBlockData?.attachments[0];
+    // console.log('Uploaded URL:', this.addBlockData.attachments[0]);
+    // let attachments = this?.addBlockData?.attachments?[0];
+    let attachments = this?.addBlockData?.attachments?.[0];
+
 
     // 👉 here you can send values to API
     let obj = {
-      // userId: this.response.userId,
+      userId: this.response.userId,
       profileId: this.currectItem.profileId,
       // ownerId: this.entityName,
       remarks: this.remarksValue,
@@ -229,6 +241,13 @@ export class UserAccountManagementComponent implements OnInit {
       if (data.status === 'success') {
         this.response2 = data.data;
         this.searchData(this.formData);
+        this.userType = "";
+        this.entityName = "";
+        this.remarksValue = "";
+        attachments = "";
+        this.addBlockData.attachments = [];
+      } else {
+        this.toastr.error(JSON.stringify(data.message), 'Error')
       }
     });
     this.closeDeleteModal();
@@ -260,10 +279,10 @@ export class UserAccountManagementComponent implements OnInit {
       console.log(data.data);
       if (data.status === 'success') {
         this.response = data.data;
-        this.resError =null;
+        this.resError = null;
       }
-      else if (data.status == "error"){
-        this.resError =data;
+      else if (data.status == "error") {
+        this.resError = data;
         this.response = null;
       }
     });
@@ -292,21 +311,32 @@ export class UserAccountManagementComponent implements OnInit {
       )
     );
   }
+  // loaduserTypesOptions() {
+  //   this.userTypeOptions = concat(
+  //     of([]), // default items
+  //     this.userTypeSearchInput$.pipe(
+  //       distinctUntilChanged(),
+  //       tap(() => this.userTypeDataOptionsLoading = true),
+  //       switchMap(term => {
+  //         return this.lookupsService.loaduserTypes({ term }).pipe(
+  //           catchError(() => of([])), // empty list on error
+  //           tap(() => this.userTypeDataOptionsLoading = false)
+  //         )
+  //       })
+  //     )
+  //   );
+  // }
   loaduserTypesOptions() {
-    this.userTypeOptions = concat(
-      of([]), // default items
-      this.userTypeSearchInput$.pipe(
-        distinctUntilChanged(),
-        tap(() => this.userTypeDataOptionsLoading = true),
-        switchMap(term => {
-          return this.lookupsService.loaduserTypes({ term }).pipe(
-            catchError(() => of([])), // empty list on error
-            tap(() => this.userTypeDataOptionsLoading = false)
-          )
-        })
-      )
-    );
+    this.userTypeDataOptionsLoading = true;
+
+    this.lookupsService.loaduserTypes({ term: '' }).pipe(
+      catchError(() => of([])),
+      tap(() => this.userTypeDataOptionsLoading = false)
+    ).subscribe(data => {
+      this.userTypeOptions = data;
+    });
   }
+
   loadentityNameOptions() {
     this.entityNamesOptions = concat(
       of([]), // default items
