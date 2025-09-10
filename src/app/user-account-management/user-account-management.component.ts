@@ -224,8 +224,8 @@ export class UserAccountManagementComponent implements OnInit {
       userId: this.response.userId,
       profileId: this.currectItem.profileId,
       // ownerId: this.entityName,
-      remarks: this.remarksValue,
-      attachments: attachments
+      endRemarks: this.remarksValue,
+      endAttachments: attachments
     }
     const body = new URLSearchParams();
     body.set('data', JSON.stringify(obj));
