@@ -358,20 +358,20 @@
                             </span>
                           </td>
                           <td>
-                            <span *ngIf="item.remarks">
-                              {{ item.remarks}}
+                            <span *ngIf="item.endRemarks">
+                              {{ item.endRemarks}}
                             </span>
-                            <span *ngIf="! item.remarks">
+                            <span *ngIf="! item.endRemarks">
                               لا توجد بيانات
                             </span>
                           </td>
                           <td>
-                            <span *ngIf="item.attachments">
-                              <a [href]="item.attachments" target="_blank">
+                            <span *ngIf="item.endAttachments">
+                              <a [href]="item.endAttachments" target="_blank">
                                 <span style="color: blue;" class="fas fa-paperclip"></span>
                               </a>
                             </span>
-                            <span *ngIf="! item.attachments">
+                            <span *ngIf="! item.endAttachments">
                               لا توجد بيانات
                             </span>
                           </td>
