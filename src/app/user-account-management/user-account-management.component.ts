@@ -282,8 +282,12 @@ export class UserAccountManagementComponent implements OnInit {
         this.resError = null;
       }
       else if (data.status == "error") {
+        this.toastr.error(JSON.stringify(data.message), 'Error')
         this.resError = data;
         this.response = null;
+      } else {
+        this.toastr.error(JSON.stringify(data.message), 'Error')
+
       }
     });
   }
