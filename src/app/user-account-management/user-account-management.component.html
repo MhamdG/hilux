@@ -206,6 +206,8 @@
                         <th>رقم الهاتف</th>
                         <th>الجنسية</th>
                         <th>حالة المستخدم</th>
+                        <th>ملاحظات</th>
+
                       </tr>
                     </thead>
                     <tbody style="background-color: #fff;">
@@ -217,6 +219,14 @@
                         <td>{{response.nationality}}</td>
                         <td><span *ngIf="response.status == 1">فعال </span>
                           <span *ngIf="response.status == 0">غير فعال </span>
+                        </td>
+                        <td>
+                          <span *ngIf="response.searchMessage">
+                            {{response.searchMessage}}
+                          </span>
+                          <span *ngIf="! response.searchMessage">
+                            لا توجد بيانات
+                          </span>
                         </td>
 
 
@@ -440,9 +450,7 @@
                       <ng-select class="w-75" [items]="userTypeOptions" required="true" name="userType"
                         [hideSelected]="true" [(ngModel)]="userType" bindLabel="value.ar" bindValue="key"
                         [loading]="userTypeDataOptionsLoading" notFoundText="لا يوجد نتائج" [searchable]="false"
-                        [clearable]="false"
-                        (blur)="checkTypeAndValues('developerId')"
-                        (change)="resetProjectAndUnit()">
+                        [clearable]="false" (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
                       </ng-select>
 
 
@@ -454,7 +462,7 @@
 
                       <ng-select class=" w-75" [items]="entityNamesOptions | async" required="true" name="entityName"
                         [hideSelected]="true" [(ngModel)]="entityName" [typeahead]="entutyNameSearchInput$"
-                        bindLabel="value.ar" [minTermLength]="1" bindValue="key"  [clearable]="!!entityName"
+                        bindLabel="value.ar" [minTermLength]="1" bindValue="key" [clearable]="!!entityName"
                         [loading]="entutyNameDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
                         typeToSearchText="Please enter 1 or more characters" (search)="onEntityNameTyping($event)"
                         (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
