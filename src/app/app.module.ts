@@ -127,6 +127,8 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
 import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-statistics.component';
+import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
+
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ChartsModule } from 'ng2-charts';
 const maskConfig: Partial<IConfig> = {
@@ -247,7 +249,8 @@ const maskConfig: Partial<IConfig> = {
     newRateComponent,
     PricingUnitComponent,
     PricingUnitDetailsComponent,
-    OwnershipStatisticsComponent
+    OwnershipStatisticsComponent,
+    UserAccountManagementComponent
   ],
   imports: [
     FormsModule,
