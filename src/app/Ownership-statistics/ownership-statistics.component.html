@@ -1,0 +1,91 @@
+<div class="ownership-container content-wrapper" dir="rtl">
+  <!-- Header -->
+  <div class="header-section">
+    <h1>{{ headerTitle }}</h1>
+  </div>
+
+  <!-- Realtime / Monthly buttons -->
+  <div class="buttons-container">
+    <button type="button" (click)="filterData('daily')" [style.background-color]="dailyBtnCOlor">
+      <h5 style="color: #fff; margin: 0;">لحظيا</h5>
+    </button>
+    <button type="button" (click)="filterData('monthly')" [style.background-color]="monthlyBtnCOlor">
+      <h5 style="color: #fff; margin: 0;">شهريا</h5>
+    </button>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="footer-section inside-card" style="background-color: hsl(25.71deg 33.33% 95.88%); padding: 10px; display: flex; justify-content: space-between; flex-wrap: wrap;">
+    <!-- Right side: From and To date inputs -->
+    <div style="display: flex; gap: 10px; flex: 1; justify-content: flex-start; align-items: center;">
+      <label for="fromDate" style="margin-top: 15px;">من</label>
+      <div class="input-group">
+        <input type="date" id="fromDate" [(ngModel)]="fromDate" />
+      </div>
+      <label for="toDate" style="margin-top: 15px;">إلى</label>
+      <div class="input-group">
+        <input type="date" id="toDate" [(ngModel)]="toDate" />
+      </div>
+    </div>
+
+    <!-- Left side: Select and button -->
+    <div style="display: flex; gap: 10px; flex: 1; justify-content: flex-end; align-items: center;">
+      <!-- <label for="propertyType" style="margin-top: 15px;">نوع العقار</label>
+      <div class="property-types">
+        <select id="propertyType" class="property-dropdown" [(ngModel)]="selectedPropertyType">
+          <option *ngFor="let type of propertyTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div> -->
+      <!-- <button 
+      style="background-color: hsl(25.71deg 33.33% 95.88%); color: #000; display: flex; align-items: center;"
+      (click)="applyFilter()">
+        <p class="card-subtitle" style="color: #000; text-decoration: underline; text-underline-offset: 4px; margin: 0;">بحث</p>
+        <img [src]="btnLoading" alt="logo" style="width: 25px; height: 15px; margin-right: 2px;" />
+      </button> -->
+      <button 
+      style="background-color: #695f58; color: #000; display: flex; align-items: center;"
+      (click)="applyFilter()">
+        <p class="card-subtitle" style="color: #fff;  margin: 0;">بحث</p>
+        <!-- <img [src]="btnLoading" alt="logo" style="width: 25px; height: 15px; margin-right: 2px;" /> -->
+      </button>
+    </div>
+  </div>
+
+  <!-- Stat Cards Section 1 -->
+  <div class="stats-cards">
+    <div class="stat-card" *ngFor="let card of [cardEtisalat, cardSewerage, cardEtihad]">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, #000 0%, #000 10%, transparent 10%, transparent 90%, #000 90%, #000 100%);"></div>
+      <div class="custom-card">
+        <h4 style="color: #000; margin-top: -32px; margin-bottom: 44px;">{{ card.title }}</h4>
+        <p class="card-count" style="font-size: 40px;">{{ card.count }}</p>
+        <p class="card-subtitle">عدد المستفيدين</p>
+        <div style="width: 100%;">
+          <img [src]="card.logo" alt="logo" class="card-logo" style="float: left;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-section inside-card" style="text-align: center; background-color: hsl(25.71deg 33.33% 95.88%);">
+    <p style="margin: 0; width: 100%;">إحصائيات حسب نوع العقار</p>
+  </div>
+
+  <!-- Stat Cards Section 2 with Charts -->
+  <div class="stats-cards">
+    <div class="stat-card" *ngFor="let card of [cardEtisalat, cardSewerage, cardEtihad]">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, #000 0%, #000 10%, transparent 10%, transparent 90%, #000 90%, #000 100%);"></div>
+      <div class="custom-card">
+        <h4 style="color: #000; margin-top: -32px; margin-bottom: 44px;">{{ card.title }}</h4>
+        <div class="chart-container">
+          <canvas baseChart [data]="card.chartData" [labels]="card.chartLabels" [chartType]="chartType" [options]="chartOptions" [colors]="[{ backgroundColor: card.chartColors }]"></canvas>
+        </div>
+        <div class="chart-legend">
+          <div *ngFor="let label of card.chartLabels; let i = index" class="legend-item">
+            <span class="color-dot" [style.background]="card.chartColors[i]"></span>
+            <span class="legend-label">{{ label }} ({{ card.chartData[i] }}%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -68,6 +68,9 @@ import { UnitsValuationComponent } from './units-valuation/units-valuation.compo
 import { RateDetailsComponent } from './rate/rateDetails/rate-details.component';
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
+import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-statistics.component';
+import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
+
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
   { path: 'login', component: LoginComponent },
@@ -179,6 +182,8 @@ const routes: Routes = [
       { path: 'edit', component: DeveloperDetailsComponent }
     ]
   },
+  // { path: 'ownershipStatistics', component: OwnershipStatisticsComponent, resolve: { profile: DeveloperProfileResolver }, canActivate: [AuthenticationGuard] },
+  { path: 'ownershipStatistics', component: OwnershipStatisticsComponent },
   {
     path: 'owner/profile/:profileId/edit', component: OwnerProfileComponent,
     resolve: { profile: OwnerProfileResolver },
@@ -196,6 +201,8 @@ const routes: Routes = [
   { path: 'units_excel_upload', component: UnitsExcelUploadComponent, canActivate: [AuthenticationGuard] },
   { path: 'application_search/:applicationId', component: SingleApplicationSearchComponent, canActivate: [AuthenticationGuard], resolve: { application_search: ApplicationSearchResolver } },
   { path: 'units_valuation', component: UnitsValuationComponent, canActivate: [AuthenticationGuard] },
+  { path: 'userAccountManagement', component: UserAccountManagementComponent, canActivate: [AuthenticationGuard] },
+
 ];
 
 @NgModule({

@@ -126,8 +126,11 @@ import { SingleApplicationSearchComponent } from './single-application-search/si
 import { UnitsValuationComponent } from './units-valuation/units-valuation.component';
 import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.component';
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-statistics.component';
+import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
 
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { ChartsModule } from 'ng2-charts';
 const maskConfig: Partial<IConfig> = {
 	  validation: false,
 };
@@ -245,7 +248,9 @@ const maskConfig: Partial<IConfig> = {
     AddRateLandExcelComponent,
     newRateComponent,
     PricingUnitComponent,
-    PricingUnitDetailsComponent
+    PricingUnitDetailsComponent,
+    OwnershipStatisticsComponent,
+    UserAccountManagementComponent
   ],
   imports: [
     FormsModule,
@@ -262,6 +267,7 @@ const maskConfig: Partial<IConfig> = {
     ToastrModule.forRoot({ positionClass: 'toast-top-left'}),
     DataTablesModule,
     NgxMaskModule.forRoot(maskConfig),
+    ChartsModule
 
   ],
   providers: [

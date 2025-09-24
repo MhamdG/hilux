@@ -6098,7 +6098,24 @@
       <source>Previous Raiting</source>
         <target>تقييماتي السابقة</target>
       </trans-unit>
+  <trans-unit id="OwnershipStatistics" datatype="html">
+        <source>
+                    Ownership statistics
+                </source>
+        <target>
+           إحصائيات التملك 
+        </target>
 
+      </trans-unit>
+      <trans-unit id="OwnershipPackageInAjman" datatype="html">
+        <source>
+                    Ownership package in Ajman
+                </source>
+        <target>
+           باقة تملك في عجمان  
+        </target>
+
+      </trans-unit>
 
       
       

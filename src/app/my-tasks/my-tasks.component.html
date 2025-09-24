@@ -179,6 +179,9 @@
                                             <th scope="col" style="width: 10%;" class="text-center">
                                                 الوقت
                                             </th>
+                                             <th scope="col" style="width: 2%;">
+                                                <label class="col-form-label" i18n="@@receipt">Receipt</label> 
+                                            </th>
                                             <th scope="col" style="width: 7%;" class="text-center">
                                                 الحالة
                                             </th>
@@ -253,7 +256,11 @@
                                                 <br>
                                                 {{getTimeAvailable(item) | date:'shortTime'}}
                                             </td>
-
+                                            <td (click)="performActionPerStatus(item)" class="text-center align-middle">
+                                                <span class="badge" [ngClass]="getInvoiceStatusClass(item)">
+                                                    {{item.paymentStatus?.ar}}
+                                                </span>
+                                            </td>
                                             <td (click)="performActionPerStatus(item)" class="text-center align-middle">
                                                 <span class="badge" [ngClass]="getStatusClass(item)">
                                                     {{item.stepDetails?.status}}
