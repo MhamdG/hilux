@@ -341,21 +341,39 @@ export class UserAccountManagementComponent implements OnInit {
     });
   }
 
+  // loadentityNameOptions() {
+  //   this.entityNamesOptions = concat(
+  //     of([]), // default items
+  //     this.entutyNameSearchInput$.pipe(
+  //       distinctUntilChanged(),
+  //       tap(() => this.entutyNameDataOptionsLoading = true),
+  //       switchMap(term => {
+  //         return this.lookupsService.loadEntityNameByOwner({ term,this.userType }).pipe(
+  //           catchError(() => of([])), // empty list on error
+  //           tap(() => this.entutyNameDataOptionsLoading = false)
+  //         )
+  //       })
+  //     )
+  //   );
+  // }
   loadentityNameOptions() {
     this.entityNamesOptions = concat(
-      of([]), // default items
+      of([]),
       this.entutyNameSearchInput$.pipe(
+        // debounceTime(300),
         distinctUntilChanged(),
         tap(() => this.entutyNameDataOptionsLoading = true),
-        switchMap(term => {
-          return this.lookupsService.loadEntityName({ term }).pipe(
-            catchError(() => of([])), // empty list on error
+        switchMap(term =>
+          this.lookupsService.loadEntityNameByOwner({ term, userType: this.userType }).pipe(
+            catchError(() => of([])),
             tap(() => this.entutyNameDataOptionsLoading = false)
           )
-        })
+        )
       )
     );
   }
+
+
 
   loadProjectsOptions() {
     this.projectsOptions = concat(

@@ -6,7 +6,7 @@ import { FieldsService } from './fields.service';
 @Injectable()
 export class LookupsService {
 
-  constructor(private fieldsService: FieldsService) {}
+  constructor(private fieldsService: FieldsService) { }
 
   loadCompanyTypeOptions(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/companiesTypes`, params);
@@ -71,6 +71,9 @@ export class LookupsService {
   }
   loadEntityName(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/companies`, params);
+  }
+  loadEntityNameByOwner(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/OwnerIdByProfileType`, params);
   }
   loaddevelopersStatusTypes(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/developersStatusTypes`, params);
