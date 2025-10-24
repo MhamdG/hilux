@@ -369,52 +369,53 @@
 
 
         <!-- <div *ngIf="formData.owners.length > 0"> -->
-          <div class="form-group row" *ngFor="let owner of getOwnersData(); let j = index">
-            <div class="col-sm-6" *ngIf="isNotGovernmentInstitute()">
-              <div class="form-group row">
-                <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwner">Owner
-                  <span>*</span>
-                </label>
-                <div class="col-sm-9">
-                  <ng-select class="rtl" [items]="ownerOptions | async" [name]="getName('ownerId', j)"
-                    [hideSelected]="true" required="true" [minTermLength]="4" [(ngModel)]="owner.ownerId"
-                    [loading]="dataOptionsLoading" bindLabel="value.ar" bindValue="key"
-                    typeToSearchText="Please enter 4 or more characters" notFoundText="لا يوجد نتائج للبحث"
-                    [typeahead]="searchInput$" #ownerId="ngModel">
-                  </ng-select>
-                  <div *ngIf="ownerId.invalid && (ownerId.dirty || ownerId.touched)" class="alert alert-danger">
-                    <div *ngIf="ownerId.errors?.required">
-                      Owner can not be blank
-                    </div>
+        <div class="form-group row" *ngFor="let owner of getOwnersData(); let j = index">
+          <div class="col-sm-6" *ngIf="isNotGovernmentInstitute()">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwner">Owner
+                <span *ngIf="formData.companyType !== '7' && formData.companyType !== '8'">*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select class="rtl" [items]="ownerOptions | async" [name]="getName('ownerId', j)"
+                  [hideSelected]="true" [required]="formData.companyType !== '7' && formData.companyType !== '8'"
+                  [minTermLength]="4" [(ngModel)]="owner.ownerId" [loading]="dataOptionsLoading" bindLabel="value.ar"
+                  bindValue="key" typeToSearchText="Please enter 4 or more characters"
+                  notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchInput$" #ownerId="ngModel">
+                </ng-select>
+                <div *ngIf="ownerId.invalid && (ownerId.dirty || ownerId.touched)" class="alert alert-danger">
+                  <div *ngIf="ownerId.errors?.required">
+                    Owner can not be blank
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6" *ngIf="isNotGovernmentAndIndividualInstitute()">
-              <div class="form-group row">
-                <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwnershipPercentage">Ownership percentage
-                  <span>*</span>
-                </label>
-                <div class="col-sm-9">
-                  <input [name]="getName('share', j)" maxlength="6" required="true" type="text" class="form-control"
-                    [(ngModel)]="owner.share" #share="ngModel" numbersOnly precision="2">
-                  <div class="alert alert-danger"
-                    *ngIf="share.invalid && (share.dirty || share.touched) && share.errors?.required">
-                    Ownership Percentage can not be blank
-                  </div>
-
-                  <div class="alert alert-danger" *ngIf="false">
-                    Ownership Percentage Total should be 100
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-12 mt-2 d-flex flex-row-reverse" *ngIf="isNotGovernmentInstitute()">
-              <button type="button" (click)="deleteRow(j)" class="btn btn-sm btn-danger" *ngIf="j!= 0">Remove</button>
-              <button type="button" (click)="addRow()" class="btn btn-sm btn-primary" *ngIf="j == 0">add</button>
-              <hr *ngIf="j != 0" />
             </div>
           </div>
+          <div class="col-sm-6" *ngIf="isNotGovernmentAndIndividualInstitute()">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwnershipPercentage">Ownership percentage
+                <span *ngIf="formData.companyType !== '7' && formData.companyType !== '8'">*</span>
+              </label>
+              <div class="col-sm-9">
+                <input [name]="getName('share', j)" maxlength="6"
+                  [required]="formData.companyType !== '7' && formData.companyType !== '8'" type="text"
+                  class="form-control" [(ngModel)]="owner.share" #share="ngModel" numbersOnly precision="2">
+                <div class="alert alert-danger"
+                  *ngIf="share.invalid && (share.dirty || share.touched) && share.errors?.required">
+                  Ownership Percentage can not be blank
+                </div>
+
+                <div class="alert alert-danger" *ngIf="false">
+                  Ownership Percentage Total should be 100
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 mt-2 d-flex flex-row-reverse" *ngIf="isNotGovernmentInstitute()">
+            <button type="button" (click)="deleteRow(j)" class="btn btn-sm btn-danger" *ngIf="j!= 0">Remove</button>
+            <button type="button" (click)="addRow()" class="btn btn-sm btn-primary" *ngIf="j == 0">add</button>
+            <hr *ngIf="j != 0" />
+          </div>
+        </div>
         <!-- </div> -->
         <!-- <div *ngIf="formData.owners.length == 0">
           <div class="form-group row" *ngFor="let owner of getOwnersData(); let j = index">
@@ -491,7 +492,8 @@
       <div class="card-footer">
         <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid"
           i18n="@@formSubmitLabel">Submit</button>
-          <button type="button" style="margin-left: 5px;margin-right: 5px;" class="btn btn-primary float-left" (click)="clearChanges()" i18n="@@CancelEdit">Cancel</button>
+        <button type="button" style="margin-left: 5px;margin-right: 5px;" class="btn btn-primary float-left"
+          (click)="clearChanges()" i18n="@@CancelEdit">Cancel</button>
       </div>
     </form>
   </div>

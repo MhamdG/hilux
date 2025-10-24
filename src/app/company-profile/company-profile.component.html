@@ -1,5 +1,5 @@
 <div class="content-wrapper">
-<section class="content-header">
+  <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <!-- <div class="col-sm-6">
@@ -16,7 +16,7 @@
         <div class="col-md-12" *ngIf="profile$ | async as profile">
           <div class="card card-purple">
             <div class="card-header">
-                <h3 class="card-title"> حساب شركة </h3>
+              <h3 class="card-title"> حساب شركة </h3>
             </div>
             <router-outlet></router-outlet>
 
@@ -88,10 +88,11 @@
                     <button type="submit" class="btn btn-primary" [disabled]="isSearchFormValid()" i18n="@@companyProfileSearchButton">Search</button>
                   </div>
                 </form> -->
-            
-                <hr/>
-            
-                <form class="form-horizontal" (ngSubmit)="saveData(formData)" #f="ngForm" enctype='multipart/form-data' novalidate>
+
+                <hr />
+
+                <form class="form-horizontal" (ngSubmit)="saveData(formData)" #f="ngForm" enctype='multipart/form-data'
+                  novalidate>
                   <div class="card-body">
                     <div class="form-group row">
                       <div class="col-sm-6">
@@ -101,19 +102,12 @@
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <ng-select
-                              class="rtl"
-                              required="true"
-                              [items]="companyTypeOptions"
-                              name="companyType"
-                              [(ngModel)]="formData.companyType"
-                              bindLabel="value.ar"
-                              bindValue="key"
-                              notFoundText="لا يوجد نتائج للبحث"
-                              #companyType="ngModel"
-                            >
+                            <ng-select class="rtl" required="true" [items]="companyTypeOptions" name="companyType"
+                              [(ngModel)]="formData.companyType" bindLabel="value.ar" bindValue="key"
+                              notFoundText="لا يوجد نتائج للبحث" #companyType="ngModel">
                             </ng-select>
-                            <div *ngIf="companyType.invalid && (companyType.dirty || companyType.touched)" class="alert alert-danger">
+                            <div *ngIf="companyType.invalid && (companyType.dirty || companyType.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="companyType.errors?.required">
                                 Company Type can not be blank
                               </div>
@@ -139,11 +133,13 @@
                     <div class="form-group row">
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileNameInArabic">Company Name In Arabic
+                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileNameInArabic">Company Name In
+                            Arabic
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input type="text" name="nameAr" required="true" class="form-control" [(ngModel)]="formData.nameAr" #nameAr="ngModel">
+                            <input type="text" name="nameAr" required="true" class="form-control"
+                              [(ngModel)]="formData.nameAr" #nameAr="ngModel">
                             <div *ngIf="nameAr.invalid && (nameAr.dirty || nameAr.touched)" class="alert alert-danger">
                               <div *ngIf="nameAr.errors?.required">
                                 Name in Arabic can not be blank
@@ -154,11 +150,13 @@
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileNameInEnglish">Company Name in English
+                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileNameInEnglish">Company Name in
+                            English
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input type="text" name="nameEn" required="true" class="form-control" [(ngModel)]="formData.nameEn" #nameEn="ngModel">
+                            <input type="text" name="nameEn" required="true" class="form-control"
+                              [(ngModel)]="formData.nameEn" #nameEn="ngModel">
                             <div *ngIf="nameEn.invalid && (nameEn.dirty || nameEn.touched)" class="alert alert-danger">
                               <div *ngIf="nameEn.errors?.required">
                                 Name in English can not be blank
@@ -172,12 +170,15 @@
                     <div class="form-group row" *ngIf="isNotGovernmentInstitute()">
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileTradeLicenseNumber">Trade license number
+                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileTradeLicenseNumber">Trade license
+                            number
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input type="text" name="tradeLicenseNumber" required="true" class="form-control" [(ngModel)]="formData.licenseNumber" #licenseNumber="ngModel" >
-                            <div *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)" class="alert alert-danger">
+                            <input type="text" name="tradeLicenseNumber" required="true" class="form-control"
+                              [(ngModel)]="formData.licenseNumber" #licenseNumber="ngModel">
+                            <div *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="licenseNumber.errors?.required">
                                 License Number can not be blank
                               </div>
@@ -191,19 +192,12 @@
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <ng-select
-                              class="rtl"
-                              required="true"
-                              [items]="licenseIssuerOptions"
-                              name="licenseIssuer"
-                              [(ngModel)]="formData.licenseIssuerId"
-                              bindLabel="value.ar"
-                              bindValue="key"
-                              notFoundText="لا يوجد نتائج للبحث"
-                              #licenseIssuer="ngModel"
-                            >
+                            <ng-select class="rtl" required="true" [items]="licenseIssuerOptions" name="licenseIssuer"
+                              [(ngModel)]="formData.licenseIssuerId" bindLabel="value.ar" bindValue="key"
+                              notFoundText="لا يوجد نتائج للبحث" #licenseIssuer="ngModel">
                             </ng-select>
-                            <div *ngIf="licenseIssuer.invalid && (licenseIssuer.dirty || licenseIssuer.touched)" class="alert alert-danger">
+                            <div *ngIf="licenseIssuer.invalid && (licenseIssuer.dirty || licenseIssuer.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="licenseIssuer.errors?.required">
                                 License Issuer can not be blank
                               </div>
@@ -216,23 +210,18 @@
                     <div class="form-group row" *ngIf="isNotGovernmentInstitute()">
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileLicenseIssuanceDate">License issuance date
+                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileLicenseIssuanceDate">License
+                            issuance date
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input type="text"
-                              class="form-control"
-                              name="licenseIssuanceDate"
+                            <input type="text" class="form-control" name="licenseIssuanceDate"
                               [(ngModel)]="formData.licenseIssuanceDate"
-                              (dateTimeChange)="formatDate('licenseIssuanceDate')"
-                              required="true"
-                              [max]="minDate"
-                              [owlDateTime]="dt7"
-                              [owlDateTimeTrigger]="dt7"
-                              #licenseIssuanceDate="ngModel"
-                            >
+                              (dateTimeChange)="formatDate('licenseIssuanceDate')" required="true" [max]="minDate"
+                              [owlDateTime]="dt7" [owlDateTimeTrigger]="dt7" #licenseIssuanceDate="ngModel">
                             <owl-date-time [pickerType]="'calendar'" #dt7></owl-date-time>
-                            <div class="alert alert-danger" *ngIf="licenseIssuanceDate.invalid && (licenseIssuanceDate.dirty || licenseIssuanceDate.touched) && licenseIssuanceDate.errors?.required">
+                            <div class="alert alert-danger"
+                              *ngIf="licenseIssuanceDate.invalid && (licenseIssuanceDate.dirty || licenseIssuanceDate.touched) && licenseIssuanceDate.errors?.required">
                               License issuance date can not be blank
                             </div>
                             <!-- <div class="alert alert-danger" *ngIf="licenseIssuanceDate.invalid && licenseIssuanceDate.errors?.owlDateTimeMax">
@@ -243,23 +232,18 @@
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileLicenseExpiryDate">License Expiry date
+                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileLicenseExpiryDate">License Expiry
+                            date
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input type="text"
-                              class="form-control"
-                              name="licenseExpiryDate"
+                            <input type="text" class="form-control" name="licenseExpiryDate"
                               [(ngModel)]="formData.licenseExpiryDate"
-                              (dateTimeChange)="formatDate('licenseExpiryDate')"
-                              required="true"
-                              [min]="minDate"
-                              [owlDateTime]="dt5"
-                              [owlDateTimeTrigger]="dt5"
-                              #licenseExpiryDate="ngModel"
-                            >
+                              (dateTimeChange)="formatDate('licenseExpiryDate')" required="true" [min]="minDate"
+                              [owlDateTime]="dt5" [owlDateTimeTrigger]="dt5" #licenseExpiryDate="ngModel">
                             <owl-date-time [pickerType]="'calendar'" #dt5></owl-date-time>
-                            <div class="alert alert-danger" *ngIf="licenseExpiryDate.invalid && (licenseExpiryDate.dirty || licenseExpiryDate.touched) && licenseExpiryDate.errors?.required">
+                            <div class="alert alert-danger"
+                              *ngIf="licenseExpiryDate.invalid && (licenseExpiryDate.dirty || licenseExpiryDate.touched) && licenseExpiryDate.errors?.required">
                               License Expiry date can not be blank
                             </div>
                             <!-- <div class="alert alert-danger" *ngIf="licenseExpiryDate.invalid && licenseExpiryDate.errors?.owlDateTimeMin">
@@ -277,19 +261,12 @@
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <ng-select
-                              class="rtl"
-                              required="true"
-                              [items]="licenseTypeOptions"
-                              name="licenseType"
-                              [(ngModel)]="formData.licenseType"
-                              bindLabel="value.ar"
-                              bindValue="key"
-                              notFoundText="لا يوجد نتائج للبحث"
-                              #licenseType="ngModel"
-                            >
+                            <ng-select class="rtl" required="true" [items]="licenseTypeOptions" name="licenseType"
+                              [(ngModel)]="formData.licenseType" bindLabel="value.ar" bindValue="key"
+                              notFoundText="لا يوجد نتائج للبحث" #licenseType="ngModel">
                             </ng-select>
-                            <div *ngIf="licenseType.invalid && (licenseType.dirty || licenseType.touched)" class="alert alert-danger">
+                            <div *ngIf="licenseType.invalid && (licenseType.dirty || licenseType.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="licenseType.errors?.required">
                                 License Type can not be blank
                               </div>
@@ -304,16 +281,22 @@
                     <div class="form-group row">
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileEstablishmentCardNumber">Establishment card number
+                          <label class="col-sm-3 col-form-label"
+                            i18n="@@companyProfileEstablishmentCardNumber">Establishment card number
                             <span *ngIf="isGovernmentOrg()">*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input name="establishmentCardNumber" [required]="isGovernmentOrg()" type="text" class="form-control" [(ngModel)]="formData.establishmentCardNumber" #establishmentCardNumber="ngModel" numbersOnly precision="0">
-                            <div *ngIf="establishmentCardNumber.invalid && (establishmentCardNumber.dirty || establishmentCardNumber.touched)" class="alert alert-danger">
+                            <input name="establishmentCardNumber" [required]="isGovernmentOrg()" type="text"
+                              class="form-control" [(ngModel)]="formData.establishmentCardNumber"
+                              #establishmentCardNumber="ngModel" numbersOnly precision="0">
+                            <div
+                              *ngIf="establishmentCardNumber.invalid && (establishmentCardNumber.dirty || establishmentCardNumber.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="establishmentCardNumber.errors?.required">
                                 Establishment card number can not be blank
                               </div>
-                              <div *ngIf="establishmentCardNumber.errors?.pattern || establishmentCardNumber.errors?.minlength">
+                              <div
+                                *ngIf="establishmentCardNumber.errors?.pattern || establishmentCardNumber.errors?.minlength">
                                 Enter valid Establishment card number
                               </div>
                             </div>
@@ -332,7 +315,8 @@
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input name="trxId" required="true" type="text" class="form-control" [(ngModel)]="formData.trxId" #trxId="ngModel">
+                            <input name="trxId" required="true" type="text" class="form-control"
+                              [(ngModel)]="formData.trxId" #trxId="ngModel">
                             <div *ngIf="trxId.invalid && (trxId.dirty || trxId.touched)" class="alert alert-danger">
                               <div *ngIf="trxId.errors?.required">
                                 Tax Number can not be blank
@@ -347,19 +331,12 @@
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <ng-select
-                              class="rtl"
-                              [items]="emiratesOptions"
-                              name="trxEmirateId"
-                              required="true"
-                              [(ngModel)]="formData.trxEmirateId"
-                              bindLabel="value.ar"
-                              bindValue="key"
-                              notFoundText="لا يوجد نتائج للبحث"
-                              #trxEmirateId="ngModel"
-                            >
+                            <ng-select class="rtl" [items]="emiratesOptions" name="trxEmirateId" required="true"
+                              [(ngModel)]="formData.trxEmirateId" bindLabel="value.ar" bindValue="key"
+                              notFoundText="لا يوجد نتائج للبحث" #trxEmirateId="ngModel">
                             </ng-select>
-                            <div *ngIf="trxEmirateId.invalid && (trxEmirateId.dirty || trxEmirateId.touched)" class="alert alert-danger">
+                            <div *ngIf="trxEmirateId.invalid && (trxEmirateId.dirty || trxEmirateId.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="trxEmirateId.errors?.required">
                                 Emirate can not be blank
                               </div>
@@ -376,8 +353,11 @@
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input name="phoneNumber" type="text" class="form-control" required="true" [maxLength]="17" [(ngModel)]="formData.phoneNumber" #phoneNumber="ngModel" numbersOnly precision="0" pattern="[0-9]*">
-                            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="alert alert-danger">
+                            <input name="phoneNumber" type="text" class="form-control" required="true" [maxLength]="17"
+                              [(ngModel)]="formData.phoneNumber" #phoneNumber="ngModel" numbersOnly precision="0"
+                              pattern="[0-9]*">
+                            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="phoneNumber.errors?.required">
                                 Phone Number can not be blank
                               </div>
@@ -391,9 +371,11 @@
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileMakaniNumber">Makani Number</label>
+                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileMakaniNumber">Makani
+                            Number</label>
                           <div class="col-sm-9">
-                            <input name="makaniNumber" type="text" class="form-control" [(ngModel)]="formData.makaniNumber" #makaniNumber="ngModel" numbersOnly precision="0">
+                            <input name="makaniNumber" type="text" class="form-control"
+                              [(ngModel)]="formData.makaniNumber" #makaniNumber="ngModel" numbersOnly precision="0">
                           </div>
                         </div>
                       </div>
@@ -404,7 +386,8 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label" i18n="@@companyProfileEmail">Email</label>
                           <div class="col-sm-9">
-                            <input name="email" type="email" class="form-control" [(ngModel)]="formData.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel">
+                            <input name="email" type="email" class="form-control" [(ngModel)]="formData.email"
+                              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel">
                             <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
                               <div *ngIf="email.errors?.pattern">
                                 Enter valid Email
@@ -417,8 +400,10 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label" i18n="@@companyProfileWebsite">Website</label>
                           <div class="col-sm-9">
-                            <input name="website" type="text" class="form-control" [(ngModel)]="formData.website" #website="ngModel">
-                            <div *ngIf="website.invalid && (website.dirty || website.touched)" class="alert alert-danger">
+                            <input name="website" type="text" class="form-control" [(ngModel)]="formData.website"
+                              #website="ngModel">
+                            <div *ngIf="website.invalid && (website.dirty || website.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="website.errors?.pattern">
                                 Enter Valid Website
                               </div>
@@ -432,22 +417,18 @@
                       <div class="col-sm-6" *ngIf="isNotGovernmentInstitute()">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwner">Owner
-                            <span>*</span>
+                            <span *ngIf="formData.companyType !== '7' && formData.companyType !== '8'">*</span>
                           </label>
                           <div class="col-sm-9">
-                            <ng-select
-                              class="rtl"
-                              [items]="ownerOptions | async"
-                              [name]="getName('ownerId', j)" [hideSelected]="true" 
-                              required="true" [minTermLength]="4" 
-                              [(ngModel)]="owner.ownerId" [loading]="dataOptionsLoading"
-                              bindLabel="value.ar"
+                            <ng-select class="rtl" [items]="ownerOptions | async" [name]="getName('ownerId', j)"
+                              [hideSelected]="true"
+                              [required]="formData.companyType !== '7' && formData.companyType !== '8'" [minTermLength]="4"
+                              [(ngModel)]="owner.ownerId" [loading]="dataOptionsLoading" bindLabel="value.ar"
                               bindValue="key" typeToSearchText="Please enter 4 or more characters"
-                              notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchInput$"
-                              #ownerId="ngModel"
-                            >
+                              notFoundText="لا يوجد نتائج للبحث" [typeahead]="searchInput$" #ownerId="ngModel">
                             </ng-select>
-                            <div *ngIf="ownerId.invalid && (ownerId.dirty || ownerId.touched)" class="alert alert-danger">
+                            <div *ngIf="ownerId.invalid && (ownerId.dirty || ownerId.touched)"
+                              class="alert alert-danger">
                               <div *ngIf="ownerId.errors?.required">
                                 Owner can not be blank
                               </div>
@@ -457,12 +438,16 @@
                       </div>
                       <div class="col-sm-6" *ngIf="isNotGovernmentAndIndividualInstitute()">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwnershipPercentage">Ownership percentage
-                            <span>*</span>
+                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileOwnershipPercentage">Ownership
+                            percentage
+                            <span  *ngIf="formData.companyType !== '7' && formData.companyType !== '8'">*</span>
                           </label>
                           <div class="col-sm-9">
-                            <input [name]="getName('share', j)" maxlength="6" required="true" type="text" class="form-control" [(ngModel)]="owner.share" #share="ngModel" numbersOnly precision="2">
-                            <div class="alert alert-danger" *ngIf="share.invalid && (share.dirty || share.touched) && share.errors?.required">
+                            <input [name]="getName('share', j)" maxlength="6"
+                              [required]="formData.companyType !=='7' && formData.companyType !=='8'" type="text"
+                              class="form-control" [(ngModel)]="owner.share" #share="ngModel" numbersOnly precision="2">
+                            <div class="alert alert-danger"
+                              *ngIf="share.invalid && (share.dirty || share.touched) && share.errors?.required">
                               Ownership Percentage can not be blank
                             </div>
 
@@ -473,20 +458,24 @@
                         </div>
                       </div>
                       <div class="col-sm-12 mt-2 d-flex flex-row-reverse" *ngIf="isNotGovernmentInstitute()">
-                        <button type="button" (click)="deleteRow(j)" class="btn btn-sm btn-danger" *ngIf="j!= 0">Remove</button>
-                        <button type="button" (click)="addRow()" class="btn btn-sm btn-primary" *ngIf="j == 0">add</button>
-                        <hr *ngIf="j != 0"/>
+                        <button type="button" (click)="deleteRow(j)" class="btn btn-sm btn-danger"
+                          *ngIf="j!= 0">Remove</button>
+                        <button type="button" (click)="addRow()" class="btn btn-sm btn-primary"
+                          *ngIf="j == 0">add</button>
+                        <hr *ngIf="j != 0" />
                       </div>
                     </div>
 
                     <div class="form-group row" *ngIf="isNotGovernmentAndIndividualInstitute()">
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" i18n="@@companyProfileEstablishmentContractFile">Establishment Contract File
+                          <label class="col-sm-3 col-form-label"
+                            i18n="@@companyProfileEstablishmentContractFile">Establishment Contract File
                             <span>*</span>
                           </label>
                           <div class="col-sm-9">
-                            <app-file-upload [field]="prepareEstablishmentContractFileField()" [formData]="formData"></app-file-upload>
+                            <app-file-upload [field]="prepareEstablishmentContractFileField()"
+                              [formData]="formData"></app-file-upload>
                           </div>
                         </div>
                       </div>
@@ -495,7 +484,8 @@
                     </div>
                   </div>
                   <div class="card-footer">
-                    <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid" i18n="@@formSubmitLabel">Submit</button>
+                    <button type="submit" class="btn btn-primary float-left" [disabled]="f.invalid"
+                      i18n="@@formSubmitLabel">Submit</button>
                   </div>
                 </form>
               </div>
