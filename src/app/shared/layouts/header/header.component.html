@@ -67,7 +67,8 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering') || getRole (userRole,'landSearch')">
+                <ng-container
+                    *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering') || getRole (userRole,'landSearch')">
                     <a class="dropdown-item" href="/land/view" i18n="@@headerLand">
                         <i class="fas fa-plus float-left"></i>
                         Land
@@ -164,7 +165,15 @@
                 <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'userAccountManagement')">
                     <a class="dropdown-item" href="/userAccountManagement">
                         <i class="fas fa-plus float-left"></i>
-                        إدارة حساب المستخدميين 
+                        إدارة حساب المستخدميين
+
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </ng-container>
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'developerAccountManagement')">
+                    <a class="dropdown-item" href="/developerAccountManagement">
+                        <i class="fas fa-plus float-left"></i>
+                        إدارة حساب المطوريين
 
                     </a>
                     <div class="dropdown-divider"></div>

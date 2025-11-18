@@ -70,6 +70,7 @@ import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.comp
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
 import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-statistics.component';
 import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
+import { DeveloperAccountManagementComponent } from './developer-account-management/developer-account-management.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
@@ -202,6 +203,7 @@ const routes: Routes = [
   { path: 'application_search/:applicationId', component: SingleApplicationSearchComponent, canActivate: [AuthenticationGuard], resolve: { application_search: ApplicationSearchResolver } },
   { path: 'units_valuation', component: UnitsValuationComponent, canActivate: [AuthenticationGuard] },
   { path: 'userAccountManagement', component: UserAccountManagementComponent, canActivate: [AuthenticationGuard] },
+  { path: 'developerAccountManagement', component: DeveloperAccountManagementComponent, canActivate: [AuthenticationGuard] },
 
 ];
 
