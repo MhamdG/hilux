@@ -69,8 +69,9 @@ export class DeveloperAccountManagementComponent implements OnInit {
   resUrl: any;
   attachments: any;
   remarksValue: any;
+  selectType: any;
   // currectItem:any;
-  currectItem: any = {}; // so it’s never undefined
+  currectItem: any = {}; // 
 
 
 
@@ -86,6 +87,7 @@ export class DeveloperAccountManagementComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.selectType = 0;
     this.toggleControl(false);
     this.loadUnitsOptions();
     this.loadDeveloperOptions();

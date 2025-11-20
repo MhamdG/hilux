@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-12 text-center text-dark">
-          <h1>إدارة حسابات المطوريين</h1>
+          <h1>إدارة حسابات الجهات</h1>
         </div>
       </div>
     </div><!-- /.container-fluid -->
@@ -22,14 +22,33 @@
 
         <div class="col-sm-12">
           <div class="mt-4">
-            <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm" enctype='multipart/form-data'
+            <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm" enctype="multipart/form-data"
               novalidate>
               <div class="col-sm-12">
                 <div class="row">
-                  <div class="col-sm-3"></div>
-                  <div class="col-sm-6">
+
+                  <div class="col-sm-4">
                     <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">أسم المطور العقاري
+                      <label class="col-sm-3 col-form-label"> نوع الحساب </label>
+                      <div class="col-sm-9">
+                        <select class="form-control" required name="selectType" [(ngModel)]="selectType"
+                          #selectTypeCtrl="ngModel">
+
+                          <option [ngValue]="0" disabled>اختر النوع</option>
+                          <option [ngValue]="1">المطور</option>
+                          <option [ngValue]="2">البنك</option>
+
+                        </select>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4" *ngIf="selectType == 1">
+                    <!-- أسم المطور -->
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">أسم المطور
                         <span *ngIf="isSearchByUnit()">*</span>
                       </label>
                       <div class="col-sm-9">
@@ -44,23 +63,43 @@
                         </ng-select>
                       </div>
                     </div>
-
                   </div>
-                  <div class="col-sm-3">
-                    <div class="row ">
-                      <div class="col-sm-12 text-center">
-                        <!-- [disabled]="f.invalid" -->
-                        <button type="submit" class="btn btn-primary" [disabled]="true"
-                          i18n="@@legalBlockssearchSearchButton">Search</button>
+
+                  <!-- أسم الجهة -->
+                  <div class="col-sm-4" *ngIf="selectType == 2">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">أسم الجهة
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <ng-select [items]="developerOptions | async" required="isSearchByUnit()" name="customerId2"
+                          [hideSelected]="true" [(ngModel)]="formData.customerId2" [typeahead]="developerSearchInput$"
+                          bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                          [loading]="developerDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                          typeToSearchText="Please enter 1 or more characters" #developer2="ngModel"
+                          [disabled]="isDisabled('customerId2')" (keyup)="setSearchType('developerId', $event)"
+                          (search)="onUsernameTyping($event)" (blur)="checkTypeAndValues('developerId')"
+                          (change)="resetProjectAndUnit()">
+                        </ng-select>
                       </div>
                     </div>
+
+                  </div> <!-- col-sm-4 end -->
+
+                </div> <!-- row end -->
+              </div> <!-- col-sm-12 end -->
+
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
+                      i18n="@@legalBlockssearchSearchButton">Search</button>
                   </div>
-
                 </div>
-
               </div>
 
             </form>
+
           </div>
 
           <hr />
@@ -69,7 +108,7 @@
             <!-- *ngIf="response && !resError -->
             <div class="searchBlockages">
 
-              <div class="card">
+              <div class="card" *ngIf="selectType == 1">
                 <div class="card-header border-0">
                   <!-- <div class="card-tools">
                     <button type="button" class="btn btn-sm" data-card-widget="collapse">
@@ -119,9 +158,59 @@
                   </table>
                 </div>
               </div>
+              <div class="card" *ngIf="selectType == 2">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    بيانات الجهة </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>رقم الشركة</th>
+                        <th>أسم باللغة العربية</th>
+                        <th>أسم باللغة الأنجليزية</th>
+                        <th>نوع الشركة</th>
+                        <th>جهة الأصدار </th>
+                        <th>تاريخ أنتهاء الأصدار</th>
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fff;" *ngIf="response && !resError">
+                      <tr>
+                        <td>{{response.customerNameAr}}</td>
+                        <td>{{response.emiratesId }}</td>
+                        <td>{{response.email}}</td>
+                        <td>{{response.phoneNumber}}</td>
+                        <td>{{response.nationality}}</td>
+                        <td><span *ngIf="response.status == 1">فعال </span>
+                          <span *ngIf="response.status == 0">غير فعال </span>
+                        </td>
 
 
-              <div class="card bg-seagreen">
+
+                        <!-- <td>
+                          <div class="d-flex">
+                            <span class="fs-30 p-1 icon-pointer" (click)="deleteBlockage(previous_block_detail)">
+                              <i class="fas fa-times red"></i>
+                            </span>
+                            <span class="fs-30 p-1 icon-pointer" (click)="editBlockage(previous_block_detail)">
+                              <i class="fas fa-pen"></i>
+                            </span>
+                          </div>
+                        </td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+
+              <div class="card bg-seagreen" *ngIf="selectType !== 0">
                 <div class="card-header border-0">
                   <div class="card-tools">
                     <!-- [disabled]="f.invalid" -->
@@ -200,7 +289,7 @@
               </div>
 
 
-              <div class="card">
+              <div class="card" *ngIf="selectType !== 0">
                 <div class="card-header border-0">
                   <!-- <div class="card-tools">
                     <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
