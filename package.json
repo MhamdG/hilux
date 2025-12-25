@@ -3,16 +3,16 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "build:language-bundles": "ng run hilux:build:production && ng run hilux:build:ar",
-    "int:extract": "ng xi18n --output-path src/locale",
-    "json": "json-server -w db.json -r routes.json",
-    "serve": "npm-run-all --parallel start json",
-    "all": "code . && npm-run-all --parallel start json"
+  "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve --host 0.0.0.0  --disable-host-check",
+  "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build",
+  "test": "set NODE_OPTIONS=--openssl-legacy-provider && ng test",
+  "lint": "ng lint",
+  "e2e": "ng e2e",
+  "build:language-bundles": "set NODE_OPTIONS=--openssl-legacy-provider && ng run hilux:build:production && ng run hilux:build:ar",
+  "int:extract": "ng xi18n --output-path src/locale",
+  "json": "json-server -w db.json -r routes.json",
+  "serve": "npm-run-all --parallel start json",
+  "all": "code . && npm-run-all --parallel start json"
   },
   "private": true,
   "dependencies": {
