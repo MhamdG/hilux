@@ -32,15 +32,15 @@
                         <span *ngIf="isSearchByUnit()">*</span>
                       </label>
                       <div class="col-sm-9">
-                        <ng-select [items]="developerOptions | async" required="isSearchByUnit()" name="customerId"
-                          [hideSelected]="true" [(ngModel)]="formData.customerId" [typeahead]="developerSearchInput$"
-                          bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                        <!-- <ng-select [items]="developerOptions | async" bindLabel="applicationID"
+                          bindValue="applicationID" [typeahead]="developerSearchInput$" [minTermLength]="1"
                           [loading]="developerDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
-                          typeToSearchText="Please enter 1 or more characters" #developer="ngModel"
-                          [disabled]="isDisabled('customerId')" (keyup)="setSearchType('developerId', $event)"
-                          (search)="onUsernameTyping($event)" (blur)="checkTypeAndValues('developerId')"
-                          (change)="resetProjectAndUnit()">
-                        </ng-select>
+                          typeToSearchText="Please enter 1 or more characters" (search)="onUsernameTyping($event)">
+                        </ng-select> -->
+                        <input type="text" class="form-control" name="customerId" [(ngModel)]="formData.customerId"
+                          placeholder="رقم المعاملة" [disabled]="isDisabled('customerId')" />
+
+
                       </div>
                     </div>
                   </div>
@@ -90,101 +90,6 @@
 
           <div class="resultsWrapper rtl" *ngIf="response && !resError">
             <div class="searchBlockages">
-              <!-- <div class="row">
-                <div class="col-sm-6">
-                  <label i18n="@@legalBlocksResultsLegalBlockages">Legal Blockages:</label>
-                </div>
-                <div class="col-sm-6">
-                  <button class="btn btn-primary float-left" (click)="openAddBlockModal()"
-                    i18n="@@legalBlocksResultsAddBlock">Add Block</button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6" *ngIf="isLandBlockage(response)">
-                  <label i18n="@@legalBlocksResultsLandId">Land ID: </label><span>{{ getfirstLand(response)?.landId
-                    }}</span>
-                </div>
-                <div class="col-sm-6" *ngIf="!isLandBlockage(response)">
-                  <label i18n="@@legalBlocksResultsDeveloperName">Developer Name: </label><span>{{
-                    getDeveloperName(response) }}</span>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6" *ngIf="!isLandBlockage(response)">
-                  <label i18n="@@legalBlocksResultsUnitNumber">Unit Number: </label><span>{{ getUnitNumber(response)
-                    }}</span>
-                </div>
-                <div class="col-sm-6" *ngIf="!isLandBlockage(response)">
-                  <label i18n="@@legalBlocksResultsProjectName">Project Name: </label><span>{{ getProjectName(response)
-                    }}</span>
-                </div>
-              </div>
-              <div class="card bg-seagreen">
-                <div class="card-header border-0">
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                  </div>
-                  <h3 class="card-title float-right font-weight-bold" i18n="@@legalBlocksResultsCurrentLegalBlockages">
-                    Current Legal Blockages</h3>
-                </div>
-                <div class="card-body custom-table-class">
-                  <table class="table table-bordered landTable bg-white table-responsive d-table">
-                    <thead>
-                      <tr class="bg-grey">
-                        <th>#</th>
-                        <th i18n="@@legalBlocksResultsTableBlockageType">Blockage Type</th>
-                        <th i18n="@@legalBlocksResultsTableBlockEntityNameAr">Block Entity Name Ar</th>
-                        <th i18n="@@legalBlocksResultsTableRemarks">Remarks</th>
-                        <th i18n="@@legalBlocksResultsTableAttachments">Attachments</th>
-                        <th i18n="@@legalBlocksResultsTableCreatedAtModifiedAt">Created At / Modified At</th>
-                        <th i18n="@@legalBlocksResultsTableCreatedByModifiedBy">Created By / Modified By</th>
-                        <th i18n="@@legalBlocksResultsTableUnblockRemarks">Unblock Remarks</th>
-                        <th i18n="@@legalBlocksResultsTableEndedAt">Ended At</th>
-                        <th i18n="@@legalBlocksResultsTableEndedBy">Ended By</th>
-                        <th i18n="@@legalBlocksResultsTableActions">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let current_block_detail of getCurrentOwnedBlocks(response); let i = index">
-                        <td>{{ i + 1}}</td>
-                        <td>{{ current_block_detail?.typeAr }}</td>
-                        <td>{{ current_block_detail?.blockEntityNameAr }}</td>
-                        <td>{{ current_block_detail?.remarks }}</td>
-                        <td>
-                          <ng-container *ngFor="let attachment of getAttachments(current_block_detail?.attachments)">
-                            <li class="no-style-attachment" *ngIf="attachment.link">
-                              <a [href]="attachment.link" target="_blank">
-                                {{attachment.name}}
-                              </a>
-                            </li>
-                          </ng-container>
-                        </td>
-
-                        <td class="line-break-class">{{ getCreatesAtModifiedAt(current_block_detail) }}</td>
-                        <td class="line-break-class">{{ getCreatesByModifiedBy(current_block_detail) }}</td>
-
-                        <td>{{ current_block_detail?.endRemarks }}</td>
-
-                        <td>{{ current_block_detail?.endedAt }}</td>
-                        <td>{{ current_block_detail?.endedByNameAr }}</td>
-                        <td>
-                          <div class="d-flex">
-                            <span class="fs-30 p-1 icon-pointer" (click)="deleteBlockage(current_block_detail)">
-                              <i class="fas fa-times red"></i>
-                            </span>
-                            <a href="javascript:void(0);" class="fs-30 p-1 icon-pointer"
-                              (click)="editBlockage(current_block_detail)">
-                              <i class="fas fa-pen"></i>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div> -->
 
               <div class="card">
                 <div class="card-header border-0">
@@ -201,7 +106,7 @@
                     <thead>
                       <tr class="bg-grey">
                         <th>رقم المعاملة</th>
-                        <th> أسم الجهة</th>
+                        <th> أسم الخدمة</th>
                         <th> تاريخ أنشاء المعاملة</th>
                         <th>حالة الإيصال</th>
 
@@ -209,21 +114,22 @@
                     </thead>
                     <tbody style="background-color: #fff;">
                       <tr>
-                        <td>{{response.customerNameAr}}</td>
-                        <td>{{response.emiratesId }}</td>
-                        <td>{{response.email}}</td>
-                        <td>{{response.phoneNumber}}</td>
-                        <!-- <td><span *ngIf="response.status == 1">فعال </span>
-                          <span *ngIf="response.status == 0">غير فعال </span>
-                        </td>
+                        <td>{{response.applicationID}}</td>
+                        <td>{{response.serviceName.ar }}</td>
+                        <td>{{ response.firstStepCreatedAt | date:'yyyy-MM-dd' }}</td>
                         <td>
-                          <span *ngIf="response.searchMessage">
-                            {{response.searchMessage}}
+                          <span *ngIf="response.invoiceStatus =='all_paid'">
+                            مدفوع كلي
                           </span>
-                          <span *ngIf="! response.searchMessage">
-                            لا توجد بيانات
+                          <span *ngIf="response.invoiceStatus =='partly_paid'">
+                            مدفوع جزئي
                           </span>
-                        </td> -->
+                          <span *ngIf="response.invoiceStatus =='not_paid'|| response.invoiceStatus =='no_invoices' ">
+                            غير مدفوع
+                          </span>
+
+                        </td>
+
                       </tr>
                     </tbody>
                   </table>
@@ -245,142 +151,58 @@
                     <thead>
                       <tr class="bg-grey">
                         <th>أسم الخطوة</th>
-                        <th>قسم</th>
+                        <th>الحالة</th>
                         <th>محجوزة لدي</th>
                         <th>خطوة القسم</th>
-
-
                       </tr>
                     </thead>
                     <tbody>
-                      <ng-container *ngFor="let item of response.profiles; let i = index">
-                        <tr *ngIf="item.status == 1">
+                      <ng-container *ngFor="let item of response.steps; let i = index">
+                        <tr>
                           <td>
-                            <span *ngIf="item.nameAr">
-                              {{ item.nameAr}}
+                            <span *ngIf="item.applicationWorkflowStepID">
+                              {{ item.applicationWorkflowStepID}}
                             </span>
-                            <span *ngIf="! item.nameAr">
+                            <span *ngIf="!item.applicationWorkflowStepID">
                               لا توجد بيانات
                             </span>
                           </td>
                           <td>
-
-                            <span *ngIf="item.companyNameAr">
-                              {{ item.companyNameAr}}
+                            <span *ngIf="item.stepStatusName">
+                              {{ item.stepStatusName}}
                             </span>
-                            <span *ngIf="! item.companyNameAr">
+                            <span *ngIf="!item.stepStatusName">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <!-- <td>
+                            <span *ngIf="item.currentDepartment">
+                              {{ item.currentDepartment}}
+                            </span>
+                            <span *ngIf="! item.currentDepartment">
+                              لا توجد بيانات
+                            </span>
+                          </td> -->
+                          <td>
+                            <span *ngIf="item.userName">
+                              {{ item.userName}}
+                            </span>
+                            <span *ngIf="! item.userName">
                               لا توجد بيانات
                             </span>
                           </td>
                           <td>
-                            <span *ngIf="item.remarks">
-                              {{ item.remarks}}
+                            <span *ngIf="item.isDepartmentStep">
+                              <button>تحويل المعاملة</button>
                             </span>
-                            <span *ngIf="! item.remarks">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.attachments">
-                              <a [href]="item.attachments" target="_blank">
-                                <span style="color: blue;" class="fas fa-paperclip"></span>
-                              </a>
-                            </span>
-                            <span *ngIf="! item.attachments">
-                              لا توجد بيانات
+                            <span *ngIf="! item.isDepartmentStep">
+                              <button>تحويل المعاملة</button>
                             </span>
                           </td>
-
                         </tr>
                       </ng-container>
                     </tbody>
 
-                  </table>
-                </div>
-              </div>
-
-
-              <div class="card">
-                <div class="card-header border-0">
-                  <!-- <div class="card-tools">
-                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
-                   >أضافة مستخدم</button>
-                  </div> -->
-                  <h3 class="card-title float-right font-weight-bold">
-                    ملفات المستخدم الغير الفعالة </h3>
-                </div>
-                <div class="card-body custom-table-class">
-                  <table class="table table-bordered landTable bg-light-red table-responsive d-table text-center">
-                    <thead>
-                      <tr class="bg-grey">
-                        <th>نوع المستخدم</th>
-                        <th>أسم الجهة</th>
-                        <th>الملاحظات</th>
-                        <th>المرفقات</th>
-                        <th>تاريخ أنشاء الملف</th>
-                        <th>تاريخ إلغاء الملف</th>
-
-
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <ng-container *ngFor="let item of response.profiles; let i = index">
-                        <tr *ngIf="item.status == 0">
-                          <td>
-                            <span *ngIf="item.nameAr">
-                              {{ item.nameAr}}
-                            </span>
-                            <span *ngIf="! item.nameAr">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.companyNameAr">
-                              {{ item.companyNameAr}}
-                            </span>
-                            <span *ngIf="! item.companyNameAr">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.endRemarks">
-                              {{ item.endRemarks}}
-                            </span>
-                            <span *ngIf="! item.endRemarks">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.endAttachments">
-                              <a [href]="item.endAttachments" target="_blank">
-                                <span style="color: blue;" class="fas fa-paperclip"></span>
-                              </a>
-                            </span>
-                            <span *ngIf="! item.endAttachments">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.createdAt">
-                              {{ item.createdAt}}
-                            </span>
-                            <span *ngIf="! item.createdAt">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.modifiedAt">
-                              {{ item.modifiedAt}}
-                            </span>
-                            <span *ngIf="! item.modifiedAt">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-
-
-                        </tr>
-                      </ng-container>
-                    </tbody>
                   </table>
                 </div>
               </div>
@@ -408,29 +230,19 @@
               <!-- Modal Body -->
               <div class="modal-body">
                 <form #userForm="ngForm">
-
                   <div class="form-row align-items-center">
-
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">نوع المستخدم <span style="color: red;">*</span></label>
 
-                      <!-- <ng-select class=" w-75" [items]="userTypeOptions | async" required="true"
-                        name="userType" [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
+                      <ng-select class=" w-75" [items]="userTypeOptions | async" required="true" name="userType"
+                        [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
                         bindLabel="value.ar" [minTermLength]="1" bindValue="key" [loading]="userTypeDataOptionsLoading"
                         notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
                         (search)="onUserTypeTyping($event)" (blur)="checkTypeAndValues('developerId')"
                         (change)="resetProjectAndUnit()">
-                      </ng-select> -->
-                      <ng-select class="w-75" [items]="userTypeOptions" required="true" name="userType"
-                        [hideSelected]="true" [(ngModel)]="userType" bindLabel="value.ar" bindValue="key"
-                        [loading]="userTypeDataOptionsLoading" notFoundText="لا يوجد نتائج" [searchable]="false"
-                        [clearable]="false" (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
                       </ng-select>
-
-
                     </div>
-
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">اسم الجهة <span style="color: red;">*</span></label>
@@ -446,7 +258,6 @@
 
                   </div>
                   <div class="form-row align-items-center">
-
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0"> ملاحظات </label>
@@ -460,12 +271,9 @@
                       <label class="ml-2 mb-0">المرفقات </label>
                       <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
                     </div>
-
                   </div>
-
                 </form>
               </div>
-
               <!-- Modal Footer -->
               <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">إغلاق</button>

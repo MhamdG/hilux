@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
-import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { FieldsService } from '../shared/fields.service';
 import * as _ from 'lodash';
@@ -253,44 +253,68 @@ export class UnlockApplicationComponent implements OnInit {
     this.closeDeleteModal();
   }
 
+  // searchData(formData: any) { 
+  //   let obj: any = {};
+
+  //   if (formData.email) {
+  //     obj.email = formData.email;
+  //   } else if (formData.customerId) {
+  //     obj.customerId = formData.customerId;
+  //   }
+  //   if (formData.emiratesId) {
+  //     obj.emiratesId = formData.emiratesId;
+  //   }
+
+  //   const body = new URLSearchParams();
+  //   body.set('data', JSON.stringify(obj));
+
+  //   this.http.post(
+  //     `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/Search`,
+  //     body.toString(),
+  //     {
+  //       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  //     }
+  //   ).subscribe((data: any) => {
+  //     console.log(".................");
+  //     console.log(data.data);
+  //     if (data.status === 'success') {
+  //       this.response = data.data;
+  //       this.resError = null;
+  //     }
+  //     else if (data.status == "error") {
+  //       this.toastr.error(JSON.stringify(data.message), 'Error')
+  //       this.resError = data;
+  //       this.response = null;
+  //     } else {
+  //       this.toastr.error(JSON.stringify(data.message), 'Error')
+
+  //     }
+  //   });
+  // }
   searchData(formData: any) {
-    let obj: any = {};
 
-    if (formData.email) {
-      obj.email = formData.email;
-    } else if (formData.customerId) {
-      obj.customerId = formData.customerId;
-    }
-    if (formData.emiratesId) {
-      obj.emiratesId = formData.emiratesId;
+    if (!formData.customerId) {
+      this.toastr.error('Please enter application number');
+      return;
     }
 
-    const body = new URLSearchParams();
-    body.set('data', JSON.stringify(obj));
-
-    this.http.post(
-      `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/Search`,
-      body.toString(),
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }
-    ).subscribe((data: any) => {
-      console.log(".................");
-      console.log(data.data);
-      if (data.status === 'success') {
-        this.response = data.data;
-        this.resError = null;
-      }
-      else if (data.status == "error") {
-        this.toastr.error(JSON.stringify(data.message), 'Error')
-        this.resError = data;
-        this.response = null;
-      } else {
-        this.toastr.error(JSON.stringify(data.message), 'Error')
-
-      }
-    });
+    this.lookupsService
+      .SearchForLockedStepByApplicationID({
+        applicationID: formData.customerId
+      })
+      .subscribe((res: any) => {
+        if (res.status === 'success') {
+          // API returns object → convert to array if needed
+          this.response = res.data ? res.data : [];
+          this.resError = null;
+        } else {
+          this.response = null;
+          this.resError = res;
+          this.toastr.error(res.message || 'Error');
+        }
+      });
   }
+
 
 
   loadUnitsOptions() {
@@ -300,21 +324,43 @@ export class UnlockApplicationComponent implements OnInit {
       })
   }
 
+  // loadDeveloperOptions() {
+  //   this.developerOptions = concat(
+  //     of([]), // default items
+  //     this.developerSearchInput$.pipe(
+  //       distinctUntilChanged(),
+  //       tap(() => this.developerDataOptionsLoading = true),
+  //       switchMap(term => {
+  //         return this.lookupsService.SearchForLockedStepByApplicationID({ applicationID: term }).pipe(
+  //           catchError(() => of([])), // empty list on error
+  //           tap(() => this.developerDataOptionsLoading = false)
+  //         )
+  //       })
+  //     )
+  //   );
+  //   console.log(this.developerOptions);
+  // }
   loadDeveloperOptions() {
     this.developerOptions = concat(
-      of([]), // default items
+      of([]),
       this.developerSearchInput$.pipe(
         distinctUntilChanged(),
         tap(() => this.developerDataOptionsLoading = true),
-        switchMap(term => {
-          return this.lookupsService.loadusersname({ term }).pipe(
-            catchError(() => of([])), // empty list on error
-            tap(() => this.developerDataOptionsLoading = false)
-          )
-        })
+        switchMap(term =>
+          this.lookupsService
+            .SearchForLockedStepByApplicationID({ applicationID: term })
+            .pipe(
+              map((res: any) => {
+                return res?.data ? [res.data] : [];
+              }),
+              catchError(() => of([])),
+              tap(() => this.developerDataOptionsLoading = false)
+            )
+        )
       )
     );
   }
+
   // loaduserTypesOptions() {
   //   this.userTypeOptions = concat(
   //     of([]), // default items
@@ -456,14 +502,24 @@ export class UnlockApplicationComponent implements OnInit {
       ([key, value]) => key !== field && !!value
     );
   }
-  onUsernameTyping(term: string) {
-    // temporarily assign search term so disable logic works
-    this.formData.customerId = term?.trim() || null;
-  }
+  // onUsernameTyping(term: string) {
+  //   // temporarily assign search term so disable logic works
+  //   this.formData.customerId = term?.trim() || null;
+  // }
   onUserTypeTyping(term: string) {
     // temporarily assign search term so disable logic works
     this.userType = term?.trim() || null;
   }
+  onUsernameTyping(term: any) {
+    if (typeof term !== 'string') {
+      return;
+    }
+
+    const value = term.trim();
+    this.formData.customerId = value || null;
+    this.developerSearchInput$.next(value);
+  }
+
   onEntityNameTyping(term: string) {
     // temporarily assign search term so disable logic works
     this.entityName = term?.trim() || null;
