@@ -72,6 +72,9 @@ export class LookupsService {
   loaduserTypes(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/listOfProfiles`, params);
   }
+  ListEmployeesWithUserIdByDepartment(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/ListEmployeesWithUserIdByDepartment`, params);
+  }
   loadEntityName(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/companies`, params);
   }

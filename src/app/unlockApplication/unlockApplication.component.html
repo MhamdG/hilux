@@ -107,6 +107,7 @@
                       <tr class="bg-grey">
                         <th>رقم المعاملة</th>
                         <th> أسم الخدمة</th>
+                        <th>تفاصيل المعاملة</th>
                         <th> تاريخ أنشاء المعاملة</th>
                         <th>حالة الإيصال</th>
 
@@ -116,6 +117,19 @@
                       <tr>
                         <td>{{response.applicationID}}</td>
                         <td>{{response.serviceName.ar }}</td>
+                        <td>
+                          <ng-container
+                            *ngIf="response.applicationDetails && response.applicationDetails.length > 0; else noData">
+                            <span *ngFor="let item of response.applicationDetails; let i = index">
+                              {{ item }}
+                            </span>
+                          </ng-container>
+
+                          <ng-template #noData>
+                            <span>لا يوجد بيانات</span>
+                          </ng-template>
+                        </td>
+
                         <td>{{ response.firstStepCreatedAt | date:'yyyy-MM-dd' }}</td>
                         <td>
                           <span *ngIf="response.invoiceStatus =='all_paid'">
@@ -192,12 +206,9 @@
                             </span>
                           </td>
                           <td>
-                            <span *ngIf="item.isDepartmentStep">
-                              <button>تحويل المعاملة</button>
-                            </span>
-                            <span *ngIf="! item.isDepartmentStep">
-                              <button>تحويل المعاملة</button>
-                            </span>
+
+                            <button (click)="actionFun(item)" class="btn btn-primary">تحويل
+                              المعاملة</button>
                           </td>
                         </tr>
                       </ng-container>
@@ -221,7 +232,7 @@
 
               <!-- Modal Header -->
               <div class="modal-header bg-purple text-white">
-                <h5 class="modal-title">إضافة ملف مستخدم</h5>
+                <h5 class="modal-title"> أختار الموظف </h5>
                 <button type="button" class="close text-white" (click)="closeModal()">
                   <span>&times;</span>
                 </button>
@@ -233,124 +244,33 @@
                   <div class="form-row align-items-center">
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">نوع المستخدم <span style="color: red;">*</span></label>
+                      <label class="ml-2 mb-0">الموظف <span style="color: red;">*</span></label>
 
-                      <ng-select class=" w-75" [items]="userTypeOptions | async" required="true" name="userType"
-                        [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
-                        bindLabel="value.ar" [minTermLength]="1" bindValue="key" [loading]="userTypeDataOptionsLoading"
-                        notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
-                        (search)="onUserTypeTyping($event)" (blur)="checkTypeAndValues('developerId')"
-                        (change)="resetProjectAndUnit()">
+                      <ng-select [items]="userTypeOptions" bindLabel="name" bindValue="id" [(ngModel)]="selectedUserId"
+                        name="employee" [loading]="userTypeDataOptionsLoading" placeholder="أختار الموظف"
+                        [clearable]="false">
                       </ng-select>
-                    </div>
-                    <!-- Input -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">اسم الجهة <span style="color: red;">*</span></label>
 
-                      <ng-select class=" w-75" [items]="entityNamesOptions | async" required="true" name="entityName"
-                        [hideSelected]="true" [(ngModel)]="entityName" [typeahead]="entutyNameSearchInput$"
-                        bindLabel="value.ar" [minTermLength]="1" bindValue="key" [clearable]="!!entityName"
-                        [loading]="entutyNameDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
-                        typeToSearchText="Please enter 1 or more characters" (search)="onEntityNameTyping($event)"
-                        (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
-                      </ng-select>
+
+
+
                     </div>
+
 
                   </div>
-                  <div class="form-row align-items-center">
-                    <!-- Dropdown -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0"> ملاحظات </label>
-                      <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
-                        placeholder=" ملاحظات " />
 
-                    </div>
-
-                    <!-- Input -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">المرفقات </label>
-                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
-                    </div>
-                  </div>
                 </form>
               </div>
               <!-- Modal Footer -->
               <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">إغلاق</button>
-                <button type="button" class="btn btn-primary" (click)="submitForm()">إرسال</button>
+                <button type="button" class="btn btn-primary" (click)="submitActionFun()">إرسال</button>
               </div>
 
             </div>
           </div>
         </div>
-        <!-- delete Modal -->
-        <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show d-block': showDeleteModal}">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
 
-              <!-- Modal Header -->
-              <div class="modal-header bg-purple text-white">
-                <h5 class="modal-title">حذف ملف مستخدم</h5>
-                <button type="button" class="close text-white" (click)="closeModal()">
-                  <span>&times;</span>
-                </button>
-              </div>
-
-              <!-- Modal Body -->
-              <div class="modal-body">
-                <form #userForm="ngForm">
-
-                  <div class="form-row align-items-center">
-
-                    <!-- Dropdown -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">نوع المستخدم </label>
-
-
-                      <input type="text" class="form-control w-75" [(ngModel)]="currectItem.nameAr" name="userType"
-                        placeholder="لا يوجد نتائج للبحث" readonly />
-                    </div>
-
-                    <!-- Input -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">اسم الجهة </label>
-
-
-                      <input type="text" class="form-control w-75" [(ngModel)]="currectItem.companyNameAr"
-                        name="companyNameAr" placeholder="لا يوجد نتائج للبحث" readonly />
-                    </div>
-
-                  </div>
-                  <div class="form-row align-items-center">
-
-                    <!-- Dropdown -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">ملاحظات </label>
-                      <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
-                        placeholder=" ملاحظات " />
-
-                    </div>
-
-                    <!-- Input -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">المرفقات </label>
-                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
-                    </div>
-
-                  </div>
-
-                </form>
-              </div>
-
-              <!-- Modal Footer -->
-              <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">إغلاق</button>
-                <button type="button" class="btn btn-primary" (click)="submitDeleteForm()">إرسال</button>
-              </div>
-
-            </div>
-          </div>
-        </div>
         <!-- /.card-body -->
       </div>
     </div><!-- /.container-fluid -->

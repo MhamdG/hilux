@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
@@ -71,8 +71,10 @@ export class UnlockApplicationComponent implements OnInit {
   remarksValue: any;
   // currectItem:any;
   currectItem: any = {}; // so it’s never undefined
+  selectedUserId: any;
+  selectedItem: any;
 
-
+  // @ViewChild('employeeSelect') employeeSelect!: any;
 
 
   constructor(
@@ -83,7 +85,9 @@ export class UnlockApplicationComponent implements OnInit {
     private toastr: ToastrService,
     private ngxSmartModalService: NgxSmartModalService,
     private lookupsService: LookupsService
-  ) { }
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.toggleControl(false);
@@ -93,8 +97,9 @@ export class UnlockApplicationComponent implements OnInit {
     this.loadLandsoptions();
     this.loadOldLandsoptions();
     this.loadBlockageEntities();
-    this.loaduserTypesOptions();
     this.loadentityNameOptions();
+    // this.loaduserTypesOptions();
+
 
     // this.route.queryParams.subscribe(async (params) => {
     //   if (!_.isEqual(params, {})) {
@@ -103,74 +108,23 @@ export class UnlockApplicationComponent implements OnInit {
     //   }
     // });
   }
-  openModal() {
+  openModal(item: any) {
     this.showModal = true;
+    this.selectedItem = item;
+    this.selectedUserId = null;
+
   }
-  openDeleteModal(item: any) {
-    this.showDeleteModal = true;
-    this.currectItem = item;
-  }
+
 
   closeModal() {
     this.showModal = false;
     this.userType = "";
-    this.entityName = "";
-    this.remarksValue = "";
-    this.addBlockData.attachments = [];
+    this.selectedUserId = null;
+    this.selectedItem = null;
+
   }
-  closeDeleteModal() {
-    this.showDeleteModal = false;
-    this.userType = "";
-    this.entityName = "";
-    this.remarksValue = "";
-    this.addBlockData.attachments = [];
-  }
-  //   handleFileInput(event: Event, fileInput: HTMLInputElement): void {
-  //     this.resMsg = null;
-  //     this.resUrl = null;
-  //     const input = event.target as HTMLInputElement;
 
-  //     if (input.files && input.files.length > 0) {
-  //       const file = input.files[0];
-  //       this.uploadFile(file, fileInput);
-  //     } else {
-  //       console.error('No file selected!');
-  //     }
-  //   }
-  //   uploadFile(file: File, fileInput: HTMLInputElement): void {
-  //     const formData = new FormData();
-  //     formData.append('attachments', file);
 
-  //   const headers = new HttpHeaders({
-  //   'Authorization': 'Bearer ' + environment.token,
-  //   // 'Cookie': 'your_cookie_value_here' // only if backend really requires it
-  // });
-
-  // this.http.post<any>(
-  //   `${environment.apiHost}/ajaxupload.php`,
-  //   formData,
-  //   { headers }   // ✅ attach headers here
-  // ).subscribe({
-  //   next: (response) => {
-  //     if (response && response.status === "error") {
-  //       this.resMsg = "حدث خطأ يرجى تحميل الملف لمعرفة التفاصيل";
-  //       this.resUrl = response.message;
-  //     } else if (response && response.status === "success") {
-  //       this.resMsg = "تم تحميل الملف بنجاح";
-  //       fileInput.value = '';
-  //       this.attachment = response;
-  //     } else {
-  //       this.resMsg = "حدث خطأ ما من فضلك حاول لاحقاً";
-  //       fileInput.value = '';
-  //     }
-  //     console.log('File uploaded successfully:', response);
-  //   },
-  //   error: (err) => {
-  //     console.error('File upload failed:', err);
-  //   }
-  // });
-
-  //   }
 
   submitForm() {
     // const uploadedUrl = this.addBlockData['attachments'];
@@ -210,47 +164,6 @@ export class UnlockApplicationComponent implements OnInit {
       }
     });
     this.closeModal();
-  }
-  submitDeleteForm() {
-    // const uploadedUrl = this.addBlockData['attachments'];
-    // const uploadedUrl = this.addBlockData?.attachments; // ✅ safe access
-    // console.log('Uploaded URL:', this.addBlockData.attachments[0]);
-    // let attachments = this?.addBlockData?.attachments?[0];
-    let attachments = this?.addBlockData?.attachments?.[0];
-
-
-    // 👉 here you can send values to API
-    let obj = {
-      userId: this.response.userId,
-      profileId: this.currectItem.profileId,
-      // ownerId: this.entityName,
-      endRemarks: this.remarksValue,
-      endAttachments: attachments
-    }
-    const body = new URLSearchParams();
-    body.set('data', JSON.stringify(obj));
-    this.http.post(
-      `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/ApiDeleteUserProfile`,
-      body.toString(),
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }
-    ).subscribe((data: any) => {
-      console.log(".................");
-      console.log(data.data);
-      if (data.status === 'success') {
-        this.response2 = data.data;
-        this.searchData(this.formData);
-        this.userType = "";
-        this.entityName = "";
-        this.remarksValue = "";
-        attachments = "";
-        this.addBlockData.attachments = [];
-      } else {
-        this.toastr.error(JSON.stringify(data.message), 'Error')
-      }
-    });
-    this.closeDeleteModal();
   }
 
   // searchData(formData: any) { 
@@ -314,6 +227,10 @@ export class UnlockApplicationComponent implements OnInit {
         }
       });
   }
+  onUserChange(userId: string) {
+    console.log('Selected User ID:', userId);
+    this.selectedUserId = userId;
+  }
 
 
 
@@ -323,6 +240,77 @@ export class UnlockApplicationComponent implements OnInit {
         this.unitsOptions = data;
       })
   }
+  actionFun(item: any) {
+    if (item.employeeIDisRequired) {
+      this.showModal = true;
+      this.selectedItem = item;
+      this.selectedUserId = null;
+      this.userTypeOptions = null;
+      this.loaduserTypesOptions();
+      return;
+    } else {
+
+      const formData = new FormData();
+      formData.append('stepID', item.applicationWorkflowStepID);
+      formData.append('applicationID', this.response.applicationID);
+
+      this.http.post(
+        `${environment.apiHost}/AjmanLandProperty/index.php/applications/HandleLockedStepByApplicationID`,
+        formData
+      ).subscribe((data: any) => {
+        console.log(data);
+
+        if (data.status === 'success') {
+          this.toastr.success(data.message, 'Success');
+          let formData = {
+            customerId: this.response.applicationID
+          }
+          this.searchData(formData);
+        } else {
+          this.toastr.error(data.message, 'Error');
+        }
+      });
+
+    }
+  }
+  submitActionFun() {
+    console.log(this.selectedUserId);
+    if (this.selectedItem && this.selectedUserId) {
+      const formData = new FormData();
+      formData.append('stepID', this.selectedItem.applicationWorkflowStepID);
+      formData.append('applicationID', this.response.applicationID);
+      formData.append('employeeID', this.selectedUserId);
+      this.http.post(
+        `${environment.apiHost}/AjmanLandProperty/index.php/applications/HandleLockedStepByApplicationID`,
+        formData
+      ).subscribe((data: any) => {
+        console.log(data);
+
+        if (data.status === 'success') {
+          this.toastr.success(data.message, 'Success');
+          this.selectedItem = null;
+          this.selectedUserId = null;
+
+          // this.userTypeOptions = null;
+          // this.employeeSelect.clear();
+          this.showModal = false;
+          // Clear ng-select manually
+
+
+          // this.loaduserTypesOptions();
+          let formData = {
+            customerId: this.response.applicationID
+          }
+          this.searchData(formData);
+        } else {
+          this.toastr.error(data.message, 'Error');
+        }
+      });
+    }
+
+
+  }
+
 
   // loadDeveloperOptions() {
   //   this.developerOptions = concat(
@@ -379,7 +367,7 @@ export class UnlockApplicationComponent implements OnInit {
   loaduserTypesOptions() {
     this.userTypeDataOptionsLoading = true;
 
-    this.lookupsService.loaduserTypes({ term: '' }).pipe(
+    this.lookupsService.ListEmployeesWithUserIdByDepartment({ departmentID: 1 }).pipe(
       catchError(() => of([])),
       tap(() => this.userTypeDataOptionsLoading = false)
     ).subscribe(data => {
