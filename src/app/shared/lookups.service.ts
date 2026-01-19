@@ -35,6 +35,13 @@ export class LookupsService {
   loadUnitsOptions(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/units`, params);
   }
+  loadAccountTypeOptions(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/listOfProfiles`, params);
+  }
+  OwnerIdByProfileType(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/OwnerIdByProfileType`, params);
+  }
+
   loadUnitsByUnitIDOptions(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/unitsByUnitID`, params);
   }
@@ -174,13 +181,13 @@ export class LookupsService {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/projectstypes`, params);
   }
   loadOwnershipLandTypes() {
-   return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/DashboardStatsApi/landTypes/`);
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/DashboardStatsApi/landTypes/`);
     //  return this.fieldsService.getUrl("http://192.168.18.250/AjmanLandProperty/index.php/DashboardStatsApi/landTypes/");
   }
-  loadOwnershipLandData(params:any) {
-    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/DashboardStatsApi/report/`,params);
-      // return this.fieldsService.getUrl("http://192.168.18.250/AjmanLandProperty/index.php/DashboardStatsApi/report/");
-   }
+  loadOwnershipLandData(params: any) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/DashboardStatsApi/report/`, params);
+    // return this.fieldsService.getUrl("http://192.168.18.250/AjmanLandProperty/index.php/DashboardStatsApi/report/");
+  }
 
   loadProjectStatusOptions(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/projectsStatuses`, params);

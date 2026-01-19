@@ -31,11 +31,14 @@ export class DeveloperAccountManagementComponent implements OnInit {
   paramsSubscription = new Subscription();
   results = [];
   developerOptions: Observable<any>;
+  ownerTypesOptions: Observable<any>;
   projectsOptions: Observable<any>;
   landsOptions: Observable<any>;
   oldLandsOptions: Observable<any>;
   developerDataOptionsLoading = false;
   developerSearchInput$ = new Subject<string>();
+  ownerTypeSearchInput$ = new Subject<string>();
+  ownerDataOptionsLoading = false;
   projectsSearchInput$ = new Subject<string>();
   projectDataOptionsLoading = false;
   landDataOptionsLoading = false;
@@ -45,6 +48,7 @@ export class DeveloperAccountManagementComponent implements OnInit {
   ownersSearchInput$ = new Subject<string>();
   ownersOptionsLoading = false;
   unitsOptions: any;
+  listOfAccounts: any;
   ownersOptions: Observable<any>;
   response: any;
   response2: any;
@@ -72,6 +76,10 @@ export class DeveloperAccountManagementComponent implements OnInit {
   selectType: any;
   // currectItem:any;
   currectItem: any = {}; // 
+  accountType: any;
+  companyInfo: any;
+  activeCustomerProfiles: any = [];
+  inactiveCustomerProfiles: any = [];
 
 
 
@@ -89,14 +97,15 @@ export class DeveloperAccountManagementComponent implements OnInit {
   ngOnInit(): void {
     this.selectType = 0;
     this.toggleControl(false);
-    this.loadUnitsOptions();
-    this.loadDeveloperOptions();
-    this.loadProjectsOptions();
-    this.loadLandsoptions();
-    this.loadOldLandsoptions();
-    this.loadBlockageEntities();
-    this.loaduserTypesOptions();
-    this.loadentityNameOptions();
+    // this.loadUnitsOptions();
+    // this.loadDeveloperOptions();
+    // this.loadProjectsOptions();
+    // this.loadLandsoptions();
+    // this.loadOldLandsoptions();
+    // this.loadBlockageEntities();
+    // this.loaduserTypesOptions();
+    // this.loadentityNameOptions();
+    this.loadAccountTypeOptions();
 
     // this.route.queryParams.subscribe(async (params) => {
     //   if (!_.isEqual(params, {})) {
@@ -106,7 +115,7 @@ export class DeveloperAccountManagementComponent implements OnInit {
     // });
   }
   openModal() {
-    this.showModal = true;
+    // this.showModal = true;
   }
   openDeleteModal(item: any) {
     this.showDeleteModal = true;
@@ -127,52 +136,6 @@ export class DeveloperAccountManagementComponent implements OnInit {
     this.remarksValue = "";
     this.addBlockData.attachments = [];
   }
-  //   handleFileInput(event: Event, fileInput: HTMLInputElement): void {
-  //     this.resMsg = null;
-  //     this.resUrl = null;
-  //     const input = event.target as HTMLInputElement;
-
-  //     if (input.files && input.files.length > 0) {
-  //       const file = input.files[0];
-  //       this.uploadFile(file, fileInput);
-  //     } else {
-  //       console.error('No file selected!');
-  //     }
-  //   }
-  //   uploadFile(file: File, fileInput: HTMLInputElement): void {
-  //     const formData = new FormData();
-  //     formData.append('attachments', file);
-
-  //   const headers = new HttpHeaders({
-  //   'Authorization': 'Bearer ' + environment.token,
-  //   // 'Cookie': 'your_cookie_value_here' // only if backend really requires it
-  // });
-
-  // this.http.post<any>(
-  //   `${environment.apiHost}/ajaxupload.php`,
-  //   formData,
-  //   { headers }   // ✅ attach headers here
-  // ).subscribe({
-  //   next: (response) => {
-  //     if (response && response.status === "error") {
-  //       this.resMsg = "حدث خطأ يرجى تحميل الملف لمعرفة التفاصيل";
-  //       this.resUrl = response.message;
-  //     } else if (response && response.status === "success") {
-  //       this.resMsg = "تم تحميل الملف بنجاح";
-  //       fileInput.value = '';
-  //       this.attachment = response;
-  //     } else {
-  //       this.resMsg = "حدث خطأ ما من فضلك حاول لاحقاً";
-  //       fileInput.value = '';
-  //     }
-  //     console.log('File uploaded successfully:', response);
-  //   },
-  //   error: (err) => {
-  //     console.error('File upload failed:', err);
-  //   }
-  // });
-
-  //   }
 
   submitForm() {
     // const uploadedUrl = this.addBlockData['attachments'];
@@ -256,33 +219,35 @@ export class DeveloperAccountManagementComponent implements OnInit {
   }
 
   searchData(formData: any) {
-    let obj: any = {};
+    //   let obj: any = {};
 
-    if (formData.email) {
-      obj.email = formData.email;
-    } else if (formData.customerId) {
-      obj.customerId = formData.customerId;
-    }
-    if (formData.emiratesId) {
-      obj.emiratesId = formData.emiratesId;
-    }
+    // console.log(formData);
 
-    const body = new URLSearchParams();
-    body.set('data', JSON.stringify(obj));
-
-    this.http.post(
-      `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/Search`,
-      body.toString(),
+    this.http.get(
+      `${environment.apiHost}/AjmanLandProperty/index.php/lookups/CustomerProfilesByOwnerID?ownerId=` + formData.ownerID,
+      // body.toString(),
       {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }
     ).subscribe((data: any) => {
       console.log(".................");
-      console.log(data.data);
-      if (data.status === 'success') {
-        this.response = data.data;
+      console.log(data);
+      // if (data.status === 'success') {
+      this.response = data;
+      if (this.response.companyInfo) {
+        this.companyInfo = this.response.companyInfo;
         this.resError = null;
       }
+      if (this.response.activeCustomerProfiles) {
+        this.activeCustomerProfiles = this.response.activeCustomerProfiles;
+        this.resError = null;
+      }
+      if (this.response.inactiveCustomerProfiles) {
+        this.inactiveCustomerProfiles = this.response.inactiveCustomerProfiles;
+        this.resError = null;
+      }
+
+      // }
       else if (data.status == "error") {
         this.toastr.error(JSON.stringify(data.message), 'Error')
         this.resError = data;
@@ -293,13 +258,33 @@ export class DeveloperAccountManagementComponent implements OnInit {
       }
     });
   }
-
+  loadAccountTypeOptions() {
+    this.lookupsService.loadAccountTypeOptions()
+      .subscribe((data) => {
+        this.listOfAccounts = data;
+      })
+  }
 
   loadUnitsOptions() {
-    this.lookupsService.loadUnitsOptions({ projectId: this.formData.projectId })
+    this.lookupsService.loadAccountTypeOptions()
       .subscribe((data) => {
-        this.unitsOptions = data;
+        this.listOfAccounts = data;
       })
+  }
+  getDepartments() {
+    this.ownerTypesOptions = concat(
+      of([]), // default items
+      this.ownerTypeSearchInput$.pipe(
+        distinctUntilChanged(),
+        tap(() => this.ownerDataOptionsLoading = true),
+        switchMap(term => {
+          return this.lookupsService.OwnerIdByProfileType({ term, userType: this.accountType }).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.ownerDataOptionsLoading = false)
+          )
+        })
+      )
+    );
   }
 
   loadDeveloperOptions() {
