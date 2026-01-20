@@ -50,24 +50,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="col-sm-4" >
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">أسم المطور
-                        <span *ngIf="isSearchByUnit()">*</span>
-                      </label>
-                      <div class="col-sm-9">
-                        <ng-select [items]="developerOptions | async" required="isSearchByUnit()" name="customerId"
-                          [hideSelected]="true" [(ngModel)]="formData.customerId" [typeahead]="developerSearchInput$"
-                          bindLabel="value.ar" [minTermLength]="1" bindValue="key"
-                          [loading]="developerDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
-                          typeToSearchText="Please enter 1 or more characters" #developer="ngModel"
-                          [disabled]="isDisabled('customerId')" (keyup)="setSearchType('developerId', $event)"
-                          (search)="onUsernameTyping($event)" (blur)="checkTypeAndValues('developerId')"
-                          (change)="resetProjectAndUnit()">
-                        </ng-select>
-                      </div>
-                    </div>
-                  </div> -->
+
 
                   <!-- أسم الجهة -->
                   <div class="col-sm-6">
@@ -84,7 +67,7 @@
                           [(ngModel)]="formData.ownerID" [typeahead]="ownerTypeSearchInput$" bindLabel="value.ar"
                           [minTermLength]="1" bindValue="key" [loading]="ownerDataOptionsLoading"
                           notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
-                          #ownerID="ngModel" (search)="onUsernameTyping($event)">
+                          #ownerID="ngModel" (search)="onUsernameTyping($event)" (change)="onOwnerSelected($event)">
                         </ng-select>
                       </div>
                     </div>
@@ -331,8 +314,8 @@
                 <div class="card-header border-0">
                   <div class="card-tools">
                     <!-- [disabled]="f.invalid" -->
-                    <button type="submit" class="btn btn-primary" [disabled]="true" (click)="openModal()">أضافة
-                      مستخدم</button>
+                    <button type="submit" class="btn btn-primary" (click)="openModal()">أضافة
+                      عميل</button>
                   </div>
                   <h3 class="card-title float-right font-weight-bold">
                     العملاء الفعالة </h3>
@@ -341,21 +324,48 @@
                   <table class="table table-bordered landTable bg-white table-responsive d-table">
                     <thead>
                       <tr class="bg-grey">
-                        <th>الرقم المعرف</th>
+                        <th>رقم معرف العميل</th>
+                        <th>أسم العميل</th>
+                        <th>Customer Name</th>
                         <th>أسم الملف</th>
                         <th>Profile Name</th>
                         <th>تاريح الأنشاء</th>
                         <th>تاريح التعديل</th>
                         <th>رقم الهاتف </th>
                         <th>البريد الإلكتروني</th>
-                        <th>رقم معرف العميل</th>
-                        <th>أسم العميل</th>
-                        <th>Customer Name</th>
+                        <th>إجراءات</th>
+
+
                       </tr>
                     </thead>
                     <tbody>
                       <ng-container *ngFor="let item of activeCustomerProfiles; let i = index">
                         <tr>
+                          <td>
+                            <span *ngIf="item.customerId">
+                              {{ item.customerId}}
+                            </span>
+                            <span *ngIf="! item.customerId">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.customerNameAr">
+                              {{ item.customerNameAr}}
+                            </span>
+                            <span *ngIf="! item.customerNameAr">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.customerNameEn">
+                              {{ item.customerNameEn}}
+                            </span>
+                            <span *ngIf="! item.customerNameEn">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+
                           <td>
                             <span *ngIf="item.profileId">
                               {{ item.profileId}}
@@ -364,15 +374,7 @@
                               لا توجد بيانات
                             </span>
                           </td>
-                          <td>
 
-                            <span *ngIf="item.profileNameAr">
-                              {{ item.profileNameAr}}
-                            </span>
-                            <span *ngIf="! item.profileNameAr">
-                              لا توجد بيانات
-                            </span>
-                          </td>
                           <td>
                             <span *ngIf="item.profileNameEn">
                               {{ item.profileNameEn}}
@@ -414,27 +416,15 @@
                             </span>
                           </td>
                           <td>
-                            <span *ngIf="item.customerId">
-                              {{ item.customerId}}
+                            <span class="fs-30 p-1 icon-pointer" (click)="openDeleteModal(item)">
+                              <!-- (click)="deleteBlockage(item)"> -->
+                              <a> <i class="fas fa-times red"></i> </a>
                             </span>
-                            <span *ngIf="! item.customerId">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.customerNameAr">
-                              {{ item.customerNameAr}}
-                            </span>
-                            <span *ngIf="! item.customerNameAr">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.customerNameEn">
-                              {{ item.customerNameEn}}
-                            </span>
-                            <span *ngIf="! item.customerNameEn">
-                              لا توجد بيانات
+                            <span>
+                              <a [href]="getViewResourceUrl(item.customerId, 'owner')" target="_blank"
+                                class="fs-30 p-1">
+                                <i class="fas fa-eye"></i>
+                              </a>
                             </span>
                           </td>
 
@@ -461,31 +451,46 @@
                   <table class="table table-bordered landTable bg-light-red table-responsive d-table text-center">
                     <thead>
                       <tr class="bg-grey">
-                        <th>الرقم المعرف</th>
+                        <th>رقم معرف العميل</th>
+                        <th>أسم العميل</th>
+                        <th>Customer Name</th>
                         <th>أسم الملف</th>
                         <th>Profile Name</th>
                         <th>تاريح الأنشاء</th>
                         <th>تاريح التعديل</th>
                         <th>رقم الهاتف </th>
                         <th>البريد الإلكتروني</th>
-                        <th>رقم معرف العميل</th>
-                        <th>أسم العميل</th>
-                        <th>Customer Name</th>
+
                       </tr>
                     </thead>
                     <tbody *ngIf="response && !resError">
                       <ng-container *ngFor="let item of inactiveCustomerProfiles; let i = index">
                         <tr>
                           <td>
-                            <span *ngIf="item.profileId">
-                              {{ item.profileId}}
+                            <span *ngIf="item.customerId">
+                              {{ item.customerId}}
                             </span>
-                            <span *ngIf="! item.profileId">
+                            <span *ngIf="! item.customerId">
                               لا توجد بيانات
                             </span>
                           </td>
                           <td>
-
+                            <span *ngIf="item.customerNameAr">
+                              {{ item.customerNameAr}}
+                            </span>
+                            <span *ngIf="! item.customerNameAr">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.customerNameEn">
+                              {{ item.customerNameEn}}
+                            </span>
+                            <span *ngIf="! item.customerNameEn">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
                             <span *ngIf="item.profileNameAr">
                               {{ item.profileNameAr}}
                             </span>
@@ -533,31 +538,6 @@
                               لا توجد بيانات
                             </span>
                           </td>
-                          <td>
-                            <span *ngIf="item.customerId">
-                              {{ item.customerId}}
-                            </span>
-                            <span *ngIf="! item.customerId">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.customerNameAr">
-                              {{ item.customerNameAr}}
-                            </span>
-                            <span *ngIf="! item.customerNameAr">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.customerNameEn">
-                              {{ item.customerNameEn}}
-                            </span>
-                            <span *ngIf="! item.customerNameEn">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-
 
                         </tr>
                       </ng-container>
@@ -580,7 +560,7 @@
 
               <!-- Modal Header -->
               <div class="modal-header bg-purple text-white">
-                <h5 class="modal-title">إضافة ملف مستخدم</h5>
+                <h5 class="modal-title">إضافة عميل</h5>
                 <button type="button" class="close text-white" (click)="closeModal()">
                   <span>&times;</span>
                 </button>
@@ -594,39 +574,44 @@
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">نوع المستخدم <span style="color: red;">*</span></label>
+                      <label class="ml-2 mb-0">نوع الحساب <span style="color: red;">*</span></label>
 
-                      <!-- <ng-select class=" w-75" [items]="userTypeOptions | async" required="true"
-                        name="userType" [hideSelected]="true" [(ngModel)]="userType" [typeahead]="userTypeSearchInput$"
-                        bindLabel="value.ar" [minTermLength]="1" bindValue="key" [loading]="userTypeDataOptionsLoading"
-                        notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
-                        (search)="onUserTypeTyping($event)" (blur)="checkTypeAndValues('developerId')"
-                        (change)="resetProjectAndUnit()">
-                      </ng-select> -->
-                      <ng-select class="w-75" [items]="userTypeOptions" required="true" name="userType"
-                        [hideSelected]="true" [(ngModel)]="userType" bindLabel="value.ar" bindValue="key"
-                        [loading]="userTypeDataOptionsLoading" notFoundText="لا يوجد نتائج" [searchable]="false"
-                        [clearable]="false" (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
+
+                      <!-- </ng-select> -->
+                      <ng-select class="w-75" [disabled]="true" [items]="listOfAccounts" required="true"
+                        name="accountType" [hideSelected]="true" [(ngModel)]="accountType" bindLabel="value.ar"
+                        bindValue="key" [loading]="userTypeDataOptionsLoading" notFoundText="لا يوجد نتائج"
+                        [searchable]="false" [clearable]="false" (blur)="checkTypeAndValues('developerId')"
+                        (change)="getDepartments()">
                       </ng-select>
-
-
                     </div>
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">اسم الجهة <span style="color: red;">*</span></label>
 
-                      <ng-select class=" w-75" [items]="entityNamesOptions | async" required="true" name="entityName"
-                        [hideSelected]="true" [(ngModel)]="entityName" [typeahead]="entutyNameSearchInput$"
-                        bindLabel="value.ar" [minTermLength]="1" bindValue="key" [clearable]="!!entityName"
-                        [loading]="entutyNameDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
-                        typeToSearchText="Please enter 1 or more characters" (search)="onEntityNameTyping($event)"
-                        (blur)="checkTypeAndValues('developerId')" (change)="resetProjectAndUnit()">
-                      </ng-select>
+                      <input type="text" [disabled]="true" class="form-control w-75" [(ngModel)]="ownerName"
+                        name="ownerName" />
                     </div>
 
                   </div>
                   <div class="form-row align-items-center">
+
+
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0"> رقم الهوية <span style="color: red;">*</span></label>
+                      <input type="number" class="form-control w-75" [(ngModel)]="emiratesId" name="emiratesId"
+                        placeholder=" رقم الهوية " />
+
+                    </div>
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">المرفقات </label>
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+                    </div>
+                  </div>
+                  <div class="form-row align-items-center">
+
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
@@ -634,12 +619,6 @@
                       <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
                         placeholder=" ملاحظات " />
 
-                    </div>
-
-                    <!-- Input -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">المرفقات </label>
-                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
                     </div>
 
                   </div>
@@ -672,25 +651,28 @@
               <!-- Modal Body -->
               <div class="modal-body">
                 <form #userForm="ngForm">
-
                   <div class="form-row align-items-center">
 
                     <!-- Dropdown -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">نوع المستخدم </label>
+                      <label class="ml-2 mb-0">نوع الحساب <span style="color: red;">*</span></label>
 
 
-                      <input type="text" class="form-control w-75" [(ngModel)]="currectItem.nameAr" name="userType"
-                        placeholder="لا يوجد نتائج للبحث" readonly />
+                      <!-- </ng-select> -->
+                      <ng-select class="w-75" [disabled]="true" [items]="listOfAccounts" required="true"
+                        name="accountType" [hideSelected]="true" [(ngModel)]="accountType" bindLabel="value.ar"
+                        bindValue="key" [loading]="userTypeDataOptionsLoading" notFoundText="لا يوجد نتائج"
+                        [searchable]="false" [clearable]="false" (blur)="checkTypeAndValues('developerId')"
+                        (change)="getDepartments()">
+                      </ng-select>
                     </div>
 
                     <!-- Input -->
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
-                      <label class="ml-2 mb-0">اسم الجهة </label>
+                      <label class="ml-2 mb-0">اسم الجهة <span style="color: red;">*</span></label>
 
-
-                      <input type="text" class="form-control w-75" [(ngModel)]="currectItem.companyNameAr"
-                        name="companyNameAr" placeholder="لا يوجد نتائج للبحث" readonly />
+                      <input type="text" [disabled]="true" class="form-control w-75" [(ngModel)]="ownerName"
+                        name="ownerName" />
                     </div>
 
                   </div>

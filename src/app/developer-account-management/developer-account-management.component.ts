@@ -77,9 +77,13 @@ export class DeveloperAccountManagementComponent implements OnInit {
   // currectItem:any;
   currectItem: any = {}; // 
   accountType: any;
+  ownerID: any;
+  ownerName: any;
   companyInfo: any;
   activeCustomerProfiles: any = [];
   inactiveCustomerProfiles: any = [];
+  emiratesId: any;
+  userId: any;
 
 
 
@@ -115,24 +119,29 @@ export class DeveloperAccountManagementComponent implements OnInit {
     // });
   }
   openModal() {
-    // this.showModal = true;
+    this.showModal = true;
   }
   openDeleteModal(item: any) {
+    this.userId = item.userId;
     this.showDeleteModal = true;
     this.currectItem = item;
+  }
+  getViewResourceUrl(resourceId: any, resourceType: any) {
+    if (resourceType == "owner") {
+      return `/${resourceType}/profile/${resourceId}/edit`;
+    } else {
+      return `/${resourceType}/profile/${resourceId}/view`;
+    }
   }
 
   closeModal() {
     this.showModal = false;
-    this.userType = "";
-    this.entityName = "";
+    this.emiratesId = "";
     this.remarksValue = "";
     this.addBlockData.attachments = [];
   }
   closeDeleteModal() {
     this.showDeleteModal = false;
-    this.userType = "";
-    this.entityName = "";
     this.remarksValue = "";
     this.addBlockData.attachments = [];
   }
@@ -145,16 +154,18 @@ export class DeveloperAccountManagementComponent implements OnInit {
 
     // 👉 here you can send values to API
     let obj = {
-      userId: this.response.userId,
-      profileId: this.userType,
-      ownerId: this.entityName,
+      // userId: this.response.userId,
+      profileId: this.accountType,
+      ownerId: this.ownerID,
+      eid: this.emiratesId,
       remarks: this.remarksValue,
       attachments: attachments
     }
+    console.log(obj);
     const body = new URLSearchParams();
     body.set('data', JSON.stringify(obj));
     this.http.post(
-      `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/ApiAddUserProfile`,
+      `${environment.apiHost}/AjmanLandProperty/index.php/UsersProfiles/ApiAddUserProfileByEID`,
       body.toString(),
       {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -163,10 +174,11 @@ export class DeveloperAccountManagementComponent implements OnInit {
       console.log(".................");
       console.log(data.data);
       if (data.status === 'success') {
+        this.toastr.success(JSON.stringify(data.message), 'success')
         this.response2 = data.data;
         this.searchData(this.formData);
-        this.userType = "";
-        this.entityName = "";
+        // this.userType = "";
+        this.emiratesId = "";
         this.remarksValue = "";
         attachments = "";
         this.addBlockData.attachments = [];
@@ -186,9 +198,9 @@ export class DeveloperAccountManagementComponent implements OnInit {
 
     // 👉 here you can send values to API
     let obj = {
-      userId: this.response.userId,
-      profileId: this.currectItem.profileId,
-      // ownerId: this.entityName,
+      userId: this.userId,
+      profileId: this.accountType,
+      ownerId: this.ownerID,
       endRemarks: this.remarksValue,
       endAttachments: attachments
     }
@@ -207,7 +219,7 @@ export class DeveloperAccountManagementComponent implements OnInit {
         this.response2 = data.data;
         this.searchData(this.formData);
         this.userType = "";
-        this.entityName = "";
+        this.emiratesId = "";
         this.remarksValue = "";
         attachments = "";
         this.addBlockData.attachments = [];
@@ -222,7 +234,6 @@ export class DeveloperAccountManagementComponent implements OnInit {
     //   let obj: any = {};
 
     // console.log(formData);
-
     this.http.get(
       `${environment.apiHost}/AjmanLandProperty/index.php/lookups/CustomerProfilesByOwnerID?ownerId=` + formData.ownerID,
       // body.toString(),
@@ -258,6 +269,15 @@ export class DeveloperAccountManagementComponent implements OnInit {
       }
     });
   }
+  onOwnerSelected(item: any) {
+    console.log('Value (key):', item.key);
+    console.log('Label (ar):', item.value.ar);
+
+    // example usage
+    this.ownerID = item.key;
+    this.ownerName = item.value.ar;
+  }
+
   loadAccountTypeOptions() {
     this.lookupsService.loadAccountTypeOptions()
       .subscribe((data) => {
