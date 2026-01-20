@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../authentication.service';
-import {Router, ActivatedRoute} from '@angular/router';
-import {ToastrService} from 'ngx-toastr';
-import {environment} from '../../../../environments/environment';
-import {find, tap} from 'rxjs/operators';
-import {FieldsService} from '../../fields.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../authentication.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../../environments/environment';
+import { find, tap } from 'rxjs/operators';
+import { FieldsService } from '../../fields.service';
 
 
 @Component({
@@ -15,10 +15,10 @@ import {FieldsService} from '../../fields.service';
 export class HeaderComponent implements OnInit {
 
     userloggedIn: boolean = false;
-    searchData: any = {query: ''};
+    searchData: any = { query: '' };
     query: string = '';
     roles$: object;
-    userRole:any;
+    userRole: any;
 
 
     constructor(
@@ -34,11 +34,11 @@ export class HeaderComponent implements OnInit {
         this.authenticationService.isLoggedIn().subscribe((data) => {
             this.userloggedIn = data;
             this.roles$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/getUserRights`)
-            .subscribe((res) => {
-              this.userRole = res;
-            });
+                .subscribe((res) => {
+                    this.userRole = res;
+                });
         });
-       
+
 
 
         // this.router.events.subscribe((url: any) => {
@@ -75,7 +75,8 @@ export class HeaderComponent implements OnInit {
     }
 
     getRole(data: any, permission: string) {
-      return Object.keys(data).includes(permission);
+        if (!data) return false;
+        return Object.keys(data).includes(permission);
     }
 
     onSearchSubmit(searchData: any) {

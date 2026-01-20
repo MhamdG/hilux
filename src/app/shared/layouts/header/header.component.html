@@ -161,6 +161,13 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'Tathmeen')">
+                    <a class="dropdown-item" href="/pivot-reports">
+                        <i class="fas fa-plus float-left"></i>
+                        Pivot Reports
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </ng-container>
                 <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'userAccountManagement')">
                     <a class="dropdown-item" href="/userAccountManagement">
                         <i class="fas fa-plus float-left"></i>
