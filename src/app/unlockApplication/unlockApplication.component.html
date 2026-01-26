@@ -151,6 +151,88 @@
               </div>
 
 
+              <!-- logs  -->
+              <div class="card" *ngIf="response && response.unlockLogs">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="openModal()">أضافة
+                      مستخدم</button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    سجل التحويلات </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>التاريخ</th>
+                        <th>أسم الخطوة</th>
+                        <!-- <th>الرسالة</th> -->
+                        <th>محجوزة من </th>
+                        <th>محجوزة الي</th>
+                        <th>تحويل من </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let item of response.unlockLogs; let i = index">
+                        <tr>
+                          <td>
+                            <span *ngIf="item.date">
+                              {{ item.date || "yyyy-MM-dd"}}
+                            </span>
+                            <span *ngIf="!item.date">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.stepName">
+                              {{ item.stepName}}
+                            </span>
+                            <span *ngIf="!item.stepName">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+
+                          <!-- <td>
+                            <span *ngIf="item.text">
+                              {{ item.text}}
+                            </span>
+                            <span *ngIf="! item.text">
+                              لا توجد بيانات
+                            </span>
+                          </td> -->
+                          <td>
+                            <span *ngIf="item.lockedBy">
+                              {{ item.lockedBy}}
+                            </span>
+                            <span *ngIf="! item.lockedBy">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.lockedTo">
+                              {{ item.lockedTo}}
+                            </span>
+                            <span *ngIf="! item.lockedTo">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.unlockedBy">
+                              {{ item.unlockedBy}}
+                            </span>
+                            <span *ngIf="! item.unlockedBy">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+              <!-- display steps  -->
               <div class="card bg-seagreen">
                 <div class="card-header border-0">
                   <!-- <div class="card-tools">
