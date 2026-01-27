@@ -1,0 +1,25 @@
+#pivot-container {
+    /* min-height: 500px; */
+    /* width: 100%; */
+    margin-right: 260px;
+    /* Avoid sidebar overlap (250px + 10px buffer) */
+    direction: ltr;
+    /* Force LTR */
+    text-align: left;
+    /* Ensure text aligns left */
+    overflow-x: auto;
+    /* Allow scrolling if it overflows */
+}
+
+/* Force the internal table to take full width */
+::ng-deep .pvtTable,
+::ng-deep .pvtUi {
+    width: 100% !important;
+    min-width: 1000px;
+    /* Ensure it has some substance */
+}
+
+::ng-deep .pvtAxisContainer,
+::ng-deep .pvtVals {
+    min-width: 150px;
+}

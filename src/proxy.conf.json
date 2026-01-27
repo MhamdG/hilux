@@ -1,0 +1,17 @@
+{
+    "/AjmanLandProperty": {
+        "target": "http://192.168.59.135",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/pivottable-data": {
+        "target": "https://cdnjs.cloudflare.com",
+        "secure": false,
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/pivottable-data": ""
+        },
+        "logLevel": "debug"
+    }
+}

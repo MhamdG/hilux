@@ -130,9 +130,12 @@ import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-s
 import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
 import { DeveloperAccountManagementComponent } from './developer-account-management/developer-account-management.component';
 import { UnlockApplicationComponent } from './unlockApplication/unlockApplication.component';
+import { PivotReportsComponent } from './reports/pivot-reports/pivot-reports.component';
 
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ChartsModule } from 'ng2-charts';
+import { ProjectsReportComponent } from './reports/projects-report/projects-report.component';
+import { UnitsReportComponent } from './reports/units-report/units-report.component';
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -254,7 +257,10 @@ const maskConfig: Partial<IConfig> = {
     OwnershipStatisticsComponent,
     UserAccountManagementComponent,
     DeveloperAccountManagementComponent,
-    UnlockApplicationComponent
+    UnlockApplicationComponent,
+    PivotReportsComponent,
+    ProjectsReportComponent,
+    UnitsReportComponent
   ],
   imports: [
     FormsModule,

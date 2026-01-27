@@ -72,6 +72,9 @@ import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-s
 import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
 import { DeveloperAccountManagementComponent } from './developer-account-management/developer-account-management.component';
 import { UnlockApplicationComponent } from './unlockApplication/unlockApplication.component';
+import { PivotReportsComponent } from './reports/pivot-reports/pivot-reports.component';
+import { ProjectsReportComponent } from './reports/projects-report/projects-report.component';
+import { UnitsReportComponent } from './reports/units-report/units-report.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
@@ -207,6 +210,9 @@ const routes: Routes = [
   { path: 'developerAccountManagement', component: DeveloperAccountManagementComponent, canActivate: [AuthenticationGuard] },
   { path: 'unlockApplications', component: UnlockApplicationComponent, canActivate: [AuthenticationGuard] },
 
+  { path: 'pivot-reports', component: PivotReportsComponent, canActivate: [AuthenticationGuard] },
+  { path: 'projects-report', component: ProjectsReportComponent, canActivate: [AuthenticationGuard] },
+  { path: 'units-report', component: UnitsReportComponent, canActivate: [AuthenticationGuard] },
 ];
 
 @NgModule({

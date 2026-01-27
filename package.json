@@ -55,6 +55,7 @@
     "npm": "^6.14.4",
     "overlayscrollbars": "^1.12.0",
     "overlayscrollbars-ngx": "^0.2.2",
+    "pivottable": "^2.23.0",
     "rxjs": "~6.5.4",
     "select2": "^4.0.13",
     "select2-bootstrap4-theme": "^1.0.0",
