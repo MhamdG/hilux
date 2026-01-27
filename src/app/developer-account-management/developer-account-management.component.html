@@ -1,0 +1,1050 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-12 text-center text-dark">
+          <h1>إدارة حسابات الجهات</h1>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-purple">
+        <div class="card-header">
+          <h3 class="card-title">قائمة البحث</h3>
+        </div>
+        <app-alerts [errors]="formErrors"></app-alerts>
+
+        <div class="col-sm-12">
+          <div class="mt-4">
+            <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm" enctype="multipart/form-data"
+              novalidate>
+              <div class="col-sm-12">
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label"> نوع الحساب </label>
+                      <div class="col-sm-9">
+                        <!-- <select class="form-control" required name="selectType" [(ngModel)]="selectType"
+                          #selectTypeCtrl="ngModel">
+
+                          <option [ngValue]="0" disabled>اختر النوع</option>
+                          <option [ngValue]="1">المطور</option>
+                          <option [ngValue]="2">البنك</option>
+
+                        </select> -->
+                        <ng-select class="w-75" [items]="listOfAccounts" required="true" name="accountType"
+                          [hideSelected]="true" [(ngModel)]="accountType" bindLabel="value.ar" bindValue="key"
+                          [loading]="userTypeDataOptionsLoading" notFoundText="لا يوجد نتائج" [searchable]="false"
+                          [clearable]="false" (blur)="checkTypeAndValues('developerId')" (change)="getDepartments()">
+                        </ng-select>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- أسم الجهة -->
+                  <div class="col-sm-6">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">أسم الجهة
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <!-- (keyup)="setSearchType('developerId', $event)" 
+                                                (blur)="checkTypeAndValues('ownerID')" 
+                                                  (change)="resetProjectAndUnit()"
+                                                -->
+                      <div class="col-sm-9">
+                        <ng-select [items]="ownerTypesOptions | async" name="ownerID" [hideSelected]="true"
+                          [(ngModel)]="formData.ownerID" [typeahead]="ownerTypeSearchInput$" bindLabel="value.ar"
+                          [minTermLength]="1" bindValue="key" [loading]="ownerDataOptionsLoading"
+                          notFoundText="لا يوجد نتائج للبحث" typeToSearchText="Please enter 1 or more characters"
+                          #ownerID="ngModel" (search)="onUsernameTyping($event)" (change)="onOwnerSelected($event)">
+                        </ng-select>
+                      </div>
+                    </div>
+
+                  </div> <!-- col-sm-4 end -->
+
+                </div> <!-- row end -->
+              </div> <!-- col-sm-12 end -->
+
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
+                      i18n="@@legalBlockssearchSearchButton">Search</button>
+                  </div>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+
+          <hr />
+
+          <div class="resultsWrapper rtl">
+            <!-- *ngIf="response && !resError -->
+            <div class="searchBlockages">
+              <!-- companyInfo -->
+              <div class="card" *ngIf="companyInfo">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    بيانات الجهة </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>رقم المعرف</th>
+                        <th>رقم الهاتف</th>
+                        <th>الأسم</th>
+                        <th>Name</th>
+                        <th>النوع</th>
+                        <th>Type</th>
+                        <th>رقم الرخصة</th>
+                        <th>نوع الرخصة </th>
+                        <th> license Type</th>
+                        <th>صادر من</th>
+                        <th>Issue From</th>
+                        <th> تاريخ أنتهاء التسجيل</th>
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fff;" *ngIf="response && !resError">
+                      <tr>
+                        <td>
+                          <span *ngIf="companyInfo.id">
+                            {{companyInfo.id}}
+                          </span>
+                          <span *ngIf="!companyInfo.id">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.phoneNumber">
+                            {{companyInfo.phoneNumber}}
+                          </span>
+                          <span *ngIf="!companyInfo.phoneNumber">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.nameAr">
+                            {{companyInfo.nameAr}}
+                          </span>
+                          <span *ngIf="!companyInfo.nameAr">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.nameEn">
+                            {{companyInfo.nameEn}}
+                          </span>
+                          <span *ngIf="!companyInfo.nameEn">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.typeAr">
+                            {{companyInfo.typeAr}}
+                          </span>
+                          <span *ngIf="!companyInfo.typeAr">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.typeEn">
+                            {{companyInfo.typeEn}}
+                          </span>
+                          <span *ngIf="!companyInfo.typeEn">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.licenseNumber">
+                            {{companyInfo.licenseNumber}}
+                          </span>
+                          <span *ngIf="!companyInfo.licenseNumber">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.licenseTypeAr">
+                            {{companyInfo.licenseTypeAr}}
+                          </span>
+                          <span *ngIf="!companyInfo.licenseTypeAr">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.licenseTypeEn">
+                            {{companyInfo.licenseTypeEn}}
+                          </span>
+                          <span *ngIf="!companyInfo.licenseTypeEn">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.issuerAr">
+                            {{companyInfo.issuerAr}}
+                          </span>
+                          <span *ngIf="!companyInfo.issuerAr">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.issuerEn">
+                            {{companyInfo.issuerEn}}
+                          </span>
+                          <span *ngIf="!companyInfo.issuerEn">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+
+                        <td>
+                          <span *ngIf="companyInfo.licenseExpiryDate">
+                            {{companyInfo.licenseExpiryDate}}
+                          </span>
+                          <span *ngIf="!companyInfo.licenseExpiryDate">
+                            لا يوجد بيانات
+                          </span>
+                        </td>
+                        <!-- <td>{{response.emiratesId }}</td>
+                        <td>{{response.email}}</td>
+                        <td>{{response.phoneNumber}}</td>
+                        <td>{{response.nationality}}</td>
+                        <td><span *ngIf="response.status == 1">فعال </span>
+                          <span *ngIf="response.status == 0">غير فعال </span>
+                        </td> -->
+
+
+
+                        <!-- <td>
+                          <div class="d-flex">
+                            <span class="fs-30 p-1 icon-pointer" (click)="deleteBlockage(previous_block_detail)">
+                              <i class="fas fa-times red"></i>
+                            </span>
+                            <span class="fs-30 p-1 icon-pointer" (click)="editBlockage(previous_block_detail)">
+                              <i class="fas fa-pen"></i>
+                            </span>
+                          </div>
+                        </td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card" *ngIf="selectType == 2">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    بيانات الجهة </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>رقم الشركة</th>
+                        <th>أسم باللغة العربية</th>
+                        <th>أسم باللغة الأنجليزية</th>
+                        <th>نوع الشركة</th>
+                        <th>جهة الأصدار </th>
+                        <th>تاريخ أنتهاء الأصدار</th>
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fff;" *ngIf="response && !resError">
+                      <tr>
+                        <td>{{response.customerNameAr}}</td>
+                        <td>{{response.emiratesId }}</td>
+                        <td>{{response.email}}</td>
+                        <td>{{response.phoneNumber}}</td>
+                        <td>{{response.nationality}}</td>
+                        <td><span *ngIf="response.status == 1">فعال </span>
+                          <span *ngIf="response.status == 0">غير فعال </span>
+                        </td>
+
+
+
+                        <!-- <td>
+                          <div class="d-flex">
+                            <span class="fs-30 p-1 icon-pointer" (click)="deleteBlockage(previous_block_detail)">
+                              <i class="fas fa-times red"></i>
+                            </span>
+                            <span class="fs-30 p-1 icon-pointer" (click)="editBlockage(previous_block_detail)">
+                              <i class="fas fa-pen"></i>
+                            </span>
+                          </div>
+                        </td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- activeCustomerProfiles -->
+              <div class="card bg-seagreen" *ngIf="response && activeCustomerProfiles">
+                <div class="card-header border-0">
+                  <div class="card-tools">
+                    <!-- [disabled]="f.invalid" -->
+                    <button type="submit" class="btn btn-primary" (click)="openModal()">أضافة
+                      عميل</button>
+                  </div>
+                  <h3 class="card-title float-right font-weight-bold">
+                    العملاء الفعالة </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>رقم معرف العميل</th>
+                        <th>أسم العميل</th>
+                        <th>Customer Name</th>
+                        <th>أسم الملف</th>
+                        <th>Profile Name</th>
+                        <th>تاريح الأنشاء</th>
+                        <th>تاريح التعديل</th>
+                        <th>رقم الهاتف </th>
+                        <th>البريد الإلكتروني</th>
+                        <th>إجراءات</th>
+
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let item of activeCustomerProfiles; let i = index">
+                        <tr>
+                          <td>
+                            <span *ngIf="item.customerId">
+                              {{ item.customerId}}
+                            </span>
+                            <span *ngIf="! item.customerId">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.customerNameAr">
+                              {{ item.customerNameAr}}
+                            </span>
+                            <span *ngIf="! item.customerNameAr">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.customerNameEn">
+                              {{ item.customerNameEn}}
+                            </span>
+                            <span *ngIf="! item.customerNameEn">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+
+                          <td>
+                            <span *ngIf="item.profileId">
+                              {{ item.profileId}}
+                            </span>
+                            <span *ngIf="! item.profileId">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+
+                          <td>
+                            <span *ngIf="item.profileNameEn">
+                              {{ item.profileNameEn}}
+                            </span>
+                            <span *ngIf="! item.profileNameEn">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.profileCreatedAt">
+                              {{ item.profileCreatedAt}}
+                            </span>
+                            <span *ngIf="! item.profileCreatedAt">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.profileModifiedAt">
+                              {{ item.profileModifiedAt}}
+                            </span>
+                            <span *ngIf="! item.profileModifiedAt">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.userPhoneNumber">
+                              {{ item.userPhoneNumber}}
+                            </span>
+                            <span *ngIf="! item.userPhoneNumber">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.userEmail">
+                              {{ item.userEmail}}
+                            </span>
+                            <span *ngIf="! item.userEmail">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span class="fs-30 p-1 icon-pointer" (click)="openDeleteModal(item)">
+                              <!-- (click)="deleteBlockage(item)"> -->
+                              <a> <i class="fas fa-times red"></i> </a>
+                            </span>
+                            <span>
+                              <a [href]="getViewResourceUrl(item.customerId, 'owner')" target="_blank"
+                                class="fs-30 p-1">
+                                <i class="fas fa-eye"></i>
+                              </a>
+                            </span>
+                          </td>
+
+
+                        </tr>
+                      </ng-container>
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+
+
+              <div class="card" *ngIf="response && inactiveCustomerProfiles">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
+                   >أضافة مستخدم</button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    العملاء الغير الفعالة </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table text-center">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>رقم معرف العميل</th>
+                        <th>أسم العميل</th>
+                        <th>Customer Name</th>
+                        <th>أسم الملف</th>
+                        <th>Profile Name</th>
+                        <th>تاريح الأنشاء</th>
+                        <th>تاريح التعديل</th>
+                        <th>رقم الهاتف </th>
+                        <th>البريد الإلكتروني</th>
+
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="response && !resError">
+                      <ng-container *ngFor="let item of inactiveCustomerProfiles; let i = index">
+                        <tr>
+                          <td>
+                            <span *ngIf="item.customerId">
+                              {{ item.customerId}}
+                            </span>
+                            <span *ngIf="! item.customerId">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.customerNameAr">
+                              {{ item.customerNameAr}}
+                            </span>
+                            <span *ngIf="! item.customerNameAr">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.customerNameEn">
+                              {{ item.customerNameEn}}
+                            </span>
+                            <span *ngIf="! item.customerNameEn">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.profileNameAr">
+                              {{ item.profileNameAr}}
+                            </span>
+                            <span *ngIf="! item.profileNameAr">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.profileNameEn">
+                              {{ item.profileNameEn}}
+                            </span>
+                            <span *ngIf="! item.profileNameEn">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.profileCreatedAt">
+                              {{ item.profileCreatedAt}}
+                            </span>
+                            <span *ngIf="! item.profileCreatedAt">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.profileModifiedAt">
+                              {{ item.profileModifiedAt}}
+                            </span>
+                            <span *ngIf="! item.profileModifiedAt">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.userPhoneNumber">
+                              {{ item.userPhoneNumber}}
+                            </span>
+                            <span *ngIf="! item.userPhoneNumber">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.userEmail">
+                              {{ item.userEmail}}
+                            </span>
+                            <span *ngIf="! item.userEmail">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="resError">
+            <div class="col-sm-12 text-center">
+              <h4>لا توجد بيانات لهذا البحث ، حاول مرة أخرى عن طريق تغيير معايير البحث</h4>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show d-block': showModal}">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header bg-purple text-white">
+                <h5 class="modal-title">إضافة عميل</h5>
+                <button type="button" class="close text-white" (click)="closeModal()">
+                  <span>&times;</span>
+                </button>
+              </div>
+
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <form #userForm="ngForm">
+
+                  <div class="form-row align-items-center">
+
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">نوع الحساب <span style="color: red;">*</span></label>
+
+
+                      <!-- </ng-select> -->
+                      <ng-select class="w-75" [disabled]="true" [items]="listOfAccounts" required="true"
+                        name="accountType" [hideSelected]="true" [(ngModel)]="accountType" bindLabel="value.ar"
+                        bindValue="key" [loading]="userTypeDataOptionsLoading" notFoundText="لا يوجد نتائج"
+                        [searchable]="false" [clearable]="false" (blur)="checkTypeAndValues('developerId')"
+                        (change)="getDepartments()">
+                      </ng-select>
+                    </div>
+
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">اسم الجهة <span style="color: red;">*</span></label>
+
+                      <input type="text" [disabled]="true" class="form-control w-75" [(ngModel)]="ownerName"
+                        name="ownerName" />
+                    </div>
+
+                  </div>
+                  <div class="form-row align-items-center">
+
+
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0"> رقم الهوية <span style="color: red;">*</span></label>
+                      <input type="number" class="form-control w-75" [(ngModel)]="emiratesId" name="emiratesId"
+                        placeholder=" رقم الهوية " />
+
+                    </div>
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">المرفقات </label>
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+                    </div>
+                  </div>
+                  <div class="form-row align-items-center">
+
+
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0"> ملاحظات </label>
+                      <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
+                        placeholder=" ملاحظات " />
+
+                    </div>
+
+                  </div>
+
+                </form>
+              </div>
+
+              <!-- Modal Footer -->
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">إغلاق</button>
+                <button type="button" class="btn btn-primary" (click)="submitForm()">إرسال</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- delete Modal -->
+        <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show d-block': showDeleteModal}">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header bg-purple text-white">
+                <h5 class="modal-title">حذف ملف مستخدم</h5>
+                <button type="button" class="close text-white" (click)="closeModal()">
+                  <span>&times;</span>
+                </button>
+              </div>
+
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <form #userForm="ngForm">
+                  <div class="form-row align-items-center">
+
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">نوع الحساب <span style="color: red;">*</span></label>
+
+
+                      <!-- </ng-select> -->
+                      <ng-select class="w-75" [disabled]="true" [items]="listOfAccounts" required="true"
+                        name="accountType" [hideSelected]="true" [(ngModel)]="accountType" bindLabel="value.ar"
+                        bindValue="key" [loading]="userTypeDataOptionsLoading" notFoundText="لا يوجد نتائج"
+                        [searchable]="false" [clearable]="false" (blur)="checkTypeAndValues('developerId')"
+                        (change)="getDepartments()">
+                      </ng-select>
+                    </div>
+
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">اسم الجهة <span style="color: red;">*</span></label>
+
+                      <input type="text" [disabled]="true" class="form-control w-75" [(ngModel)]="ownerName"
+                        name="ownerName" />
+                    </div>
+
+                  </div>
+                  <div class="form-row align-items-center">
+
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">ملاحظات </label>
+                      <input type="text" class="form-control w-75" [(ngModel)]="remarksValue" name="remarksValue"
+                        placeholder=" ملاحظات " />
+
+                    </div>
+
+                    <!-- Input -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">المرفقات </label>
+                      <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+                    </div>
+
+                  </div>
+
+                </form>
+              </div>
+
+              <!-- Modal Footer -->
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">إغلاق</button>
+                <button type="button" class="btn btn-primary" (click)="submitDeleteForm()">إرسال</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+<ngx-smart-modal #addBlockModal identifier="addBlockModal" [escapable]="true" escapable="true"
+  (onAnyCloseEvent)="resetAddBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupAddNewBlockHeader">Add New Block</h4>
+    </div>
+  </div>
+  <form #addBlockForm="ngForm" (ngSubmit)="addNewBlock(addBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageTypesOptions" name="typeId"
+                  [(ngModel)]="addBlockData.typeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #typeId="ngModel" (open)="loadBlockageTypesOptions()">
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageEntitiesOptions | async" name="blockEntityId"
+                  [hideSelected]="true" [(ngModel)]="addBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                  [loading]="blockageEntityOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters" #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarks">Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea name="remarks" class="form-control" rows="3" required="true"
+                  [(ngModel)]="addBlockData.remarks" #remarks="ngModel"></textarea>
+                <div *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)" class="alert alert-danger">
+                  <div *ngIf="remarks.errors?.required">
+                    Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupAttachments">Attachments
+                <span>*</span>
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="addBlockModal.close()"
+          i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="addBlockForm.invalid" class="btn btn-primary float-left"
+          i18n="@@legalBlocksPopupSubmit">Submit</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>
+
+
+<ngx-smart-modal #updateBlockModal identifier="updateBlockModal" [escapable]="true" escapable="true"
+  (onAnyCloseEvent)="resetUpdateBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupHeaderUpdateBlock">Update Block</h4>
+    </div>
+  </div>
+  <form #updateBlockForm="ngForm" (ngSubmit)="updateBlock(updateBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageTypesOptions" name="typeId"
+                  [(ngModel)]="updateBlockData.typeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #typeId="ngModel" disabled="false"
+                  (open)="loadBlockageTypesOptions()">
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageEntitiesOptions | async" name="blockEntityId"
+                  [hideSelected]="true" [(ngModel)]="updateBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                  [loading]="blockageEntityOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters" disabled="false" #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupCreatedAt">Created At</label>
+              <div class="col-sm-9">
+                <input name="createdAt" type="text" class="form-control" [(ngModel)]="updateBlockData.createdAt"
+                  #createdAt="ngModel" disabled="true">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarks">Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea name="remarks" class="form-control" rows="3" required="true"
+                  [(ngModel)]="updateBlockData.remarks" #remarks="ngModel"></textarea>
+                <div *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)" class="alert alert-danger">
+                  <div *ngIf="remarks.errors?.required">
+                    Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksUpdatePopupAttachments">Attachments
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareUpdateAttachments()" [formData]="updateBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="updateBlockModal.close()"
+          i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="updateBlockForm.invalid" class="btn btn-primary float-left"
+          i18n="@@legalBlocksPopupUpdate">Update</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>
+
+<ngx-smart-modal #removeBlockModal identifier="removeBlockModal" [escapable]="true" escapable="true"
+  (onAnyCloseEvent)="resetRemoveBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupHeaderRemoveBlock">Remove Block</h4>
+    </div>
+  </div>
+  <form #removeBlockForm="ngForm" (ngSubmit)="removeBlock(removeBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageTypesOptions" name="typeId"
+                  [(ngModel)]="removeBlockData.typeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #typeId="ngModel" disabled="true"
+                  (open)="loadBlockageTypesOptions()">
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageEntitiesOptions | async" name="blockEntityId"
+                  [hideSelected]="true" [(ngModel)]="removeBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                  [loading]="blockageEntityOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters" disabled="true" #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupCreatedAt">Created At</label>
+              <div class="col-sm-9">
+                <input name="createdAt" type="text" class="form-control" [(ngModel)]="removeBlockData.createdAt"
+                  #createdAt="ngModel" disabled="true">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarksReadOnly">Remarks</label>
+              <div class="col-sm-9">
+                <ng-container>
+                  <li class="no-style-attachment rtl">
+                    {{removeBlockData.remarks}}
+                  </li>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupAttachments">Attachments
+                <span>*</span>
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareAttachments()" [formData]="removeBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupUnblockRemarks">Unblock Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea name="endRemarks" class="form-control" rows="3" required="true"
+                  [(ngModel)]="removeBlockData.endRemarks" #endRemarks="ngModel"></textarea>
+                <div *ngIf="endRemarks.invalid && (endRemarks.dirty || endRemarks.touched)" class="alert alert-danger">
+                  <div *ngIf="endRemarks.errors?.required">
+                    End Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="removeBlockModal.close()"
+          i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="removeBlockForm.invalid" class="btn btn-primary float-left"
+          i18n="@@legalBlocksPopupRemove">Remove</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>

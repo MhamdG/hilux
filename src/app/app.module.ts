@@ -48,7 +48,7 @@ import { ValuesGeneratorComponent } from './rule-generator/commit-data-generator
 import { PredicateGeneratorComponent } from './rule-generator/predicate-generator/predicate-generator.component';
 import { OrPredicateGeneratorComponent } from './rule-generator/or-predicate-generator/or-predicate-generator.component';
 import { AndPredicateGeneratorComponent } from './rule-generator/and-predicate-generator/and-predicate-generator.component';
-import {PrettyJsonModule} from 'angular2-prettyjson';
+import { PrettyJsonModule } from 'angular2-prettyjson';
 import { ValueGeneratorComponent } from './rule-generator/value-generator/value-generator.component';
 import { DataInGeneratorComponent } from './rule-generator/data-in-generator/data-in-generator.component';
 import { FieldsGeneratorComponent } from './rule-generator/data-in-generator/fields-generator/fields-generator.component';
@@ -128,11 +128,12 @@ import { PricingUnitComponent } from './rate/pricingUnit/pricingUnit-search.comp
 import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUnit-details.component';
 import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-statistics.component';
 import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
+import { DeveloperAccountManagementComponent } from './developer-account-management/developer-account-management.component';
 
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ChartsModule } from 'ng2-charts';
 const maskConfig: Partial<IConfig> = {
-	  validation: false,
+  validation: false,
 };
 
 @NgModule({
@@ -250,7 +251,8 @@ const maskConfig: Partial<IConfig> = {
     PricingUnitComponent,
     PricingUnitDetailsComponent,
     OwnershipStatisticsComponent,
-    UserAccountManagementComponent
+    UserAccountManagementComponent,
+    DeveloperAccountManagementComponent
   ],
   imports: [
     FormsModule,
@@ -264,7 +266,7 @@ const maskConfig: Partial<IConfig> = {
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     PrettyJsonModule,
-    ToastrModule.forRoot({ positionClass: 'toast-top-left'}),
+    ToastrModule.forRoot({ positionClass: 'toast-top-left' }),
     DataTablesModule,
     NgxMaskModule.forRoot(maskConfig),
     ChartsModule
@@ -272,7 +274,7 @@ const maskConfig: Partial<IConfig> = {
   ],
   providers: [
     AuthenticationGuard,
-    {provide: OWL_DATE_TIME_LOCALE, useValue: 'ar'},
+    { provide: OWL_DATE_TIME_LOCALE, useValue: 'ar' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

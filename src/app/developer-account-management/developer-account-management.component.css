@@ -1,0 +1,32 @@
+.line-break-class {
+  white-space: pre-line;
+}
+
+.landTable th,
+.landTable td {
+  text-align: center;
+  vertical-align: middle;
+  /* optional: center vertically */
+}
+
+.modal {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.bg-purple {
+  background-color: #673ab7;
+  /* Purple */
+}
+
+.modal-dialog {
+  margin-top: 8%;
+}
+
+label {
+  white-space: nowrap;
+  /* keep label on one line */
+}
+
+.icon-pointer {
+  cursor: pointer;
+}
