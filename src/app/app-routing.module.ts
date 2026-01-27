@@ -71,6 +71,8 @@ import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUn
 import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-statistics.component';
 import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
 import { PivotReportsComponent } from './reports/pivot-reports/pivot-reports.component';
+import { ProjectsReportComponent } from './reports/projects-report/projects-report.component';
+import { UnitsReportComponent } from './reports/units-report/units-report.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
@@ -204,7 +206,8 @@ const routes: Routes = [
   { path: 'units_valuation', component: UnitsValuationComponent, canActivate: [AuthenticationGuard] },
   { path: 'userAccountManagement', component: UserAccountManagementComponent, canActivate: [AuthenticationGuard] },
   { path: 'pivot-reports', component: PivotReportsComponent, canActivate: [AuthenticationGuard] },
-
+  { path: 'projects-report', component: ProjectsReportComponent, canActivate: [AuthenticationGuard] },
+  { path: 'units-report', component: UnitsReportComponent, canActivate: [AuthenticationGuard] },
 ];
 
 @NgModule({

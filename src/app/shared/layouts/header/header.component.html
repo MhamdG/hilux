@@ -67,7 +67,8 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering') || getRole (userRole,'landSearch')">
+                <ng-container
+                    *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering') || getRole (userRole,'landSearch')">
                     <a class="dropdown-item" href="/land/view" i18n="@@headerLand">
                         <i class="fas fa-plus float-left"></i>
                         Land
@@ -161,17 +162,11 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
-                <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'Tathmeen')">
-                    <a class="dropdown-item" href="/pivot-reports">
-                        <i class="fas fa-plus float-left"></i>
-                        Pivot Reports
-                    </a>
-                    <div class="dropdown-divider"></div>
-                </ng-container>
+
                 <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'userAccountManagement')">
                     <a class="dropdown-item" href="/userAccountManagement">
                         <i class="fas fa-plus float-left"></i>
-                        إدارة حساب المستخدميين 
+                        إدارة حساب المستخدميين
 
                     </a>
                     <div class="dropdown-divider"></div>
@@ -188,6 +183,32 @@
                 </a>
                 </ng-container> -->
 
+            </div>
+        </li>
+        <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']">
+            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                تقارير
+            </a>
+            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'pivotReports')">
+                    <a class="dropdown-item" href="/pivot-reports">
+                        تقرير ملكية
+                    </a>
+                </ng-container>
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'projectsReport')">
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/projects-report">
+                        تقرير المشاريع
+                    </a>
+                </ng-container>
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'unitsReport')">
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/units-report">
+                        تقرير التفاصيل الهندسية للوحدات العقارية
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </ng-container>
             </div>
         </li>
         <li [routerLink]="['/search']" class="nav-item d-none d-sm-inline-block" [routerLinkActive]="['active']">

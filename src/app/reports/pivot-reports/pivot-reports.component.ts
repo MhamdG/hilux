@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
 
 declare var $: any;
 
@@ -38,7 +40,7 @@ export class PivotReportsComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        const url = `http://wfe.ajre.gov.test/AjmanLandProperty/index.php/PropertiesOwnersReport?from=${this.fromDate}&to=${this.toDate}`;
+        const url = `${environment.apiHost}/AjmanLandProperty/index.php/ReportsGenerator/PropertiesOwnersReport?from=${this.fromDate}&to=${this.toDate}`;
         this.http.get<any[]>(url).subscribe(
             (data) => {
                 if (Array.isArray(data)) {

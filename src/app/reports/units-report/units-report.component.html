@@ -1,0 +1,55 @@
+<div class="container-fluid">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12 text-center">
+                    <h1 class="m-0 text-dark">تقرير التفاصيل الهندسية للوحدات العقارية</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Row -->
+    <div class="row mb-3" style="direction: ltr;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <!-- Projects Filter -->
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="projects">المشاريع</label>
+                                <ng-select [items]="projects$ | async" [multiple]="true" [loading]="projectsLoading"
+                                    [typeahead]="projectsInput$" [(ngModel)]="selectedProjects" bindLabel="nameAr"
+                                    bindValue="id" placeholder="ابحث عن مشروع..." notFoundText="لا توجد نتائج">
+                                </ng-select>
+                            </div>
+                        </div>
+
+                        <!-- Developer Filter -->
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="developer">المطور</label>
+                                <ng-select [items]="developers$ | async" [multiple]="false"
+                                    [loading]="developersLoading" [typeahead]="developersInput$"
+                                    [(ngModel)]="selectedDeveloper" bindLabel="nameAr" bindValue="id"
+                                    placeholder="ابحث عن مطور..." notFoundText="لا توجد نتائج">
+                                </ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 d-flex align-items-end mb-3">
+                            <button class="btn btn-primary btn-block" (click)="getReport()">عرض التقرير</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div #pivotContainer id="pivot-container"></div>
+        </div>
+    </div>
+</div>

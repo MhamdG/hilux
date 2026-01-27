@@ -1,0 +1,45 @@
+#pivot-container {
+    /* min-height: 500px; */
+    /* width: 100%; */
+    margin-right: 260px;
+    /* Avoid sidebar overlap (250px + 10px buffer) */
+    direction: ltr;
+    /* Force LTR */
+    text-align: left;
+    /* Ensure text aligns left */
+    overflow-x: auto;
+    /* Allow scrolling if it overflows */
+}
+
+/* Force the internal table to take full width */
+::ng-deep .pvtTable,
+::ng-deep .pvtUi {
+    width: 100% !important;
+    min-width: 1000px;
+    /* Ensure it has some substance */
+}
+
+::ng-deep .pvtAxisContainer,
+::ng-deep .pvtVals {
+    min-width: 150px;
+}
+
+/* Ensure ng-select dropdowns render correctly in LTR/RTL mix if needed */
+:host ::ng-deep .ng-select .ng-select-container {
+    min-height: 38px;
+    direction: ltr;
+    /* Ensure text inside input is LTR if preferred for mixed content, or inherit */
+    text-align: right;
+    /* Align arabic text to right */
+}
+
+:host ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+    direction: rtl;
+}
+
+label {
+    float: right;
+    /* Since container is LTR, force Arabic labels to right */
+    /* width: 100%; */
+    text-align: right;
+}

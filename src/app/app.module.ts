@@ -132,6 +132,8 @@ import { PivotReportsComponent } from './reports/pivot-reports/pivot-reports.com
 
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ChartsModule } from 'ng2-charts';
+import { ProjectsReportComponent } from './reports/projects-report/projects-report.component';
+import { UnitsReportComponent } from './reports/units-report/units-report.component';
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -252,7 +254,9 @@ const maskConfig: Partial<IConfig> = {
     PricingUnitDetailsComponent,
     OwnershipStatisticsComponent,
     UserAccountManagementComponent,
-    PivotReportsComponent
+    PivotReportsComponent,
+    ProjectsReportComponent,
+    UnitsReportComponent
   ],
   imports: [
     FormsModule,
