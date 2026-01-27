@@ -73,8 +73,14 @@ export class LookupsService {
   loadusersname(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/userscustomers`, params);
   }
+  SearchForLockedStepByApplicationID(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/applications/SearchForLockedStepByApplicationID`, params);
+  }
   loaduserTypes(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/listOfProfiles`, params);
+  }
+  ListEmployeesWithUserIdByDepartment(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/ListEmployeesWithUserIdByDepartment`, params);
   }
   loadEntityName(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/companies`, params);

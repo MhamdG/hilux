@@ -129,6 +129,7 @@ import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUn
 import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-statistics.component';
 import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
 import { DeveloperAccountManagementComponent } from './developer-account-management/developer-account-management.component';
+import { UnlockApplicationComponent } from './unlockApplication/unlockApplication.component';
 
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ChartsModule } from 'ng2-charts';
@@ -252,7 +253,8 @@ const maskConfig: Partial<IConfig> = {
     PricingUnitDetailsComponent,
     OwnershipStatisticsComponent,
     UserAccountManagementComponent,
-    DeveloperAccountManagementComponent
+    DeveloperAccountManagementComponent,
+    UnlockApplicationComponent
   ],
   imports: [
     FormsModule,

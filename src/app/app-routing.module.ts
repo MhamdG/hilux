@@ -71,6 +71,7 @@ import { PricingUnitDetailsComponent } from './rate/pricingUnitDetails/pricingUn
 import { OwnershipStatisticsComponent } from './Ownership-statistics/ownership-statistics.component';
 import { UserAccountManagementComponent } from './user-account-management/user-account-management.component';
 import { DeveloperAccountManagementComponent } from './developer-account-management/developer-account-management.component';
+import { UnlockApplicationComponent } from './unlockApplication/unlockApplication.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
@@ -204,6 +205,7 @@ const routes: Routes = [
   { path: 'units_valuation', component: UnitsValuationComponent, canActivate: [AuthenticationGuard] },
   { path: 'userAccountManagement', component: UserAccountManagementComponent, canActivate: [AuthenticationGuard] },
   { path: 'developerAccountManagement', component: DeveloperAccountManagementComponent, canActivate: [AuthenticationGuard] },
+  { path: 'unlockApplications', component: UnlockApplicationComponent, canActivate: [AuthenticationGuard] },
 
 ];
 

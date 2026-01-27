@@ -1,0 +1,697 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-12 text-center text-dark">
+          <h1>إدارة نحويل المعاملات </h1>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card card-purple">
+        <div class="card-header">
+          <h3 class="card-title">قائمة البحث</h3>
+        </div>
+        <app-alerts [errors]="formErrors"></app-alerts>
+
+        <div class="col-sm-12">
+          <div class="mt-4">
+            <form class="form-horizontal" (ngSubmit)="searchData(formData)" #f="ngForm" enctype='multipart/form-data'
+              novalidate>
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">رقم المعاملة
+                        <span *ngIf="isSearchByUnit()">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <!-- <ng-select [items]="developerOptions | async" bindLabel="applicationID"
+                          bindValue="applicationID" [typeahead]="developerSearchInput$" [minTermLength]="1"
+                          [loading]="developerDataOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                          typeToSearchText="Please enter 1 or more characters" (search)="onUsernameTyping($event)">
+                        </ng-select> -->
+                        <input type="text" class="form-control" name="customerId" [(ngModel)]="formData.customerId"
+                          placeholder="رقم المعاملة" [disabled]="isDisabled('customerId')" />
+
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">البريد الإلكتروني
+                      </label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" name="email" [(ngModel)]="formData.email"
+                          [disabled]="isDisabled('email')" placeholder=" البريد الإلكتروني                          "
+                          (blur)="checkTypeAndValues('landId')" (keyup)="setSearchType('landId', $event)">
+
+                      </div>
+                    </div>
+
+
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">رقم الهوية
+                      </label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" name="emiratesId" [(ngModel)]="formData.emiratesId"
+                          [disabled]="isDisabled('emiratesId')" placeholder=" رقم الهوية "
+                          (blur)="checkTypeAndValues('landId')" (keyup)="setSearchType('landId', $event)">
+                      </div>
+                    </div>
+
+
+                  </div> -->
+
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="row ">
+                  <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid"
+                      i18n="@@legalBlockssearchSearchButton">Search</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <hr />
+
+          <div class="resultsWrapper rtl" *ngIf="response && !resError">
+            <div class="searchBlockages">
+
+              <div class="card">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    بيانات المعاملة </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-light-red table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>رقم المعاملة</th>
+                        <th> أسم الخدمة</th>
+                        <th>تفاصيل المعاملة</th>
+                        <th> تاريخ أنشاء المعاملة</th>
+                        <th>حالة الإيصال</th>
+
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fff;">
+                      <tr>
+                        <td>{{response.applicationID}}</td>
+                        <td>{{response.serviceName.ar }}</td>
+                        <td>
+                          <ng-container
+                            *ngIf="response.applicationDetails && response.applicationDetails.length > 0; else noData">
+                            <span *ngFor="let item of response.applicationDetails; let i = index">
+                              {{ item }}
+                            </span>
+                          </ng-container>
+
+                          <ng-template #noData>
+                            <span>لا يوجد بيانات</span>
+                          </ng-template>
+                        </td>
+
+                        <td>{{ response.firstStepCreatedAt | date:'yyyy-MM-dd' }}</td>
+                        <td>
+                          <span *ngIf="response.invoiceStatus =='all_paid'">
+                            مدفوع كلي
+                          </span>
+                          <span *ngIf="response.invoiceStatus =='partly_paid'">
+                            مدفوع جزئي
+                          </span>
+                          <span *ngIf="response.invoiceStatus =='not_paid'|| response.invoiceStatus =='no_invoices' ">
+                            غير مدفوع
+                          </span>
+
+                        </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+
+              <!-- logs  -->
+              <div class="card" *ngIf="response && response.unlockLogs">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="openModal()">أضافة
+                      مستخدم</button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    سجل التحويلات </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>التاريخ</th>
+                        <th>أسم الخطوة</th>
+                        <!-- <th>الرسالة</th> -->
+                        <th>محجوزة من </th>
+                        <th>محجوزة الي</th>
+                        <th>تحويل من </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let item of response.unlockLogs; let i = index">
+                        <tr>
+                          <td>
+                            <span *ngIf="item.date">
+                              {{ item.date || "yyyy-MM-dd"}}
+                            </span>
+                            <span *ngIf="!item.date">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.stepName">
+                              {{ item.stepName}}
+                            </span>
+                            <span *ngIf="!item.stepName">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+
+                          <!-- <td>
+                            <span *ngIf="item.text">
+                              {{ item.text}}
+                            </span>
+                            <span *ngIf="! item.text">
+                              لا توجد بيانات
+                            </span>
+                          </td> -->
+                          <td>
+                            <span *ngIf="item.lockedBy">
+                              {{ item.lockedBy}}
+                            </span>
+                            <span *ngIf="! item.lockedBy">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.lockedTo">
+                              {{ item.lockedTo}}
+                            </span>
+                            <span *ngIf="! item.lockedTo">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.unlockedBy">
+                              {{ item.unlockedBy}}
+                            </span>
+                            <span *ngIf="! item.unlockedBy">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+              <!-- display steps  -->
+              <div class="card bg-seagreen">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="openModal()">أضافة
+                      مستخدم</button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    عرض الخطوات </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>أسم الخطوة</th>
+                        <th>الحالة</th>
+                        <th>محجوزة لدي</th>
+                        <th>خطوة القسم</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let item of response.steps; let i = index">
+                        <tr>
+                          <td>
+                            <span *ngIf="item.applicationWorkflowStepID">
+                              {{ item.applicationWorkflowStepID}}
+                            </span>
+                            <span *ngIf="!item.applicationWorkflowStepID">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.stepStatusName">
+                              {{ item.stepStatusName}}
+                            </span>
+                            <span *ngIf="!item.stepStatusName">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <!-- <td>
+                            <span *ngIf="item.currentDepartment">
+                              {{ item.currentDepartment}}
+                            </span>
+                            <span *ngIf="! item.currentDepartment">
+                              لا توجد بيانات
+                            </span>
+                          </td> -->
+                          <td>
+                            <span *ngIf="item.userName">
+                              {{ item.userName}}
+                            </span>
+                            <span *ngIf="! item.userName">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+
+                            <button (click)="actionFun(item)" class="btn btn-primary">تحويل
+                              المعاملة</button>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="resError">
+            <div class="col-sm-12 text-center">
+              <h4>لا توجد بيانات لهذا البحث ، حاول مرة أخرى عن طريق تغيير معايير البحث</h4>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show d-block': showModal}">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header bg-purple text-white">
+                <h5 class="modal-title"> أختار الموظف </h5>
+                <button type="button" class="close text-white" (click)="closeModal()">
+                  <span>&times;</span>
+                </button>
+              </div>
+
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <form #userForm="ngForm">
+                  <div class="form-row align-items-center">
+                    <!-- Dropdown -->
+                    <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
+                      <label class="ml-2 mb-0">الموظف <span style="color: red;">*</span></label>
+
+                      <ng-select [items]="userTypeOptions" bindLabel="name" bindValue="id" [(ngModel)]="selectedUserId"
+                        name="employee" [loading]="userTypeDataOptionsLoading" placeholder="أختار الموظف"
+                        [clearable]="false">
+                      </ng-select>
+
+
+
+
+                    </div>
+
+
+                  </div>
+
+                </form>
+              </div>
+              <!-- Modal Footer -->
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">إغلاق</button>
+                <button type="button" class="btn btn-primary" (click)="submitActionFun()">إرسال</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- /.card-body -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+<ngx-smart-modal #addBlockModal identifier="addBlockModal" [escapable]="true" escapable="true"
+  (onAnyCloseEvent)="resetAddBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupAddNewBlockHeader">Add New Block</h4>
+    </div>
+  </div>
+  <form #addBlockForm="ngForm" (ngSubmit)="addNewBlock(addBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageTypesOptions" name="typeId"
+                  [(ngModel)]="addBlockData.typeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #typeId="ngModel" (open)="loadBlockageTypesOptions()">
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageEntitiesOptions | async" name="blockEntityId"
+                  [hideSelected]="true" [(ngModel)]="addBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                  [loading]="blockageEntityOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters" #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarks">Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea name="remarks" class="form-control" rows="3" required="true"
+                  [(ngModel)]="addBlockData.remarks" #remarks="ngModel"></textarea>
+                <div *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)" class="alert alert-danger">
+                  <div *ngIf="remarks.errors?.required">
+                    Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupAttachments">Attachments
+                <span>*</span>
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareAttachments()" [formData]="addBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="addBlockModal.close()"
+          i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="addBlockForm.invalid" class="btn btn-primary float-left"
+          i18n="@@legalBlocksPopupSubmit">Submit</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>
+
+
+<ngx-smart-modal #updateBlockModal identifier="updateBlockModal" [escapable]="true" escapable="true"
+  (onAnyCloseEvent)="resetUpdateBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupHeaderUpdateBlock">Update Block</h4>
+    </div>
+  </div>
+  <form #updateBlockForm="ngForm" (ngSubmit)="updateBlock(updateBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageTypesOptions" name="typeId"
+                  [(ngModel)]="updateBlockData.typeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #typeId="ngModel" disabled="false"
+                  (open)="loadBlockageTypesOptions()">
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageEntitiesOptions | async" name="blockEntityId"
+                  [hideSelected]="true" [(ngModel)]="updateBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                  [loading]="blockageEntityOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters" disabled="false" #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupCreatedAt">Created At</label>
+              <div class="col-sm-9">
+                <input name="createdAt" type="text" class="form-control" [(ngModel)]="updateBlockData.createdAt"
+                  #createdAt="ngModel" disabled="true">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarks">Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea name="remarks" class="form-control" rows="3" required="true"
+                  [(ngModel)]="updateBlockData.remarks" #remarks="ngModel"></textarea>
+                <div *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)" class="alert alert-danger">
+                  <div *ngIf="remarks.errors?.required">
+                    Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksUpdatePopupAttachments">Attachments
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareUpdateAttachments()" [formData]="updateBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="updateBlockModal.close()"
+          i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="updateBlockForm.invalid" class="btn btn-primary float-left"
+          i18n="@@legalBlocksPopupUpdate">Update</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>
+
+<ngx-smart-modal #removeBlockModal identifier="removeBlockModal" [escapable]="true" escapable="true"
+  (onAnyCloseEvent)="resetRemoveBlockModal()">
+  <div class="modal-header pt-0">
+    <div class="modal-title">
+      <h4 i18n="@@legalBlocksPopupHeaderRemoveBlock">Remove Block</h4>
+    </div>
+  </div>
+  <form #removeBlockForm="ngForm" (ngSubmit)="removeBlock(removeBlockData);" novalidate>
+    <div class="modal-body">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockageType">Blockage Type
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageTypesOptions" name="typeId"
+                  [(ngModel)]="removeBlockData.typeId" bindLabel="value.ar" bindValue="key"
+                  notFoundText="لا يوجد نتائج للبحث" #typeId="ngModel" disabled="true"
+                  (open)="loadBlockageTypesOptions()">
+                </ng-select>
+                <div *ngIf="typeId.invalid && (typeId.dirty || typeId.touched)" class="alert alert-danger">
+                  <div *ngIf="typeId.errors?.required">
+                    Blockage Type can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupBlockEntityName">Block Entity Name
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <ng-select required="true" [items]="blockageEntitiesOptions | async" name="blockEntityId"
+                  [hideSelected]="true" [(ngModel)]="removeBlockData.blockEntityId"
+                  [typeahead]="blockageEntitySearchInput$" bindLabel="value.ar" [minTermLength]="1" bindValue="key"
+                  [loading]="blockageEntityOptionsLoading" notFoundText="لا يوجد نتائج للبحث"
+                  typeToSearchText="Please enter 1 or more characters" disabled="true" #blockEntityId="ngModel">
+                </ng-select>
+
+                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="blockEntityId.errors?.required">
+                    Block Entity Name can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupCreatedAt">Created At</label>
+              <div class="col-sm-9">
+                <input name="createdAt" type="text" class="form-control" [(ngModel)]="removeBlockData.createdAt"
+                  #createdAt="ngModel" disabled="true">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupRemarksReadOnly">Remarks</label>
+              <div class="col-sm-9">
+                <ng-container>
+                  <li class="no-style-attachment rtl">
+                    {{removeBlockData.remarks}}
+                  </li>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupAttachments">Attachments
+                <span>*</span>
+              </label>
+              <div class="col-sm-9" *ngIf="!hideAttachmentsControl">
+                <app-file-upload [field]="prepareAttachments()" [formData]="removeBlockData"></app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" i18n="@@legalBlocksPopupUnblockRemarks">Unblock Remarks
+                <span>*</span>
+              </label>
+              <div class="col-sm-9">
+                <textarea name="endRemarks" class="form-control" rows="3" required="true"
+                  [(ngModel)]="removeBlockData.endRemarks" #endRemarks="ngModel"></textarea>
+                <div *ngIf="endRemarks.invalid && (endRemarks.dirty || endRemarks.touched)" class="alert alert-danger">
+                  <div *ngIf="endRemarks.errors?.required">
+                    End Remarks can not be blank
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer pb-0">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default" (click)="removeBlockModal.close()"
+          i18n="@@legalBlocksPopupCancel">Close</button>
+        <button type="submit" [disabled]="removeBlockForm.invalid" class="btn btn-primary float-left"
+          i18n="@@legalBlocksPopupRemove">Remove</button>
+      </div>
+    </div>
+  </form>
+</ngx-smart-modal>
