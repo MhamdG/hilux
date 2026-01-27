@@ -15,6 +15,8 @@ export class ProjectsReportComponent implements OnInit, AfterViewInit {
   fromDate: string;
   toDate: string;
 
+  reportData: any[] = [];
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class ProjectsReportComponent implements OnInit, AfterViewInit {
     this.http.get<any[]>(url).subscribe(
       (data) => {
         if (Array.isArray(data)) {
+          this.reportData = data;
           this.initPivot(data);
         } else {
           console.error('API response is not an array', data);
@@ -65,10 +68,86 @@ export class ProjectsReportComponent implements OnInit, AfterViewInit {
           $.pivotUtilities.c3_renderers,
           $.pivotUtilities.export_renderers
         ),
-        rendererName: "Table"
+        rendererName: "Table",
+        rows: [
+          "رقم قيد المشروع",
+          "اسم المطور العقاري",
+          "مطور رئيسي / فرعي",
+          "اسم مشروع التطوير العقاري باللغة العربية",
+          "اسم مشروع التطوير العقاري باللغة الانجليزية",
+          "مشروع رئيسي / فرعي",
+          "المشروع الرئيسي",
+          "الحي",
+          "تاريخ تسجيل المشروع",
+          "تاريخ انتهاء شهادة القيد",
+          "رقم الأرض",
+          "القطاع",
+          "نوع المشروع",
+          "حالة المشروع",
+          "تاريخ بداية الجدول الزمني المعتمد",
+          "تاريخ انتهاء الجدول الزمني المعتمد",
+          "خط الطول",
+          "خط العرض",
+          "عدد الوحدات"
+        ]
       });
     } else {
       console.warn('pivottable library not loaded or jquery not found.');
+      alert('Pivottable library not loaded');
     }
+  }
+
+  saveConfig(): void {
+    if (typeof $ === 'undefined') return;
+
+    const config = $(this.pivotContainer.nativeElement).data("pivotUIOptions");
+    // Deep copy to avoid modifying the active config
+    const config_copy = JSON.parse(JSON.stringify(config));
+
+    // delete properties that cannot be serialized
+    delete config_copy["aggregators"];
+    delete config_copy["renderers"];
+
+    const body = {
+      reportName: 'ProjectsReport',
+      config: config_copy
+    };
+
+    const url = `${environment.apiHost}/AjmanLandProperty/index.php/reportsGenerator/saveConfig`;
+    this.http.post<any>(url, body).subscribe(
+      (res) => {
+        if (res.status === 'success') {
+          alert('Configuration Saved!');
+        } else {
+          alert('Failed to save config: ' + res.message);
+        }
+      },
+      (err) => {
+        console.error(err);
+        alert('Error saving configuration.');
+      }
+    );
+  }
+
+  restoreConfig(): void {
+    if (typeof $ === 'undefined') return;
+
+    const url = `${environment.apiHost}/AjmanLandProperty/index.php/reportsGenerator/getConfig?reportName=ProjectsReport`;
+    this.http.get<any>(url).subscribe(
+      (res) => {
+        if (res.status === 'success' && res.config && this.reportData && this.reportData.length > 0) {
+          const config = res.config;
+          $(this.pivotContainer.nativeElement).pivotUI(this.reportData, config, true);
+        } else if (res.status === 'success' && !res.config) {
+          alert('No saved configuration found.');
+        } else {
+          alert('Error loading configuration or no data available.');
+        }
+      },
+      (err) => {
+        console.error(err);
+        alert('Error loading configuration.');
+      }
+    );
   }
 }

@@ -10,25 +10,27 @@
     </div>
 
     <!-- Filter Row -->
-    <!-- <div class="row mb-3" style="direction: ltr;">
+    <div class="row mb-3" style="direction: ltr;">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <div class="form-inline" style="justify-content: flex-start;">
-                        <div class="form-group mr-3">
+                        <!-- <div class="form-group mr-3">
                             <label for="fromDate" class="ml-2">من: </label>
                             <input type="date" id="fromDate" class="form-control" [(ngModel)]="fromDate">
                         </div>
                         <div class="form-group mr-3">
                             <label for="toDate" class="ml-2">إلى: </label>
                             <input type="date" id="toDate" class="form-control" [(ngModel)]="toDate">
-                        </div>
+                        </div> -->
                         <button class="btn btn-primary mr-3" (click)="getReport()">عرض التقرير</button>
+                        <button class="btn btn-outline-success mr-2" (click)="saveConfig()">حفظ الإعدادات</button>
+                        <button class="btn btn-outline-info" (click)="restoreConfig()">استرجاع الإعدادات</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <div class="card">
         <div class="card-body">

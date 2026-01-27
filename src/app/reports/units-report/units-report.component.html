@@ -38,8 +38,12 @@
                             </div>
                         </div>
 
-                        <div class="col-md-2 d-flex align-items-end mb-3">
-                            <button class="btn btn-primary btn-block" (click)="getReport()">عرض التقرير</button>
+                        <div class="col-md-2 d-flex flex-column justify-content-end mb-3">
+                            <button class="btn btn-primary btn-block mb-2" (click)="getReport()">عرض التقرير</button>
+                            <button class="btn btn-outline-success btn-block mb-2" (click)="saveConfig()">حفظ
+                                الإعدادات</button>
+                            <button class="btn btn-outline-info btn-block" (click)="restoreConfig()">استرجاع
+                                الإعدادات</button>
                         </div>
                     </div>
                 </div>

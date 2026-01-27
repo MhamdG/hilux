@@ -82,22 +82,17 @@ export class UnitsReportComponent implements OnInit, AfterViewInit {
         );
     }
 
+    reportData: any[] = [];
+
     getReport(): void {
         let params = [];
 
         if (this.selectedProjects && this.selectedProjects.length > 0) {
-            // Assuming API handles comma separated list or we need to repeat param. 
-            // Logic will use comma separated for now.
-            // If selectedProjects is array of IDs (due to bindValue)
             const projectIds = this.selectedProjects.join(',');
             params.push(`projectId=${projectIds}`);
         }
 
         if (this.selectedDeveloper) {
-            // Assuming selectedDeveloper is the object or ID. 
-            // If bindValue is not set, it is object.
-            // Let's assume bindValue="id" in template for simplicity, or handle object.
-            // Safest is to check type.
             const devId = this.selectedDeveloper.id || this.selectedDeveloper;
             params.push(`developerId=${devId}`);
         }
@@ -113,6 +108,7 @@ export class UnitsReportComponent implements OnInit, AfterViewInit {
         this.http.get<any[]>(url).subscribe(
             (data) => {
                 if (Array.isArray(data)) {
+                    this.reportData = data;
                     this.initPivot(data);
                 } else {
                     console.error('API response is not an array', data);
@@ -141,5 +137,59 @@ export class UnitsReportComponent implements OnInit, AfterViewInit {
         } else {
             console.warn('pivottable library not loaded or jquery not found.');
         }
+    }
+
+    saveConfig(): void {
+        if (typeof $ === 'undefined') return;
+
+        const config = $(this.pivotContainer.nativeElement).data("pivotUIOptions");
+        // Deep copy to avoid modifying the active config
+        const config_copy = JSON.parse(JSON.stringify(config));
+
+        // delete properties that cannot be serialized
+        delete config_copy["aggregators"];
+        delete config_copy["renderers"];
+
+        const body = {
+            reportName: 'UnitsReport',
+            config: config_copy
+        };
+
+        const url = `${environment.apiHost}/AjmanLandProperty/index.php/reportsGenerator/saveConfig`;
+        this.http.post<any>(url, body).subscribe(
+            (res) => {
+                if (res.status === 'success') {
+                    alert('Configuration Saved!');
+                } else {
+                    alert('Failed to save config: ' + res.message);
+                }
+            },
+            (err) => {
+                console.error(err);
+                alert('Error saving configuration.');
+            }
+        );
+    }
+
+    restoreConfig(): void {
+        if (typeof $ === 'undefined') return;
+
+        const url = `${environment.apiHost}/AjmanLandProperty/index.php/reportsGenerator/getConfig?reportName=UnitsReport`;
+        this.http.get<any>(url).subscribe(
+            (res) => {
+                if (res.status === 'success' && res.config && this.reportData && this.reportData.length > 0) {
+                    const config = res.config;
+                    $(this.pivotContainer.nativeElement).pivotUI(this.reportData, config, true);
+                } else if (res.status === 'success' && !res.config) {
+                    alert('No saved configuration found.');
+                } else {
+                    alert('Error loading configuration or no data available.');
+                }
+            },
+            (err) => {
+                console.error(err);
+                alert('Error loading configuration.');
+            }
+        );
     }
 }
