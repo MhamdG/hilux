@@ -329,9 +329,9 @@
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">الموظف <span style="color: red;">*</span></label>
 
-                      <ng-select [items]="userTypeOptions" bindLabel="name" bindValue="id" [(ngModel)]="selectedUserId"
-                        name="employee" [loading]="userTypeDataOptionsLoading" placeholder="أختار الموظف"
-                        [clearable]="false">
+                      <ng-select style="width: 350px;" [items]="userTypeOptions" bindLabel="name" bindValue="id"
+                        [(ngModel)]="selectedUserId" name="employee" [loading]="userTypeDataOptionsLoading"
+                        placeholder="أختار الموظف" [clearable]="false">
                       </ng-select>
 
 
