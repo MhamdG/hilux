@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-12 text-center text-dark">
-          <h1>إدارة نحويل المعاملات </h1>
+          <h1>إدارة تحويل المعاملات </h1>
         </div>
       </div>
     </div><!-- /.container-fluid -->
@@ -150,7 +150,83 @@
                 </div>
               </div>
 
+              <!-- display steps  -->
+              <div class="card bg-seagreen">
+                <div class="card-header border-0">
+                  <!-- <div class="card-tools">
+                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="openModal()">أضافة
+                      مستخدم</button>
+                  </div> -->
+                  <h3 class="card-title float-right font-weight-bold">
+                    عرض الخطوات </h3>
+                </div>
+                <div class="card-body custom-table-class">
+                  <table class="table table-bordered landTable bg-white table-responsive d-table">
+                    <thead>
+                      <tr class="bg-grey">
+                        <th>أسم الخطوة</th>
+                        <th>الحالة</th>
+                        <th>محجوزة لدي</th>
+                        <th>خطوة القسم</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let item of response.steps; let i = index">
+                        <tr>
+                          <td>
+                            <span *ngIf="item.stepStatusName">
+                              {{ item.stepStatusName}}
+                            </span>
+                            <span *ngIf="!item.stepStatusName">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.invoiceStatus">
+                              <span *ngIf="response.invoiceStatus =='all_paid'">
+                                مدفوع كلي
+                              </span>
+                              <span *ngIf="response.invoiceStatus =='partly_paid'">
+                                مدفوع جزئي
+                              </span>
+                              <span
+                                *ngIf="response.invoiceStatus =='not_paid'|| response.invoiceStatus =='no_invoices' ">
+                                غير مدفوع
+                              </span>
+                            </span>
+                            <span *ngIf="!item.invoiceStatus">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <!-- <td>
+                            <span *ngIf="item.currentDepartment">
+                              {{ item.currentDepartment}}
+                            </span>
+                            <span *ngIf="! item.currentDepartment">
+                              لا توجد بيانات
+                            </span>
+                          </td> -->
+                          <td>
+                            <span *ngIf="item.userName">
+                              {{ item.userName}}
+                            </span>
+                            <span *ngIf="! item.userName">
+                              لا توجد بيانات
+                            </span>
+                          </td>
+                          <td>
 
+                            <button (click)="actionFun(item)" class="btn btn-primary">
+                              {{item.btnTitle}}
+                            </button>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
               <!-- logs  -->
               <div class="card" *ngIf="response && response.unlockLogs">
                 <div class="card-header border-0">
@@ -232,74 +308,6 @@
                   </table>
                 </div>
               </div>
-              <!-- display steps  -->
-              <div class="card bg-seagreen">
-                <div class="card-header border-0">
-                  <!-- <div class="card-tools">
-                    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="openModal()">أضافة
-                      مستخدم</button>
-                  </div> -->
-                  <h3 class="card-title float-right font-weight-bold">
-                    عرض الخطوات </h3>
-                </div>
-                <div class="card-body custom-table-class">
-                  <table class="table table-bordered landTable bg-white table-responsive d-table">
-                    <thead>
-                      <tr class="bg-grey">
-                        <th>أسم الخطوة</th>
-                        <th>الحالة</th>
-                        <th>محجوزة لدي</th>
-                        <th>خطوة القسم</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <ng-container *ngFor="let item of response.steps; let i = index">
-                        <tr>
-                          <td>
-                            <span *ngIf="item.applicationWorkflowStepID">
-                              {{ item.applicationWorkflowStepID}}
-                            </span>
-                            <span *ngIf="!item.applicationWorkflowStepID">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.stepStatusName">
-                              {{ item.stepStatusName}}
-                            </span>
-                            <span *ngIf="!item.stepStatusName">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <!-- <td>
-                            <span *ngIf="item.currentDepartment">
-                              {{ item.currentDepartment}}
-                            </span>
-                            <span *ngIf="! item.currentDepartment">
-                              لا توجد بيانات
-                            </span>
-                          </td> -->
-                          <td>
-                            <span *ngIf="item.userName">
-                              {{ item.userName}}
-                            </span>
-                            <span *ngIf="! item.userName">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-
-                            <button (click)="actionFun(item)" class="btn btn-primary">
-                              {{item.btnTitle}}
-                            </button>
-                          </td>
-                        </tr>
-                      </ng-container>
-                    </tbody>
-
-                  </table>
-                </div>
-              </div>
             </div>
           </div>
           <div class="row" *ngIf="resError">
@@ -329,9 +337,9 @@
                     <div class="col-md-6 mb-3 d-flex align-items-center justify-content-end">
                       <label class="ml-2 mb-0">الموظف <span style="color: red;">*</span></label>
 
-                      <ng-select [items]="userTypeOptions" bindLabel="name" bindValue="id" [(ngModel)]="selectedUserId"
-                        name="employee" [loading]="userTypeDataOptionsLoading" placeholder="أختار الموظف"
-                        [clearable]="false">
+                      <ng-select style="width: 350px;" [items]="userTypeOptions" bindLabel="name" bindValue="id"
+                        [(ngModel)]="selectedUserId" name="employee" [loading]="userTypeDataOptionsLoading"
+                        placeholder="أختار الموظف" [clearable]="false">
                       </ng-select>
 
 
