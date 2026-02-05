@@ -1,0 +1,416 @@
+<div class="content-wrapper" dir="rtl">
+    <!-- Content Header -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="m-2 text-dark">
+                    <h1>بحث السندات</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Search Card -->
+            <div class="card card-purple">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">بحث السندات</h3>
+                    <button class="btn btn-light btn-sm ml-auto" (click)="openCreateModal()">إنشاء سند جديد</button>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="ml-3 font-weight-bold">نـوع البحث:</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchType" id="landType"
+                                [checked]="searchType === 'land'" (change)="setSearchType('land')">
+                            <label class="form-check-label" for="landType">رقم الأرض</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchType" id="projectType"
+                                [checked]="searchType === 'project'" (change)="setSearchType('project')">
+                            <label class="form-check-label" for="projectType">المشروع والوحدة</label>
+                        </div>
+                    </div>
+
+                    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+                        <div *ngIf="searchType === 'land'" class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>رقم الأرض</label>
+                                <ng-select [items]="landOptions | async" bindLabel="value.ar" bindValue="key"
+                                    [typeahead]="landSearchInput$" [loading]="landDataOptionsLoading"
+                                    formControlName="landId" placeholder="ابحث عن رقم الأرض..."
+                                    typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
+                                    notFoundText="لا توجد نتائج">
+                                </ng-select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="searchType === 'property'" class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>رقم العقار</label>
+                                <input type="text" class="form-control" formControlName="propertyId"
+                                    placeholder="أدخل رقم العقار">
+                            </div>
+                        </div>
+
+                        <div *ngIf="searchType === 'project'" class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>اسم المطور</label>
+                                <ng-select [items]="developerOptions | async" bindLabel="value.ar" bindValue="key"
+                                    [typeahead]="developerSearchInput$" [loading]="developerDataOptionsLoading"
+                                    formControlName="developerId" placeholder="اختر المطور"
+                                    typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
+                                    notFoundText="لا توجد نتائج">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>اسم المشروع</label>
+                                <ng-select [items]="projectsOptions | async" bindLabel="value.ar" bindValue="key"
+                                    [typeahead]="projectsSearchInput$" [loading]="projectDataOptionsLoading"
+                                    formControlName="projectId" placeholder="اختر المشروع"
+                                    typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
+                                    notFoundText="لا توجد نتائج" (change)="onSearchProjectChange()">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>رقم الوحدة</label>
+                                <ng-select [items]="unitOptions | async" bindLabel="value.ar" bindValue="key"
+                                    [typeahead]="unitSearchInput$" [loading]="unitDataOptionsLoading"
+                                    formControlName="unitNumber" placeholder="ابحث برقم الوحدة"
+                                    typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
+                                    notFoundText="لا توجد نتائج">
+                                </ng-select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                            <span *ngIf="isLoading" class="spinner-border spinner-border-sm ml-1"></span>
+                            بحث
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Deed History List -->
+            <div *ngIf="searchResult && searchResult.length > 0" class="card mt-4">
+                <div class="card-header">
+                    <h5>سجل السندات</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Property Details Section -->
+                    <div *ngIf="propertyDetails" class="card mb-3 border-info">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">تفاصيل العقار ({{ propertyDetails.type === 'Unit' ? 'وحدة' : 'أرض' }})</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Common Details -->
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <strong>رقم الأرض:</strong> {{ propertyDetails.landId || propertyDetails.oldLandId
+                                    || 'غير متوفر' }}
+                                </div>
+                                <div class="col-md-3 mb-2" *ngIf="propertyDetails.propertyId">
+                                    <strong>رقم القطعة:</strong> {{ propertyDetails.pieceNumber }}
+                                </div>
+                            </div>
+
+                            <!-- UNIT Specific Details -->
+                            <div class="row" *ngIf="propertyDetails.type === 'Unit'">
+                                <div class="col-md-3 mb-2" *ngIf="propertyDetails.projectNameAr">
+                                    <strong>المشروع:</strong> {{ propertyDetails.projectNameAr }}
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <strong>رقم الوحدة:</strong> {{ propertyDetails.unitNumber }}
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <strong>الطابق:</strong> {{ propertyDetails.floorNumber }}
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <strong>المساحة الإجمالية:</strong> {{ propertyDetails.meterTotalSoldArea }} م²
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <strong>المساحة الصافية:</strong> {{ propertyDetails.meterNetSoldArea }} م²
+                                </div>
+                                <div class="col-md-9 mb-2">
+                                    <strong>التفاصيل:</strong>
+                                    <span *ngIf="propertyDetails.roomsCount > 0" class="badge badge-light ml-1">{{
+                                        propertyDetails.roomsCount }} غرف</span>
+                                    <span *ngIf="propertyDetails.bathroomsCount > 0" class="badge badge-light ml-1">{{
+                                        propertyDetails.bathroomsCount }} حمام</span>
+                                    <span *ngIf="propertyDetails.kitchensCount > 0" class="badge badge-light ml-1">{{
+                                        propertyDetails.kitchensCount }} مطبخ</span>
+                                    <span *ngIf="propertyDetails.balconyCount > 0" class="badge badge-light ml-1">{{
+                                        propertyDetails.balconyCount }} بلكونة</span>
+                                </div>
+                            </div>
+
+                            <!-- LAND Specific Details (Default) -->
+                            <div class="row" *ngIf="propertyDetails.type !== 'Unit'">
+                                <div class="col-md-3 mb-2">
+                                    <strong>المساحة:</strong> {{ propertyDetails.area }} {{ propertyDetails.newArea ?
+                                    '(' + propertyDetails.newArea + ')' : '' }}
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <strong>الموقع:</strong> {{ propertyDetails.north }} / {{ propertyDetails.south }} /
+                                    {{ propertyDetails.east }} / {{ propertyDetails.west }}
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <strong>المدينة:</strong> {{ propertyDetails.cityId == '1' ? 'عجمان' :
+                                    (propertyDetails.cityId == '2' ? 'المنامة' : 'مصفوت') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Results / Deed History -->
+            <div *ngIf="searchResult && searchResult.length > 0">
+                <h5 class="mb-3">سجل السندات ({{ searchResult.length }})</h5>
+
+                <div class="card mb-3" *ngFor="let deed of searchResult"
+                    [ngClass]="{'border-success': deed.status == '1'}">
+                    <div class="card-header d-flex justify-content-between align-items-center"
+                        [ngClass]="{'bg-success text-white': deed.status == '1'}">
+                        <div>
+                            <strong>رقم السند:</strong> {{ deed.deedId }} |
+                            <strong>الحالة:</strong> {{ deed.status == '1' ? 'فعال' : 'غير فعال' }} |
+                            <strong>التاريخ:</strong> {{ deed.createdAt | date }}
+                        </div>
+                        <div *ngIf="deed.status == '1'">
+                            <span class="badge badge-light">سند فعال</span>
+                            <button class="btn btn-sm btn-light ml-2 mr-2" (click)="openEditModal(deed)">تعديل
+                                الملاك</button>
+                            <button class="btn btn-sm btn-light" (click)="openCreateModal(deed.propertyId)">نقل
+                                الملكية</button>
+                        </div>
+                        <div *ngIf="deed.status == '0'">
+                            <button class="btn btn-sm btn-outline-warning" (click)="reactivateDeed(deed)">إعادة
+                                تفعيل</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>اسم المالك (عربي)</th>
+                                        <th>اسم المالك (إنجليزي)</th>
+                                        <th>الحصة</th>
+                                        <th>إجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of deed.details">
+                                        <td>{{ detail.ownerNameAr || '-' }}</td>
+                                        <td>{{ detail.ownerNameEn || '-' }}</td>
+                                        <td>{{ detail.share || detail.Share }}</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr *ngIf="!deed.details || deed.details.length === 0">
+                                        <td colspan="4" class="text-center">لا توجد تفاصيل</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngIf="searchResult && searchResult.length === 0 && !isLoading" class="alert alert-info mt-4">
+                لا توجد سندات.
+            </div>
+        </div>
+
+        <!-- Edit Modal Overlay -->
+        <div class="modal-backdrop fade show" *ngIf="showEditModal"></div>
+
+        <!-- Edit Modal -->
+        <div class="modal fade show" *ngIf="showEditModal" style="display: block;" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">تعديل بيانات المالك</h5>
+                        <button type="button" class="close" (click)="closeEditModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="editForm">
+                            <label class="mb-3">قائمة الملاك</label>
+
+                            <div formArrayName="owners">
+                                <div *ngFor="let owner of editOwners.controls; let i = index" [formGroupName]="i"
+                                    class="card mb-2">
+                                    <div class="card-body p-3">
+                                        <div class="form-row align-items-end">
+                                            <div class="col-md-5">
+                                                <label>رقم المالك</label>
+                                                <ng-select [items]="ownerOptions | async" bindLabel="value.ar"
+                                                    bindValue="key" [typeahead]="ownerSearchInput$"
+                                                    [loading]="ownerDataOptionsLoading" formControlName="ownerId"
+                                                    placeholder="ابحث عن المالك"
+                                                    typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
+                                                    notFoundText="لا توجد نتائج">
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label>الحصة</label>
+                                                <input type="text" class="form-control" formControlName="share"
+                                                    placeholder="الحصة">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-danger btn-block"
+                                                    (click)="removeEditOwner(i)"
+                                                    *ngIf="editOwners.length > 1">حذف</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-secondary btn-sm mt-2" (click)="addEditOwner()">+
+                                إضافة
+                                مالك</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="closeEditModal()">إلغاء</button>
+                        <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="isLoading">حفظ
+                            التغييرات</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Modal Overlay -->
+        <div class="modal-backdrop fade show" *ngIf="showCreateModal"></div>
+
+        <!-- Create Modal -->
+        <div class="modal fade show" *ngIf="showCreateModal" style="display: block; overflow-y: auto;" tabindex="-1"
+            role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">إنشاء سند جديد</h5>
+                        <button type="button" class="close" (click)="closeCreateModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="ml-3 font-weight-bold">نوع السند:</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="createSearchType" id="createLandType"
+                                    [checked]="createSearchType === 'land'" (change)="setCreateSearchType('land')">
+                                <label class="form-check-label" for="createLandType">رقم الأرض</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="createSearchType"
+                                    id="createProjectType" [checked]="createSearchType === 'project'"
+                                    (change)="setCreateSearchType('project')">
+                                <label class="form-check-label" for="createProjectType">المشروع والوحدة</label>
+                            </div>
+                        </div>
+
+                        <form [formGroup]="createForm">
+                            <div *ngIf="createSearchType === 'property'" class="form-group">
+                                <label>رقم العقار</label>
+                                <input type="text" class="form-control" formControlName="propertyId"
+                                    placeholder="أدخل رقم العقار">
+                            </div>
+
+                            <div *ngIf="createSearchType === 'land'" class="form-group">
+                                <label>رقم الأرض</label>
+                                <ng-select [items]="createLandOptions | async" bindLabel="value.ar" bindValue="key"
+                                    [typeahead]="createLandSearchInput$" [loading]="createLandDataOptionsLoading"
+                                    formControlName="landId" placeholder="ابحث عن الأرض"
+                                    typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
+                                    notFoundText="لا توجد نتائج">
+                                </ng-select>
+                            </div>
+
+                            <div *ngIf="createSearchType === 'project'" class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label>اسم المطور</label>
+                                    <ng-select [items]="createDeveloperOptions | async" bindLabel="value.ar"
+                                        bindValue="key" [typeahead]="createDeveloperSearchInput$"
+                                        [loading]="createDeveloperDataOptionsLoading" formControlName="developerId"
+                                        placeholder="اختر المطور" typeToSearchText="الرجاء إدخال حرف واحد أو أكثر"
+                                        [minTermLength]="1" notFoundText="لا توجد نتائج">
+                                    </ng-select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>اسم المشروع</label>
+                                    <ng-select [items]="createProjectsOptions | async" bindLabel="value.ar"
+                                        bindValue="key" [typeahead]="createProjectsSearchInput$"
+                                        [loading]="createProjectDataOptionsLoading" formControlName="projectId"
+                                        placeholder="اختر المشروع" typeToSearchText="الرجاء إدخال حرف واحد أو أكثر"
+                                        [minTermLength]="1" notFoundText="لا توجد نتائج">
+                                    </ng-select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>رقم الوحدة</label>
+                                    <ng-select [items]="createUnitOptions | async" bindLabel="value.ar" bindValue="key"
+                                        [typeahead]="createUnitSearchInput$" [loading]="createUnitDataOptionsLoading"
+                                        formControlName="unitId" placeholder="اختر الوحدة"
+                                        typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
+                                        notFoundText="لا توجد نتائج">
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>الملاك</h6>
+                                </div>
+                            </div>
+
+                            <div formArrayName="owners">
+                                <div *ngFor="let owner of owners.controls; let i = index" [formGroupName]="i"
+                                    class="card mb-2">
+                                    <div class="card-body p-3">
+                                        <div class="form-row align-items-end">
+                                            <div class="col-md-5">
+                                                <label>رقم المالك</label>
+                                                <ng-select [items]="ownerOptions | async" bindLabel="value.ar"
+                                                    bindValue="key" [typeahead]="ownerSearchInput$"
+                                                    [loading]="ownerDataOptionsLoading" formControlName="ownerId"
+                                                    placeholder="ابحث عن المالك"
+                                                    typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
+                                                    notFoundText="لا توجد نتائج">
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label>الحصة</label>
+                                                <input type="text" class="form-control" formControlName="share"
+                                                    placeholder="الحصة">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-danger btn-block"
+                                                    (click)="removeOwner(i)" *ngIf="owners.length > 1">حذف</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-secondary btn-sm mt-2" (click)="addOwner()">+ إضافة
+                                مالك</button>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="closeCreateModal()">إلغاء</button>
+                        <button type="button" class="btn btn-success" (click)="onCreateDeed()"
+                            [disabled]="isLoading">إنشاء
+                            السند</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
