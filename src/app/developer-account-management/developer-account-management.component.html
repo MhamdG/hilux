@@ -115,12 +115,9 @@
                         <th>الأسم</th>
                         <th>Name</th>
                         <th>النوع</th>
-                        <th>Type</th>
                         <th>رقم الرخصة</th>
                         <th>نوع الرخصة </th>
-                        <th> license Type</th>
                         <th>صادر من</th>
-                        <th>Issue From</th>
                         <th> تاريخ أنتهاء التسجيل</th>
                       </tr>
                     </thead>
@@ -172,15 +169,6 @@
                         </td>
 
                         <td>
-                          <span *ngIf="companyInfo.typeEn">
-                            {{companyInfo.typeEn}}
-                          </span>
-                          <span *ngIf="!companyInfo.typeEn">
-                            لا يوجد بيانات
-                          </span>
-                        </td>
-
-                        <td>
                           <span *ngIf="companyInfo.licenseNumber">
                             {{companyInfo.licenseNumber}}
                           </span>
@@ -199,28 +187,10 @@
                         </td>
 
                         <td>
-                          <span *ngIf="companyInfo.licenseTypeEn">
-                            {{companyInfo.licenseTypeEn}}
-                          </span>
-                          <span *ngIf="!companyInfo.licenseTypeEn">
-                            لا يوجد بيانات
-                          </span>
-                        </td>
-
-                        <td>
                           <span *ngIf="companyInfo.issuerAr">
                             {{companyInfo.issuerAr}}
                           </span>
                           <span *ngIf="!companyInfo.issuerAr">
-                            لا يوجد بيانات
-                          </span>
-                        </td>
-
-                        <td>
-                          <span *ngIf="companyInfo.issuerEn">
-                            {{companyInfo.issuerEn}}
-                          </span>
-                          <span *ngIf="!companyInfo.issuerEn">
                             لا يوجد بيانات
                           </span>
                         </td>
@@ -328,9 +298,7 @@
                         <th>أسم العميل</th>
                         <th>Customer Name</th>
                         <th>أسم الملف</th>
-                        <th>Profile Name</th>
                         <th>تاريح الأنشاء</th>
-                        <th>تاريح التعديل</th>
                         <th>رقم الهاتف </th>
                         <th>البريد الإلكتروني</th>
                         <th>إجراءات</th>
@@ -368,18 +336,9 @@
 
                           <td>
                             <span *ngIf="item.profileId">
-                              {{ item.profileId}}
+                              {{ item.profileNameAr}}
                             </span>
                             <span *ngIf="! item.profileId">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-
-                          <td>
-                            <span *ngIf="item.profileNameEn">
-                              {{ item.profileNameEn}}
-                            </span>
-                            <span *ngIf="! item.profileNameEn">
                               لا توجد بيانات
                             </span>
                           </td>
@@ -388,14 +347,6 @@
                               {{ item.profileCreatedAt}}
                             </span>
                             <span *ngIf="! item.profileCreatedAt">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.profileModifiedAt">
-                              {{ item.profileModifiedAt}}
-                            </span>
-                            <span *ngIf="! item.profileModifiedAt">
                               لا توجد بيانات
                             </span>
                           </td>
@@ -421,8 +372,7 @@
                               <a> <i class="fas fa-times red"></i> </a>
                             </span>
                             <span>
-                              <a [href]="getViewResourceUrl(item.customerId, 'owner')" target="_blank"
-                                class="fs-30 p-1">
+                              <a [href]="getViewResourceUrl(item.ownerId, 'owner')" target="_blank" class="fs-30 p-1">
                                 <i class="fas fa-eye"></i>
                               </a>
                             </span>
@@ -455,9 +405,8 @@
                         <th>أسم العميل</th>
                         <th>Customer Name</th>
                         <th>أسم الملف</th>
-                        <th>Profile Name</th>
                         <th>تاريح الأنشاء</th>
-                        <th>تاريح التعديل</th>
+                        <th>تاريح الإلغاء</th>
                         <th>رقم الهاتف </th>
                         <th>البريد الإلكتروني</th>
 
@@ -495,14 +444,6 @@
                               {{ item.profileNameAr}}
                             </span>
                             <span *ngIf="! item.profileNameAr">
-                              لا توجد بيانات
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngIf="item.profileNameEn">
-                              {{ item.profileNameEn}}
-                            </span>
-                            <span *ngIf="! item.profileNameEn">
                               لا توجد بيانات
                             </span>
                           </td>
