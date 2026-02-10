@@ -115,8 +115,22 @@
                     </thead>
                     <tbody style="background-color: #fff;">
                       <tr>
-                        <td>{{response.applicationID}}</td>
-                        <td>{{response.serviceName.ar }}</td>
+                        <td>
+                          <span *ngIf="response.applicationID">
+                            {{response.applicationID}}
+                          </span>
+                          <span *ngIf="!response.applicationID">
+                            لا توجد بيانات
+                          </span>
+                        </td>
+                        <td>
+                          <span *ngIf="response.serviceName.ar">
+                            {{response.serviceName.ar }}
+                          </span>
+                          <span *ngIf="!response.serviceName.ar">
+                            لا توجد بيانات
+                          </span>
+                        </td>
                         <td>
                           <ng-container
                             *ngIf="response.applicationDetails && response.applicationDetails.length > 0; else noData">
@@ -130,16 +144,28 @@
                           </ng-template>
                         </td>
 
-                        <td>{{ response.firstStepCreatedAt | date:'yyyy-MM-dd' }}</td>
                         <td>
-                          <span *ngIf="response.invoiceStatus =='all_paid'">
-                            مدفوع كلي
+                          <span *ngIf="response.firstStepCreatedAt">
+                            {{ response.firstStepCreatedAt | date:'yyyy-MM-dd' }}
                           </span>
-                          <span *ngIf="response.invoiceStatus =='partly_paid'">
-                            مدفوع جزئي
+                          <span *ngIf="!response.firstStepCreatedAt">
+                            لا توجد بيانات
                           </span>
-                          <span *ngIf="response.invoiceStatus =='not_paid'|| response.invoiceStatus =='no_invoices' ">
-                            غير مدفوع
+                        </td>
+                        <td>
+                          <span *ngIf="response.invoiceStatus">
+                            <span *ngIf="response.invoiceStatus =='all_paid'">
+                              مدفوع كلي
+                            </span>
+                            <span *ngIf="response.invoiceStatus =='partly_paid'">
+                              مدفوع جزئي
+                            </span>
+                            <span *ngIf="response.invoiceStatus =='not_paid'|| response.invoiceStatus =='no_invoices' ">
+                              غير مدفوع
+                            </span>
+                          </span>
+                          <span *ngIf="!response.invoiceStatus">
+                            لا توجد بيانات
                           </span>
 
                         </td>
@@ -254,12 +280,13 @@
                         <tr>
                           <td>
                             <span *ngIf="item.date">
-                              {{ item.date || "yyyy-MM-dd"}}
+                              {{ item.date | date:'yyyy-MM-dd' }}
                             </span>
-                            <span *ngIf="!item.date">
+                            <span *ngIf="!item.stepName">
                               لا توجد بيانات
                             </span>
                           </td>
+
                           <td>
                             <span *ngIf="item.stepName">
                               {{ item.stepName}}
