@@ -24,6 +24,12 @@ export class DeedSearchComponent implements OnInit {
     selectedDeed: any;
     propertyDetails: any; // Store Property Details
 
+    // Ownership Type Modal
+    showOwnershipTypeModal = false;
+    ownershipTypes: any[] = [];
+    selectedOwnershipTypeId: string = '';
+    currentDeedForOwnershipUpdate: any = null;
+
 
     // Lookups
     developerOptions: Observable<any>;
@@ -85,6 +91,7 @@ export class DeedSearchComponent implements OnInit {
         this.loadCreateUnitOptions();
         this.loadCreateUnitOptions();
         this.loadOwnerOptions();
+        this.loadOwnershipTypes();
     }
 
     // --- Search Lookups ---
@@ -540,5 +547,52 @@ export class DeedSearchComponent implements OnInit {
         } else {
             return `/${resourceType}/profile/${resourceId}/view`;
         }
+    }
+
+    loadOwnershipTypes() {
+        this.lookupsService.loadOwnershipTypes().subscribe(
+            (data: any) => {
+                this.ownershipTypes = data || [];
+            },
+            err => {
+                this.toastr.error('خطأ في تحميل أنواع الملكية');
+            }
+        );
+    }
+
+    openOwnershipTypeModal(deed: any) {
+        this.currentDeedForOwnershipUpdate = deed;
+        this.selectedOwnershipTypeId = deed.childDeed?.ownershipTypeId || '';
+        this.showOwnershipTypeModal = true;
+    }
+
+    closeOwnershipTypeModal() {
+        this.showOwnershipTypeModal = false;
+        this.currentDeedForOwnershipUpdate = null;
+        this.selectedOwnershipTypeId = '';
+    }
+
+    updateOwnershipType() {
+        if (!this.selectedOwnershipTypeId) {
+            this.toastr.error('الرجاء اختيار نوع الملكية');
+            return;
+        }
+
+        this.isLoading = true;
+        this.deedService.updateOwnershipType(
+            this.currentDeedForOwnershipUpdate.deed.id,
+            this.selectedOwnershipTypeId
+        ).subscribe(
+            res => {
+                this.isLoading = false;
+                this.toastr.success('تم تحديث نوع الملكية بنجاح');
+                this.closeOwnershipTypeModal();
+                this.onSearch(); // Refresh the list
+            },
+            err => {
+                this.isLoading = false;
+                this.toastr.error(err.error?.error || 'خطأ في تحديث نوع الملكية');
+            }
+        );
     }
 }

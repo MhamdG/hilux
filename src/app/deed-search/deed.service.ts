@@ -51,4 +51,12 @@ export class DeedService {
         const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
         return this.http.post(`${this.baseUrl}/ReactivateDeed`, params.toString(), { headers });
     }
+
+    updateOwnershipType(deedId: string, ownershipTypeId: string): Observable<any> {
+        const params = new URLSearchParams();
+        params.append('deedId', deedId);
+        params.append('ownershipTypeId', ownershipTypeId);
+        const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+        return this.http.post(`${this.baseUrl}/UpdateOwnershipType`, params.toString(), { headers });
+    }
 }

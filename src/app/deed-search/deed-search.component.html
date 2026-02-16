@@ -227,6 +227,8 @@
                             <span class="badge badge-light">سند فعال</span>
                             <button class="btn btn-sm btn-light ml-2 mr-2" (click)="openEditModal(item)">تعديل
                                 الملاك</button>
+                            <button class="btn btn-sm btn-light ml-2 mr-2" (click)="openOwnershipTypeModal(item)">تغيير
+                                نوع الملكية</button>
                             <button class="btn btn-sm btn-light" (click)="openCreateModal(item.deed.propertyId)">نقل
                                 الملكية</button>
                         </div>
@@ -466,6 +468,42 @@
                         <button type="button" class="btn btn-success" (click)="onCreateDeed()"
                             [disabled]="isLoading">إنشاء
                             السند</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ownership Type Modal Overlay -->
+        <div class="modal-backdrop fade show" *ngIf="showOwnershipTypeModal"></div>
+
+        <!-- Ownership Type Modal -->
+        <div class="modal fade show" *ngIf="showOwnershipTypeModal" style="display: block;" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">تغيير نوع الملكية</h5>
+                        <button type="button" class="close" (click)="closeOwnershipTypeModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>نوع الملكية</label>
+                            <select class="form-control" [(ngModel)]="selectedOwnershipTypeId">
+                                <option value="">-- اختر نوع الملكية --</option>
+                                <option *ngFor="let type of ownershipTypes" [value]="type.key">
+                                    {{ type.value.ar }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            (click)="closeOwnershipTypeModal()">إلغاء</button>
+                        <button type="button" class="btn btn-primary" (click)="updateOwnershipType()"
+                            [disabled]="isLoading">
+                            حفظ
+                        </button>
                     </div>
                 </div>
             </div>
