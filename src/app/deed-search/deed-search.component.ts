@@ -342,12 +342,13 @@ export class DeedSearchComponent implements OnInit {
                 // Client-side sorting: Active first, then by Date DESC
                 this.searchResult = deedList.sort((a, b) => {
                     // 1. Status Check (Active '1' comes first)
-                    if (a.status == '1' && b.status != '1') return -1;
-                    if (a.status != '1' && b.status == '1') return 1;
+                    // Note: accessing 'deed' property from new structure
+                    if (a.deed.status == '1' && b.deed.status != '1') return -1;
+                    if (a.deed.status != '1' && b.deed.status == '1') return 1;
 
                     // 2. Date Check (Newest first)
-                    const dateA = new Date(a.createdAt).getTime();
-                    const dateB = new Date(b.createdAt).getTime();
+                    const dateA = new Date(a.deed.createdAt).getTime();
+                    const dateB = new Date(b.deed.createdAt).getTime();
                     return dateB - dateA;
                 });
             },
@@ -380,17 +381,21 @@ export class DeedSearchComponent implements OnInit {
         this.editOwners.removeAt(index);
     }
 
-    openEditModal(deed: any) {
-        console.log('Opening Edit Modal for Deed:', deed);
-        this.selectedDeed = deed;
+    openEditModal(deedWrapper: any) {
+        console.log('Opening Edit Modal for Deed Wrapper:', deedWrapper);
+        this.selectedDeed = deedWrapper;
         this.showEditModal = true;
 
+        // Access nested 'deed' object
+        const deed = deedWrapper.deed;
         this.editForm.patchValue({ deedId: deed.id });
         this.editOwners.clear();
 
-        if (deed.details && deed.details.length > 0) {
-            deed.details.forEach(detail => {
-                this.addEditOwner(detail.ownerId, detail.share || detail.Share);
+        // Access nested 'deedDetails' array
+        // Each item has { details: {...}, profile: {...} }
+        if (deedWrapper.deedDetails && deedWrapper.deedDetails.length > 0) {
+            deedWrapper.deedDetails.forEach(item => {
+                this.addEditOwner(item.details.ownerId || item.profile.ownerId, item.details.share);
             });
         } else {
             // If no details (unlikely for active deed), add one empty row
@@ -527,5 +532,13 @@ export class DeedSearchComponent implements OnInit {
                 this.toastr.error(err.error?.error || 'خطأ في إعادة تفعيل السند');
             }
         );
+    }
+
+    getViewResourceUrl(resourceId: any, resourceType: any) {
+        if (resourceType == "owner") {
+            return `/${resourceType}/profile/${resourceId}/edit`;
+        } else {
+            return `/${resourceType}/profile/${resourceId}/view`;
+        }
     }
 }

@@ -108,57 +108,100 @@
                             <!-- Common Details -->
                             <div class="row">
                                 <div class="col-md-3 mb-2">
-                                    <strong>رقم الأرض:</strong> {{ propertyDetails.landId || propertyDetails.oldLandId
-                                    || 'غير متوفر' }}
+                                    <strong>رقم الأرض:</strong> {{ propertyDetails.land?.landId ||
+                                    propertyDetails.unit?.landId ||
+                                    propertyDetails.land?.oldLandId || 'غير متوفر' }}
                                 </div>
-                                <div class="col-md-3 mb-2" *ngIf="propertyDetails.propertyId">
-                                    <strong>رقم القطعة:</strong> {{ propertyDetails.pieceNumber }}
+                                <div class="col-md-3 mb-2"
+                                    *ngIf="propertyDetails.land?.propertyId || propertyDetails.unit?.propertyId">
+                                    <strong>رقم القطعة:</strong> {{ propertyDetails.land?.pieceNumber ||
+                                    propertyDetails.unit?.pieceNumber }}
                                 </div>
                             </div>
 
                             <!-- UNIT Specific Details -->
                             <div class="row" *ngIf="propertyDetails.type === 'Unit'">
-                                <div class="col-md-3 mb-2" *ngIf="propertyDetails.projectNameAr">
-                                    <strong>المشروع:</strong> {{ propertyDetails.projectNameAr }}
+                                <div class="col-md-3 mb-2" *ngIf="propertyDetails.unit?.projectNameAr">
+                                    <strong>المشروع:</strong> {{ propertyDetails.unit?.projectNameAr }}
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <strong>رقم الوحدة:</strong> {{ propertyDetails.unitNumber }}
+                                    <strong>رقم الوحدة:</strong> {{ propertyDetails.unit?.unitNumber }}
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <strong>الطابق:</strong> {{ propertyDetails.floorNumber }}
+                                    <strong>الطابق:</strong> {{ propertyDetails.unit?.floorNumber }}
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <strong>المساحة الإجمالية:</strong> {{ propertyDetails.meterTotalSoldArea }} م²
+                                    <strong>المساحة الإجمالية:</strong> {{ propertyDetails.unit?.meterTotalSoldArea }}
+                                    م²
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <strong>المساحة الصافية:</strong> {{ propertyDetails.meterNetSoldArea }} م²
+                                    <strong>المساحة الصافية:</strong> {{ propertyDetails.unit?.meterNetSoldArea }} م²
                                 </div>
                                 <div class="col-md-9 mb-2">
                                     <strong>التفاصيل:</strong>
-                                    <span *ngIf="propertyDetails.roomsCount > 0" class="badge badge-light ml-1">{{
-                                        propertyDetails.roomsCount }} غرف</span>
-                                    <span *ngIf="propertyDetails.bathroomsCount > 0" class="badge badge-light ml-1">{{
-                                        propertyDetails.bathroomsCount }} حمام</span>
-                                    <span *ngIf="propertyDetails.kitchensCount > 0" class="badge badge-light ml-1">{{
-                                        propertyDetails.kitchensCount }} مطبخ</span>
-                                    <span *ngIf="propertyDetails.balconyCount > 0" class="badge badge-light ml-1">{{
-                                        propertyDetails.balconyCount }} بلكونة</span>
+                                    <span *ngIf="propertyDetails.unit?.roomsCount > 0" class="badge badge-light ml-1">{{
+                                        propertyDetails.unit?.roomsCount }} غرف</span>
+                                    <span *ngIf="propertyDetails.unit?.bathroomsCount > 0"
+                                        class="badge badge-light ml-1">{{
+                                        propertyDetails.unit?.bathroomsCount }} حمام</span>
+                                    <span *ngIf="propertyDetails.unit?.kitchensCount > 0"
+                                        class="badge badge-light ml-1">{{
+                                        propertyDetails.unit?.kitchensCount }} مطبخ</span>
+                                    <span *ngIf="propertyDetails.unit?.balconyCount > 0"
+                                        class="badge badge-light ml-1">{{
+                                        propertyDetails.unit?.balconyCount }} بلكونة</span>
                                 </div>
                             </div>
 
                             <!-- LAND Specific Details (Default) -->
-                            <div class="row" *ngIf="propertyDetails.type !== 'Unit'">
+                            <div class="row" *ngIf="propertyDetails.type === 'Land'">
                                 <div class="col-md-3 mb-2">
-                                    <strong>المساحة:</strong> {{ propertyDetails.area }} {{ propertyDetails.newArea ?
-                                    '(' + propertyDetails.newArea + ')' : '' }}
+                                    <strong>المساحة:</strong> {{ propertyDetails.land?.area }} {{
+                                    propertyDetails.land?.newArea ?
+                                    '(' + propertyDetails.land?.newArea + ')' : '' }}
                                 </div>
-                                <div class="col-md-6 mb-2">
-                                    <strong>الموقع:</strong> {{ propertyDetails.north }} / {{ propertyDetails.south }} /
-                                    {{ propertyDetails.east }} / {{ propertyDetails.west }}
+                                <div class="col-md-9 mb-2">
+                                    <strong>الموقع:</strong> {{ propertyDetails.land?.north }} / {{
+                                    propertyDetails.land?.south }} /
+                                    {{ propertyDetails.land?.east }} / {{ propertyDetails.land?.west }}
                                 </div>
-                                <div class="col-md-3 mb-2">
-                                    <strong>المدينة:</strong> {{ propertyDetails.cityId == '1' ? 'عجمان' :
-                                    (propertyDetails.cityId == '2' ? 'المنامة' : 'مصفوت') }}
+                                <div class="col-md-12 mb-2">
+                                    <strong>المدينة / القطاع / الحوض:</strong>
+                                    {{ propertyDetails.land?.cityId == '1' ? 'عجمان' :
+                                    (propertyDetails.land?.cityId == '2' ? 'المنامة' : 'مصفوت') }} /
+                                    {{ propertyDetails.land?.sectorNameAr || '-' }} /
+                                    {{ propertyDetails.land?.sectionNameAr || '-' }}
+                                </div>
+                            </div>
+
+                            <!-- Blockages -->
+                            <div class="row" *ngIf="propertyDetails.blockages && propertyDetails.blockages.length > 0">
+                                <div class="col-12 border-top pt-2 mt-2">
+                                    <h6 class="text-danger font-weight-bold">الموانع / الحجوزات:</h6>
+                                    <ul class="mb-0">
+                                        <ng-container *ngFor="let blockage of propertyDetails.blockages">
+                                            <li class="text-danger" *ngIf="blockage.remarks">
+                                                {{blockage.remarks}}
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Mortgages -->
+                            <div class="row" *ngIf="propertyDetails.mortgages && propertyDetails.mortgages.length > 0">
+                                <div class="col-12 border-top pt-2 mt-2">
+                                    <h6 class="text-warning font-weight-bold">الرهونات:</h6>
+                                    <ul class="mb-0">
+                                        <ng-container *ngFor="let mortgage of propertyDetails.mortgages">
+                                            <li class="text-dark">
+                                                {{ mortgage.remarks }}
+                                                <span *ngIf="mortgage.bankNameAr"> - {{ mortgage.bankNameAr }}</span>
+                                                <span *ngIf="mortgage.amount"> - القيمة: {{ mortgage.amount | number
+                                                    }}</span>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -170,24 +213,25 @@
             <div *ngIf="searchResult && searchResult.length > 0">
                 <h5 class="mb-3">سجل السندات ({{ searchResult.length }})</h5>
 
-                <div class="card mb-3" *ngFor="let deed of searchResult"
-                    [ngClass]="{'border-success': deed.status == '1'}">
+                <div class="card mb-3" *ngFor="let item of searchResult"
+                    [ngClass]="{'border-success': item.deed.status == '1'}">
                     <div class="card-header d-flex justify-content-between align-items-center"
-                        [ngClass]="{'bg-success text-white': deed.status == '1'}">
+                        [ngClass]="{'bg-success text-white': item.deed.status == '1'}">
                         <div>
-                            <strong>رقم السند:</strong> {{ deed.deedId }} |
-                            <strong>الحالة:</strong> {{ deed.status == '1' ? 'فعال' : 'غير فعال' }} |
-                            <strong>التاريخ:</strong> {{ deed.createdAt | date }}
+                            <strong>الحالة:</strong> {{ item.deed.status == '1' ? 'فعال' : 'غير فعال' }} |
+                            <strong>التاريخ:</strong> {{ item.deed.createdAt | date }} |
+                            <strong>نوع الملكية:</strong> {{ item.childDeed?.ownershipTypeNameAr || '-' }} |
+                            <strong>طريقة الانتقال:</strong> {{ item.childDeed?.transferServiceNameAr || '-' }}
                         </div>
-                        <div *ngIf="deed.status == '1'">
+                        <div *ngIf="item.deed.status == '1'">
                             <span class="badge badge-light">سند فعال</span>
-                            <button class="btn btn-sm btn-light ml-2 mr-2" (click)="openEditModal(deed)">تعديل
+                            <button class="btn btn-sm btn-light ml-2 mr-2" (click)="openEditModal(item)">تعديل
                                 الملاك</button>
-                            <button class="btn btn-sm btn-light" (click)="openCreateModal(deed.propertyId)">نقل
+                            <button class="btn btn-sm btn-light" (click)="openCreateModal(item.deed.propertyId)">نقل
                                 الملكية</button>
                         </div>
-                        <div *ngIf="deed.status == '0'">
-                            <button class="btn btn-sm btn-outline-warning" (click)="reactivateDeed(deed)">إعادة
+                        <div *ngIf="item.deed.status == '0'">
+                            <button class="btn btn-sm btn-outline-warning" (click)="reactivateDeed(item.deed)">إعادة
                                 تفعيل</button>
                         </div>
                     </div>
@@ -198,19 +242,33 @@
                                     <tr>
                                         <th>اسم المالك (عربي)</th>
                                         <th>اسم المالك (إنجليزي)</th>
+                                        <th>رقم الهوية</th>
                                         <th>الحصة</th>
+                                        <th>الجنسية</th>
                                         <th>إجراء</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let detail of deed.details">
-                                        <td>{{ detail.ownerNameAr || '-' }}</td>
-                                        <td>{{ detail.ownerNameEn || '-' }}</td>
-                                        <td>{{ detail.share || detail.Share }}</td>
-                                        <td>-</td>
+                                    <tr *ngFor="let detail of item.deedDetails">
+                                        <td>{{ detail.profile?.nameAr || '-' }}</td>
+                                        <td>{{ detail.profile?.nameEn || '-' }}</td>
+                                        <td>
+                                            {{ detail.profile?.mainIdentityNumber || '-' }}
+                                            <small class="text-muted" *ngIf="detail.profile?.mainIdentityNumberType">
+                                                ({{ detail.profile?.mainIdentityNumberType }})
+                                            </small>
+                                        </td>
+                                        <td>{{ detail.details?.share || '-' }}</td>
+                                        <td>{{ detail.profile?.nationalityAr || '-' }}</td>
+                                        <td>
+                                            <a [href]="getViewResourceUrl(detail.profile?.ownerId, 'owner')"
+                                                target="_blank" class="text-info" title="عرض الملف">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
                                     </tr>
-                                    <tr *ngIf="!deed.details || deed.details.length === 0">
-                                        <td colspan="4" class="text-center">لا توجد تفاصيل</td>
+                                    <tr *ngIf="!item.deedDetails || item.deedDetails.length === 0">
+                                        <td colspan="6" class="text-center">لا توجد تفاصيل</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -230,7 +288,7 @@
 
         <!-- Edit Modal -->
         <div class="modal fade show" *ngIf="showEditModal" style="display: block;" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">تعديل بيانات المالك</h5>
