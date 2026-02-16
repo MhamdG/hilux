@@ -218,4 +218,8 @@ export class LookupsService {
   loadAccountTrusteesOptions(params: any = {}) {
     return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/Lookups/projetcsAccountTrusteeBanks`, params);
   }
+
+  loadOwnershipTypes(params: any = {}) {
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/ownershipTypes`, params);
+  }
 }

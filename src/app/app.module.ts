@@ -136,6 +136,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ChartsModule } from 'ng2-charts';
 import { ProjectsReportComponent } from './reports/projects-report/projects-report.component';
 import { UnitsReportComponent } from './reports/units-report/units-report.component';
+import { DeedSearchComponent } from './deed-search/deed-search.component';
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -260,7 +261,8 @@ const maskConfig: Partial<IConfig> = {
     UnlockApplicationComponent,
     PivotReportsComponent,
     ProjectsReportComponent,
-    UnitsReportComponent
+    UnitsReportComponent,
+    DeedSearchComponent
   ],
   imports: [
     FormsModule,
