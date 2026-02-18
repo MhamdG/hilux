@@ -109,47 +109,50 @@
                             <div class="row">
                                 <div class="col-md-3 mb-2">
                                     <strong>رقم الأرض:</strong> {{ propertyDetails.land?.landId ||
-                                    propertyDetails.unit?.landId ||
+                                    propertyDetails.unitData?.unit?.landId ||
                                     propertyDetails.land?.oldLandId || 'غير متوفر' }}
                                 </div>
                                 <div class="col-md-3 mb-2"
-                                    *ngIf="propertyDetails.land?.propertyId || propertyDetails.unit?.propertyId">
+                                    *ngIf="propertyDetails.land?.propertyId || propertyDetails.unitData?.unit?.propertyId">
                                     <strong>رقم القطعة:</strong> {{ propertyDetails.land?.pieceNumber ||
-                                    propertyDetails.unit?.pieceNumber }}
+                                    propertyDetails.unitData?.unit?.pieceNumber || '-' }}
                                 </div>
                             </div>
 
                             <!-- UNIT Specific Details -->
                             <div class="row" *ngIf="propertyDetails.type === 'Unit'">
-                                <div class="col-md-3 mb-2" *ngIf="propertyDetails.unit?.projectNameAr">
-                                    <strong>المشروع:</strong> {{ propertyDetails.unit?.projectNameAr }}
+                                <div class="col-md-3 mb-2" *ngIf="propertyDetails.unitData?.project?.nameAr">
+                                    <strong>المشروع:</strong> {{ propertyDetails.unitData?.project?.nameAr }}
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <strong>رقم الوحدة:</strong> {{ propertyDetails.unit?.unitNumber }}
+                                    <strong>رقم الوحدة:</strong> {{ propertyDetails.unitData?.unit?.unitNumber }}
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <strong>الطابق:</strong> {{ propertyDetails.unit?.floorNumber }}
+                                    <strong>الطابق:</strong> {{ propertyDetails.unitData?.unit?.floorNumber }}
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <strong>المساحة الإجمالية:</strong> {{ propertyDetails.unit?.meterTotalSoldArea }}
+                                    <strong>المساحة الإجمالية:</strong> {{
+                                    propertyDetails.unitData?.unit?.meterTotalSoldArea }}
                                     م²
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <strong>المساحة الصافية:</strong> {{ propertyDetails.unit?.meterNetSoldArea }} م²
+                                    <strong>المساحة الصافية:</strong> {{
+                                    propertyDetails.unitData?.unit?.meterNetSoldArea }} م²
                                 </div>
                                 <div class="col-md-9 mb-2">
                                     <strong>التفاصيل:</strong>
-                                    <span *ngIf="propertyDetails.unit?.roomsCount > 0" class="badge badge-light ml-1">{{
-                                        propertyDetails.unit?.roomsCount }} غرف</span>
-                                    <span *ngIf="propertyDetails.unit?.bathroomsCount > 0"
+                                    <span *ngIf="propertyDetails.unitData?.unit?.roomsCount > 0"
                                         class="badge badge-light ml-1">{{
-                                        propertyDetails.unit?.bathroomsCount }} حمام</span>
-                                    <span *ngIf="propertyDetails.unit?.kitchensCount > 0"
+                                        propertyDetails.unitData?.unit?.roomsCount }} غرف</span>
+                                    <span *ngIf="propertyDetails.unitData?.unit?.bathroomsCount > 0"
                                         class="badge badge-light ml-1">{{
-                                        propertyDetails.unit?.kitchensCount }} مطبخ</span>
-                                    <span *ngIf="propertyDetails.unit?.balconyCount > 0"
+                                        propertyDetails.unitData?.unit?.bathroomsCount }} حمام</span>
+                                    <span *ngIf="propertyDetails.unitData?.unit?.kitchensCount > 0"
                                         class="badge badge-light ml-1">{{
-                                        propertyDetails.unit?.balconyCount }} بلكونة</span>
+                                        propertyDetails.unitData?.unit?.kitchensCount }} مطبخ</span>
+                                    <span *ngIf="propertyDetails.unitData?.unit?.balconyCount > 0"
+                                        class="badge badge-light ml-1">{{
+                                        propertyDetails.unitData?.unit?.balconyCount }} بلكونة</span>
                                 </div>
                             </div>
 
@@ -242,6 +245,7 @@
                             <table class="table table-sm table-bordered">
                                 <thead>
                                     <tr>
+                                        <th>رقم العميل</th>
                                         <th>اسم المالك (عربي)</th>
                                         <th>اسم المالك (إنجليزي)</th>
                                         <th>رقم المعرف</th>
@@ -252,6 +256,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let detail of item.deedDetails">
+                                        <td>{{ detail.profile?.ownerId || '-' }}</td>
                                         <td>{{ detail.profile?.nameAr || '-' }}</td>
                                         <td>{{ detail.profile?.nameEn || '-' }}</td>
                                         <td>
@@ -290,7 +295,7 @@
 
         <!-- Edit Modal -->
         <div class="modal fade show" *ngIf="showEditModal" style="display: block;" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document" style="max-width: 90%;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">تعديل بيانات المالك</h5>
@@ -315,6 +320,12 @@
                                                     placeholder="ابحث عن المالك"
                                                     typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
                                                     notFoundText="لا توجد نتائج">
+                                                    <ng-template ng-label-tmp let-item="item">
+                                                        {{item.key}} - {{item.value.ar}}
+                                                    </ng-template>
+                                                    <ng-template ng-option-tmp let-item="item">
+                                                        {{item.key}} - {{item.value.ar}}
+                                                    </ng-template>
                                                 </ng-select>
                                             </div>
                                             <div class="col-md-5">
@@ -352,7 +363,7 @@
         <!-- Create Modal -->
         <div class="modal fade show" *ngIf="showCreateModal" style="display: block; overflow-y: auto;" tabindex="-1"
             role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document" style="max-width: 90%;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">إنشاء سند جديد</h5>
@@ -435,13 +446,19 @@
                                     <div class="card-body p-3">
                                         <div class="form-row align-items-end">
                                             <div class="col-md-5">
-                                                <label>رقم المالك</label>
+                                                <label>المالك</label>
                                                 <ng-select [items]="ownerOptions | async" bindLabel="value.ar"
                                                     bindValue="key" [typeahead]="ownerSearchInput$"
                                                     [loading]="ownerDataOptionsLoading" formControlName="ownerId"
                                                     placeholder="ابحث عن المالك"
                                                     typeToSearchText="الرجاء إدخال حرف واحد أو أكثر" [minTermLength]="1"
                                                     notFoundText="لا توجد نتائج">
+                                                    <ng-template ng-label-tmp let-item="item">
+                                                        {{item.key}} - {{item.value.ar}}
+                                                    </ng-template>
+                                                    <ng-template ng-option-tmp let-item="item">
+                                                        {{item.key}} - {{item.value.ar}}
+                                                    </ng-template>
                                                 </ng-select>
                                             </div>
                                             <div class="col-md-5">
