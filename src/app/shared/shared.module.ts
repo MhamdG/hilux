@@ -16,6 +16,8 @@ import { MediaGalleryComponent } from './media-gallery/media-gallery.component';
 import {NgxSmartModalModule} from 'ngx-smart-modal';
 import { LookupsService } from './lookups.service';
 
+import { CanvasSignatureComponent } from './canvas-signature/canvas-signature.component';
+
 @NgModule({
   imports: [
     FormsModule,
@@ -34,6 +36,7 @@ import { LookupsService } from './lookups.service';
     NotificationsComponent,
     TimeAgoPipe,
     MediaGalleryComponent,
+    CanvasSignatureComponent
   ],
   exports: [
     HeaderComponent,
@@ -42,7 +45,8 @@ import { LookupsService } from './lookups.service';
     NumbersformatterDirective,
     SidebarComponent,
     MediaGalleryComponent,
-    NgxSmartModalModule
+    NgxSmartModalModule,
+    CanvasSignatureComponent
   ]
 })
 export class SharedModule {}

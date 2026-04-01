@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { DataTablesModule } from 'angular-datatables';
+import { SignatureTestComponent } from './signature-test/signature-test.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -262,7 +263,8 @@ const maskConfig: Partial<IConfig> = {
     PivotReportsComponent,
     ProjectsReportComponent,
     UnitsReportComponent,
-    DeedSearchComponent
+    DeedSearchComponent,
+    SignatureTestComponent
   ],
   imports: [
     FormsModule,
