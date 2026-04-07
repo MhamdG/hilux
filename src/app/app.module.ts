@@ -79,6 +79,7 @@ import { DisplayLinkGroupComponent } from './tags/display-link-group/display-lin
 import { AuthenticationGuard } from './authentication.guard';
 import { DisplayDataFormGeneratorComponent } from './display-data-form-generator/display-data-form-generator.component';
 import { HiddenFieldComponent } from './fields/hidden-field/hidden-field.component';
+import { SignatureCollectionFieldComponent } from './fields/signature-collection-field/signature-collection-field.component';
 import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
 import { CustomerEditComponent } from './customer-profile/customer-edit/customer-edit.component';
 import { CustomerMainViewComponent } from './customer-profile/customer-mainView/customer-mainView.component';
@@ -211,6 +212,7 @@ const maskConfig: Partial<IConfig> = {
     DisplayLinkGroupComponent,
     DisplayDataFormGeneratorComponent,
     HiddenFieldComponent,
+    SignatureCollectionFieldComponent,
     CustomerProfileComponent,
     CustomerEditComponent,
     CustomerMainViewComponent,

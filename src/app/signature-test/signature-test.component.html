@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Table Signature Test</h1>
+          <h1 class="m-0 text-dark">Component Signature Test</h1>
         </div>
       </div>
     </div>
@@ -13,56 +13,24 @@
     <div class="container-fluid">
       <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">Signatures Collection Table</h3>
+          <h3 class="card-title">Testing the SignatureCollectionFieldComponent</h3>
         </div>
-        <div class="card-body p-0">
-          <table class="table table-bordered table-striped text-center align-middle m-0">
-            <thead>
-              <tr>
-                <th style="width: 80px;">Clear</th>
-                <th style="width: 200px;">Sign</th>
-                <th>Name</th>
-                <th>Owner Id</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let user of users">
-                <td>
-                  <button class="btn btn-outline-danger btn-sm" (click)="clearSignature(user)" [disabled]="!user.signatureImage" title="Clear Signature">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </td>
-                <td>
-                  <!-- Area to click and sign -->
-                  <div *ngIf="!user.signatureImage" 
-                       class="sign-box-placeholder d-flex align-items-center justify-content-center" 
-                       (click)="openSignaturePopup(user)">
-                    <span class="text-primary"><i class="fas fa-pen"></i> Click to Sign</span>
-                  </div>
-
-                  <!-- Display saved signature, click to re-sign if they want (or they can just press Clear) -->
-                  <div *ngIf="user.signatureImage" class="sign-box-result" (click)="openSignaturePopup(user)">
-                    <img [src]="user.signatureImage" alt="signature" class="signature-thumbnail">
-                  </div>
-                </td>
-                <td class="align-middle text-left">{{ user.name }}</td>
-                <td class="align-middle">{{ user.ownerId }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="card-body p-3">
           
-          <!-- Ngx Smart Modal Popup for Canvas Signature -->
-          <ngx-smart-modal #signatureModal identifier="signatureModal" [customClass]="'nsm-dialog-animation-fade'" [closable]="true">
-            <h4 class="mb-3">Sign For: {{ selectedUser?.name }}</h4>
-            <div class="bg-light p-2 mb-3 border rounded text-center">
-               <app-canvas-signature 
-                [width]="500" 
-                [height]="250" 
-                (signatureSaved)="onSignatureSaved($event)">
-               </app-canvas-signature>
-            </div>
-          </ngx-smart-modal>
+          <!-- Drop in the new reusable component! -->
+          <app-signature-collection-field 
+             [field]="myMockField"
+             [formData]="formData"
+             [fullFormData]="{}"
+             [formErrors]="{}">
+          </app-signature-collection-field>
 
+        </div>
+        
+        <!-- Quick debugging to show that formData is capturing properly -->
+        <div class="card-footer bg-light mt-3" *ngIf="(formData | json) != '{}'">
+          <h5 class="text-success"><i class="fas fa-check-circle"></i> Captured FormData:</h5>
+          <pre class="bg-dark text-light p-3 rounded" style="overflow-x: auto;">{{ formData | json }}</pre>
         </div>
       </div>
     </div>

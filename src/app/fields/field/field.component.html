@@ -28,4 +28,6 @@
 
   <app-hidden-field [defaultValues]="defaultValues" [field]="getField(rowField.fieldID)" [customClass]="customClass" [formData]="formData" [row]="row" [index]="index" [fullFormData]="fullFormData" [formErrors]="formErrors" *ngIf="getField(rowField.fieldID)?.fieldType == 'hidden'"></app-hidden-field>
 
+  <app-signature-collection-field [defaultValues]="defaultValues" [field]="getField(rowField.fieldID)" [customClass]="customClass" [formData]="formData" [row]="row" [index]="index" [fullFormData]="fullFormData" [formErrors]="formErrors" *ngIf="getField(rowField.fieldID)?.fieldType == 'signatureCollection'"></app-signature-collection-field>
+
 </ng-container>
