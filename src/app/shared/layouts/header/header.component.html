@@ -90,6 +90,14 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 </ng-container>
+                <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Legal')">
+                    <a class="dropdown-item" href="/administrative_complaint">
+                        <i class="fas fa-plus float-left"></i>
+                        شكوى ادارية
+
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </ng-container>
                 <ng-container *ngIf="getRole(userRole,'Admin') || getRole (userRole,'Engineering')">
 
 

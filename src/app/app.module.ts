@@ -119,6 +119,7 @@ import { SearchPageComponent } from './search-page/search-page.component';
 import { DeveloperProfileComponent } from './developer-profile/developer-profile.component';
 import { DeveloperDetailsComponent } from './developer-profile/developer-details/developer-details.component';
 import { LegalBlocksComponent } from './legal-blocks/legal-blocks.component';
+import { AdministrativeComplaintComponent } from './administrative-complaint/administrative-complaint.component';
 import { EngineeringBlocksComponent } from './engineering-blocks/engineering-blocks.component';
 import { ApplicationSearchComponent } from './application-search/application-search.component';
 import { UnitsExcelUploadComponent } from './units-excel-upload/units-excel-upload.component';
@@ -243,6 +244,7 @@ const maskConfig: Partial<IConfig> = {
     DeveloperProfileComponent,
     DeveloperDetailsComponent,
     LegalBlocksComponent,
+    AdministrativeComplaintComponent,
     EngineeringBlocksComponent,
     ApplicationSearchComponent,
     UnitsExcelUploadComponent,
