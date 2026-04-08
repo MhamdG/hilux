@@ -1,5 +1,6 @@
 <div class="form-group">
-  <table class="table table-bordered table-striped align-middle d-table" dir="rtl">
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle" dir="rtl">
     <thead>
       <!-- If dataOptions has items, we loop the first to get dynamic keys -->
       <ng-container *ngIf="dataOptions && dataOptions.length > 0; else emptyHeader">
@@ -65,6 +66,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 
   <!-- Hidden Validation Input -->
   <input type="hidden" [name]="getName(field.fieldName.en)" [required]="isRequired()" #ngModel="ngModel"
