@@ -1,20 +1,21 @@
 <div class="form-group">
-  <table class="table table-bordered table-striped text-center align-middle d-table">
+  <table class="table table-bordered table-striped align-middle d-table" dir="rtl">
     <thead>
       <!-- If dataOptions has items, we loop the first to get dynamic keys -->
       <ng-container *ngIf="dataOptions && dataOptions.length > 0; else emptyHeader">
         <tr *ngFor="let dataOption of dataOptions | slice:0:1">
-          <th style="width: 80px;">Clear</th>
-          <th style="width: 200px;">Sign</th>
-          <th *ngFor="let pair of dataOption.rowFields | keyvalue">{{pair.key}}</th>
+          <th *ngFor="let pair of dataOption.rowFields | keyvalue" class="text-left" style="text-align: right;">
+            {{pair.key}}</th>
+          <th class="text-center" style="width: 200px;">توقيع</th>
+          <th class="text-center" style="width: 80px;">مسح</th>
         </tr>
       </ng-container>
       <!-- Fallback Header if dataOptions is empty -->
       <ng-template #emptyHeader>
         <tr>
-          <th style="width: 80px;">Clear</th>
-          <th style="width: 200px;">Sign</th>
-          <th>Details</th>
+          <th class="text-right" style="text-align: left;">التفاصيل</th>
+          <th class="text-center" style="width: 200px;">توقيع</th>
+          <th class="text-center" style="width: 80px;">مسح</th>
         </tr>
       </ng-template>
     </thead>
@@ -22,30 +23,14 @@
       <!-- Message if no data returned -->
       <tr *ngIf="!dataOptions || dataOptions.length === 0">
         <td colspan="100%" class="text-center p-3 text-muted">
-          No signees available or data is still loading...
+          لا يوجد موقعين متاحين أو جاري تحميل البيانات...
         </td>
       </tr>
 
       <tr *ngFor="let field_detail of dataOptions; let i = index">
-        <td>
-          <button type="button" class="btn btn-outline-danger btn-sm" (click)="clearSignature(field_detail)" [disabled]="!getSignature(field_detail.entityID)" title="Clear Signature">
-            <i class="fas fa-times"></i>
-          </button>
-        </td>
-        <td>
-          <!-- Area to click and sign -->
-          <div *ngIf="!getSignature(field_detail.entityID)" 
-               class="sign-box-placeholder d-flex align-items-center justify-content-center" 
-               (click)="openSignaturePopup(field_detail)">
-            <span class="text-primary"><i class="fas fa-pen"></i> Click to Sign</span>
-          </div>
-
-          <!-- Display saved signature, click to re-sign if they want (or they can just press Clear) -->
-          <div *ngIf="getSignature(field_detail.entityID)" class="sign-box-result" (click)="openSignaturePopup(field_detail)">
-            <img [src]="getSignature(field_detail.entityID)" alt="signature" class="signature-thumbnail">
-          </div>
-        </td>
-        <td *ngFor="let item of field_detail.rowFields | keyvalue" class="align-middle text-left">
+        <!-- Details Column -->
+        <td *ngFor="let item of field_detail.rowFields | keyvalue" class="align-middle text-left"
+          style="text-align: left;">
           <span *ngIf="item.value && item.value.toString().startsWith('http');">
             <a href="{{item.value}}" target="_blank">
               <i class="fa fa-file-pdf"></i>
@@ -55,19 +40,43 @@
             {{item.value}}
           </span>
         </td>
+
+        <!-- Sign Column -->
+        <td class="text-center">
+          <div *ngIf="!getSignature(field_detail.entityID)"
+            class="sign-box-placeholder d-flex align-items-center justify-content-center m-auto"
+            (click)="openSignaturePopup(field_detail)">
+            <span class="text-primary"><i class="fas fa-pen"></i> اضغط للتوقيع</span>
+          </div>
+
+          <div *ngIf="getSignature(field_detail.entityID)" class="sign-box-result m-auto"
+            (click)="openSignaturePopup(field_detail)">
+            <img [src]="getSignature(field_detail.entityID)" alt="signature" class="signature-thumbnail">
+          </div>
+        </td>
+
+        <!-- Clear Column -->
+        <td class="text-center">
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="clearSignature(field_detail)"
+            [disabled]="!getSignature(field_detail.entityID)" title="مسح التوقيع">
+            <i class="fas fa-times"></i>
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
 
+  <!-- Hidden Validation Input -->
+  <input type="hidden" [name]="getName(field.fieldName.en)" [required]="isRequired()" #ngModel="ngModel"
+    [ngModel]="allSignaturesCollected">
+
   <!-- Ngx Smart Modal Popup for Canvas Signature -->
-  <ngx-smart-modal #signatureCollectionModal [identifier]="modalId" [customClass]="'nsm-dialog-animation-fade'" [closable]="true">
-    <h4 class="mb-3">Sign</h4>
+  <ngx-smart-modal #signatureCollectionModal [identifier]="modalId" [customClass]="'nsm-dialog-animation-fade'"
+    [closable]="true">
+    <h4 class="mb-3 text-right">توقيع</h4>
     <div class="bg-light p-2 mb-3 border rounded text-center">
-       <app-canvas-signature 
-        [width]="500" 
-        [height]="250" 
-        (signatureSaved)="onSignatureSaved($event)">
-       </app-canvas-signature>
+      <app-canvas-signature [width]="500" [height]="250" (signatureSaved)="onSignatureSaved($event)">
+      </app-canvas-signature>
     </div>
   </ngx-smart-modal>
 

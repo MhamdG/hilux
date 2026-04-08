@@ -76,7 +76,6 @@ import { PivotReportsComponent } from './reports/pivot-reports/pivot-reports.com
 import { ProjectsReportComponent } from './reports/projects-report/projects-report.component';
 import { UnitsReportComponent } from './reports/units-report/units-report.component';
 import { DeedSearchComponent } from './deed-search/deed-search.component';
-import { SignatureTestComponent } from './signature-test/signature-test.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthenticationGuard] },
@@ -215,8 +214,7 @@ const routes: Routes = [
   { path: 'pivot-reports', component: PivotReportsComponent, canActivate: [AuthenticationGuard] },
   { path: 'projects-report', component: ProjectsReportComponent, canActivate: [AuthenticationGuard] },
   { path: 'units-report', component: UnitsReportComponent, canActivate: [AuthenticationGuard] },
-  { path: 'deed-search', component: DeedSearchComponent, canActivate: [AuthenticationGuard] },
-  { path: 'signature-test', component: SignatureTestComponent },
+  { path: 'deed-search', component: DeedSearchComponent, canActivate: [AuthenticationGuard] }
 ];
 
 @NgModule({

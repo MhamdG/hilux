@@ -77,9 +77,29 @@ export class SignatureCollectionFieldComponent implements OnInit {
   hasErrors() {
     let errors = false;
     if (this.field.required == 'true') {
-      errors = errors = this.formData[this.field.fieldID] == undefined;
+      errors = this.allSignaturesCollected === null;
     }
     return errors;
+  }
+
+  get allSignaturesCollected(): string | null {
+    if (!this.dataOptions || this.dataOptions.length === 0) {
+      // If data is loading or no signees, we check if it is explicitly required?
+      // Usually, if no signees are required, it shouldn't block, but let's be safe.
+      return "EMPTY"; 
+    }
+    
+    const requiredSignaturesCount = this.dataOptions.length;
+    const signaturesObj = this.formData[this.field.fieldID] || {};
+    
+    // Only count signatures that have an actual base64 string
+    const collectedSignaturesCount = Object.keys(signaturesObj).filter(key => !!signaturesObj[key]).length;
+    
+    if (collectedSignaturesCount >= requiredSignaturesCount) {
+      return "ALL_SIGNED";
+    }
+    
+    return null;
   }
 
   isRequired() {
