@@ -215,7 +215,6 @@
                       <tr class="bg-grey">
                         <th>#</th>
                         <th i18n="@@administrativeComplaintResultsTableBlockageType">Blockage Type</th>
-                        <th i18n="@@administrativeComplaintResultsTableBlockEntityNameAr">Block Entity Name Ar</th>
                         <th i18n="@@administrativeComplaintResultsTableRemarks">Remarks</th>
                         <th i18n="@@administrativeComplaintResultsTableAttachments">Attachments</th>
                         <th i18n="@@administrativeComplaintResultsTableCreatedAtModifiedAt">Created At / Modified At</th>
@@ -230,7 +229,6 @@
                       <tr *ngFor="let current_block_detail of getCurrentOwnedBlocks(response); let i = index">
                         <td>{{ i + 1}}</td>
                         <td>{{ current_block_detail?.typeAr }}</td>
-                        <td>{{ current_block_detail?.blockEntityNameAr }}</td>
                         <td>{{ current_block_detail?.remarks }}</td>
                         <td>
                           <ng-container *ngFor="let attachment of getAttachments(current_block_detail?.attachments)">
@@ -280,7 +278,6 @@
                       <tr class="bg-grey">
                         <th>#</th>
                         <th i18n="@@administrativeComplaintResultsTableBlockageType" >Blockage Type</th>
-                        <th i18n="@@administrativeComplaintResultsTableBlockEntityNameAr" >Block Entity Name Ar</th>
                         <th i18n="@@administrativeComplaintResultsTableRemarks" >Remarks</th>
                         <th i18n="@@administrativeComplaintResultsTableAttachments" >Attachments</th>
                         <th i18n="@@administrativeComplaintResultsTableCreatedAtModifiedAt" >Created At / Modified At</th>
@@ -295,7 +292,6 @@
                       <tr *ngFor="let previous_block_detail of getPreviouslyOwnedBlocks(response); let i = index">
                         <td>{{ i + 1}}</td>
                         <td>{{ previous_block_detail?.typeAr }}</td>
-                        <td>{{ previous_block_detail?.blockEntityNameAr }}</td>
                         <td>{{ previous_block_detail?.remarks  }}</td>
                         <td>
                           <ng-container *ngFor="let attachment of getAttachments(previous_block_detail?.attachments)">
@@ -380,36 +376,6 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
-            <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@administrativeComplaintPopupBlockEntityName">Block Entity Name
-                <span>*</span>
-              </label>
-              <div class="col-sm-9">
-                <ng-select
-                  required="true"
-                  [items]="blockageEntitiesOptions | async"
-                  name="blockEntityId"
-                  [hideSelected]="true"
-                  [(ngModel)]="addBlockData.blockEntityId"
-                  [typeahead]="blockageEntitySearchInput$"
-                  bindLabel="value.ar"
-                  [minTermLength]="1"
-                  bindValue="key"
-                  [loading]="blockageEntityOptionsLoading"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  typeToSearchText="Please enter 1 or more characters"
-                  #blockEntityId="ngModel">
-                </ng-select>
-
-                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)" class="alert alert-danger">
-                  <div *ngIf="blockEntityId.errors?.required">
-                    Block Entity Name can not be blank
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div class="row">
@@ -497,37 +463,6 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
-            <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@administrativeComplaintPopupBlockEntityName">Block Entity Name
-                <span>*</span>
-              </label>
-              <div class="col-sm-9">
-                <ng-select
-                  required="true"
-                  [items]="blockageEntitiesOptions | async"
-                  name="blockEntityId"
-                  [hideSelected]="true"
-                  [(ngModel)]="updateBlockData.blockEntityId"
-                  [typeahead]="blockageEntitySearchInput$"
-                  bindLabel="value.ar"
-                  [minTermLength]="1"
-                  bindValue="key"
-                  [loading]="blockageEntityOptionsLoading"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  typeToSearchText="Please enter 1 or more characters"
-                  disabled="false"
-                  #blockEntityId="ngModel">
-                </ng-select>
-
-                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)" class="alert alert-danger">
-                  <div *ngIf="blockEntityId.errors?.required">
-                    Block Entity Name can not be blank
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div class="row">
@@ -626,37 +561,6 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
-            <div class="form-group row">
-              <label class="col-sm-3 col-form-label" i18n="@@administrativeComplaintPopupBlockEntityName">Block Entity Name
-                <span>*</span>
-              </label>
-              <div class="col-sm-9">
-                <ng-select
-                  required="true"
-                  [items]="blockageEntitiesOptions | async"
-                  name="blockEntityId"
-                  [hideSelected]="true"
-                  [(ngModel)]="removeBlockData.blockEntityId"
-                  [typeahead]="blockageEntitySearchInput$"
-                  bindLabel="value.ar"
-                  [minTermLength]="1"
-                  bindValue="key"
-                  [loading]="blockageEntityOptionsLoading"
-                  notFoundText="لا يوجد نتائج للبحث"
-                  typeToSearchText="Please enter 1 or more characters"
-                  disabled="true"
-                  #blockEntityId="ngModel">
-                </ng-select>
-
-                <div *ngIf="blockEntityId.invalid && (blockEntityId.dirty || blockEntityId.touched)" class="alert alert-danger">
-                  <div *ngIf="blockEntityId.errors?.required">
-                    Block Entity Name can not be blank
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div class="row">

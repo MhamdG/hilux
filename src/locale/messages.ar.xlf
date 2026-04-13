@@ -4955,7 +4955,7 @@
       </trans-unit>
       <trans-unit id="administrativeComplaintResultsTableRemarks" datatype="html">
         <source>Remarks</source>
-        <target>ملاحظات الشكوى</target>
+        <target>رقم الشكوى</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
           <context context-type="linenumber">219</context>
@@ -5061,7 +5061,7 @@
         <source>Remarks
                 <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
               </source>
-        <target>ملاحظات الشكوى
+        <target>رقم الشكوى
                 <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
               </target>
         <context-group purpose="location">
@@ -5141,7 +5141,7 @@
       </trans-unit>
       <trans-unit id="administrativeComplaintPopupRemarksReadOnly" datatype="html">
         <source>Remarks</source>
-        <target>ملاحظات الشكوى</target>
+        <target>رقم الشكوى</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
           <context context-type="linenumber">678</context>

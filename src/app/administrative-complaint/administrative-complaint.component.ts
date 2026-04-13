@@ -534,10 +534,10 @@ export class AdministrativeComplaintComponent implements OnInit {
   }
 
   loadBlockageTypesOptions() {
-    this.lookupsService.loadBlockageTypesOptions()
-      .subscribe((data) => {
+    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/listOfBlockagesTypesByAuth`)
+      .subscribe((data: any) => {
         this.blockageTypesOptions = data;
-      })
+      });
   }
 
   loadBlockageEntities() {
