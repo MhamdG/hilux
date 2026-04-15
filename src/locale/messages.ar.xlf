@@ -4817,6 +4817,356 @@
           <context context-type="linenumber">527</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="administrativeComplaintsearchDeveloperName" datatype="html">
+        <source>Developer Name
+                        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                      </source>
+        <target>المطور العقاري
+                        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                      </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintsearchProjectName" datatype="html">
+        <source>Project Name
+                        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                      </source>
+        <target>المشروع
+                        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                      </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintsearchUnitId" datatype="html">
+        <source>Unit ID
+                        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                      </source>
+        <target>رقم الوحدة العقارية
+                        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                      </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintsearchLandId" datatype="html">
+        <source>Land ID
+                      </source>
+        <target>رقم العقار
+                      </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintsearchOldLandID" datatype="html">
+        <source>Old Land ID
+                      </source>
+        <target>رقم الأرض القديم
+                      </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintsearchSearchButton" datatype="html">
+        <source>Search</source>
+        <target>بحث</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsLegalBlockages" datatype="html">
+        <source>Administrative Complaints:</source>
+        <target>الشكاوى الإدارية:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">181</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsAddBlock" datatype="html">
+        <source>Add Block</source>
+        <target>إضافة شكوى إدارية</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">184</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsLandId" datatype="html">
+        <source>Land ID: </source>
+        <target>رقم الأرض: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">189</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsDeveloperName" datatype="html">
+        <source>Developer Name: </source>
+        <target>المطور العقاري: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">192</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsUnitNumber" datatype="html">
+        <source>Unit Number: </source>
+        <target>رقم الوحدة العقارية: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">197</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsProjectName" datatype="html">
+        <source>Project Name: </source>
+        <target>المشروع: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">200</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsCurrentLegalBlockages" datatype="html">
+        <source>Current Administrative Complaints</source>
+        <target>الشكاوى الإدارية الحالية</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">210</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableBlockageType" datatype="html">
+        <source>Blockage Type</source>
+        <target>نوع الشكوى</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">217</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableBlockEntityNameAr" datatype="html">
+        <source>Block Entity Name Ar</source>
+        <target>جهة الشكوى</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">218</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableRemarks" datatype="html">
+        <source>Remarks</source>
+        <target>رقم الشكوى</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">219</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableAttachments" datatype="html">
+        <source>Attachments</source>
+        <target>المرفقات</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">220</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableCreatedAtModifiedAt" datatype="html">
+        <source>Created At / Modified At</source>
+        <target>تاريخ الإضافة / التعديل</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">221</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableCreatedByModifiedBy" datatype="html">
+        <source>Created By / Modified By</source>
+        <target>الموظف</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">222</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableUnblockRemarks" datatype="html">
+        <source>Unblock Remarks</source>
+        <target>ملاحظات إغلاق الشكوى</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">223</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableEndedAt" datatype="html">
+        <source>Ended At</source>
+        <target>تاريخ الإغلاق</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">224</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableEndedBy" datatype="html">
+        <source>Ended By</source>
+        <target>الموظف</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">225</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsTableActions" datatype="html">
+        <source>Actions</source>
+        <target>اجراءات</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">226</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintResultsPreviousLegalBlockages" datatype="html">
+        <source>Previous Administrative Complaints</source>
+        <target>الشكاوى الإدارية السابقة</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">275</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupAddNewBlockHeader" datatype="html">
+        <source>Add New Block</source>
+        <target>إضافة شكوى إدارية</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">349</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupBlockageType" datatype="html">
+        <source>Blockage Type
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </source>
+        <target>نوع الشكوى
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">358</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupBlockEntityName" datatype="html">
+        <source>Block Entity Name
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </source>
+        <target>جهة الشكوى
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">385</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupRemarks" datatype="html">
+        <source>Remarks
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </source>
+        <target>رقم الشكوى
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">418</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupAttachments" datatype="html">
+        <source>Attachments
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </source>
+        <target>المرفقات
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">441</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupCancel" datatype="html">
+        <source>Close</source>
+        <target>إلغاء</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">454</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupSubmit" datatype="html">
+        <source>Submit</source>
+        <target>إرسال</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">455</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupHeaderUpdateBlock" datatype="html">
+        <source>Update Block</source>
+        <target>تعديل شكوى إدارية</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">465</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupCreatedAt" datatype="html">
+        <source>Created At</source>
+        <target>تاريخ الإضافة</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">536</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintUpdatePopupAttachments" datatype="html">
+        <source>Attachments
+              </source>
+        <target>المرفقات
+              </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">572</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupUpdate" datatype="html">
+        <source>Update</source>
+        <target>حفظ</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">585</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupHeaderRemoveBlock" datatype="html">
+        <source>Remove Block</source>
+        <target>إغلاق شكوى إدارية</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">594</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupRemarksReadOnly" datatype="html">
+        <source>Remarks</source>
+        <target>رقم الشكوى</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">678</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupUnblockRemarks" datatype="html">
+        <source>Unblock Remarks
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </source>
+        <target>ملاحظات إغلاق الشكوى
+                <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+              </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">704</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="administrativeComplaintPopupRemove" datatype="html">
+        <source>Remove</source>
+        <target>حفظ</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/administrative-complaint/administrative-complaint.component.html</context>
+          <context context-type="linenumber">733</context>
+        </context-group>
+      </trans-unit>
        <trans-unit id="engineeringBlocksResultsEngineeringBans" datatype="html">
         <source>Engineering Bans:</source>
         <target>الحجوزات الهندسية:</target>
