@@ -109,8 +109,8 @@
                         <th> أسم الخدمة</th>
                         <th>تفاصيل المعاملة</th>
                         <th> تاريخ أنشاء المعاملة</th>
-                        <th>حالة الإيصال</th>
                         <th>معتمد المعاملة</th>
+                        <th>حالة الإيصال</th>
 
                       </tr>
                     </thead>
@@ -133,6 +133,14 @@
 
                         <td>{{ response.firstStepCreatedAt | date:'yyyy-MM-dd' }}</td>
                         <td>
+                          <span *ngIf="item.approvedBy">
+                            {{ item.approvedBy}}
+                          </span>
+                          <span *ngIf="!item.approvedBy">
+                            لا توجد بيانات
+                          </span>
+                        </td>
+                        <td>
                           <span *ngIf="response.invoiceStatus =='all_paid'">
                             مدفوع كلي
                           </span>
@@ -144,14 +152,7 @@
                           </span>
 
                         </td>
-                        <td>
-                          <span *ngIf="item.approvedBy">
-                            {{ item.approvedBy}}
-                          </span>
-                          <span *ngIf="!item.approvedBy">
-                            لا توجد بيانات
-                          </span>
-                        </td>
+
                       </tr>
                     </tbody>
                   </table>
