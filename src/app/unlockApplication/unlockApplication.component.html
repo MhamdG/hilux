@@ -110,6 +110,7 @@
                         <th>تفاصيل المعاملة</th>
                         <th> تاريخ أنشاء المعاملة</th>
                         <th>حالة الإيصال</th>
+                        <th>معتمد المعاملة</th>
 
                       </tr>
                     </thead>
@@ -143,7 +144,14 @@
                           </span>
 
                         </td>
-
+                        <td>
+                          <span *ngIf="item.approvedBy">
+                            {{ item.approvedBy}}
+                          </span>
+                          <span *ngIf="!item.approvedBy">
+                            لا توجد بيانات
+                          </span>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
