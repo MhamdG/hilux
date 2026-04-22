@@ -133,10 +133,10 @@
 
                         <td>{{ response.firstStepCreatedAt | date:'yyyy-MM-dd' }}</td>
                         <td>
-                          <span *ngIf="item.approvedBy">
-                            {{ item.approvedBy}}
+                          <span *ngIf="response.approvedBy">
+                            {{ response.approvedBy}}
                           </span>
-                          <span *ngIf="!item.approvedBy">
+                          <span *ngIf="!response.approvedBy">
                             لا توجد بيانات
                           </span>
                         </td>
