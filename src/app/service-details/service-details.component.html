@@ -1,0 +1,102 @@
+<div class="content-wrapper">
+  <!-- Header -->
+  <div class="content-header animate-fade-in" *ngIf="!isLoading">
+    <div class="container-fluid">
+      <div class="page-header">
+        <button (click)="goBack()" class="back-btn mb-3">
+          <svg class="icon-small" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          {{ isRTL ? 'العودة للخدمات' : 'Back to Services' }}
+        </button>
+        <div class="mb-1">
+          <span class="badge badge-dark-grey text-xs">
+            {{ isRTL ? 'خدمة رقم' : 'Service ID' }} {{ serviceId }}
+          </span>
+        </div>
+        <h1>{{ title || (isRTL ? 'تفاصيل الخدمة' : 'Service Details') }}</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading header -->
+  <div *ngIf="isLoading" class="content-header">
+    <div class="container-fluid">
+      <div class="page-header">
+        <div class="skeleton-line pulse w-64 bg-dark-skeleton mb-2"></div>
+        <div class="skeleton-line pulse w-96 bg-dark-skeleton"></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="space-y-6">
+        <!-- Description -->
+        <div *ngIf="!isLoading && description" class="card animate-fade-in-up">
+          <p class="description-text">{{ description }}</p>
+        </div>
+
+        <!-- Error state -->
+        <div *ngIf="error && !isLoading" class="card error-card text-center py-5">
+          <svg class="error-icon mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 4v2"></path>
+          </svg>
+          <p class="error-text mb-4">{{ error }}</p>
+          <button (click)="goBack()" class="btn-primary">
+            {{ isRTL ? 'العودة للخدمات' : 'Back to Services' }}
+          </button>
+        </div>
+
+        <!-- Tabs + Content -->
+        <div *ngIf="!isLoading && !error && data" class="row animate-fade-in-up">
+          <!-- Tab nav -->
+          <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card p-2">
+              <div class="tab-nav">
+                <button *ngFor="let tab of tabs; let i = index" (click)="activeTab = i"
+                  [class.tab-btn-active]="activeTab === i" [class.tab-btn-inactive]="activeTab !== i" class="tab-btn">
+                  <span class="tab-icon-wrapper" [innerHTML]="tab.icon"></span>
+                  <span class="tab-title-text">{{ tab.title }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab content -->
+          <div class="col-md-8 col-lg-9">
+            <div class="card content-card min-h-[260px]">
+              <h3 class="tab-content-title">
+                <span class="tab-content-icon" [innerHTML]="currentTab.icon"></span>
+                {{ currentTab.title }}
+              </h3>
+              <hr class="divider mb-4" />
+
+              <!-- Content tab -->
+              <div *ngIf="currentTab.key !== 'apply'">
+                <div *ngIf="currentTab.rows.length > 0" class="space-y-4">
+                  <div *ngFor="let row of currentTab.rows" class="row-container">
+                    <div *ngIf="row.title && row.options?.titleType === 'html'" class="prose-content"
+                      [innerHTML]="row.title">
+                    </div>
+                    <h4 *ngIf="row.title && row.options?.titleType !== 'html'" class="row-title">
+                      {{ row.title }}
+                    </h4>
+                    <ul *ngIf="row.data && row.data.length > 0" class="data-list" [class.rtl-list]="isRTL"
+                      [class.ltr-list]="!isRTL">
+                      <li *ngFor="let item of row.data" class="list-item">{{ item }}</li>
+                    </ul>
+                  </div>
+                </div>
+                <p *ngIf="currentTab.rows.length === 0" class="empty-tab-text">
+                  {{ isRTL ? 'لا توجد بيانات متاحة لهذا القسم حالياً.' : 'No data available for this section yet.' }}
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

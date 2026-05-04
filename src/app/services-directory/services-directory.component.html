@@ -1,0 +1,120 @@
+<div class="content-wrapper">
+  <!-- Header -->
+  <div class="content-header animate-fade-in">
+    <div class="container-fluid">
+      <div class="page-header">
+        <h1>{{ isRTL ? 'دليل الخدمات' : 'Services Directory' }}</h1>
+        <p>{{ isRTL ? 'تصفّح الخدمات العقارية بكل سهولة، واختر الخدمة التي تناسبك.' : 'Browse all real estate services and find what you need easily.' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="space-y-6">
+        <!-- Stats pill -->
+        <div class="animate-fade-in-up">
+          <span class="stats-pill">
+            <svg class="icon-small" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"></path>
+              <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 011 v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6z" clip-rule="evenodd"></path>
+            </svg>
+            {{ isRTL ? 'إجمالي الخدمات' : 'Total Services' }}: {{ totalServices }}
+          </span>
+        </div>
+
+        <!-- Search + category filter -->
+        <div class="filter-bar animate-fade-in-up">
+          <div class="search-container mb-4">
+            <svg class="search-icon" [class.right-3]="isRTL" [class.left-3]="!isRTL" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              [placeholder]="isRTL ? 'ابحث باسم الخدمة...' : 'Search by service name...'"
+              class="input-field bg-gray-50"
+              [style.padding-right]="isRTL ? '2.5rem' : '1rem'"
+              [style.padding-left]="!isRTL ? '2.5rem' : '1rem'"
+            />
+          </div>
+
+          <div class="category-pills">
+            <button
+              (click)="setActiveCategory('all')"
+              [class.filter-pill-active]="activeCategory === 'all'"
+              [class.filter-pill-inactive]="activeCategory !== 'all'"
+              class="filter-pill"
+            >
+              {{ isRTL ? 'جميع الفئات' : 'All Categories' }}
+              <span class="pill-count">({{ totalServices }})</span>
+            </button>
+            <button
+              *ngFor="let cat of categories"
+              (click)="setActiveCategory(cat.serviceCategorySlug)"
+              [class.filter-pill-active]="activeCategory === cat.serviceCategorySlug"
+              [class.filter-pill-inactive]="activeCategory !== cat.serviceCategorySlug"
+              class="filter-pill"
+            >
+              {{ getText(cat.serviceCategoryName) }}
+              <span class="pill-count">({{ cat.services?.length || 0 }})</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Error state -->
+        <div *ngIf="error" class="card error-card text-center py-5">
+          <p class="text-danger font-weight-bold">{{ error }}</p>
+          <button (click)="loadCategories()" class="btn-primary mt-3">
+            {{ isRTL ? 'إعادة المحاولة' : 'Retry' }}
+          </button>
+        </div>
+
+        <!-- Loading state -->
+        <div *ngIf="isLoading" class="services-grid">
+          <div *ngFor="let _ of [0,1,2,3,4,5,6,7]" class="card skeleton-card">
+            <div class="skeleton-icon pulse"></div>
+            <div class="skeleton-line pulse w-full"></div>
+            <div class="skeleton-line pulse w-3/4"></div>
+          </div>
+        </div>
+
+        <!-- Services grid -->
+        <div *ngIf="!isLoading && !error">
+          <div *ngIf="filteredItems.length > 0" class="services-grid">
+            <div
+              *ngFor="let item of filteredItems"
+              (click)="navigateToService(item.service)"
+              class="card service-card"
+            >
+              <div class="icon-wrapper">
+                <img *ngIf="item.service.icon" [src]="item.service.icon" alt="" class="service-icon-img" />
+                <svg *ngIf="!item.service.icon" class="service-icon-svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                </svg>
+              </div>
+              <h3 class="service-title">
+                {{ getServiceTitle(item.service) }}
+              </h3>
+              <div class="service-footer">
+                <span>{{ isRTL ? 'اضغط للتفاصيل' : 'View details' }}</span>
+                <svg class="arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="filteredItems.length === 0" class="card empty-card text-center py-5">
+            <svg class="empty-icon mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <p class="empty-text">
+              {{ isRTL ? 'لا توجد خدمات مطابقة لنتيجة البحث.' : 'No services match your search.' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
