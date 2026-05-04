@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 interface MultiLang {
   ar?: string;
@@ -35,7 +36,7 @@ export class ServicesDirectoryComponent implements OnInit {
   activeCategory: string = 'all';
   totalServices: number = 0;
 
-  readonly API_URL = 'http://wfe.ajre.gov.test/AjmanLandProperty/index.php/serviceCategories/publicapi/servicesCategories';
+  readonly API_URL = `${environment.apiHost}/AjmanLandProperty/index.php/serviceCategories/publicapi/servicesCategories`;
 
   constructor(private router: Router) {
     this.isRTL = this.language === 'ar';

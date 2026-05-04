@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 interface TabRow {
   title?: string;
@@ -32,7 +33,7 @@ export class ServiceDetailsComponent implements OnInit {
   activeTab: number = 0;
   tabs: TabConfig[] = [];
 
-  readonly API_BASE_URL = 'http://wfe.ajre.gov.test/AjmanLandProperty/index.php/serviceCategories/publicapi/services';
+  readonly API_BASE_URL = `${environment.apiHost}/AjmanLandProperty/index.php/serviceCategories/publicapi/services`;
 
   constructor(
     private route: ActivatedRoute,
