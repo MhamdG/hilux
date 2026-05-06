@@ -1,0 +1,106 @@
+<div class="content-wrapper" [dir]="isRTL ? 'rtl' : 'ltr'">
+  <!-- Content Header -->
+  <div class="content-header" *ngIf="!isLoading">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <div class="service-id-badge">
+            {{ isRTL ? 'خدمة رقم' : 'Service ID' }} {{ serviceId }}
+          </div>
+          <h1 class="service-title">{{ title || (isRTL ? 'تفاصيل الخدمة' : 'Service Details') }}</h1>
+          <button class="btn btn-back" (click)="goBack()">
+            <i class="fas" [ngClass]="isRTL ? 'fa-arrow-right' : 'fa-arrow-left'"></i>
+            <span>{{ isRTL ? 'العودة للخدمات' : 'Back to Services' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="state-container">
+        <div class="spinner-border spinner-custom" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error && !isLoading" class="alert alert-danger text-center shadow-sm">
+        <i class="fas fa-exclamation-circle mr-2 ml-2"></i>
+        {{ error }}
+        <div class="mt-3">
+          <button (click)="goBack()" class="btn btn-outline-danger">
+            {{ isRTL ? 'العودة للخدمات' : 'Back to Services' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Description Card -->
+      <div *ngIf="!isLoading && description" class="card description-card">
+        <div class="card-body">
+          <p class="description-text text-center">{{ description }}</p>
+        </div>
+      </div>
+
+      <!-- Tabs and Content -->
+      <div *ngIf="!isLoading && !error && data" class="row">
+        <!-- Tabs Nav -->
+        <div class="col-md-4 col-lg-3">
+          <div class="nav flex-column nav-pills-custom" role="tablist">
+            <a *ngFor="let tab of tabs; let i = index" 
+               class="nav-link" 
+               [class.active]="activeTab === i" 
+               (click)="activeTab = i; $event.preventDefault();"
+               role="tab">
+              <span class="icon-container" [innerHTML]="tab.icon"></span>
+              <span class="tab-title">{{ tab.title }}</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="col-md-8 col-lg-9">
+          <div class="card content-card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <span class="text-primary" [innerHTML]="currentTab.icon" style="width: 24px; display: inline-block;"></span>
+                {{ currentTab.title }}
+              </h3>
+            </div>
+            <div class="card-body">
+              <div *ngIf="currentTab.key !== 'apply'">
+                <div *ngIf="currentTab.rows.length > 0">
+                  <div *ngFor="let row of currentTab.rows" class="data-row">
+                    <div *ngIf="row.title && row.options?.titleType === 'html'" [innerHTML]="row.title" class="mb-3"></div>
+                    <h5 *ngIf="row.title && row.options?.titleType !== 'html'" class="data-row-title">
+                      <i class="fas fa-check-circle"></i>
+                      {{ row.title }}
+                    </h5>
+                    <ul *ngIf="row.data && row.data.length > 0" class="data-list">
+                      <li *ngFor="let item of row.data" class="data-list-item">
+                        <span class="item-dot"></span>
+                        {{ item }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <!-- Empty State -->
+                <div *ngIf="currentTab.rows.length === 0" class="state-container">
+                  <i class="fas fa-folder-open empty-state-icon"></i>
+                  <p class="empty-state-text">
+                    {{ isRTL ? 'لا توجد بيانات متاحة لهذا القسم حالياً.' : 'No data available for this section yet.' }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

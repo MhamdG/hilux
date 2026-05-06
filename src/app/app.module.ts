@@ -138,6 +138,8 @@ import { ChartsModule } from 'ng2-charts';
 import { ProjectsReportComponent } from './reports/projects-report/projects-report.component';
 import { UnitsReportComponent } from './reports/units-report/units-report.component';
 import { DeedSearchComponent } from './deed-search/deed-search.component';
+import { ServicesDirectoryComponent } from './services-directory/services-directory.component';
+import { ServiceDetailsComponent } from './service-details/service-details.component';
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -264,7 +266,9 @@ const maskConfig: Partial<IConfig> = {
     PivotReportsComponent,
     ProjectsReportComponent,
     UnitsReportComponent,
-    DeedSearchComponent
+    DeedSearchComponent,
+    ServicesDirectoryComponent,
+    ServiceDetailsComponent
   ],
   imports: [
     FormsModule,
