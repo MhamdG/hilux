@@ -35,6 +35,7 @@ import { DisplayPdfGalleryComponent } from './tags/display-pdf-gallery/display-p
 import { DisplayTableComponent } from './tags/display-table/display-table.component';
 import { DisplayFieldDataComponent } from './tags/display-field-data/display-field-data.component';
 import { DisplayFieldGroupComponent } from './tags/display-field-group/display-field-group.component';
+import { DisplayPdfIframeComponent } from './tags/display-pdf-iframe/display-pdf-iframe.component';
 import { CustomPageComponent } from './custom-page/custom-page.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
@@ -171,6 +172,7 @@ const maskConfig: Partial<IConfig> = {
     DisplayImageGroupComponent,
     DisplayPdfComponent,
     DisplayPdfGalleryComponent,
+    DisplayPdfIframeComponent,
     DisplayTableComponent,
     DisplayFieldDataComponent,
     DisplayFieldGroupComponent,

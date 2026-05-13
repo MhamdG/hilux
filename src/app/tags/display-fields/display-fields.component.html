@@ -5,6 +5,8 @@
 
 <app-display-pdf [data]="data.value" *ngIf="data.key == 'pdf'"></app-display-pdf>
 
+<app-display-pdf-iframe [data]="data.value" *ngIf="data.key == 'pdf-iframe'"></app-display-pdf-iframe>
+
 <app-display-pdf-gallery [data]="data.value" *ngIf="data.key == 'pdf-gallery'"></app-display-pdf-gallery>
 
 <app-display-table [data]="data.value" *ngIf="data.key == 'table'"></app-display-table>
