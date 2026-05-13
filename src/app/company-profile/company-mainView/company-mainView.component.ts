@@ -65,6 +65,11 @@ export class CompanyMainViewComponent implements OnInit {
   }
 
   saveData(formData: any) {
+    if (formData.owners) {
+      formData.owners = formData.owners.filter((owner: any) => {
+        return Object.keys(owner).some(k => owner[k] !== null && owner[k] !== undefined && owner[k] !== '');
+      });
+    }
     let fd = new FormData();
     fd.append('company', JSON.stringify(formData));
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/companies/create`, fd)

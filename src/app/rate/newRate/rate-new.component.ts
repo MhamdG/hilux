@@ -109,14 +109,24 @@ export class newRateComponent implements OnInit {
     );
   }
 
+  isRoomCountRequired() {
+    return [1, 4, 27, '1', '4', '27'].includes(this.searchData.searchApartmentId);
+  }
+
   saveData(formData: any) {
     if (formData.projectNameSearch && formData.searchApartmentId && formData.rating && formData.servicesFees >= 0) {
+      if (this.isRoomCountRequired() && (formData.roomCount === null || formData.roomCount === undefined || formData.roomCount === '')) {
+        return;
+      }
       let fd = new FormData();
-      let obj = {
+      let obj: any = {
         projectId: formData.projectNameSearch,
         pricePerMeter: formData.rating,
         unitTypeId: formData.searchApartmentId,
         ServiceFeesPerMeter: formData.servicesFees
+      }
+      if (this.isRoomCountRequired()) {
+        obj.roomCount = formData.roomCount;
       }
       fd.append('data', JSON.stringify(obj));
       this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/Tathmeen/updateUnitsEvaluation`, fd)
@@ -127,6 +137,7 @@ export class newRateComponent implements OnInit {
             this.searchData.searchApartmentId = null;
             this.searchData.rating = null;
             this.searchData.servicesFees = null;
+            this.searchData.roomCount = null;
           } else {
             this.formErrors = data.data;
             this.toastr.error(JSON.stringify(data.message), 'Error')
