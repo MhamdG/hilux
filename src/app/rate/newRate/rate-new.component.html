@@ -107,13 +107,13 @@
                     <div class="form-group row" *ngIf="isRoomCountRequired()">
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <span class="col-sm-3 col-form-label"> <label i18n="@@roomCount">عدد الغرف
+                          <span class="col-sm-3 col-form-label"> <label>عدد الغرف
                             </label> <span> * </span></span>
                           <div class="col-sm-9">
                             <input type="number" name="roomCount" required="true" class="form-control"
                               [(ngModel)]="searchData.roomCount" #roomCount="ngModel">
                             <div *ngIf="roomCount.errors?.required">
-                              <label style="color: red;" i18n="@@roomCountRequired">عدد الغرف مطلوب</label>
+                              <label style="color: red;">عدد الغرف مطلوب</label>
                             </div>
                           </div>
                         </div>
