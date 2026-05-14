@@ -81,7 +81,7 @@ export class LegalBlocksComponent implements OnInit {
   }
 
   searchData(formData: any) {
-    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/getByPropertyId/${this.getPropertyId(formData)}`)
+    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/getByPropertyIdWithAuth/${this.getPropertyId(formData)}`)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.response = data.data;
@@ -364,60 +364,60 @@ export class LegalBlocksComponent implements OnInit {
   }
 
   prepareProjectValueOptions(params: any) {
-    if(!!params.projectId) {
+    if (!!params.projectId) {
       this.lookupsService.loadAllProjects({ id: params.projectId })
-      .subscribe((option)=> {
-        this.projectsSearchInput$.next(option.value && option.value.ar);
-      })
+        .subscribe((option) => {
+          this.projectsSearchInput$.next(option.value && option.value.ar);
+        })
     }
   }
 
   prepareDeveloperValueOptions(params: any) {
-    if(!!params.developerId) {
+    if (!!params.developerId) {
       this.lookupsService.loadDevelopers({ id: params.developerId })
-      .subscribe((option)=> {
-        this.developerSearchInput$.next(option.value && option.value.ar);
-      })
+        .subscribe((option) => {
+          this.developerSearchInput$.next(option.value && option.value.ar);
+        })
     }
   }
 
   prepareLandValueOptions(params: any) {
-    if(!!params.landId) {
+    if (!!params.landId) {
       this.lookupsService.loadLands({ id: params.landId })
-      .subscribe((option)=> {
-        this.landSearchInput$.next(option.value && option.value.ar);
-      })
+        .subscribe((option) => {
+          this.landSearchInput$.next(option.value && option.value.ar);
+        })
     }
   }
 
   prepareOldLandValueOptions(params: any) {
-    if(!!params.oldLandId) {
+    if (!!params.oldLandId) {
       this.lookupsService.loadOldLands({ id: params.oldLandId })
-      .subscribe((option)=> {
-        this.oldLandSearchInput$.next(option.value && option.value.ar);
-      })
+        .subscribe((option) => {
+          this.oldLandSearchInput$.next(option.value && option.value.ar);
+        })
     }
   }
 
   prepareUnitValueOptions(params: any) {
-    if(!!params.unitId) {
+    if (!!params.unitId) {
       this.lookupsService.loadUnitsOptions({ id: params.unitId })
-      .subscribe((option)=> {
-      })
+        .subscribe((option) => {
+        })
     }
   }
 
   prepareBlockagesEntitiesValueOptions(params: any) {
-    if(!!params.blockEntityId) {
+    if (!!params.blockEntityId) {
       this.lookupsService.loadBlockageEntities({ id: params.blockEntityId })
-      .subscribe((option)=> {
-        this.blockageEntitySearchInput$.next(option.value && option.value.ar);
-      })
+        .subscribe((option) => {
+          this.blockageEntitySearchInput$.next(option.value && option.value.ar);
+        })
     }
   }
 
   prepareBlockageTypesValueOptions(params: any) {
-    if(!!params.typeId) {
+    if (!!params.typeId) {
       this.loadBlockageTypesOptions();
     }
   }
@@ -434,7 +434,7 @@ export class LegalBlocksComponent implements OnInit {
 
   isLandBlockage(response: any) {
     const firstLand = this.getfirstLand(response);
-    return  !!firstLand && !!firstLand.landId;
+    return !!firstLand && !!firstLand.landId;
   }
 
   openAddBlockModal() {
@@ -457,10 +457,10 @@ export class LegalBlocksComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   async openRemoveBlockModal(blockage: any) {
@@ -477,17 +477,17 @@ export class LegalBlocksComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   addNewBlock(formData: any) {
     let fd = new FormData();
     fd.append('data', JSON.stringify(formData));
 
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/create`, fd)
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/createWithAuth`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
@@ -497,10 +497,10 @@ export class LegalBlocksComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   prepareAttachments() {
@@ -534,10 +534,10 @@ export class LegalBlocksComponent implements OnInit {
   }
 
   loadBlockageTypesOptions() {
-    this.lookupsService.loadBlockageTypesOptions()
-      .subscribe((data) => {
+    this.http.get(`${environment.apiHost}/AjmanLandProperty/index.php/lookups/listOfBlockagesTypesByAuth`)
+      .subscribe((data: any) => {
         this.blockageTypesOptions = data;
-      })
+      });
   }
 
   loadBlockageEntities() {
@@ -580,7 +580,7 @@ export class LegalBlocksComponent implements OnInit {
     let fd = new FormData();
     fd.append('data', JSON.stringify(formData));
 
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/update/${formData.id}`, fd)
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/updateWithAuth/${formData.id}`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
@@ -590,17 +590,17 @@ export class LegalBlocksComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   removeBlock(formData: any) {
     let fd = new FormData();
     fd.append('data', JSON.stringify(formData));
 
-    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/deactivate/${formData.id}`, fd)
+    this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/deactivateWithAuth/${formData.id}`, fd)
       .subscribe((data: any) => {
         if (data.status == 'success') {
           this.ngxSmartModalService.closeLatestModal();
@@ -610,14 +610,14 @@ export class LegalBlocksComponent implements OnInit {
           this.formErrors = data.data;
           this.toastr.error(JSON.stringify(data.message), 'Error')
         }
-    }, (error) => {
-      this.toastr.error('Something went Wrong', 'Error')
-      this.router.navigate(['error'])
-    })
+      }, (error) => {
+        this.toastr.error('Something went Wrong', 'Error')
+        this.router.navigate(['error'])
+      })
   }
 
   getBlockage(blockageId: any) {
-    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/get/${blockageId}`);
+    return this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/blockages/getWithAuth/${blockageId}`);
   }
 
   toggleControl(value?: boolean) {
