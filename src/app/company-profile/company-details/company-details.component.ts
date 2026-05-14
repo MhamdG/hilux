@@ -84,6 +84,11 @@ export class CompanyDetailsComponent implements OnInit {
   }
 
   updateData(formData: any) {
+    if (formData.owners) {
+      formData.owners = formData.owners.filter((owner: any) => {
+        return Object.keys(owner).some(k => owner[k] !== null && owner[k] !== undefined && owner[k] !== '');
+      });
+    }
     let fd = new FormData();
    
     if (!formData.establishmentContractFile) {

@@ -244,9 +244,14 @@
                 My Tasks
             </a>
         </li>
-        <li [routerLink]="['/my_tasks']" class="nav-item d-none d-sm-inline-block" [routerLinkActive]="['active']">
+        <li [routerLink]="['/services']" class="nav-item d-none d-sm-inline-block" [routerLinkActive]="['active']">
+            <a href="/services" class="nav-link">
+                دليل الخدمات
+            </a>
+        </li>
+        <li [routerLink]="['/']" class="nav-item d-none d-sm-inline-block" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
             <a href="/" class="nav-link">
-                لوحدة التحكم
+                لوحة التحكم
             </a>
         </li>
         <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'Archives')">

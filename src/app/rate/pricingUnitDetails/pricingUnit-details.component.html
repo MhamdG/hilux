@@ -79,6 +79,12 @@
           <table style="border: 1px solid black;width: 100%;">
             <thead style="border: 1px solid black;">
               <th style="border: 1px solid black; text-align: center;">
+                <label class="col-form-label" i18n="@@unitType">Unit Type</label>
+              </th>
+              <th style="border: 1px solid black; text-align: center;">
+                <label class="col-form-label" i18n="@@roomCount">Number of Rooms</label>
+              </th>
+              <th style="border: 1px solid black; text-align: center;">
                 <label class="col-form-label" i18n="@@price">Price</label>
               </th>
               <th style="border: 1px solid black; text-align: center;">
@@ -88,6 +94,16 @@
             <tbody style="border: 1px solid black;">
               <!-- <tr *ngFor="let item of formData.landTreeHistory let j = index"> -->
               <tr >
+                <td style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" >
+                    {{pageData.unitType}}
+                  </label>
+                </td>
+                <td style="border: 1px solid black; text-align: center;">
+                  <label class="col-form-label" >
+                    {{pageData.roomsCount !== null && pageData.roomsCount !== undefined && pageData.roomsCount !== '' ? pageData.roomsCount : '---'}}
+                  </label>
+                </td>
                 <td style="border: 1px solid black; text-align: center;">
                   <label class="col-form-label" >
                     {{pageData.price}}
