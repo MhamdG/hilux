@@ -147,7 +147,7 @@
                     <div class="dropdown-divider"></div>
                 </ng-container>
                 <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'Archives')">
-                    <a class="dropdown-item" href="https://wfe.ajre.gov.ae/AjmanLandProperty/index.php/DMS/index"
+                    <a class="dropdown-item" [href]="dmsUrl"
                         target="_blank">
                         <i class="fas fa-plus float-left"></i>
                         شاشة تسليم الملفات
@@ -243,7 +243,7 @@
         </li>
         <ng-container *ngIf="getRole(userRole,'Admin') || getRole(userRole,'Archives')">
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://wfe.ajre.gov.ae/AjmanLandProperty/index.php/DMS/index" class="nav-link"
+                <a [href]="dmsUrl" class="nav-link"
                     target="_blank">
                     شاشة تسليم الملفات
                 </a>

@@ -82,10 +82,10 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.people$ = this.fieldsService.getUrl(`https://jsonplaceholder.typicode.com/users`);
-    this.listOfServices$ = this.fieldsService.getUrl(`https://wfe.ajre.gov.ae/AjmanLandProperty/index.php/ServiceCategories/listOfServices`);
-    this.users$ = this.fieldsService.getUrl(`https://wfe.ajre.gov.ae/AjmanLandProperty/index.php/ServiceCategories/listOfHiluxUsers`);
-    this.listOfServiceCategories$ = this.fieldsService.getUrl(`https://wfe.ajre.gov.ae/AjmanLandProperty/index.php/ServiceCategories/listOfServiceCategories`);
-    this.listOfDepartments$ = this.fieldsService.getUrl(`https://wfe.ajre.gov.ae/AjmanLandProperty/index.php/ServiceCategories/listOfDepartments`);
+    this.listOfServices$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/ServiceCategories/listOfServices`);
+    this.users$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/ServiceCategories/listOfHiluxUsers`);
+    this.listOfServiceCategories$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/ServiceCategories/listOfServiceCategories`);
+    this.listOfDepartments$ = this.fieldsService.getUrl(`${environment.apiHost}/AjmanLandProperty/index.php/ServiceCategories/listOfDepartments`);
     this.getDashboard(this.data);
 
   }

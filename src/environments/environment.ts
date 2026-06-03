@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiHost: 'http://192.168.59.135',
-  token: 'sy3rHBHVD3U7VxMs6vuSLU32'
+  apiHost: '__INTERNAL_WFE_URL__',
+  token: '__INTERNAL_API_TOKEN__'
 };
 
 /*

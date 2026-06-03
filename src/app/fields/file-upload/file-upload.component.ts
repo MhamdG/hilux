@@ -104,7 +104,7 @@ export class FileUploadComponent implements OnInit {
       return;
     }
     else{
-      return this.http.post<any>(`https://wfe.ajre.gov.ae/ajaxupload.php`, form).subscribe((data: any) => {
+      return this.http.post<any>(`${environment.apiHost}/ajaxupload.php`, form).subscribe((data: any) => {
         if (data.status == 'success') {
           // Add value to formData
           values.push(data.data[fieldId]);

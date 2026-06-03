@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
     query: string = '';
     roles$: object;
     userRole: any;
+    dmsUrl: string = `${environment.apiHost}/AjmanLandProperty/index.php/DMS/index`;
 
 
     constructor(
