@@ -46,8 +46,12 @@
     </div>
   </div>
   <div class="card-footer text-center">
-    <button type="submit" class="btn btn-primary px-5 py-2" style="float: left;" [disabled]="f.invalid" i18n="@@formSubmitLabel">Submit</button>
-    <button type="button" style="margin-left: 10px;margin-right:10px;float: right;" class="btn btn-warning px-5 py-2" [disabled]="!response.backStepID" (click)="backStepFun()" >رجوع للخلف</button>
+    <button type="submit" class="btn btn-primary px-5 py-2" style="float: left;" [disabled]="f.invalid || isLoading" i18n="@@formSubmitLabel">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+      <span *ngIf="isLoading">جاري الإرسال...</span>
+      <span *ngIf="!isLoading">إرسال</span>
+    </button>
+    <button type="button" style="margin-left: 10px;margin-right:10px;float: right;" class="btn btn-warning px-5 py-2" [disabled]="!response.backStepID || isLoading" (click)="backStepFun()">رجوع للخلف</button>
 
     <!-- <button type="button" class="btn btn-default  float-left" i18n="@@formCancelLabel" (click)="backToMytask()">Cancel</button> -->
   </div>

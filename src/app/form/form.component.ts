@@ -18,6 +18,7 @@ import { environment } from '../../environments/environment';
 export class FormComponent implements OnInit, OnChanges {
   formData: any = {};
   formErrors: any;
+  isLoading: boolean = false;
 
   @Input() response: PageResponse;
 
@@ -74,10 +75,13 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   saveData(formData : any) {
+    if (this.isLoading) return;
+    this.isLoading = true;
     let form = new FormData();
     form.append('data', JSON.stringify(Object.assign({stepID: this.response.stepID, dataIn: this.prepareJson(formData)})));
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/applications/completeStep`, form)
-      .subscribe((data: any)=> {
+      .subscribe((data: any)=>{
+        this.isLoading = false;
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success')
           if (!!data.data.stepID) {
@@ -89,14 +93,20 @@ export class FormComponent implements OnInit, OnChanges {
           this.toastr.error(data.message, 'Error')
           this.formErrors = data.data;
         }
+      }, (error) => {
+        this.isLoading = false;
+        this.toastr.error('حدث خطأ، حاول مرة أخرى', 'Error');
       })
     // this.authenticationService.signin();
   }
   backStepFun() {
+    if (this.isLoading) return;
+    this.isLoading = true;
     let form = new FormData();
     form.append('data', JSON.stringify(Object.assign({backStepID: this.response.backStepID})));
     this.http.post(`${environment.apiHost}/AjmanLandProperty/index.php/applications/backStep`, form)
-      .subscribe((data: any)=> {
+      .subscribe((data: any)=>{
+        this.isLoading = false;
         if (data.status == 'success') {
           this.toastr.success(data.message, 'Success')
           if (!!data.data.stepID) {
@@ -108,6 +118,9 @@ export class FormComponent implements OnInit, OnChanges {
           this.toastr.error(data.message, 'Error')
           this.formErrors = data.data;
         }
+      }, (error) => {
+        this.isLoading = false;
+        this.toastr.error('حدث خطأ، حاول مرة أخرى', 'Error');
       })
     // this.authenticationService.signin();
   }
