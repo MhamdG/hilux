@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { PageResponse } from '../fields/page_response';
 import { RowField } from '../fields/field_order';
 import { FieldsService } from '../shared/fields.service';
@@ -15,7 +15,7 @@ import { environment } from '../../environments/environment';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnChanges {
   formData: any = {};
   formErrors: any;
 
@@ -30,8 +30,15 @@ export class FormComponent implements OnInit {
     private toastr: ToastrService
   ) { }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['response'] && changes['response'].currentValue) {
+      this.formData = {};
+      this.formErrors = null;
+      this.rearrangeFieldOrder();
+    }
+  }
+
   ngOnInit(): void {
-    this.rearrangeFieldOrder()
   }
 
   getClass(classname: string, field: RowField) {

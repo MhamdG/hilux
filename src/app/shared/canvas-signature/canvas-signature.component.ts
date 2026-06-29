@@ -77,7 +77,6 @@ export class CanvasSignatureComponent implements OnInit {
       this.context.beginPath();
     }
     this.img = null;
-    this.signatureSaved.emit('');
   }
 
   save() {
