@@ -47,14 +47,30 @@ export class SidebarComponent implements OnInit {
     return data.serviceCategoryName && data.serviceCategoryName.ar;
   }
   getServiceProviderIcon(data: any) {
-    return data.serviceCategoryName && data.serviceCategoryName.icon;
+    const icon = data.serviceCategoryName && data.serviceCategoryName.icon;
+    return this.formatIconUrl(icon);
   }
 
   getServiceName(data: any) {
     return data && data.ar;
   }
   getServiceIcon(data: any) {
-    return data && data.icon;
+    const icon = data && data.icon;
+    return this.formatIconUrl(icon);
+  }
+
+  formatIconUrl(icon: any): string {
+    if (!icon) {
+      return '';
+    }
+    const iconStr = icon.toString().trim();
+    if (iconStr.startsWith('http://') || iconStr.startsWith('https://')) {
+      return iconStr;
+    }
+    if (iconStr.startsWith('/')) {
+      return `https://wfe.ajre.gov.ae${iconStr}`;
+    }
+    return `https://wfe.ajre.gov.ae/${iconStr}`;
   }
 
   hideRoot(data: any) {
